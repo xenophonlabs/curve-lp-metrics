@@ -14,6 +14,11 @@ nest_asyncio.apply()
 load_dotenv()
 
 # TODO: Create a results class for each results output
+# TODO: Step size should be specific to the query not to the class
+
+FILE_PATH = os.path.abspath(__file__)
+FIGS_PATH = FILE_PATH.replace(os.path.basename(__file__), 'figs/')
+DATA_PATH = FILE_PATH.replace(os.path.basename(__file__), 'data/')
 
 CURVE_SUBGRAPH_URL_CVX = 'https://api.thegraph.com/subgraphs/name/convex-community/curve-mainnet'
 CURVE_SUBGRAPH_URL_MESSARI = 'https://api.thegraph.com/subgraphs/name/messari/curve-finance-ethereum'
@@ -107,7 +112,7 @@ class DataFetcher():
             raw_data = await asyncio.gather(*tasks)
             return raw_data
     
-    def get_pool_data(self, name):
+    def get_pool_data(self, name, save=False):
 
         query = (
             lambda **kwargs: f"""
@@ -133,29 +138,17 @@ class DataFetcher():
             }}"""
         )
 
-        # NOTE: Also have the below fields available
-        # createdBlockNumber
-        # createdTimestamp
-        # outputTokenPriceUSD
-        # outputToken {{
-        #     decimals
-        #     id
-        #     lastPriceBlockNumber
-        #     lastPriceUSD
-        #     name
-        #     symbol
-        # }}
-        # outputTokenSupply
-        # stakedOutputTokenAmount
-
         loop = asyncio.get_event_loop()
         pool_id = self.get_pool_id(name)
-        pool_data = loop.run_until_complete(self.fetch_data(query, 'liquidityPool', CURVE_SUBGRAPH_URL_MESSARI, pool_id=pool_id))
-        pool_data = self.format_pool_data(pool_data)
+        data = loop.run_until_complete(self.fetch_data(query, 'liquidityPool', CURVE_SUBGRAPH_URL_MESSARI, pool_id=pool_id))
+        data = self.format_pool_data(data)
 
-        return pool_data
+        if save:
+            data.to_csv(f'{DATA_PATH}/{name}_pool.csv')
+
+        return data
     
-    def get_swaps_data(self, name):
+    def get_swaps_data(self, name, save=False):
         """
         Run our async data fetcher on a particular pool and return the results.
         """
@@ -199,6 +192,71 @@ class DataFetcher():
         data = loop.run_until_complete(self.fetch_data(query, 'swaps', CURVE_SUBGRAPH_URL_MESSARI, full=True, pool_id=pool_id))
         data = self.format_swaps_data(data)
 
+        if save:
+            data.to_csv(f'{DATA_PATH}/{name}_swaps.csv')
+
+        return data
+    
+    def get_lp_data(self, name, target):
+        """
+        Internal method to get either deposits or withdraws data
+        """
+        query = (
+            lambda **kwargs: f"""
+            {{ 
+                {target}(
+                    where: {{
+                        blockNumber_gte: "{kwargs['block_gte']}", 
+                        blockNumber_lt: "{kwargs['block_lt']}", 
+                        pool: "{kwargs['pool_id']}"
+                    }}
+                ) {{
+                    timestamp
+                    amountUSD
+                    blockNumber
+                    from
+                    to
+                    hash
+                    inputTokenAmounts
+                    inputTokens {{
+                        decimals
+                        id
+                        lastPriceBlockNumber
+                        lastPriceUSD
+                        name
+                        symbol
+                    }}
+                }}
+            }}"""
+        )
+
+        loop = asyncio.get_event_loop()
+        pool_id = self.get_pool_id(name)
+        data = loop.run_until_complete(self.fetch_data(query, target, CURVE_SUBGRAPH_URL_MESSARI, full=True, pool_id=pool_id))
+        data = self.format_lp_data(data)
+
+        return data
+    
+    def get_withdraws_data(self, name, save=False):
+        """
+        Run our async data fetcher on a particular pool and return the results.
+        """
+        data = self.get_lp_data(name, 'withdraws')
+
+        if save:
+            data.to_csv(f'{DATA_PATH}/{name}_withdraws.csv')
+
+        return data
+    
+    def get_deposits_data(self, name, save=False):
+        """
+        Run our async data fetcher on a particular pool and return the results.
+        """
+        data = self.get_lp_data(name, 'deposits')
+
+        if save:
+            data.to_csv(f'{DATA_PATH}/{name}_deposits.csv')
+
         return data
     
     def format_swaps_data(self, data):
@@ -218,11 +276,39 @@ class DataFetcher():
 
         for col in ['timestamp', 'blockNumber']:
             df[col] = df[col].astype(int)
+        
+        for col in ['amountInUSD', 'amountOutUSD']:
+            df[col] = df[col].astype(float)
 
         # Approximate datetime index
         df.index = df['timestamp'].apply(lambda x: datetime.fromtimestamp(x))
 
         df = df.drop(columns=['tokenIn', 'tokenOut', 'pool_id', 'block_gte', 'block_lt', 'timestamp', 'blockNumber'], axis=1)
+
+        df = df.round(5)
+
+        return df
+
+    def format_lp_data(self, data):
+        for block in data:
+            if len(block) == 0:
+                continue
+            for row in block:
+                for i, info in enumerate(row['inputTokens']):
+                    row[info['symbol']+'.amount'] = int(row['inputTokenAmounts'][i])  / 10**info['decimals']
+        
+        df = pd.DataFrame([x for y in data for x in y])
+
+        for col in ['timestamp', 'blockNumber']:
+            df[col] = df[col].astype(int)
+        
+        for col in ['amountUSD']:
+            df[col] = df[col].astype(float)
+
+        # Approximate datetime index
+        df.index = df['timestamp'].apply(lambda x: datetime.fromtimestamp(x))
+
+        df = df.drop(columns=['inputTokenAmounts', 'inputTokens', 'pool_id', 'block_gte', 'block_lt', 'timestamp', 'blockNumber'], axis=1)
 
         df = df.round(5)
 
