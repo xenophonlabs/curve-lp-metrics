@@ -9,6 +9,7 @@ import json
 from web3 import Web3
 from dotenv import load_dotenv
 import os
+from queries import queries
 
 nest_asyncio.apply()
 load_dotenv()
@@ -28,16 +29,13 @@ INFURA_KEY = os.getenv("INFURA_KEY")
 
 class DataFetcher():
 
-    def __init__(self, start, end, step_size=50):
+    def __init__(self, start, end):
         
         # Connect to web3 for any specific data we need
         self.web3 = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{INFURA_KEY}"))
         
         # Get start and end blocks from input date strings
         self.get_blocks(start, end)
-
-        # Set step size for data fetcher
-        self.step_size = step_size
         
         # Load pool mapping
         with open('pools.json', 'r') as f:
@@ -48,6 +46,8 @@ class DataFetcher():
             self.tokens = json.load(f)
         
         self.erc20_abi = [{"constant":True,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":False,"stateMutability":"view","type":"function"},{"constant":True,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":False,"stateMutability":"view","type":"function"},{"constant":True,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":False,"stateMutability":"view","type":"function"}]
+
+    ### Data fetching methods
 
     def get_blocks(self, start, end):
         """ 
@@ -90,20 +90,21 @@ class DataFetcher():
 
             return block_data_object
 
-    async def fetch_data(self, query, key, url, full=False, **kwargs):
+    async def fetch_data(self, query, key, url, step_size, full=False, **kwargs):
         """
         Fetch data for a sequence of blocks async.
         @Params
-            Full : bool.    If True: get ALL the data using block_lt and block_gte.
-                            If False: get just the data at each step block
+            Full:       bool.       If True: get ALL the data using block_lt and block_gte.
+                                    If False: get just the data at each step block
+            step_size:  int.        Number of blocks to get data for at each step (if full=false, just the data at each step block)
         """
         tasks = []
         async with aiohttp.ClientSession() as session:
-            for b in range(self.start_block, self.end_block, self.step_size):
+            for b in range(self.start_block, self.end_block, step_size):
                 block_kwargs = kwargs.copy()
                 if full:
                     block_kwargs['block_gte'] = b
-                    block_kwargs['block_lt'] = b + self.step_size
+                    block_kwargs['block_lt'] = b + step_size
                 else:
                     block_kwargs['block'] = b
                 task = asyncio.ensure_future(self.fetch_data_one_block(session, query, key, url, **block_kwargs))
@@ -112,164 +113,80 @@ class DataFetcher():
             raw_data = await asyncio.gather(*tasks)
             return raw_data
     
-    def get_pool_data(self, name, save=False):
-
-        query = (
-            lambda **kwargs: f"""
-            {{ liquidityPool(
-                id: "{kwargs['pool_id']}"
-                block: {{number: {kwargs['block']}}}
-            ) {{
-                symbol
-                name
-                totalValueLockedUSD
-                isSingleSided
-                inputTokenBalances
-                inputTokenWeights
-                inputTokens {{
-                    decimals
-                    id
-                    lastPriceBlockNumber
-                    lastPriceUSD
-                    name
-                    symbol
-                }}
-                }}
-            }}"""
-        )
-
+    def get_pool_data(self, name, source="messari", save=False, step_size=50):
+        """
+        source = "messari" or "cvx"
+        """
+        query, key = queries[source]['pool']['query'], queries[source]['pool']['key']
+        url = self.get_url(source)
         loop = asyncio.get_event_loop()
         pool_id = self.get_pool_id(name)
-        data = loop.run_until_complete(self.fetch_data(query, 'liquidityPool', CURVE_SUBGRAPH_URL_MESSARI, pool_id=pool_id))
-        data = self.format_pool_data(data)
+        data = loop.run_until_complete(self.fetch_data(query, key, url, step_size, pool_id=pool_id))
+        data = self.format_pool_data(data, source)
 
         if save:
-            data.to_csv(f'{DATA_PATH}/{name}_pool.csv')
+            data.to_csv(f'{DATA_PATH}/{name}_{source}_pool.csv')
 
         return data
     
-    def get_swaps_data(self, name, save=False):
+    def get_swaps_data(self, name, source="messari", save=False, step_size=50):
         """
         Run our async data fetcher on a particular pool and return the results.
         """
-        query = (
-            lambda **kwargs: f"""
-            {{ 
-                swaps(
-                    where: {{
-                        blockNumber_gte: "{kwargs['block_gte']}", 
-                        blockNumber_lt: "{kwargs['block_lt']}", 
-                        pool: "{kwargs['pool_id']}"
-                    }}
-                ) {{
-                    amountIn
-                    amountInUSD
-                    amountOut
-                    amountOutUSD
-                    blockNumber
-                    from
-                    hash
-                    timestamp
-                    to
-                    tokenIn {{
-                        lastPriceUSD
-                        symbol
-                        id
-                        decimals
-                    }}
-                    tokenOut {{
-                        decimals
-                        id
-                        lastPriceUSD
-                        symbol
-                    }}
-                }}
-            }}"""
-        )
-
+        query, key = queries[source]['swaps']['query'], queries[source]['swaps']['key']
+        url = self.get_url(source)
         loop = asyncio.get_event_loop()
         pool_id = self.get_pool_id(name)
-        data = loop.run_until_complete(self.fetch_data(query, 'swaps', CURVE_SUBGRAPH_URL_MESSARI, full=True, pool_id=pool_id))
-        data = self.format_swaps_data(data)
+        data = loop.run_until_complete(self.fetch_data(query, key, url, step_size, full=True, pool_id=pool_id))
+        data = self.format_swaps_data(data, source)
 
         if save:
-            data.to_csv(f'{DATA_PATH}/{name}_swaps.csv')
+            data.to_csv(f'{DATA_PATH}/{name}_{source}_swaps.csv')
 
         return data
     
-    def get_lp_data(self, name, target):
-        """
-        Internal method to get either deposits or withdraws data
-        """
-        query = (
-            lambda **kwargs: f"""
-            {{ 
-                {target}(
-                    where: {{
-                        blockNumber_gte: "{kwargs['block_gte']}", 
-                        blockNumber_lt: "{kwargs['block_lt']}", 
-                        pool: "{kwargs['pool_id']}"
-                    }}
-                ) {{
-                    timestamp
-                    amountUSD
-                    blockNumber
-                    from
-                    to
-                    hash
-                    inputTokenAmounts
-                    inputTokens {{
-                        decimals
-                        id
-                        lastPriceBlockNumber
-                        lastPriceUSD
-                        name
-                        symbol
-                    }}
-                }}
-            }}"""
-        )
+    def get_lp_data(self, name, source="messari", save=False, step_size=50):
+        if source == "messari":
+            # One query for deposits, one for withdraws
+            url = self.get_url(source)
+            pool_id = self.get_pool_id(name)
+            dfs = []
+            for type in ['deposits', 'withdraws']:
+                query, key = queries[source][type]['query'], queries[source][type]['key']
+                loop = asyncio.get_event_loop()
+                data_ = loop.run_until_complete(self.fetch_data(query, key, url, step_size, full=True, pool_id=pool_id))
+                data_ = self.format_lp_data(data_, type, source)
+                dfs.append(data_)
+            data = pd.concat(dfs)
+            data = data.sort_index()
 
-        loop = asyncio.get_event_loop()
-        pool_id = self.get_pool_id(name)
-        data = loop.run_until_complete(self.fetch_data(query, target, CURVE_SUBGRAPH_URL_MESSARI, full=True, pool_id=pool_id))
-        data = self.format_lp_data(data)
-
-        return data
-    
-    def get_withdraws_data(self, name, save=False):
-        """
-        Run our async data fetcher on a particular pool and return the results.
-        """
-        data = self.get_lp_data(name, 'withdraws')
+        elif source == "cvx":
+            pass
 
         if save:
-            data.to_csv(f'{DATA_PATH}/{name}_withdraws.csv')
+            data.to_csv(f'{DATA_PATH}/{name}_{source}_lp.csv')
 
         return data
     
-    def get_deposits_data(self, name, save=False):
-        """
-        Run our async data fetcher on a particular pool and return the results.
-        """
-        data = self.get_lp_data(name, 'deposits')
+    ### Formatting methods
 
-        if save:
-            data.to_csv(f'{DATA_PATH}/{name}_deposits.csv')
-
-        return data
+    def format_swaps_data(self, data, source):
+        if source == "messari":
+            return self.format_swaps_data_messari(data)
+        elif source == "cvx":
+            return self.format_swaps_data_cvx(data)
     
-    def format_swaps_data(self, data):
+    def format_swaps_data_messari(self, data):
         for block in data:
             if len(block) == 0:
                 continue
             for row in block:
                 row['tokenIn.symbol'] = row['tokenIn']['symbol']
-                row['tokenIn.price'] = float(row['tokenIn']['lastPriceUSD'])
+                # row['tokenIn.price'] = float(row['tokenIn']['lastPriceUSD'])
                 row['amountIn'] = float(row['amountIn']) / 10**row['tokenIn']['decimals']
 
                 row['tokenOut.symbol'] = row['tokenOut']['symbol']
-                row['tokenOut.price'] = float(row['tokenOut']['lastPriceUSD'])
+                # row['tokenOut.price'] = float(row['tokenOut']['lastPriceUSD'])
                 row['amountOut'] = float(row['amountOut']) / 10**row['tokenOut']['decimals']
         
         df = pd.DataFrame([x for y in data for x in y])
@@ -282,14 +199,38 @@ class DataFetcher():
 
         # Approximate datetime index
         df.index = df['timestamp'].apply(lambda x: datetime.fromtimestamp(x))
-
         df = df.drop(columns=['tokenIn', 'tokenOut', 'pool_id', 'block_gte', 'block_lt', 'timestamp', 'blockNumber'], axis=1)
-
+        df = df[['tokenIn.symbol', 'amountIn', 'amountInUSD', 'tokenOut.symbol', 'amountOut', 'amountOutUSD', 'from', 'hash']]
         df = df.round(5)
 
         return df
 
-    def format_lp_data(self, data):
+    def format_swaps_data_cvx(self, data):
+        df = pd.DataFrame([x for y in data for x in y])
+        df['tokenBought'] = df['tokenBought'].apply(lambda addy: self.tokens[addy]['symbol'])
+        df['tokenSold'] = df['tokenSold'].apply(lambda addy: self.tokens[addy]['symbol'])
+        df['datetime'] = df['timestamp'].apply(lambda ts: datetime.fromtimestamp(int(ts)))
+        df = df.set_index('datetime')
+        df = df.drop(['block', 'timestamp', 'pool_id', 'block_gte', 'block_lt', 'gasLimit', 'gasUsed', 'isUnderlying'], axis=1)
+        df = df.rename(columns={
+            'amountSold': 'amountIn',
+            'amountBought': 'amountOut',
+            'tx': 'hash',
+            'buyer': 'from',
+            'tokenSold': 'tokenIn.symbol',
+            'tokenBought': 'tokenOut.symbol'
+        })
+        for col in ['amountIn', 'amountOut']:
+            df[col] = df[col].astype(float)
+        # TODO: pls fix
+        df['amountInUSD'] = None
+        df['amountOutUSD'] = None
+        df = df[['tokenIn.symbol', 'amountIn', 'amountInUSD', 'tokenOut.symbol', 'amountOut', 'amountOutUSD', 'from', 'hash']]
+        df = df.round(5)
+
+        return df
+
+    def format_lp_data(self, data, type, source):
         for block in data:
             if len(block) == 0:
                 continue
@@ -312,15 +253,17 @@ class DataFetcher():
 
         df = df.round(5)
 
+        df['type'] = type
+
         return df
 
-    def format_pool_data(self, data):
+    def format_pool_data(self, data, source):
         addresses = []
         for row in data:
             row = row[0]
             for i, info in enumerate(row['inputTokens']):
                 addresses.append(info['id'])
-                row[info['symbol']+'.price'] = float(info['lastPriceUSD'])
+                # row[info['symbol']+'.price'] = float(info['lastPriceUSD'])
                 row[info['symbol']+'.weight'] = float(row['inputTokenWeights'][i])
                 row[info['symbol']+'.balance'] = int(row['inputTokenBalances'][i])  / 10**info['decimals']
         
@@ -341,6 +284,8 @@ class DataFetcher():
         df = df.round(5)
 
         return df
+    
+    ### Helper methods
 
     def cache_token_data(self, tokens):
         """
@@ -377,63 +322,10 @@ class DataFetcher():
         """
         return self.tokens[addy]
 
-
-# NOTE: Using convex community subgraph
-#         query = (
-#             lambda **kwargs: f"""
-#                 {{ pool(
-#                     id: "{kwargs['pool_id']}"
-#                     block: {{number: {kwargs['block']}}}
-#                 ) {{
-#                 address
-#                 name
-#                 assetType
-#                 basePool
-#                 coinDecimals
-#                 coinNames
-#                 coins
-#                 creationBlock
-#                 creationDate
-#                 isRebasing
-#                 isV2
-#                 lpToken
-#                 metapool
-#                 poolType
-#                 symbol
-#                 virtualPrice
-#                 baseApr
-#                 c128
-#                 creationTx
-#                 platform {{
-#                     id
-#                 }}
-#                 }}
-#             }}"""
-#         )
-
-# query = (
-#             lambda **kwargs: f"""
-#                 {{  swapEvents(
-#                         where: {{
-#                             pool: "{kwargs['pool_id']}",
-#                             block_gte: "{kwargs['block_gte']}"
-#                             block_lt: "{kwargs['block_lt']}"
-#                         }}
-#                     ) {{
-#                     amountBought
-#                     amountSold
-#                     block
-#                     buyer
-#                     gasLimit
-#                     gasUsed
-#                     isUnderlying
-#                     timestamp
-#                     tokenBought
-#                     tokenSold
-#                     tx
-#                 }}
-#             }}"""
-#         )
+    def get_url(self, source):
+        if source == "messari": return CURVE_SUBGRAPH_URL_MESSARI
+        elif source == "cvx": return CURVE_SUBGRAPH_URL_CVX
+        else: raise(f'Invalid source {source}. Must be "messari" or "cvx"')
 
 # def format_pool_data(self, data):
 #     # NOTE: the only thing that really changes is virtualPrice
@@ -447,10 +339,3 @@ class DataFetcher():
 #     return df
 
 # def format_swaps_data(self, data):
-#         df = pd.DataFrame([x for y in data for x in y])
-#         self.cache_token_data(df['tokenBought'].unique().tolist() + df['tokenSold'].unique().tolist())
-#         df['tokenBought'] = df['tokenBought'].apply(lambda addy: self.tokens[addy]['symbol'])
-#         df['tokenSold'] = df['tokenSold'].apply(lambda addy: self.tokens[addy]['symbol'])
-#         df['datetime'] = df['timestamp'].apply(lambda ts: datetime.fromtimestamp(int(ts)))
-
-#         return df
