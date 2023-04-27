@@ -378,7 +378,7 @@ class DataFetcher():
         return self.tokens[addy]
 
 
-# Using convex community subgraph
+# NOTE: Using convex community subgraph
 #         query = (
 #             lambda **kwargs: f"""
 #                 {{ pool(
