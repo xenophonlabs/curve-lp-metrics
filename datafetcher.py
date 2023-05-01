@@ -68,6 +68,18 @@ class DataFetcher():
 
         self.end_timestamp = end_res['timestamp']
         self.end_block = end_res['height']
+    
+    def fetch_data_simple(self, source, key, pool):
+        """
+        Make single API call at start block.
+        """
+        query, key = queries[source][key]['query'], queries[source][key]['key']
+        url = self.get_url(source)
+        pool_id = self.get_pool_id(pool)
+        kwargs = {'pool_id':pool_id, 'block':self.start_block}
+        query = query(**kwargs)
+        res = req.post(url, json={'query':query}).json()['data']['pool']
+        return res
 
     async def fetch_data_one_block(self, session, query, key, url, **kwargs):
         """
@@ -132,6 +144,7 @@ class DataFetcher():
     def get_swaps_data(self, name, source="messari", save=False, step_size=50):
         """
         Run our async data fetcher on a particular pool and return the results.
+        source = "messari" or "cvx"
         """
         query, key = queries[source]['swaps']['query'], queries[source]['swaps']['key']
         url = self.get_url(source)
@@ -146,22 +159,29 @@ class DataFetcher():
         return data
     
     def get_lp_data(self, name, source="messari", save=False, step_size=50):
+        """
+        source = "messari" or "cvx"
+        """
+        url = self.get_url(source)
+        pool_id = self.get_pool_id(name)
+
         if source == "messari":
             # One query for deposits, one for withdraws
-            url = self.get_url(source)
-            pool_id = self.get_pool_id(name)
             dfs = []
-            for type in ['deposits', 'withdraws']:
-                query, key = queries[source][type]['query'], queries[source][type]['key']
+            for type_ in ['deposits', 'withdraws']:
+                query, key = queries[source][type_]['query'], queries[source][type_]['key']
                 loop = asyncio.get_event_loop()
                 data_ = loop.run_until_complete(self.fetch_data(query, key, url, step_size, full=True, pool_id=pool_id))
-                data_ = self.format_lp_data(data_, type, source)
+                data_ = self.format_lp_data(data_, source, type_=type_)
                 dfs.append(data_)
             data = pd.concat(dfs)
             data = data.sort_index()
 
         elif source == "cvx":
-            pass
+            query, key = queries[source]['liquidityEvents']['query'], queries[source]['liquidityEvents']['key']
+            loop = asyncio.get_event_loop()
+            data = loop.run_until_complete(self.fetch_data(query, key, url, step_size, full=True, pool_id=pool_id))
+            data = self.format_lp_data(data, source, pool=name)
 
         if save:
             data.to_csv(f'{DATA_PATH}/{name}_{source}_lp.csv')
@@ -170,11 +190,23 @@ class DataFetcher():
     
     ### Formatting methods
 
+    def format_pool_data(self, data, source):
+        if source == "messari":
+            return self.format_pool_data_messari(data)
+        elif source == "cvx":
+            return self.format_pool_data_cvx(data)
+
     def format_swaps_data(self, data, source):
         if source == "messari":
             return self.format_swaps_data_messari(data)
         elif source == "cvx":
             return self.format_swaps_data_cvx(data)
+    
+    def format_lp_data(self, data, source, type_=None, pool=None):
+        if source == "messari":
+            return self.format_lp_data_messari(data, type_)
+        elif source == "cvx":
+            return self.format_lp_data_cvx(data, pool)
     
     def format_swaps_data_messari(self, data):
         for block in data:
@@ -211,7 +243,8 @@ class DataFetcher():
         df['tokenSold'] = df['tokenSold'].apply(lambda addy: self.tokens[addy]['symbol'])
         df['datetime'] = df['timestamp'].apply(lambda ts: datetime.fromtimestamp(int(ts)))
         df = df.set_index('datetime')
-        df = df.drop(['block', 'timestamp', 'pool_id', 'block_gte', 'block_lt', 'gasLimit', 'gasUsed', 'isUnderlying'], axis=1)
+        df = df.drop(['gasLimit', 'gasUsed', 'isUnderlying'], axis=1)
+        # df = df.drop(['block', 'timestamp', 'pool_id', 'block_gte', 'block_lt', 'gasLimit', 'gasUsed', 'isUnderlying'], axis=1)
         df = df.rename(columns={
             'amountSold': 'amountIn',
             'amountBought': 'amountOut',
@@ -229,8 +262,8 @@ class DataFetcher():
         df = df.round(5)
 
         return df
-
-    def format_lp_data(self, data, type, source):
+    
+    def format_lp_data_messari(self, data, type_):
         for block in data:
             if len(block) == 0:
                 continue
@@ -248,21 +281,48 @@ class DataFetcher():
 
         # Approximate datetime index
         df.index = df['timestamp'].apply(lambda x: datetime.fromtimestamp(x))
-
         df = df.drop(columns=['inputTokenAmounts', 'inputTokens', 'pool_id', 'block_gte', 'block_lt', 'timestamp', 'blockNumber'], axis=1)
-
         df = df.round(5)
-
-        df['type'] = type
+        df['type'] = type_
 
         return df
+    
+    def format_lp_data_cvx(self, data, pool):
+        pool_data = self.fetch_data_simple('cvx', 'pool', pool)
 
-    def format_pool_data(self, data, source):
-        addresses = []
+        for block in data:
+            if len(block) == 0:
+                continue
+            for row in block:
+                for i, amt in enumerate(row['tokenAmounts']):
+                    token = pool_data['coinNames'][i]
+                    decimals = int(pool_data['coinDecimals'][i])
+                    row[f'{token}.amount'] = int(amt)  / 10**decimals
+                row['totalSupply'] = int(row['totalSupply']) / 10**18
+
+        df = pd.DataFrame([x for y in data for x in y])
+
+        df['type'] = df['removal'].apply(lambda x: 'withdraws' if x==True else 'deposits')
+
+        for col in ['timestamp', 'block']:
+            df[col] = df[col].astype(int)
+
+        df['amountUSD'] = None # TODO: what do here?
+        df['to'] = None # TODO: convert from/to to just LP
+
+        df.index = df['timestamp'].apply(lambda x: datetime.fromtimestamp(x))
+        df = df.rename(columns={'tx':'hash', 'liquidityProvider':'from'})
+        df = df.drop(columns=['removal', 'timestamp', 'block', 'pool_id', 'block_gte', 'block_lt', 'tokenAmounts'], axis=1)
+        df = df.round(5)
+        
+        return df
+
+    def format_pool_data_messari(self, data):
+        tokens = []
         for row in data:
             row = row[0]
             for i, info in enumerate(row['inputTokens']):
-                addresses.append(info['id'])
+                tokens.append(info['id'])
                 # row[info['symbol']+'.price'] = float(info['lastPriceUSD'])
                 row[info['symbol']+'.weight'] = float(row['inputTokenWeights'][i])
                 row[info['symbol']+'.balance'] = int(row['inputTokenBalances'][i])  / 10**info['decimals']
@@ -279,7 +339,32 @@ class DataFetcher():
         # Approximate datetime index
         df.index = pd.date_range(datetime.fromtimestamp(self.start_timestamp), end=datetime.fromtimestamp(self.end_timestamp), periods=df.shape[0], unit='s', name='datetime')
         
-        self.cache_token_data(addresses)
+        # Cache token data in tokens.json
+        self.cache_token_data(tokens)
+
+        df = df.round(5)
+
+        return df
+
+    def format_pool_data_cvx(self, data):
+        tokens = []
+        for row in data:
+            row = row[0]
+            for i, addy in enumerate(row['coins']):
+                tokens.append(addy)
+        
+        df = pd.DataFrame([x for y in data for x in y])
+        df = df.drop(columns=['coins', 'coinDecimals', 'coinNames'], axis=1)
+
+        for col in ['virtualPrice']:
+            df[col] = df[col].astype(float)
+        
+        df['virtualPrice'] = df['virtualPrice'] / 10**18
+
+        # Approximate datetime index
+        df.index = pd.date_range(datetime.fromtimestamp(self.start_timestamp), end=datetime.fromtimestamp(self.end_timestamp), periods=df.shape[0], unit='s', name='datetime')
+        
+        self.cache_token_data(tokens)
 
         df = df.round(5)
 
@@ -326,16 +411,3 @@ class DataFetcher():
         if source == "messari": return CURVE_SUBGRAPH_URL_MESSARI
         elif source == "cvx": return CURVE_SUBGRAPH_URL_CVX
         else: raise(f'Invalid source {source}. Must be "messari" or "cvx"')
-
-# def format_pool_data(self, data):
-#     # NOTE: the only thing that really changes is virtualPrice
-#     df = pd.DataFrame([x for y in data for x in y])
-#     df['coinNames'] = df['coinNames'].apply(lambda lst:','.join(lst))
-#     df['coinDecimals'] = df['coinDecimals'].apply(lambda lst:','.join(lst))
-#     df['coins'] = df['coins'].apply(lambda lst:','.join(lst))
-#     df['coins'] = df['coins'].apply(lambda lst:','.join(lst))
-#     df = df.drop(columns=['platform'])
-
-#     return df
-
-# def format_swaps_data(self, data):

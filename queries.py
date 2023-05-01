@@ -1,4 +1,6 @@
-query_cvx_swapEvents = (
+### CONVEX-COMMUNITY QUERIES ###
+
+cvx_swaps_query = (
     lambda **kwargs: f"""
         {{  swapEvents(
                 where: {{
@@ -21,6 +23,58 @@ query_cvx_swapEvents = (
         }}
     }}"""
 )
+
+cvx_liquidity_query = (
+    lambda **kwargs: f"""
+        {{  liquidityEvents(
+                where: {{
+                    pool: "{kwargs['pool_id']}",
+                    block_gte: "{kwargs['block_gte']}"
+                    block_lt: "{kwargs['block_lt']}"
+                }}
+            ) {{
+            block
+            liquidityProvider
+            removal
+            timestamp
+            tokenAmounts
+            totalSupply
+            tx
+        }}
+    }}"""
+)
+
+cvx_pool_query = (
+    lambda **kwargs: f"""
+        {{  pool(
+                id: "{kwargs['pool_id']}"
+                block: {{number: {kwargs['block']}}}
+            ) {{
+            virtualPrice
+            symbol
+            poolType
+            name
+            metapool
+            lpToken
+            isV2
+            isRebasing
+            creationTx
+            creationDate
+            creationBlock
+            coins
+            coinNames
+            coinDecimals
+            c128
+            basePool
+            baseApr
+            assetType
+            address
+            id
+        }}
+    }}"""
+)
+
+### MESSARI QUERIES ###
 
 messari_pool_query = (
     lambda **kwargs: f"""
@@ -141,8 +195,16 @@ messari_deposits_query = (
 queries = {
     'cvx': {
         'swaps': {
-            'query' : query_cvx_swapEvents,
+            'query' : cvx_swaps_query,
             'key' : 'swapEvents',
+        },
+        'liquidityEvents': {
+            'query' : cvx_liquidity_query,
+            'key' : 'liquidityEvents',
+        },
+        'pool': {
+            'query' : cvx_pool_query,
+            'key' : 'pool',
         },
     },
     'messari': {
