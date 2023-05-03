@@ -10,6 +10,7 @@ from web3 import Web3
 from dotenv import load_dotenv
 import os
 from queries import queries
+import ccxt 
 
 nest_asyncio.apply()
 load_dotenv()
@@ -49,25 +50,23 @@ class DataFetcher():
 
     ### Data fetching methods
 
+    def get_block(self, date_str):
+        """
+        Get block number from timestamp
+        """
+        ts = int(datetime.timestamp(datetime.fromisoformat(date_str)))
+        res = req.get(LLAMA_BLOCK_GETTER + str(ts)).json()
+        ts = res['timestamp']
+        block = res['height']
+
+        return ts, block
+
     def get_blocks(self, start, end):
         """ 
         Get start and end blocks from input date strings using Defi Llama API.
         """
-        start = datetime.fromisoformat(start)
-        start_ts = int(datetime.timestamp(start))
-        
-        start_res = req.get(LLAMA_BLOCK_GETTER + str(start_ts)).json()
-
-        self.start_timestamp = start_res['timestamp']
-        self.start_block = start_res['height']
-
-        end = datetime.fromisoformat(end)
-        end_ts = int(datetime.timestamp(end))
-
-        end_res = req.get(LLAMA_BLOCK_GETTER + str(end_ts)).json()
-
-        self.end_timestamp = end_res['timestamp']
-        self.end_block = end_res['height']
+        self.start_timestamp, self.start_block = self.get_block(start)
+        self.end_timestamp, self.end_block = self.get_block(end)
     
     def fetch_data_simple(self, source, key, pool):
         """
@@ -187,6 +186,31 @@ class DataFetcher():
             data.to_csv(f'{DATA_PATH}/{name}_{source}_lp.csv')
 
         return data
+    
+    def get_ohlcv(self, symbol, save=False, limit=1000, timeframe='1m'):
+        """
+        TODO: Async? Probs not cuz of rate limits, but ccxt does have async integration
+        import ccxt.async_support as ccxt
+        """
+        since = self.start_timestamp * 1000
+
+        for exchange in ['binanceus', 'coinbasepro', 'kraken']:
+            exchange=getattr(ccxt, exchange)()
+            print(f'Fetching OHLCV for {symbol} using {exchange}...')
+            try:
+                df = pd.DataFrame()
+                while since < self.end_timestamp * 1000:
+                    ohlcv = exchange.fetch_ohlcv(symbol, timeframe=timeframe, limit=limit, since=since)
+                    df_temp = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+                    df_temp['datetime'] = pd.to_datetime(df_temp['timestamp'], unit='ms')
+                    df_temp.set_index('datetime', inplace=True)
+                    df = pd.concat([df, df_temp])
+                    since = int(df.index[-1].timestamp() * 1000) + 1
+                break
+            except:
+                print(f'Failed to fetch {symbol} using {exchange}...')
+
+        return df
     
     ### Formatting methods
 
