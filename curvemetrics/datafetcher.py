@@ -23,7 +23,7 @@ class DataFetcher():
     A class to asynchronously fetch data from theGraph API using a specified query.
     """
 
-    def __init__(self, start: str, end: str, exchanges: List[str] = ['binanceus', 'coinbasepro', 'kraken']) -> None:
+    def __init__(self, start: datetime, end: datetime, exchanges: List[str] = ['binanceus', 'coinbasepro', 'kraken']) -> None:
         """
         Initialize the DataFetcher class.
 
@@ -106,7 +106,7 @@ class DataFetcher():
         @Returns
             raw_data (list of lists of dictionaries): the data for all specified blocks
         """
-        tasks = []
+        tasks = set()
         for b in range(self.start_block, self.end_block, step_size):
             query_kwargs = kwargs.copy()
             if full:
@@ -115,7 +115,8 @@ class DataFetcher():
             else:
                 query_kwargs['block'] = b
             task = asyncio.create_task(self.execute_query_async(self.session, query, key, url, **query_kwargs))
-            tasks.append(task)
+            tasks.add(task)
+            task.add_done_callback(tasks.discard)
 
         raw_data = await asyncio.gather(*tasks)
         return raw_data
@@ -144,7 +145,7 @@ class DataFetcher():
         query = queries[key]
         url = DataFetcher.get_url(source)
         pool_id = DataFetcher.get_pool_id(pool_name)
-        data = asyncio.run(self.execute_queries_async(query, key, url, step_size, full, pool_id=pool_id))
+        # data = asyncio.run(self.execute_queries_async(query, key, url, step_size, full, pool_id=pool_id))
         return data
 
     def get_pool_data(
@@ -155,7 +156,7 @@ class DataFetcher():
         """
         Get pool reserves data from Messari subgraph.
         """
-        return self.execute_queries(pool_name, 'messari', 'pool', step_size, False)
+        return self.execute_queries(pool_name, 'messari', 'liquidityPool', step_size, False)
     
     def get_swaps_data(
         self,
@@ -165,7 +166,7 @@ class DataFetcher():
         """
         Get swaps data from Convex-community subgraph.
         """
-        return self.execute_queries(pool_name, 'cvx', 'swaps', step_size, True)
+        return self.execute_queries(pool_name, 'cvx', 'swapEvents', step_size, True)
     
     def get_lp_data(
         self,
@@ -226,7 +227,7 @@ class DataFetcher():
     ### Helper methods
 
     @staticmethod
-    def get_block(date_str: str) -> Tuple[int, int]:
+    def get_block(datetime_: datetime) -> Tuple[int, int]:
         """
         Get the block number corresponding to a given timestamp.
 
@@ -237,7 +238,7 @@ class DataFetcher():
             A tuple containing two integers: the Unix timestamp corresponding to the
             input timestamp, and the block number at which that timestamp was recorded.
         """
-        ts = int(datetime.timestamp(datetime.fromisoformat(date_str)))
+        ts = int(datetime.timestamp(datetime_))
         res = req.get(LLAMA_BLOCK_GETTER + str(ts)).json()
         ts = res['timestamp']
         block = res['height']
