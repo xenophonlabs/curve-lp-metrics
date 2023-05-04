@@ -42,7 +42,7 @@ liquidity_query = (
     }}"""
 )
 
-pool_query = (
+liquidity_pool_query = (
     lambda **kwargs: f"""
     {{ liquidityPool(
         id: "{kwargs['pool_id']}"
@@ -54,6 +54,10 @@ pool_query = (
         isSingleSided
         inputTokenBalances
         inputTokenWeights
+        createdBlockNumber
+        createdTimestamp
+        outputToken
+        symbol
         inputTokens {{
             decimals
             id
@@ -66,8 +70,39 @@ pool_query = (
     }}"""
 )
 
+pool_query = (
+    lambda **kwargs: f"""
+    {{ pool(
+        id: "{kwargs['pool_id']}"
+        block: {{number: {kwargs['block']}}}
+    ) {{
+        address
+        assetType
+        baseApr
+        basePool
+        c128
+        coinDecimals
+        coinNames
+        coins
+        creationBlock
+        creationDate
+        creationTx
+        id
+        isRebasing
+        isV2
+        lpToken
+        metapool
+        name
+        poolType
+        virtualPrice
+        symbol
+        }}
+    }}"""
+)
+
 queries = {
     'swapEvents' : swaps_query,
     'liquidityEvents' : liquidity_query,
-    'liquidityPool' : pool_query,
+    'liquidityPool' : liquidity_pool_query,
+    'pool' : pool_query,
 }

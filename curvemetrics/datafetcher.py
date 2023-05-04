@@ -15,6 +15,7 @@ nest_asyncio.apply()
 CURVE_SUBGRAPH_URL_CVX = 'https://api.thegraph.com/subgraphs/name/convex-community/curve-mainnet'
 CURVE_SUBGRAPH_URL_MESSARI = 'https://api.thegraph.com/subgraphs/name/messari/curve-finance-ethereum'
 LLAMA_BLOCK_GETTER = 'https://coins.llama.fi/block/ethereum/'
+SUPPORTED_POOLS = ['3pool', 'steth', 'fraxusdc', 'UST wormhole', 'USDN', 'mim', 'susd', 'frxeth', 'lusd', 'busdv2', 'stETH concentrated', 'cbETH/ETH', 'cvxCRV/CRV']
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
@@ -46,6 +47,24 @@ class DataFetcher():
         await self.session.close()
 
     ### Data fetching methods
+    @staticmethod
+    def get_pool_metadata(pool_name, datetime_):
+        url = DataFetcher.get_url('cvx')
+        pool_id = DataFetcher.get_pool_id(pool_name)
+        _, block = DataFetcher.get_block(datetime_)
+        query = queries['pool'](pool_id=pool_id, block=block)
+        res = req.post(url, json={'query': query}).json()['data']['pool']
+        return res
+    
+    @staticmethod
+    def cache_pool_metadata():
+        datetime_ = datetime.now()
+        data = {}
+        for pool in SUPPORTED_POOLS:
+            pool_data = DataFetcher.get_pool_metadata(pool, datetime_)
+            data[pool] = pool_data
+        with open(PATH+'./pools.json', 'w') as f:
+            json.dump(data, f)
 
     @staticmethod
     async def execute_query_async(
@@ -111,7 +130,7 @@ class DataFetcher():
             query_kwargs = kwargs.copy()
             if full:
                 query_kwargs['block_gte'] = b
-                query_kwargs['block_lt'] = b + step_size
+                query_kwargs['block_lt'] = min(b + step_size, self.end_block)
             else:
                 query_kwargs['block'] = b
             task = asyncio.create_task(self.execute_query_async(self.session, query, key, url, **query_kwargs))
@@ -145,7 +164,7 @@ class DataFetcher():
         query = queries[key]
         url = DataFetcher.get_url(source)
         pool_id = DataFetcher.get_pool_id(pool_name)
-        # data = asyncio.run(self.execute_queries_async(query, key, url, step_size, full, pool_id=pool_id))
+        data = asyncio.run(self.execute_queries_async(query, key, url, step_size, full, pool_id=pool_id))
         return data
 
     def get_pool_data(
@@ -161,7 +180,7 @@ class DataFetcher():
     def get_swaps_data(
         self,
         pool_name: str,
-        step_size: int = 50
+        step_size: int = 100
     ) -> Any:
         """
         Get swaps data from Convex-community subgraph.
@@ -171,7 +190,7 @@ class DataFetcher():
     def get_lp_data(
         self,
         pool_name: str,
-        step_size: int = 50
+        step_size: int = 100
     ) -> Any:
         """
         Get lp deposits and withdrawals data from Convex-community subgraph.
@@ -251,10 +270,9 @@ class DataFetcher():
         Get the pool id from the pool name.
         """
         try:
-            print()
             with open(PATH+'./pools.json', 'r') as f:
                 pools = json.load(f)
-                return pools[name]
+                return pools[name]['address']
         except Exception as e: 
             raise Exception(f'Pool {name} not found in pools.json. {e}')
 
