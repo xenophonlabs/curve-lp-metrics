@@ -6,7 +6,7 @@ from curvemetrics.datafetcher import DataFetcher
 async def main():
     async with DataFetcher() as datafetcher:
         # Call the methods to fetch the data
-        # TODO: step_sizes should be smaller if running every minute, right?
+        # TODO: step_size should be 1 here for all of them
         swaps = await datafetcher.get_swaps()
         pool_data = await datafetcher.get_pool_data()
         lp_data = await datafetcher.get_lp_data()

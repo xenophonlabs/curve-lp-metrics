@@ -6,16 +6,20 @@ import os
 import json
 import ccxt.async_support as ccxt
 import logging
-from datetime import datetime
-from typing import Any, List, Tuple, Callable
+from datetime import datetime, timedelta
+from typing import Any, List, Tuple, Callable, Dict
 from .queries import queries
+from web3 import Web3
+from dotenv import load_dotenv
 
+load_dotenv()
 nest_asyncio.apply()
 
 CURVE_SUBGRAPH_URL_CVX = 'https://api.thegraph.com/subgraphs/name/convex-community/curve-mainnet'
 CURVE_SUBGRAPH_URL_MESSARI = 'https://api.thegraph.com/subgraphs/name/messari/curve-finance-ethereum'
 LLAMA_BLOCK_GETTER = 'https://coins.llama.fi/block/ethereum/'
-SUPPORTED_POOLS = ['3pool', 'steth', 'fraxusdc', 'UST wormhole', 'USDN', 'mim', 'susd', 'frxeth', 'lusd', 'busdv2', 'stETH concentrated', 'cbETH/ETH', 'cvxCRV/CRV']
+SUPPORTED_POOLS = ['0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7', '0xdc24316b9ae028f1497c275eb9192a3ea0f67022', '0xdcef968d416a41cdac0ed8702fac8128a64241a2', '0xceaf7747579696a2f0bb206a14210e3c9e6fb269', '0x0f9cb53ebe405d49a0bbdbd291a65ff571bc83e1', '0x5a6a4d54456819380173272a5e8e9b9904bdf41b', '0xa5407eae9ba41422680e2e00537571bcc53efbfd', '0xa1f8a6807c402e4a15ef4eba36528a3fed24e577', '0xed279fdd11ca84beef15af5d39bb4d4bee23f0ca', '0x4807862aa8b2bf68830e4c8dc86d0e9a998e085a', '0x828b154032950c8ff7cf8085d841723db2696056', '0x5fae7e604fc3e24fd43a72867cebac94c65b404a', '0x971add32ea87f10bd192671630be3be8a11b8623']
+INFURA_KEY = os.getenv("INFURA_KEY")
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
@@ -46,29 +50,56 @@ class DataFetcher():
         """
         await self.session.close()
 
-    ### Data fetching methods
     @staticmethod
-    def get_pool_metadata(pool_name, datetime_):
+    def get_pool_metadata(pool_id, datetime_):
         url = DataFetcher.get_url('cvx')
-        pool_id = DataFetcher.get_pool_id(pool_name)
         _, block = DataFetcher.get_block(datetime_)
         query = queries['pool'](pool_id=pool_id, block=block)
-        res = req.post(url, json={'query': query}).json()['data']['pool']
-        return res
+        res = req.post(url, json={'query': query})
+        return res.json()['data']['pool']
     
     @staticmethod
-    def cache_pool_metadata():
-        datetime_ = datetime.now()
+    def get_pools_metadata():
+        datetime_ = datetime.now() - timedelta(1)
         data = {}
-        for pool in SUPPORTED_POOLS:
-            pool_data = DataFetcher.get_pool_metadata(pool, datetime_)
-            data[pool] = pool_data
+        for pool_id in SUPPORTED_POOLS:
+            pool_data = DataFetcher.get_pool_metadata(pool_id, datetime_)
+            data[pool_id] = pool_data
+
+        # TODO: temp json, can delete
         with open(PATH+'./pools.json', 'w') as f:
             json.dump(data, f)
 
+        return data
+
     @staticmethod
+    def get_token_metadata(token, client, erc20_abi):
+        if token == '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee':
+            # Dummy for ETH since not erc20
+            return {'name':'Ethereum', 'symbol':'ETH', 'decimals':18, 'id':token}
+        token_checksummed = Web3.to_checksum_address(token)
+        contract = client.eth.contract(address=token_checksummed, abi=erc20_abi)
+        name = contract.functions.name().call()
+        symbol = contract.functions.symbol().call()
+        decimals = contract.functions.decimals().call()
+        return {'name':name, 'symbol':symbol, 'decimals':decimals, 'id':token}
+    
+    @staticmethod
+    def get_tokens_metadata(pool_metadata):
+        tokens = {coin for x in pool_metadata.values() for coin in x['coins']}
+        client = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{INFURA_KEY}"))
+        erc20_abi = [{"constant":True,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":False,"stateMutability":"view","type":"function"},{"constant":True,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":False,"stateMutability":"view","type":"function"},{"constant":True,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":False,"stateMutability":"view","type":"function"}]
+        data = {}
+        for token in tokens:
+            data[token] = DataFetcher.get_token_metadata(token, client, erc20_abi)
+
+        # TODO: temp json, can delete
+        with open('tokens.json', 'w') as f:
+            json.dump(data, f)
+        return data
+
     async def execute_query_async(
-        session: aiohttp.ClientSession, 
+        self, 
         query: Callable[..., str], 
         key: str, 
         url: str, 
@@ -78,7 +109,6 @@ class DataFetcher():
         Execute query with specified kwargs.
         
         @Params
-            session (aiohttp.ClientSession): HTTP session to post requests.
             query (function): a function that generates the GraphQL query string.
             key (str): the key in the response JSON object to extract the data.
             url (str): the API URL to send requests to.
@@ -88,7 +118,7 @@ class DataFetcher():
             block_data_object (list of dictionaries): the data for one block.
         """
         query = query(**kwargs)
-        async with session.post(url, json={'query': query}) as res:
+        async with self.session.post(url, json={'query': query}) as res:
             block_data_object = await res.json()
             block_data_object = block_data_object['data'][key]
 
@@ -96,6 +126,9 @@ class DataFetcher():
             if type(block_data_object) != list:
                 block_data_object = [block_data_object]
             
+            if len(block_data_object) == 100:
+                self.logger.warning(f'theGraph rate limit hit (100 txs). Might be missing data for {key} with kwargs {kwargs}.')
+
             # Add in kwargs to output for transparency
             for obj in block_data_object:
                 for k in kwargs:
@@ -126,14 +159,17 @@ class DataFetcher():
             raw_data (list of lists of dictionaries): the data for all specified blocks
         """
         tasks = set()
-        for b in range(self.start_block, self.end_block, step_size):
+        for b in range(self.start_block, self.end_block+1, step_size):
             query_kwargs = kwargs.copy()
             if full:
                 query_kwargs['block_gte'] = b
-                query_kwargs['block_lt'] = min(b + step_size, self.end_block)
+                lt = b + step_size
+                if lt > self.end_block:
+                    lt = self.end_block + 1 # Make sure to include the end_block
+                query_kwargs['block_lt'] = lt
             else:
                 query_kwargs['block'] = b
-            task = asyncio.create_task(self.execute_query_async(self.session, query, key, url, **query_kwargs))
+            task = asyncio.create_task(self.execute_query_async(query, key, url, **query_kwargs))
             tasks.add(task)
             task.add_done_callback(tasks.discard)
 
@@ -142,7 +178,7 @@ class DataFetcher():
 
     def execute_queries(
         self,
-        pool_name: str,
+        pool_id: str,
         source: str,
         key: str,
         step_size: int,
@@ -152,7 +188,7 @@ class DataFetcher():
         Wrapper for execute_queries().
         
         @Params
-            pool_name (str): The name of the pool for which data is fetched.
+            pool_id (str): The name of the pool for which data is fetched.
             source (str): The subgraph source.
             key (str): The entity which we are querying (e.g. swapEvents in Convex-community subgraph).
             step_size (int): The number of blocks to fetch data for at each step.
@@ -163,39 +199,38 @@ class DataFetcher():
         """
         query = queries[key]
         url = DataFetcher.get_url(source)
-        pool_id = DataFetcher.get_pool_id(pool_name)
         data = asyncio.run(self.execute_queries_async(query, key, url, step_size, full, pool_id=pool_id))
         return data
 
     def get_pool_data(
         self,
-        pool_name: str,
+        pool_id: str,
         step_size: int = 1
     ) -> Any:
         """
         Get pool reserves data from Messari subgraph.
         """
-        return self.execute_queries(pool_name, 'messari', 'liquidityPool', step_size, False)
+        return self.execute_queries(pool_id, 'messari', 'liquidityPool', step_size, False)
     
     def get_swaps_data(
         self,
-        pool_name: str,
-        step_size: int = 100
+        pool_id: str,
+        step_size: int = 10 # NOTE: increasing step_size risks losing txs. This is a subgraph bug.
     ) -> Any:
         """
         Get swaps data from Convex-community subgraph.
         """
-        return self.execute_queries(pool_name, 'cvx', 'swapEvents', step_size, True)
+        return self.execute_queries(pool_id, 'cvx', 'swapEvents', step_size, True)
     
     def get_lp_data(
         self,
-        pool_name: str,
-        step_size: int = 100
+        pool_id: str,
+        step_size: int = 10 # NOTE: increasing step_size risks losing txs. This is a subgraph bug.
     ) -> Any:
         """
         Get lp deposits and withdrawals data from Convex-community subgraph.
         """
-        return self.execute_queries(pool_name, 'cvx', 'liquidityEvents', step_size, True)
+        return self.execute_queries(pool_id, 'cvx', 'liquidityEvents', step_size, True)
 
     async def get_ohlcv_async(
         self,
@@ -229,20 +264,33 @@ class DataFetcher():
                 return data
             except Exception as e:
                 self.logger.warning(f'Failed to fetch {symbol} using {exchange}: {e}')
+            finally:
+                await exchange.close()
 
         raise Exception(f"Couldn't fetch OHLCV for {symbol} from any of {self.exchanges}.")
 
     def get_ohlcv(
         self,
-        symbol: str,
+        token: str,
         limit: int = 1000,
         timeframe: str = '1m'
     ) -> Any:
         """
         Wrapper for get_ohlcv_async().
         """
-        return asyncio.run(self.get_ohlcv_async(symbol, limit, timeframe))
-    
+        symbol = DataFetcher.get_symbol_for_token(token)
+        data = asyncio.run(self.get_ohlcv_async(symbol, limit, timeframe))
+        data = [[token, symbol] + sublist for sublist in data]
+        return data
+
+    @staticmethod
+    def get_symbol_for_token(token: str) -> str:
+        # Note: let's do just USD for now
+        with open(PATH+'./tokens.json', 'r') as f:
+            tokens = json.load(f)
+        symbol = tokens[token]['symbol']
+        return f'{symbol}/USD'
+
     ### Helper methods
 
     @staticmethod
@@ -263,18 +311,6 @@ class DataFetcher():
         block = res['height']
 
         return ts, block
-
-    @staticmethod
-    def get_pool_id(name: str) -> str:
-        """
-        Get the pool id from the pool name.
-        """
-        try:
-            with open(PATH+'./pools.json', 'r') as f:
-                pools = json.load(f)
-                return pools[name]['address']
-        except Exception as e: 
-            raise Exception(f'Pool {name} not found in pools.json. {e}')
 
     @staticmethod
     def get_url(source: str) -> str:

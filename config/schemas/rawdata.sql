@@ -1,61 +1,91 @@
 -- Storing pool metadata
 CREATE TABLE pools (
-    id INTEGER PRIMARY KEY,
-    block INTEGER UNIQUE,
-    name TEXT UNIQUE,
-    symbol TEXT,
-    creation_date DATETIME,
-    creation_tx TEXT,
-    token_ids TEXT -- Storing as TEXT but will contain a JSON array of token IDs
+    id TEXT PRIMARY KEY,
+    poolName TEXT,
+    assetType INTEGER,
+    baseApr REAL,
+    basePool TEXT,
+    c128 INTEGER,
+    creationBlock INTEGER,
+    creationDate INTEGER,
+    creationTx TEXT,
+    address TEXT UNIQUE,
+    isRebasing INTEGER,
+    isV2 INTEGER,
+    lpToken TEXT,
+    metapool TEXT,
+    name TEXT,
+    poolType TEXT,
+    virtualPrice INTEGER,
+    symbol TEXT
+);
+
+-- Storing pool <-> token one-to-many relationship
+CREATE TABLE pool_tokens (
+    pool_id TEXT REFERENCES pools (id),
+    token_id TEXT REFERENCES tokens (id),
+    PRIMARY KEY (pool_id, token_id)
 );
 
 -- Storing token metadata
 CREATE TABLE tokens (
-    id INTEGER PRIMARY KEY,
-    name TEXT UNIQUE,
-    symbol TEXT
+    id TEXT PRIMARY KEY,
+    name TEXT,
+    symbol TEXT,
+    decimals INTEGER,
 );
 
 -- Storing token prices
-CREATE TABLE token_prices (
+CREATE TABLE token_ohlcv (
     id INTEGER PRIMARY KEY,
-    token_id INTEGER REFERENCES tokens (id),
+    token_id TEXT REFERENCES tokens (id),
+    symbol TEXT,
     timestamp DATETIME,
-    price REAL,
-    exchange TEXT,
-    UNIQUE (token_id, timestamp, exchange)
+    open REAL,
+    high REAL,
+    low REAL,
+    close REAL,
+    volume REAL,
+    -- UNIQUE (token_id, symbol, timestamp)
 );
 
 -- Storing pool reserves
 CREATE TABLE pool_data (
     id INTEGER PRIMARY KEY,
-    pool_id INTEGER REFERENCES pools (id),
-    timestamp DATETIME,
-    token_ids TEXT, -- Storing as TEXT but will contain a JSON array of token IDs
-    token_reserves TEXT, -- Storing as TEXT but will contain a JSON array of token reserves
-    UNIQUE (pool_id, timestamp)
+    pool_id TEXT REFERENCES pools (id),
+    block INTEGER,
+    totalValueLockedUSD REAL,
+    inputTokenBalances TEXT,
+    inputTokenWeights TEXT,
+    approxTimestamp INTEGER,
+    UNIQUE (pool_id, block)
 );
 
--- Storing lp events
+-- Storing lp events NOTE: we could avoid json TEXT repr for tokenAmounts by storing as a separate table
 CREATE TABLE lp_events (
-    id INTEGER PRIMARY KEY,
-    pool_id INTEGER REFERENCES pools (id),
-    tx TEXT UNIQUE,
-    timestamp DATETIME,
-    token_ids TEXT, -- Storing as TEXT but will contain a JSON array of token IDs
-    token_amounts TEXT, -- Storing as TEXT but will contain a JSON array of token amounts
-    type TEXT
+    id TEXT PRIMARY KEY,
+    block INTEGER,
+    liquidityProvider TEXT,
+    removal INTEGER,
+    timestamp INTEGER,
+    tokenAmounts TEXT,
+    totalSupply REAL,
+    tx TEXT,
+    pool_id TEXT REFERENCES pools (id),
+    block_gte INTEGER,
+    block_lt INTEGER
 );
 
 -- Storing swaps
 CREATE TABLE swaps (
-    tx TEXT PRIMARY KEY,
+    id TEXT PRIMARY KEY,
     timestamp INTEGER,
-    pool_id TEXT,
+    tx TEXT,
+    pool_id TEXT REFERENCES pools (id),
     amountBought REAL,
     amountSold REAL,
-    tokenBought TEXT,
-    tokenSold TEXT,
+    tokenBought TEXT REFERENCES tokens (id),
+    tokenSold TEXT REFERENCES tokens (id),
     buyer TEXT,
     gasLimit INTEGER,
     gasUsed INTEGER,

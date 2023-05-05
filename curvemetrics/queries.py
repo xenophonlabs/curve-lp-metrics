@@ -7,6 +7,7 @@ swaps_query = (
                     block_lt: "{kwargs['block_lt']}"
                 }}
             ) {{
+            id
             amountBought
             amountSold
             block
@@ -31,6 +32,7 @@ liquidity_query = (
                     block_lt: "{kwargs['block_lt']}"
                 }}
             ) {{
+            id
             block
             liquidityProvider
             removal
@@ -42,30 +44,16 @@ liquidity_query = (
     }}"""
 )
 
+# NOTE: Don't need inputTokens because that data will be in the pool_tokens table
 liquidity_pool_query = (
     lambda **kwargs: f"""
     {{ liquidityPool(
         id: "{kwargs['pool_id']}"
         block: {{number: {kwargs['block']}}}
     ) {{
-        symbol
-        name
         totalValueLockedUSD
-        isSingleSided
         inputTokenBalances
         inputTokenWeights
-        createdBlockNumber
-        createdTimestamp
-        outputToken
-        symbol
-        inputTokens {{
-            decimals
-            id
-            lastPriceBlockNumber
-            lastPriceUSD
-            name
-            symbol
-        }}
         }}
     }}"""
 )
@@ -81,8 +69,6 @@ pool_query = (
         baseApr
         basePool
         c128
-        coinDecimals
-        coinNames
         coins
         creationBlock
         creationDate
