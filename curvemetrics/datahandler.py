@@ -269,6 +269,7 @@ class RawDataHandler:
         df = pd.DataFrame.from_dict(results)
         df['inputTokenWeights'] = df['inputTokenWeights'].apply(json.loads)
         df = df.set_index(pd.to_datetime(df['approxTimestamp'], unit='s'))
+        df = df.sort_index()
         return df
     
     def get_swaps_data(self, pool_id: str) -> pd.DataFrame:
@@ -289,4 +290,5 @@ class RawDataHandler:
         results = cursor.fetchall()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        df = df.sort_index()
         return df

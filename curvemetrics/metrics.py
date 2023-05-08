@@ -146,6 +146,6 @@ def metrics_for_pool(pool, datahandler, pool_metadata, token_metadata, freq='1mi
 
     name = pool_metadata[pool]['symbol'].replace("/", "-")
 
-    metrics_df.to_csv(f"./tmpdata/{name}.csv")
+    metrics_df.to_csv(f"./data/metrics/{name}.csv")
 
     return metrics_df
