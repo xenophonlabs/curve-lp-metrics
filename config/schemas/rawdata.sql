@@ -5,6 +5,7 @@ CREATE TABLE pools (
     baseApr REAL,
     basePool TEXT,
     c128 INTEGER,
+    coins TEXT,
     creationBlock INTEGER,
     creationDate INTEGER,
     creationTx TEXT,
@@ -19,7 +20,7 @@ CREATE TABLE pools (
     symbol TEXT
 );
 
--- Storing pool <-> token one-to-many relationship
+-- Storing pool <-> token one-to-many relationship. Ignore this table for now
 CREATE TABLE pool_tokens (
     pool_id TEXT REFERENCES pools (id),
     token_id TEXT REFERENCES tokens (id),

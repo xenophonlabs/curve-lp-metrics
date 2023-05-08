@@ -4,10 +4,15 @@ import json
 import numpy as np
 import os
 import logging
+from typing import Dict
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
 class RawDataHandler:
+
+    """
+    Formats raw data and inserts it into the rawadata.db database.
+    """
 
     def __init__(self, db_name=PATH+'../database/rawdata.db'):
         self.conn = sqlite3.connect(db_name)
@@ -176,7 +181,7 @@ class RawDataHandler:
             df[col] = df[col].astype(int)
         for col in ['baseApr']:
             df[col] = df[col].astype(float)
-        df = df.drop(['coins'], axis=1)
+        df['coins'] = df['coins'].apply(lambda x: json.dumps(x))
         return df
 
     @staticmethod
@@ -240,16 +245,48 @@ class RawDataHandler:
         df = df[['id', 'block', 'liquidityProvider', 'removal', 'timestamp', 'tokenAmounts', 'totalSupply', 'tx', 'pool_id', 'block_gte', 'block_lt']]
         return df
     
-    def get_token_metadata(self):
+    def get_token_metadata(self) -> Dict:
         # NOTE: Select * is inefficient, change if necessary
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM tokens")
         results = cursor.fetchall()
         return {row["id"]: row for row in results}
     
-    def get_pool_metadata(self):
+    def get_pool_metadata(self) -> Dict:
         # NOTE: Select * is inefficient, change if necessary
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM pools")
         results = cursor.fetchall()
-        return {row["id"]: row for row in results}
+        metadata = {row["id"]: row for row in results}
+        for data in metadata.values():
+            data['coins'] = json.loads(data['coins'])
+        return metadata
+
+    def get_pool_data(self, pool_id: str) -> pd.DataFrame:
+        cursor = self.conn.cursor()
+        cursor.execute(f'SELECT * FROM pool_data WHERE pool_id="{pool_id}"')
+        results = cursor.fetchall()
+        df = pd.DataFrame.from_dict(results)
+        df['inputTokenWeights'] = df['inputTokenWeights'].apply(json.loads)
+        df = df.set_index(pd.to_datetime(df['approxTimestamp'], unit='s'))
+        return df
+    
+    def get_swaps_data(self, pool_id: str) -> pd.DataFrame:
+        cursor = self.conn.cursor()
+        cursor.execute(f'SELECT * FROM swaps WHERE pool_id="{pool_id}"')
+        results = cursor.fetchall()
+        return pd.DataFrame.from_dict(results)
+    
+    def get_lp_data(self, pool_id: str) -> pd.DataFrame:
+        cursor = self.conn.cursor()
+        cursor.execute(f'SELECT * FROM lp_events WHERE pool_id="{pool_id}"')
+        results = cursor.fetchall()
+        return pd.DataFrame.from_dict(results)
+
+    def get_ohlcv_data(self, token_id: str) -> pd.DataFrame:
+        cursor = self.conn.cursor()
+        cursor.execute(f'SELECT * FROM token_ohlcv WHERE token_id="{token_id}"')
+        results = cursor.fetchall()
+        df = pd.DataFrame.from_dict(results)
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        return df
