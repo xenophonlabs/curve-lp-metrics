@@ -7,7 +7,7 @@ import json
 import ccxt.async_support as ccxt
 import logging
 from datetime import datetime, timedelta
-from typing import Any, List, Tuple, Callable, Dict
+from typing import Any, List, Tuple, Callable, Dict, Union
 from .queries import queries
 from web3 import Web3
 from dotenv import load_dotenv
@@ -18,8 +18,10 @@ nest_asyncio.apply()
 CURVE_SUBGRAPH_URL_CVX = 'https://api.thegraph.com/subgraphs/name/convex-community/curve-mainnet'
 CURVE_SUBGRAPH_URL_MESSARI = 'https://api.thegraph.com/subgraphs/name/messari/curve-finance-ethereum'
 LLAMA_BLOCK_GETTER = 'https://coins.llama.fi/block/ethereum/'
-SUPPORTED_POOLS = ['0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7', '0xdc24316b9ae028f1497c275eb9192a3ea0f67022', '0xdcef968d416a41cdac0ed8702fac8128a64241a2', '0xceaf7747579696a2f0bb206a14210e3c9e6fb269', '0x0f9cb53ebe405d49a0bbdbd291a65ff571bc83e1', '0x5a6a4d54456819380173272a5e8e9b9904bdf41b', '0xa5407eae9ba41422680e2e00537571bcc53efbfd', '0xa1f8a6807c402e4a15ef4eba36528a3fed24e577', '0xed279fdd11ca84beef15af5d39bb4d4bee23f0ca', '0x4807862aa8b2bf68830e4c8dc86d0e9a998e085a', '0x828b154032950c8ff7cf8085d841723db2696056', '0x5fae7e604fc3e24fd43a72867cebac94c65b404a', '0x971add32ea87f10bd192671630be3be8a11b8623']
+
 INFURA_KEY = os.getenv("INFURA_KEY")
+API_KEYS = json.loads(os.getenv("API_KEYS"))
+API_SECRETS = json.loads(os.getenv("API_SECRETS"))
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
@@ -28,20 +30,29 @@ class DataFetcher():
     A class to asynchronously fetch data from theGraph API using a specified query.
     """
 
-    def __init__(self, start: datetime, end: datetime, exchanges: List[str] = ['binanceus', 'coinbasepro', 'kraken']) -> None:
+    def __init__(
+            self, 
+            exchanges: List[str] = ['binanceus', 'coinbasepro', 'bitfinex2'], 
+            token_metadata: Dict={}
+        ) -> None:
         """
         Initialize the DataFetcher class.
 
         @Params
-            start_block (int): the starting block to fetch data from.
-            end_block (int): the ending block to fetch data up to.
+            start (datetime): the starting time to fetch data from.
+            end (datetime): the ending time to fetch data up to.
             exchanges (list): list of ccxt-supported exchanges (we will try getting OHLCV 
                 data from these exchanges in the given order)
+            token_metadata (dict): dictionary of token metadata (name, symbol, decimals, id)
         """
-        self.start_timestamp, self.start_block = DataFetcher.get_block(start)
-        self.end_timestamp, self.end_block = DataFetcher.get_block(end)
+        self.token_metadata = token_metadata
+
         self.logger = logging.getLogger(__name__)
-        self.exchanges = exchanges
+        self.logger.setLevel(logging.INFO)
+        self.logger.addHandler(logging.StreamHandler())
+
+        self.exchanges = exchanges # TODO: probs better to have token -> exchange map in config.json
+
         self.session = aiohttp.ClientSession()
     
     async def close(self) -> None:
@@ -59,17 +70,12 @@ class DataFetcher():
         return res.json()['data']['pool']
     
     @staticmethod
-    def get_pools_metadata():
+    def get_pools_metadata(pools):
         datetime_ = datetime.now() - timedelta(1)
         data = {}
-        for pool_id in SUPPORTED_POOLS:
+        for pool_id in pools:
             pool_data = DataFetcher.get_pool_metadata(pool_id, datetime_)
             data[pool_id] = pool_data
-
-        # TODO: temp json, can delete
-        with open(PATH+'./pools.json', 'w') as f:
-            json.dump(data, f)
-
         return data
 
     @staticmethod
@@ -92,10 +98,6 @@ class DataFetcher():
         data = {}
         for token in tokens:
             data[token] = DataFetcher.get_token_metadata(token, client, erc20_abi)
-
-        # TODO: temp json, can delete
-        with open('tokens.json', 'w') as f:
-            json.dump(data, f)
         return data
 
     async def execute_query_async(
@@ -138,6 +140,8 @@ class DataFetcher():
     
     async def execute_queries_async(
         self,
+        start_block,
+        end_block,
         query: Callable[..., str],
         key: str,
         url: str,
@@ -159,13 +163,13 @@ class DataFetcher():
             raw_data (list of lists of dictionaries): the data for all specified blocks
         """
         tasks = set()
-        for b in range(self.start_block, self.end_block+1, step_size):
+        for b in range(start_block, end_block+1, step_size):
             query_kwargs = kwargs.copy()
             if full:
                 query_kwargs['block_gte'] = b
                 lt = b + step_size
-                if lt > self.end_block:
-                    lt = self.end_block + 1 # Make sure to include the end_block
+                if lt > end_block:
+                    lt = end_block + 1 # Make sure to include the end_block
                 query_kwargs['block_lt'] = lt
             else:
                 query_kwargs['block'] = b
@@ -178,6 +182,8 @@ class DataFetcher():
 
     def execute_queries(
         self,
+        start_block,
+        end_block,
         pool_id: str,
         source: str,
         key: str,
@@ -199,41 +205,49 @@ class DataFetcher():
         """
         query = queries[key]
         url = DataFetcher.get_url(source)
-        data = asyncio.run(self.execute_queries_async(query, key, url, step_size, full, pool_id=pool_id))
+        data = asyncio.run(self.execute_queries_async(start_block, end_block, query, key, url, step_size, full, pool_id=pool_id))
         return data
 
     def get_pool_data(
         self,
+        start_block,
+        end_block,
         pool_id: str,
         step_size: int = 1
     ) -> Any:
         """
         Get pool reserves data from Messari subgraph.
         """
-        return self.execute_queries(pool_id, 'messari', 'liquidityPool', step_size, False)
+        return self.execute_queries(start_block, end_block, pool_id, 'messari', 'liquidityPool', step_size, False)
     
     def get_swaps_data(
         self,
+        start_block,
+        end_block,
         pool_id: str,
         step_size: int = 10 # NOTE: increasing step_size risks losing txs. This is a subgraph bug.
     ) -> Any:
         """
         Get swaps data from Convex-community subgraph.
         """
-        return self.execute_queries(pool_id, 'cvx', 'swapEvents', step_size, True)
+        return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'swapEvents', step_size, True)
     
     def get_lp_data(
         self,
+        start_block,
+        end_block,
         pool_id: str,
         step_size: int = 10 # NOTE: increasing step_size risks losing txs. This is a subgraph bug.
     ) -> Any:
         """
         Get lp deposits and withdrawals data from Convex-community subgraph.
         """
-        return self.execute_queries(pool_id, 'cvx', 'liquidityEvents', step_size, True)
+        return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'liquidityEvents', step_size, True)
 
     async def get_ohlcv_async(
         self,
+        start_timestamp: int,
+        end_timestamp: int,
         symbol: str,
         limit: int,
         timeframe: str
@@ -249,21 +263,26 @@ class DataFetcher():
         @Returns
             data (list): The fetched OHLCV data.
         """
-        since = self.start_timestamp * 1000
+        since = start_timestamp * 1000
         data = []
 
         for exchange_id in self.exchanges:
             exchange = getattr(ccxt, exchange_id)()
-            self.logger.info(f'Fetching OHLCV for {symbol} using {exchange}...')
+            # add API key and secrets if specified in .env
+            if exchange_id in API_KEYS.keys():
+                exchange.apiKey = API_KEYS[exchange_id]
+            if exchange_id in API_SECRETS.keys():
+                exchange.secret = API_SECRETS[exchange_id]
             try:
-                while since < self.end_timestamp * 1000:
+                while since < end_timestamp * 1000:
                     ohlcv = await exchange.fetch_ohlcv(symbol, timeframe=timeframe, limit=limit, since=since)
                     data.extend(ohlcv)
                     since = int(ohlcv[-1][0]) + 1
                     await asyncio.sleep(exchange.rateLimit / 1000)
+                self.logger.info(f'Using {exchange} for {symbol}.\n')
                 return data
             except Exception as e:
-                self.logger.warning(f'Failed to fetch {symbol} using {exchange}: {e}')
+                self.logger.warning(f'Failed to fetch {symbol} using {exchange}: {e}.')
             finally:
                 await exchange.close()
 
@@ -271,6 +290,8 @@ class DataFetcher():
 
     def get_ohlcv(
         self,
+        start_timestamp: int,
+        end_timestamp: int,
         token: str,
         limit: int = 1000,
         timeframe: str = '1m'
@@ -278,23 +299,21 @@ class DataFetcher():
         """
         Wrapper for get_ohlcv_async().
         """
-        symbol = DataFetcher.get_symbol_for_token(token)
-        data = asyncio.run(self.get_ohlcv_async(symbol, limit, timeframe))
+        symbol = self.get_symbol_for_token(token)
+        data = asyncio.run(self.get_ohlcv_async(start_timestamp, end_timestamp, symbol, limit, timeframe))
         data = [[token, symbol] + sublist for sublist in data]
         return data
 
-    @staticmethod
-    def get_symbol_for_token(token: str) -> str:
-        # Note: let's do just USD for now
-        with open(PATH+'./tokens.json', 'r') as f:
-            tokens = json.load(f)
-        symbol = tokens[token]['symbol']
-        return f'{symbol}/USD'
+    def get_symbol_for_token(self, token: str) -> str:
+        if self.token_metadata == {}:
+            raise Exception('Token metadata not loaded in constructor.')
+        symbol = self.token_metadata[token]['symbol']
+        return f'{symbol}/USD'.upper()
 
     ### Helper methods
 
     @staticmethod
-    def get_block(datetime_: datetime) -> Tuple[int, int]:
+    def get_block(datetime_: Union[int, datetime]) -> Tuple[int, int]:
         """
         Get the block number corresponding to a given timestamp.
 
@@ -305,7 +324,9 @@ class DataFetcher():
             A tuple containing two integers: the Unix timestamp corresponding to the
             input timestamp, and the block number at which that timestamp was recorded.
         """
-        ts = int(datetime.timestamp(datetime_))
+        if type(datetime_) == datetime:
+            ts = int(datetime.timestamp(datetime_))
+        else: ts = datetime_
         res = req.get(LLAMA_BLOCK_GETTER + str(ts)).json()
         ts = res['timestamp']
         block = res['height']

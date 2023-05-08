@@ -1,88 +1,74 @@
 import sqlite3
 import pandas as pd
 import json
-from datetime import datetime
 import numpy as np
+import os
+import logging
+
+PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
 class RawDataHandler:
 
-    def __init__(self, db_name):
+    def __init__(self, db_name=PATH+'../database/rawdata.db'):
         self.conn = sqlite3.connect(db_name)
-        self.conn.row_factory = sqlite3.Row
+        self.conn.row_factory = RawDataHandler.dict_factory
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        self.logger.addHandler(logging.StreamHandler())
+    
+    @staticmethod
+    def dict_factory(cursor, row):
+        return {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
 
     def close(self):
         self.conn.close()
 
     def create_tables(self):
-        # Should this also populate the pools.json? That should be sent to the SQL table?
-        # TODO: This should insert the pool <-> tokens relationship into the `pool_tokens` table
-        pass
+        cursor = self.conn.cursor()
+        cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
+        result = cursor.fetchone()
+
+        if result:
+            self.logger.info("Tables already exist in the database")
+            return
+
+        with open(PATH+'../config/schemas/rawdata.sql', 'r') as f:
+            create_tables_sql = f.read()
+        
+        self.conn.executescript(create_tables_sql)
 
     def insert_pool_metadata(self, data):
         df = RawDataHandler.format_pool_metadata(data)
-
-        # Insert the DataFrame into the `pools` table
-        def insert_pool_metadata_row(row):
-            sql = """
-            INSERT OR IGNORE INTO pools (
-                id,
-                assetType,
-                baseApr,
-                basePool,
-                c128,
-                creationBlock,
-                creationDate,
-                creationTx,
-                address,
-                isRebasing,
-                isV2,
-                lpToken,
-                metapool,
-                name,
-                poolType,
-                virtualPrice,
-                symbol
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
-            # Insert the row into the `pool_metadata` table
-            self.conn.execute(sql, row)
-
-        df.apply(insert_pool_metadata_row, axis=1)
+        df.to_sql("pools", self.conn, if_exists="replace", index=False)
         self.conn.commit()
 
     def insert_token_metadata(self, data):
         df = RawDataHandler.format_token_metadata(data)
-
-        # Insert the DataFrame into the `pools` table
-        def insert_token_metadata_row(row):
-            sql = """
-            INSERT OR IGNORE INTO tokens (
-                id,
-                name,
-                symbol,
-                decimals
-            ) VALUES (?, ?, ?, ?)
-            """
-            # Insert the row into the `pool_metadata` table
-            self.conn.execute(sql, row)
-
-        df.apply(insert_token_metadata_row, axis=1)
+        df.to_sql("tokens", self.conn, if_exists="replace", index=False)
+        self.conn.commit()
+    
+    def insert_pool_tokens_metadata(self, data):
+        df = RawDataHandler.format_pool_tokens_metadata(data)
+        df.to_sql("pool_tokens", self.conn, if_exists="replace", index=False)
         self.conn.commit()
 
     def insert_pool_data(self, data, start_timestamp, end_timestamp):
         df = RawDataHandler.format_pool_data(data, start_timestamp, end_timestamp)
+
+        if len(df) == 0:
+            return
 
         # Insert the DataFrame into the `pool_data` table
         def insert_pool_row(row):
             # Create an SQL INSERT OR IGNORE statement
             sql = """
             INSERT OR IGNORE INTO pool_data (
+                pool_id,
                 block,
-                inputTokenWeights,
-                inputTokenBalances,
                 totalValueLockedUSD,
-                approxTimestamp,
-                pool_id
+                inputTokenBalances,
+                inputTokenWeights,
+                approxTimestamp
             ) VALUES (?, ?, ?, ?, ?, ?)
             """
             self.conn.execute(sql, row)
@@ -93,6 +79,9 @@ class RawDataHandler:
     def insert_token_data(self, data):
         df = RawDataHandler.format_token_data(data)
 
+        if len(df) == 0:
+            return
+
         # Insert the DataFrame into the `pool_data` table
         def insert_token_row(row):
             # Create an SQL INSERT OR IGNORE statement
@@ -100,12 +89,13 @@ class RawDataHandler:
             INSERT OR IGNORE INTO token_ohlcv (
                 token_id,
                 symbol,
+                timestamp,
                 open,
                 high,
                 low,
                 close,
                 volume
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """
             self.conn.execute(sql, row)
         
@@ -114,6 +104,9 @@ class RawDataHandler:
 
     def insert_swaps_data(self, data):
         df = RawDataHandler.format_swaps_data(data)
+
+        if len(df) == 0:
+            return
 
         # Insert the DataFrame into the `swaps` table
         def insert_swap_row(row):
@@ -134,7 +127,7 @@ class RawDataHandler:
                 isUnderlying,
                 block_gte,
                 block_lt,
-                block,
+                block
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
             # Insert the row into the `swaps` table
@@ -146,6 +139,9 @@ class RawDataHandler:
     def insert_lp_data(self, data):
         # Convert JSON data to a pandas DataFrame
         df = RawDataHandler.format_lp_data(data)
+
+        if len(df) == 0:
+            return
 
         # Insert the DataFrame into the `lp_events` table
         def insert_lp_row(row):
@@ -180,6 +176,7 @@ class RawDataHandler:
             df[col] = df[col].astype(int)
         for col in ['baseApr']:
             df[col] = df[col].astype(float)
+        df = df.drop(['coins'], axis=1)
         return df
 
     @staticmethod
@@ -190,8 +187,15 @@ class RawDataHandler:
         return df
     
     @staticmethod
+    def format_pool_tokens_metadata(data):
+        df = pd.DataFrame([[k, coin] for k,v in data.items() for coin in v['coins']], columns=['pool_id', 'token_id'])
+        return df
+    
+    @staticmethod
     def format_pool_data(data, start_timestamp, end_timestamp):
         df = pd.DataFrame([x for y in data for x in y])
+        if len(df) == 0:
+            return df
         for col in ['totalValueLockedUSD']:
             df[col] = df[col].astype(float)
         for col in ['block']:
@@ -199,29 +203,53 @@ class RawDataHandler:
         df['inputTokenWeights'] = df['inputTokenWeights'].apply(lambda x: json.dumps(list(map(float, x))))
         df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: json.dumps(list(map(int, x))))
         df['approxTimestamp'] = np.linspace(start_timestamp, end_timestamp, len(df), dtype=int)
+        # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
+        df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'approxTimestamp']]
         return df
 
     @staticmethod
     def format_token_data(data):
         df = pd.DataFrame(data, columns=['token_id', 'symbol', 'timestamp', 'open', 'high', 'low', 'close', 'volume'])
+        if len(df) == 0:
+            return df
         df['timestamp'] = (df['timestamp'] / 1000).astype(int)
         return df
     
     @staticmethod
     def format_swaps_data(data):
         df = pd.DataFrame([x for y in data for x in y])
+        if len(df) == 0:
+            return df
         for col in ['amountBought', 'amountSold']:
             df[col] = df[col].astype(float)
         for col in ['timestamp', 'block', 'gasLimit', 'gasUsed', 'isUnderlying']:
             df[col] = df[col].astype(int)
+        # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
+        df = df[['id', 'timestamp', 'tx', 'pool_id', 'amountBought', 'amountSold', 'tokenBought', 'tokenSold', 'buyer', 'gasLimit', 'gasUsed', 'isUnderlying', 'block_gte', 'block_lt', 'block']]
         return df
-
-    @staticmethod
+    
     def format_lp_data(data):
         df = pd.DataFrame([x for y in data for x in y])
+        if len(df) == 0:
+            return df
         for col in ['timestamp', 'block', 'removal']:
             df[col] = df[col].astype(int)
         df['totalSupply'] = df['totalSupply'].astype(float)
         df['tokenAmounts'] = df['tokenAmounts'].apply(lambda x: json.dumps(list(map(int, x))))
+        # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
+        df = df[['id', 'block', 'liquidityProvider', 'removal', 'timestamp', 'tokenAmounts', 'totalSupply', 'tx', 'pool_id', 'block_gte', 'block_lt']]
         return df
     
+    def get_token_metadata(self):
+        # NOTE: Select * is inefficient, change if necessary
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM tokens")
+        results = cursor.fetchall()
+        return {row["id"]: row for row in results}
+    
+    def get_pool_metadata(self):
+        # NOTE: Select * is inefficient, change if necessary
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM pools")
+        results = cursor.fetchall()
+        return {row["id"]: row for row in results}

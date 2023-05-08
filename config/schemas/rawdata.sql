@@ -1,7 +1,6 @@
 -- Storing pool metadata
 CREATE TABLE pools (
     id TEXT PRIMARY KEY,
-    poolName TEXT,
     assetType INTEGER,
     baseApr REAL,
     basePool TEXT,
@@ -32,7 +31,7 @@ CREATE TABLE tokens (
     id TEXT PRIMARY KEY,
     name TEXT,
     symbol TEXT,
-    decimals INTEGER,
+    decimals INTEGER
 );
 
 -- Storing token prices
@@ -45,8 +44,7 @@ CREATE TABLE token_ohlcv (
     high REAL,
     low REAL,
     close REAL,
-    volume REAL,
-    -- UNIQUE (token_id, symbol, timestamp)
+    volume REAL
 );
 
 -- Storing pool reserves
