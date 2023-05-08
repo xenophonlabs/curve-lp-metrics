@@ -66,6 +66,8 @@ def net_swap_flow(df, token_id, symbol, freq='1min'):
         flow['netSwapFlow'] : pd.Series
             net swap flow of the token in the pool
     """
+    if len(df) == 0:
+        return pd.Series([], name=f'{symbol}.netSwapFlow')
     df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
     swap_in = df[df['tokenBought']==token_id]['amountBought']
     swap_out = -1*df[df['tokenSold']==token_id]['amountSold']
@@ -76,6 +78,8 @@ def net_swap_flow(df, token_id, symbol, freq='1min'):
 
 def net_lp_flow(df, token_idx, symbol, freq='1min'):
     # TODO: Need to ensure we get zeroes between start and end time
+    if len(df) == 0:
+        return pd.Series([], name=f'{symbol}.netLPFlow')
     df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
     deposits = df[df['removal']==False]
     deposits = deposits['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx])
@@ -115,7 +119,9 @@ def metrics_for_token(token_id, datahandler, token_metadata):
     metrics_df = pd.concat(metrics, axis=1)
     metrics_df = metrics_df.fillna(0)
 
-    metrics_df.to_csv(f"./tmpdata/{token_metadata[token_id]['symbol']}.csv")
+    name = token_metadata[token_id]['symbol'].replace("/", "-")
+
+    metrics_df.to_csv(f"./tmpdata/{name}.csv")
 
     return metrics_df
 
@@ -138,6 +144,8 @@ def metrics_for_pool(pool, datahandler, pool_metadata, token_metadata, freq='1mi
     metrics_df = pd.concat(metrics, axis=1)
     metrics_df = metrics_df.fillna(0)
 
-    metrics_df.to_csv(f"./tmpdata/{pool_metadata[pool]['symbol']}.csv")
+    name = pool_metadata[pool]['symbol'].replace("/", "-")
+
+    metrics_df.to_csv(f"./tmpdata/{name}.csv")
 
     return metrics_df
