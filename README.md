@@ -31,7 +31,7 @@ Create a folder `database` with a single file `database.db`. This will be our SQ
 Then run the below command:
 
 ```
-python3 -m curvemetrics.create_raw_database
+python3 -m curvemetrics.create_database
 ```
 
 This will create all of our SQL tables and populate our meta tables (i.e. the `tokens`, `pools`, and `pool_tokens` junction table). You can verify they exist and query their data by doing the following:
@@ -62,6 +62,13 @@ find ./logs -type f -exec grep -L "Done :)" {} \;
 ```
 
 Which checks for our `Done :)` exit status.
+
+## Indexing
+To ensure we can read timeseries data quickly for each token and pool, we create indexes on each pool. To create these indexes, run:
+
+```
+nohup python3 -m curvemetrics.create_indexes > ./logs/index.log 2>&1 &
+```
 
 ## Resetting
 If there was an issue with the database, you can drop all the tables and vacuum the database by running:

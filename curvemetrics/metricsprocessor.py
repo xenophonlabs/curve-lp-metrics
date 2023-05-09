@@ -111,7 +111,7 @@ class MetricsProcessor:
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         swap_in = df[df['tokenBought']==token_id]['amountBought']
         swap_out = -1*df[df['tokenSold']==token_id]['amountSold']
-        flow = pd.merge(swap_in, swap_out, left_index=True, right_index=True, how='outer')
+        flow = pd.merge(swap_in, swap_out, left_index=True, right_index=True, how='outer').fillna(0)
         metric = (flow['amountBought'] + flow['amountSold']).resample(freq).sum()
         metric.name = f'{symbol}.netSwapFlow'
         return metric
@@ -128,7 +128,7 @@ class MetricsProcessor:
         withdraws = df[df['removal']==True]
         withdraws = withdraws['tokenAmounts'].apply(lambda x: -1*json.loads(x)[token_idx])
         withdraws.name = "withdraws"
-        flow = pd.merge(deposits, withdraws, left_index=True, right_index=True, how='outer')
+        flow = pd.merge(deposits, withdraws, left_index=True, right_index=True, how='outer').fillna(0)
         metric = (flow['deposits'] + flow['withdraws']).resample(freq).sum()
         metric.name = f'{symbol}.netLPFlow'
         return metric
@@ -147,6 +147,6 @@ class MetricsProcessor:
         @Returns
             
         """
-        metric = np.log(df['close']/df['close'].shift()).resample(freq).mean()
+        metric = np.log(df['close']/df['close'].shift()).resample(freq).sum()
         metric.name = f'{symbol}.logReturns'
         return metric

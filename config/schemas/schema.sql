@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS token_ohlcv (
     id INTEGER PRIMARY KEY,
     token_id TEXT REFERENCES tokens (id),
     symbol TEXT,
-    timestamp DATETIME,
+    timestamp DATETIME, -- inconsistent type...
     open REAL,
     high REAL,
     low REAL,
@@ -98,40 +98,40 @@ CREATE TABLE IF NOT EXISTS swaps (
 
 -- storing raw pool metrics
 CREATE TABLE IF NOT EXISTS pool_metrics (
-    PRIMARY KEY(pool_id, metric, timestamp),
     timestamp INTEGER,
     pool_id TEXT REFERENCES pools (id),
     metric TEXT,
-    value TEXT -- JSON TEXT, given that some metrics (e.g. token swap flow) have one val for each token in the pool ([x,y,z])
+    value TEXT, -- JSON TEXT, given that some metrics (e.g. token swap flow) have one val for each token in the pool ([x,y,z])
+    PRIMARY KEY (pool_id, metric, timestamp)
 );
 
 -- storing raw token metrics
 CREATE TABLE IF NOT EXISTS token_metrics (
-    PRIMARY KEY(token_id, metric, timestamp),
     timestamp INTEGER,
     token_id TEXT REFERENCES tokens (id),
     metric TEXT,
-    value REAL 
+    value REAL,
+    PRIMARY KEY (token_id, metric, timestamp)
 );
 
 -- storing windowed/aggregated pool metrics
 CREATE TABLE IF NOT EXISTS pool_aggregates (
-    PRIMARY KEY(pool_id, metric, type, window_size, timestamp),
     timestamp INTEGER,
     pool_id TEXT REFERENCES pools (id),
     metric TEXT,
     type TEXT,
     window_size TEXT,
-    value TEXT -- JSON TEXT, given that some metrics (e.g. token swap flow) have one val for each token in the pool ([x,y,z])
+    value TEXT, -- JSON TEXT, given that some metrics (e.g. token swap flow) have one val for each token in the pool ([x,y,z])
+    PRIMARY KEY (pool_id, metric, type, window_size, timestamp)
 );
 
 -- storing windowed/aggregated token metrics
 CREATE TABLE IF NOT EXISTS token_aggregates (
-    PRIMARY KEY(token_id, metric, type, window_size, timestamp),
     timestamp INTEGER,
     token_id TEST REFERENCES tokens (id),
     metric TEXT,
     type TEXT,
     window_size TEXT,
-    value REAL 
+    value REAL,
+    PRIMARY KEY (token_id, metric, type, window_size, timestamp)
 );

@@ -4,7 +4,7 @@ import json
 import numpy as np
 import os
 import logging
-from typing import Dict
+from typing import Dict, List
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
@@ -28,6 +28,19 @@ class SQLConnector():
         
         self.conn.executescript(create_tables_sql)
         self.logger.info("Tables created in the database.")
+    
+    def create_indexes(self):
+        cursor = self.conn.cursor()
+        cursor.execute(f"SELECT name FROM sqlite_master WHERE type='index';")
+        existing_indexes = cursor.fetchall()
+        if len(existing_indexes) != 0:
+            self.logger.info("Indexes already exist in the database: {}".format(existing_indexes))
+
+        with open(PATH+'../config/schemas/indexes.sql', 'r') as f:
+            create_indexes_sql = f.read()
+        
+        self.conn.executescript(create_indexes_sql)
+        self.logger.info("Indexes created in the database.")
 
     @staticmethod
     def dict_factory(cursor, row):
@@ -270,50 +283,78 @@ class RawDataHandler(SQLConnector):
         # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
         df = df[['id', 'block', 'liquidityProvider', 'removal', 'timestamp', 'tokenAmounts', 'totalSupply', 'tx', 'pool_id', 'block_gte', 'block_lt']]
         return df
+
+    def _execute_query(
+            self, 
+            table: str, 
+            pool_id: str=None,
+            token_id: str=None,
+            start: int=None,
+            end: int=None,
+            timecol: str='timestamp'
+        ) -> Dict:
+        cursor = self.conn.cursor()
+        
+        to_execute = f'SELECT * FROM {table}'
+        params = []
+
+        if pool_id or token_id:
+            to_execute += ' WHERE'
+            if pool_id:
+                to_execute += ' pool_id=?'
+                params.append(pool_id)
+            elif token_id:
+                to_execute += ' token_id=?'
+                params.append(token_id)
+            if start:
+                to_execute += f' AND {timecol} >= ?'
+                params.append(start)
+            if end:
+                to_execute += f' AND {timecol} <= ?'
+                params.append(end)
+            to_execute += f' ORDER BY {timecol} ASC'
+        
+        self.logger.info(f"Executing: {to_execute}...")
+
+        try:
+            cursor.execute(to_execute, params)
+            results = cursor.fetchall()
+        except sqlite3.Error as e:
+            raise sqlite3.Error(f'Error executing query: {e}')
+        finally:
+            cursor.close()
+
+        return results
     
     def get_token_metadata(self) -> Dict:
-        # NOTE: Select * is inefficient, change if necessary
-        cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM tokens")
-        results = cursor.fetchall()
+        results = self._execute_query("tokens")
         return {row["id"]: row for row in results}
     
     def get_pool_metadata(self) -> Dict:
-        # NOTE: Select * is inefficient, change if necessary
-        cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM pools")
-        results = cursor.fetchall()
+        results = self._execute_query("pools")
         metadata = {row["id"]: row for row in results}
         for data in metadata.values():
             data['coins'] = json.loads(data['coins'])
         return metadata
 
-    def get_pool_data(self, pool_id: str) -> pd.DataFrame:
-        cursor = self.conn.cursor()
-        cursor.execute(f'SELECT * FROM pool_data WHERE pool_id="{pool_id}"')
-        results = cursor.fetchall()
+    def get_pool_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
+        results = self._execute_query('pool_data', pool_id=pool_id, start=start, end=end, timecol='approxTimestamp')
         df = pd.DataFrame.from_dict(results)
         df['inputTokenWeights'] = df['inputTokenWeights'].apply(json.loads)
+        df['inputTokenBalances'] = df['inputTokenBalances'].apply(json.loads)
         df = df.set_index(pd.to_datetime(df['approxTimestamp'], unit='s'))
-        df = df.sort_index()
         return df
     
-    def get_swaps_data(self, pool_id: str) -> pd.DataFrame:
-        cursor = self.conn.cursor()
-        cursor.execute(f'SELECT * FROM swaps WHERE pool_id="{pool_id}"')
-        results = cursor.fetchall()
+    def get_swaps_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
+        results = self._execute_query('swaps', pool_id=pool_id, start=start, end=end)
         return pd.DataFrame.from_dict(results)
     
-    def get_lp_data(self, pool_id: str) -> pd.DataFrame:
-        cursor = self.conn.cursor()
-        cursor.execute(f'SELECT * FROM lp_events WHERE pool_id="{pool_id}"')
-        results = cursor.fetchall()
+    def get_lp_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
+        results = self._execute_query('lp_events', pool_id=pool_id, start=start, end=end)
         return pd.DataFrame.from_dict(results)
-
-    def get_ohlcv_data(self, token_id: str) -> pd.DataFrame:
-        cursor = self.conn.cursor()
-        cursor.execute(f'SELECT * FROM token_ohlcv WHERE token_id="{token_id}"')
-        results = cursor.fetchall()
+    
+    def get_ohlcv_data(self, token_id: str, start: int=None, end: int=None) -> pd.DataFrame:
+        results = self._execute_query('token_ohlcv', token_id=token_id, start=start, end=end)
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.sort_index()
