@@ -15,9 +15,18 @@
         "0x971add32ea87f10bd192671630be3be8a11b8623"
     ],
     "token_exchange_map" : {
-        "USDC" : "binanceus",
-        "MIM" : "bitfinex2",
-        "UST" : "coinbasepro",
-        "cbETH" : "coinbasepro"
+        "USDC" : ["ccxt", "binanceus"],
+        "MIM" : ["ccxt", "bitfinex2"],
+        "UST" : ["ccxt", "coinbasepro"],
+        "cbETH" : ["ccxt", "coinbasepro"],
+        "ETH" : ["ccxt", "binanceus"],
+        "USDT" : ["ccxt", "binanceus"],
+        "CRV" : ["ccxt", "binanceus"],
+        "DAI" : ["ccxt", "binanceus"],
+        "FRAX" : ["chainlink", "0xB9E1E3A9feFf48998E45Fa90847ed4D467E8BcfD"],
+        "BUSD" : ["chainlink", "0x833D8Eb16D306ed1FbB5D7A2E019e106B960965A"],
+        "LUSD" : ["chainlink", "0x3D7aE7E594f2f2091Ad8798313450130d0Aba3a0"],
+        "sUSD" : ["chainlink", "0xad35Bd71b9aFE6e4bDc266B345c198eaDEf9Ad94"],
+        "stETH" : ["chainlink", "0xCfE54B5cD566aB89272946F602D76Ea879CAb4a8"]
     }
 } 

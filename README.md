@@ -9,7 +9,7 @@ Create a folder `database` with a single file `rawdata.db`. This will be our SQL
 Then run the below command:
 
 ```
-python3 curvemetrics.create_raw_database
+python3 -m curvemetrics.create_raw_database
 ```
 
 This will create all of our SQL tables and populate our meta tables (i.e. the `tokens`, `pools`, and `pool_tokens` junction table). You can verify they exist and query their data by doing the following:
@@ -38,3 +38,10 @@ find ./logs -type f -exec grep -L "Done :)" {} \;
 ```
 
 Which checks for our `Done :)` exit status.
+
+## Resetting
+If there was an issue with the database, you can drop all the tables and vacuum the database by running:
+
+```
+python3 -m curvemetrics.reset
+```

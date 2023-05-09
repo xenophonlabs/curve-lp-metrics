@@ -86,6 +86,17 @@ pool_query = (
     }}"""
 )
 
+virtual_price_query = (
+    lambda **kwargs: f"""
+    {{ pool(
+        id: "{kwargs['pool_id']}"
+        block: {{number: {kwargs['block']}}}
+    ) {{
+        virtualPrice
+        }}
+    }}"""
+)
+
 queries = {
     'swapEvents' : swaps_query,
     'liquidityEvents' : liquidity_query,

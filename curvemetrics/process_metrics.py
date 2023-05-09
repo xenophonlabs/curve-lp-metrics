@@ -1,4 +1,4 @@
-from .datafetcher import DataFetcher
+from .metricsprocessor import MetricsProcessor
 from .datahandler import RawDataHandler
 from datetime import datetime
 import argparse
@@ -14,54 +14,50 @@ def load_config():
         config = json.load(config_file)
     return config
 
-async def main(start: str, end: str):
+def main(start: str, end: str):
 
-    print(f"\n[{datetime.now()}] Starting backfilling process.\n")
-
-    start, end = datetime.fromisoformat(start), datetime.fromisoformat(end)
-    start_ts, start_block = DataFetcher.get_block(start)
-    end_ts, end_block = DataFetcher.get_block(end)
+    print(f"\n[{datetime.now()}] Processing metrics...\n")
 
     datahandler = RawDataHandler()
     token_metadata = datahandler.get_token_metadata()
     pool_metadata = datahandler.get_pool_metadata()
 
-    datafetcher = DataFetcher(token_metadata=token_metadata)
+    metricsprocessor = MetricsProcessor(pool_metadata, token_metadata)
 
     config = load_config()
 
-    # TODO: Should the try statement be pool specific? Or will this obfuscate which pools were properly filled?
-    try:
-        # Fetch and insert pool data
-        for pool in pool_metadata.keys():
+    print(f"\n[{datetime.now()}] Processing pool metrics.\n")
 
-            print(f"[{datetime.now()}] Backfilling pool {pool_metadata[pool]['name']}.")
+    # Fetch and insert pool data
+    for pool in pool_metadata.keys():
 
-            if pool_metadata[pool]['creationDate'] < start_ts:
-                pool_start_ts, pool_start_block = start_ts, start_block
-            elif start_ts < pool_metadata[pool]['creationDate'] < start_ts:
-                pool_start_ts, pool_start_block = pool_metadata[pool]['creationDate'], pool_metadata[pool]['creationBlock']
-            else:
-                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...")
-                continue
+        print(f"[{datetime.now()}] Processing pool {pool_metadata[pool]['name']}.")
 
-            print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
-            print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
+        if pool_metadata[pool]['creationDate'] < start_ts:
+            pool_start_ts, pool_start_block = start_ts, start_block
+        elif start_ts < pool_metadata[pool]['creationDate'] < start_ts:
+            pool_start_ts, pool_start_block = pool_metadata[pool]['creationDate'], pool_metadata[pool]['creationBlock']
+        else:
+            print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...")
+            continue
 
-            pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
-            datahandler.insert_pool_data(pool_data, start_ts, end_ts)
+        print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
+        print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
 
-            print(f"[{datetime.now()}] Finished reserve data...")
+        pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
+        datahandler.insert_pool_data(pool_data, start_ts, end_ts)
 
-            swaps_data = datafetcher.get_swaps_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
-            datahandler.insert_swaps_data(swaps_data)
+        print(f"[{datetime.now()}] Finished reserve data...")
 
-            print(f"[{datetime.now()}] Finished swap data...")
-            
-            lp_data = datafetcher.get_lp_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
-            datahandler.insert_lp_data(lp_data)
+        swaps_data = datafetcher.get_swaps_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
+        datahandler.insert_swaps_data(swaps_data)
 
-            print(f"[{datetime.now()}] Finished lp event data...\n")
+        print(f"[{datetime.now()}] Finished swap data...")
+        
+        lp_data = datafetcher.get_lp_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
+        datahandler.insert_lp_data(lp_data)
+
+        print(f"[{datetime.now()}] Finished lp event data...\n")
 
         # Fetch and insert token data
         for token in token_metadata.keys():
@@ -80,14 +76,6 @@ async def main(start: str, end: str):
                 if end_ts > 1653667380:
                     token_end_ts = 1653667380
                     print(f"[{datetime.now()}] UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to {datetime.fromtimestamp(end_ts)}.")
-                
-            elif token_metadata[token]['symbol'] == "cbETH":
-                if token_start_ts < 1661444040 < token_end_ts:
-                    print(f"[{datetime.now()}] cbETH only indexed from 1661444040 (2022 12:14:00 PM GMT-04:00 DST). Setting start ts to 1661444040.")
-                    token_start_ts = 1661444040
-                elif token_end_ts < 1661444040:
-                    print(f"[{datetime.now()}] cbETH only indexed from 1661444040 (2022 12:14:00 PM GMT-04:00 DST). Skipping...")
-                    continue
 
             api, source = config['token_exchange_map'][token_metadata[token]['symbol']]
             print(f"[{datetime.now()}] Backfilling token {token_metadata[token]['symbol']} OHLCV using {api}.")

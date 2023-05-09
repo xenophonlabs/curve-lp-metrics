@@ -45,7 +45,8 @@ CREATE TABLE token_ohlcv (
     high REAL,
     low REAL,
     close REAL,
-    volume REAL
+    volume REAL,
+    UNIQUE (token_id, timestamp)
 );
 
 -- Storing pool reserves

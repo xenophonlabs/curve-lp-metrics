@@ -25,9 +25,12 @@ while [ $current_sec -lt $end_sec ]; do
   current_date=$(date -d "@$current_sec" "+%Y-%m-%d %H:%M:%S")
   next_date=$(date -d "@$next_sec" "+%Y-%m-%d %H:%M:%S")
 
+  log_sec=$((current_sec + overlap_sec))
+  log_sec=$(date -d "$(date -d "@$log_sec" "+%Y-%m-%d") 00:00:00" +%s)
+
   # Execute the Python script for the current batch
   echo "[`date "+%Y-%m-%d %H:%M:%S"`] Running task for $current_date to $next_date"
-  python3 -u -m curvemetrics.backfill_raw_data "$current_date" "$next_date" > "./logs/backfill_$(date -d "@$current_sec" "+%Y-%m-%d").log" 2>&1
+  python3 -u -m curvemetrics.backfill_raw_data "$current_date" "$next_date" > "./logs/backfill_$(date -d "@$log_sec" "+%Y-%m-%d").log" 2>&1
   echo "[`date "+%Y-%m-%d %H:%M:%S"`] Task completed for $current_date to $next_date"
 
   # Move to the next batch, subtracting the 5-minute overlap

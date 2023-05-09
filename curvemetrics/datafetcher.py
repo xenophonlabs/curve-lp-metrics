@@ -11,10 +11,12 @@ from typing import Any, List, Tuple, Callable, Dict, Union
 from .queries import queries
 from web3 import Web3
 from dotenv import load_dotenv
+from tenacity import retry, stop_after_attempt, after_log
 
 load_dotenv()
 nest_asyncio.apply()
 
+RETRY_AMOUNTS = 3
 CURVE_SUBGRAPH_URL_CVX = 'https://api.thegraph.com/subgraphs/name/convex-community/curve-mainnet'
 CURVE_SUBGRAPH_URL_MESSARI = 'https://api.thegraph.com/subgraphs/name/messari/curve-finance-ethereum'
 LLAMA_BLOCK_GETTER = 'https://coins.llama.fi/block/ethereum/'
@@ -208,6 +210,7 @@ class DataFetcher():
         data = asyncio.run(self.execute_queries_async(start_block, end_block, query, key, url, step_size, full, pool_id=pool_id))
         return data
 
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_pool_data(
         self,
         start_block,
@@ -220,6 +223,7 @@ class DataFetcher():
         """
         return self.execute_queries(start_block, end_block, pool_id, 'messari', 'liquidityPool', step_size, False)
     
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_swaps_data(
         self,
         start_block,
@@ -232,6 +236,7 @@ class DataFetcher():
         """
         return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'swapEvents', step_size, True)
     
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_lp_data(
         self,
         start_block,
@@ -250,7 +255,8 @@ class DataFetcher():
         end_timestamp: int,
         symbol: str,
         limit: int,
-        timeframe: str
+        timeframe: str,
+        default_exchange: str='' # Default exchange to use
     ) -> Any:
         """
         Fetch OHLCV data for the given symbol, limit, and timeframe asynchronously.
@@ -266,7 +272,11 @@ class DataFetcher():
         since = start_timestamp * 1000
         data = []
 
-        for exchange_id in self.exchanges:
+        exchanges = self.exchanges
+        if default_exchange != '':
+            exchanges = [default_exchange] + [e for e in self.exchanges if e != default_exchange]
+
+        for exchange_id in exchanges:
             exchange = getattr(ccxt, exchange_id)()
             # add API key and secrets if specified in .env
             if exchange_id in API_KEYS.keys():
@@ -288,19 +298,21 @@ class DataFetcher():
 
         raise Exception(f"Couldn't fetch OHLCV for {symbol} from any of {self.exchanges}.")
 
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_ohlcv(
         self,
         start_timestamp: int,
         end_timestamp: int,
         token: str,
         limit: int = 1000,
-        timeframe: str = '1m'
+        timeframe: str = '1m',
+        default_exchange: str='' # Default exchange to use
     ) -> Any:
         """
         Wrapper for get_ohlcv_async().
         """
         symbol = self.get_symbol_for_token(token)
-        data = asyncio.run(self.get_ohlcv_async(start_timestamp, end_timestamp, symbol, limit, timeframe))
+        data = asyncio.run(self.get_ohlcv_async(start_timestamp, end_timestamp, symbol, limit, timeframe, default_exchange=default_exchange))
         data = [[token, symbol] + sublist for sublist in data]
         return data
 
@@ -310,7 +322,63 @@ class DataFetcher():
         symbol = self.token_metadata[token]['symbol']
         return f'{symbol}/USD'.upper()
 
-    ### Helper methods
+    def search_rounds(self, contract, desired_timestamp, first_round=18446744073709551617):
+        # Binary search for the round corresponding to the closest timestamp
+        latest_round = contract.functions.latestRoundData().call()[0]
+
+        assert latest_round >> 64 == 1, "Binary search only works for 1 underlying aggregator. TODO: Implement for multiple aggregators. https://docs.chain.link/data-feeds/historical-data"
+
+        left = first_round
+        right = latest_round
+
+        closest_round = -1
+        closest_diff = float('inf')
+        count = 0
+
+        while left <= right:
+            count += 1
+            mid = (left + right) // 2
+            round_data = contract.functions.getRoundData(mid).call()
+            round_timestamp = round_data[3]
+
+            diff = desired_timestamp - round_timestamp
+            if 0 < diff < closest_diff:
+                closest_round = mid
+                closest_diff = diff
+                closest_timestamp = round_timestamp
+            if round_timestamp < desired_timestamp:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        if closest_round != -1:
+            self.logger.info(f"Found the closest round: {closest_round}, at {datetime.fromtimestamp(closest_timestamp)}.")
+        else:
+            self.logger.error("No round found.")
+
+        self.logger.info(f"Number of iterations: {count}")
+
+        return closest_round
+    
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    def get_chainlink_prices(self, token, chainlink_address, start_timestamp, end_timestamp):
+        chainlink_address = Web3.to_checksum_address(chainlink_address)
+        abi = abi = '[{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"description","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint80","name":"_roundId","type":"uint80"}],"name":"getRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"latestRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]'
+        client = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{INFURA_KEY}"))
+        contract = client.eth.contract(address=chainlink_address, abi=abi)
+        symbol = contract.functions.description().call().replace(" ", "")
+        roundnr = self.search_rounds(contract, start_timestamp)
+        decimals = contract.functions.decimals().call()
+        current_timestamp = 0
+        data = []
+        while True:
+            round_data = contract.functions.getRoundData(roundnr).call()
+            data.append([token, symbol, round_data[2]*1000, None, None, None, round_data[1]/10**decimals, None])
+            current_timestamp = round_data[3]
+            if current_timestamp > end_timestamp:
+                break
+            roundnr += 1
+        return data
 
     @staticmethod
     def get_block(datetime_: Union[int, datetime]) -> Tuple[int, int]:

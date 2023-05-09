@@ -8,19 +8,14 @@ from typing import Dict
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
-class RawDataHandler:
-
-    """
-    Formats raw data and inserts it into the rawadata.db database.
-    """
-
-    def __init__(self, db_name=PATH+'../database/rawdata.db'):
+class SQLConnector():
+    def __init__(self, db_name):
         self.conn = sqlite3.connect(db_name)
-        self.conn.row_factory = RawDataHandler.dict_factory
+        self.conn.row_factory = self.dict_factory
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(logging.StreamHandler())
-    
+
     @staticmethod
     def dict_factory(cursor, row):
         return {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
@@ -28,6 +23,15 @@ class RawDataHandler:
     def close(self):
         self.conn.close()
 
+class RawDataHandler(SQLConnector):
+
+    """
+    Formats raw data and inserts it into the rawadata.db database.
+    """
+
+    def __init__(self, db_name=PATH+'../database/rawdata.db'):
+        super().__init__(db_name)
+    
     def create_tables(self):
         cursor = self.conn.cursor()
         cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
@@ -41,6 +45,29 @@ class RawDataHandler:
             create_tables_sql = f.read()
         
         self.conn.executescript(create_tables_sql)
+    
+    def reset(self):
+        self.logger.warning(f"WARNING: DROPPING ALL TABLES...")
+        cursor = self.conn.cursor()
+
+        # get the list of all tables
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = cursor.fetchall()
+
+        # delete each table
+        for table in tables:
+            table_name = table['name']
+            try:
+                cursor.execute(f"DROP TABLE IF EXISTS {table_name};")
+                self.logger.warning(f"Dropped table {table_name}")
+            except sqlite3.Error as e:
+                self.logger.warning(f"An error occurred: {e.args}")
+
+        cursor.execute("VACUUM;")
+
+        # commit the transaction and close the cursor
+        self.conn.commit()
+        cursor.close()
 
     def insert_pool_metadata(self, data):
         df = RawDataHandler.format_pool_metadata(data)
@@ -292,3 +319,10 @@ class RawDataHandler:
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.sort_index()
         return df
+
+class MetricsDataHandler(SQLConnector):
+
+    def __init__(self, db_name=PATH+'../database/metrics.db'):
+        super().__init__(db_name)
+
+    
