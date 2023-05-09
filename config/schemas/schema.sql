@@ -1,5 +1,6 @@
+-- TODO: I think the "id" column is useless for tables that have UNIQUE(...) columns
 -- Storing pool metadata
-CREATE TABLE pools (
+CREATE TABLE IF NOT EXISTS pools (
     id TEXT PRIMARY KEY,
     assetType INTEGER,
     baseApr REAL,
@@ -21,14 +22,14 @@ CREATE TABLE pools (
 );
 
 -- Storing pool <-> token one-to-many relationship. Ignore this table for now
-CREATE TABLE pool_tokens (
+CREATE TABLE IF NOT EXISTS pool_tokens (
     pool_id TEXT REFERENCES pools (id),
     token_id TEXT REFERENCES tokens (id),
     PRIMARY KEY (pool_id, token_id)
 );
 
 -- Storing token metadata
-CREATE TABLE tokens (
+CREATE TABLE IF NOT EXISTS tokens (
     id TEXT PRIMARY KEY,
     name TEXT,
     symbol TEXT,
@@ -36,7 +37,7 @@ CREATE TABLE tokens (
 );
 
 -- Storing token prices
-CREATE TABLE token_ohlcv (
+CREATE TABLE IF NOT EXISTS token_ohlcv (
     id INTEGER PRIMARY KEY,
     token_id TEXT REFERENCES tokens (id),
     symbol TEXT,
@@ -50,7 +51,7 @@ CREATE TABLE token_ohlcv (
 );
 
 -- Storing pool reserves
-CREATE TABLE pool_data (
+CREATE TABLE IF NOT EXISTS pool_data (
     id INTEGER PRIMARY KEY,
     pool_id TEXT REFERENCES pools (id),
     block INTEGER,
@@ -62,7 +63,7 @@ CREATE TABLE pool_data (
 );
 
 -- Storing lp events NOTE: we could avoid json TEXT repr for tokenAmounts by storing as a separate table
-CREATE TABLE lp_events (
+CREATE TABLE IF NOT EXISTS lp_events (
     id TEXT PRIMARY KEY,
     block INTEGER,
     liquidityProvider TEXT,
@@ -77,7 +78,7 @@ CREATE TABLE lp_events (
 );
 
 -- Storing swaps
-CREATE TABLE swaps (
+CREATE TABLE IF NOT EXISTS swaps (
     id TEXT PRIMARY KEY,
     timestamp INTEGER,
     tx TEXT,
@@ -93,4 +94,44 @@ CREATE TABLE swaps (
     block_gte INTEGER,
     block_lt INTEGER,
     block INTEGER
+);
+
+-- storing raw pool metrics
+CREATE TABLE IF NOT EXISTS pool_metrics (
+    PRIMARY KEY(pool_id, metric, timestamp),
+    timestamp INTEGER,
+    pool_id TEXT REFERENCES pools (id),
+    metric TEXT,
+    value TEXT -- JSON TEXT, given that some metrics (e.g. token swap flow) have one val for each token in the pool ([x,y,z])
+);
+
+-- storing raw token metrics
+CREATE TABLE IF NOT EXISTS token_metrics (
+    PRIMARY KEY(token_id, metric, timestamp),
+    timestamp INTEGER,
+    token_id TEXT REFERENCES tokens (id),
+    metric TEXT,
+    value REAL 
+);
+
+-- storing windowed/aggregated pool metrics
+CREATE TABLE IF NOT EXISTS pool_aggregates (
+    PRIMARY KEY(pool_id, metric, type, window_size, timestamp),
+    timestamp INTEGER,
+    pool_id TEXT REFERENCES pools (id),
+    metric TEXT,
+    type TEXT,
+    window_size TEXT,
+    value TEXT -- JSON TEXT, given that some metrics (e.g. token swap flow) have one val for each token in the pool ([x,y,z])
+);
+
+-- storing windowed/aggregated token metrics
+CREATE TABLE IF NOT EXISTS token_aggregates (
+    PRIMARY KEY(token_id, metric, type, window_size, timestamp),
+    timestamp INTEGER,
+    token_id TEST REFERENCES tokens (id),
+    metric TEXT,
+    type TEXT,
+    window_size TEXT,
+    value REAL 
 );

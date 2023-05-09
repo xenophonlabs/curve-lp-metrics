@@ -16,6 +16,19 @@ class SQLConnector():
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(logging.StreamHandler())
 
+    def create_tables(self):
+        cursor = self.conn.cursor()
+        cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
+        existing_tables = cursor.fetchall()
+        if len(existing_tables) != 0:
+            self.logger.info("Tables already exist in the database: {}".format(existing_tables))
+
+        with open(PATH+'../config/schemas/schema.sql', 'r') as f:
+            create_tables_sql = f.read()
+        
+        self.conn.executescript(create_tables_sql)
+        self.logger.info("Tables created in the database.")
+
     @staticmethod
     def dict_factory(cursor, row):
         return {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
@@ -29,22 +42,8 @@ class RawDataHandler(SQLConnector):
     Formats raw data and inserts it into the rawadata.db database.
     """
 
-    def __init__(self, db_name=PATH+'../database/rawdata.db'):
+    def __init__(self, db_name=PATH+'../database/database.db'):
         super().__init__(db_name)
-    
-    def create_tables(self):
-        cursor = self.conn.cursor()
-        cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
-        result = cursor.fetchone()
-
-        if result:
-            self.logger.info("Tables already exist in the database")
-            return
-
-        with open(PATH+'../config/schemas/rawdata.sql', 'r') as f:
-            create_tables_sql = f.read()
-        
-        self.conn.executescript(create_tables_sql)
     
     def reset(self):
         self.logger.warning(f"WARNING: DROPPING ALL TABLES...")
@@ -322,7 +321,7 @@ class RawDataHandler(SQLConnector):
 
 class MetricsDataHandler(SQLConnector):
 
-    def __init__(self, db_name=PATH+'../database/metrics.db'):
+    def __init__(self, db_name=PATH+'../database/database.db'):
         super().__init__(db_name)
 
     

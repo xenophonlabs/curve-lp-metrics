@@ -64,6 +64,7 @@ class DataFetcher():
         await self.session.close()
 
     @staticmethod
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_pool_metadata(pool_id, datetime_):
         url = DataFetcher.get_url('cvx')
         _, block = DataFetcher.get_block(datetime_)
@@ -81,6 +82,7 @@ class DataFetcher():
         return data
 
     @staticmethod
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_token_metadata(token, client, erc20_abi):
         if token == '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee':
             # Dummy for ETH since not erc20
@@ -381,6 +383,7 @@ class DataFetcher():
         return data
 
     @staticmethod
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_block(datetime_: Union[int, datetime]) -> Tuple[int, int]:
         """
         Get the block number corresponding to a given timestamp.
