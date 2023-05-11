@@ -1,10 +1,10 @@
-from .datahandler import RawDataHandler
+from .datahandler import DataHandler
 import os
 import json
 
 def main():
 
-    datahandler = RawDataHandler()
+    datahandler = DataHandler()
 
     try:
         datahandler.create_indexes()

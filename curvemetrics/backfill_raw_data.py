@@ -1,5 +1,5 @@
 from .datafetcher import DataFetcher
-from .datahandler import RawDataHandler
+from .datahandler import DataHandler
 from datetime import datetime
 import argparse
 import asyncio
@@ -22,7 +22,7 @@ async def main(start: str, end: str):
     start_ts, start_block = DataFetcher.get_block(start)
     end_ts, end_block = DataFetcher.get_block(end)
 
-    datahandler = RawDataHandler()
+    datahandler = DataHandler()
     token_metadata = datahandler.get_token_metadata()
     pool_metadata = datahandler.get_pool_metadata()
 

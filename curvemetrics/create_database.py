@@ -1,5 +1,5 @@
 from .datafetcher import DataFetcher
-from .datahandler import RawDataHandler
+from .datahandler import DataHandler
 import os
 import json
 
@@ -17,7 +17,7 @@ def main():
     pool_metadata = DataFetcher.get_pools_metadata(supported_pools)
     token_metadata = DataFetcher.get_tokens_metadata(pool_metadata)
 
-    datahandler = RawDataHandler()
+    datahandler = DataHandler()
 
     try:
         datahandler.create_tables()

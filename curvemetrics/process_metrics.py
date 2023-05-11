@@ -1,5 +1,5 @@
 from .metricsprocessor import MetricsProcessor
-from .datahandler import RawDataHandler
+from .datahandler import DataHandler
 from datetime import datetime
 import argparse
 import asyncio
@@ -18,9 +18,12 @@ def main(start: str, end: str):
 
     print(f"\n[{datetime.now()}] Processing metrics...\n")
 
-    datahandler = RawDataHandler()
+    datahandler = DataHandler()
     token_metadata = datahandler.get_token_metadata()
     pool_metadata = datahandler.get_pool_metadata()
+
+    start, end = datetime.fromisoformat(start), datetime.fromisoformat(end)
+    start_ts, end_ts = datetime.timestamp(start), datetime.timestamp(end)
 
     metricsprocessor = MetricsProcessor(pool_metadata, token_metadata)
 
@@ -28,46 +31,42 @@ def main(start: str, end: str):
 
     print(f"\n[{datetime.now()}] Processing pool metrics.\n")
 
-    # Fetch and insert pool data
-    for pool in pool_metadata.keys():
+    try:
+        # Fetch and insert pool data
+        for pool in pool_metadata.keys():
 
-        print(f"[{datetime.now()}] Processing pool {pool_metadata[pool]['name']}.")
+            print(f"[{datetime.now()}] Processing pool {pool_metadata[pool]['name']}.")
 
-        if pool_metadata[pool]['creationDate'] < start_ts:
-            pool_start_ts, pool_start_block = start_ts, start_block
-        elif start_ts < pool_metadata[pool]['creationDate'] < start_ts:
-            pool_start_ts, pool_start_block = pool_metadata[pool]['creationDate'], pool_metadata[pool]['creationBlock']
-        else:
-            print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...")
-            continue
+            if pool_metadata[pool]['creationDate'] < start_ts:
+                pool_start_ts = start_ts
+            elif start_ts < pool_metadata[pool]['creationDate'] < start_ts:
+                pool_start_ts = pool_metadata[pool]['creationDate']
+            else:
+                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...")
+                continue
 
-        print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
-        print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
+            print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
+            print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
 
-        pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
-        datahandler.insert_pool_data(pool_data, start_ts, end_ts)
+            pool_data = datahandler.get_pool_data(pool, pool_start_ts, end_ts)
+            swaps_data = datahandler.get_swaps_data(pool, pool_start_ts, end_ts)
+            lp_data = datahandler.get_lp_data(pool, pool_start_ts, end_ts)
 
-        print(f"[{datetime.now()}] Finished reserve data...")
+            pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data)
+            # datahandler.insert
 
-        swaps_data = datafetcher.get_swaps_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
-        datahandler.insert_swaps_data(swaps_data)
-
-        print(f"[{datetime.now()}] Finished swap data...")
-        
-        lp_data = datafetcher.get_lp_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
-        datahandler.insert_lp_data(lp_data)
-
-        print(f"[{datetime.now()}] Finished lp event data...\n")
+            print(f"[{datetime.now()}] Finished processing pool {pool_metadata[pool]['name']}.\n")
 
         # Fetch and insert token data
         for token in token_metadata.keys():
 
             token_start_ts, token_end_ts = start_ts, end_ts # TODO: Check when token was created
+            token_ohlcv = datahandler.get_ohlcv_data(ust, start, end)
 
             if token_metadata[token]['symbol'] == "WETH":
                 print(f"[{datetime.now()}] {token_metadata[token]['symbol']} assumed to be = ETH. Skipping...\n")
                 continue
-
+    
             elif token_metadata[token]['symbol'] in ["3Crv", "frxETH", "cvxCRV", "USDN"]:
                 print(f"[{datetime.now()}] TODO: Add support for {token_metadata[token]['symbol']}. Skipping...\n")
                 continue
@@ -94,7 +93,6 @@ def main(start: str, end: str):
     
     finally:
         datahandler.close()
-        await datafetcher.close()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Backfill pool and token data in SQL table.')

@@ -1,5 +1,5 @@
-from .datahandler import RawDataHandler
+from .datahandler import DataHandler
 
 if __name__ == "__main__":
-    datahandler = RawDataHandler()
+    datahandler = DataHandler()
     datahandler.reset()

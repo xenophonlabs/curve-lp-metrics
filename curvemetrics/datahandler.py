@@ -8,8 +8,13 @@ from typing import Dict, List
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
-class SQLConnector():
-    def __init__(self, db_name):
+class DataHandler():
+
+    """
+    Formats raw data and inserts it into the rawadata.db database.
+    """
+
+    def __init__(self, db_name=PATH+'../database/database.db'):
         self.conn = sqlite3.connect(db_name)
         self.conn.row_factory = self.dict_factory
         self.logger = logging.getLogger(__name__)
@@ -48,15 +53,6 @@ class SQLConnector():
 
     def close(self):
         self.conn.close()
-
-class RawDataHandler(SQLConnector):
-
-    """
-    Formats raw data and inserts it into the rawadata.db database.
-    """
-
-    def __init__(self, db_name=PATH+'../database/database.db'):
-        super().__init__(db_name)
     
     def reset(self):
         self.logger.warning(f"WARNING: DROPPING ALL TABLES...")
@@ -82,22 +78,22 @@ class RawDataHandler(SQLConnector):
         cursor.close()
 
     def insert_pool_metadata(self, data):
-        df = RawDataHandler.format_pool_metadata(data)
+        df = DataHandler.format_pool_metadata(data)
         df.to_sql("pools", self.conn, if_exists="replace", index=False)
         self.conn.commit()
 
     def insert_token_metadata(self, data):
-        df = RawDataHandler.format_token_metadata(data)
+        df = DataHandler.format_token_metadata(data)
         df.to_sql("tokens", self.conn, if_exists="replace", index=False)
         self.conn.commit()
     
     def insert_pool_tokens_metadata(self, data):
-        df = RawDataHandler.format_pool_tokens_metadata(data)
+        df = DataHandler.format_pool_tokens_metadata(data)
         df.to_sql("pool_tokens", self.conn, if_exists="replace", index=False)
         self.conn.commit()
 
     def insert_pool_data(self, data, start_timestamp, end_timestamp):
-        df = RawDataHandler.format_pool_data(data, start_timestamp, end_timestamp)
+        df = DataHandler.format_pool_data(data, start_timestamp, end_timestamp)
 
         if len(df) == 0:
             return
@@ -121,7 +117,7 @@ class RawDataHandler(SQLConnector):
         self.conn.commit()
 
     def insert_token_data(self, data):
-        df = RawDataHandler.format_token_data(data)
+        df = DataHandler.format_token_data(data)
 
         if len(df) == 0:
             return
@@ -147,7 +143,7 @@ class RawDataHandler(SQLConnector):
         self.conn.commit()
 
     def insert_swaps_data(self, data):
-        df = RawDataHandler.format_swaps_data(data)
+        df = DataHandler.format_swaps_data(data)
 
         if len(df) == 0:
             return
@@ -182,7 +178,7 @@ class RawDataHandler(SQLConnector):
     
     def insert_lp_data(self, data):
         # Convert JSON data to a pandas DataFrame
-        df = RawDataHandler.format_lp_data(data)
+        df = DataHandler.format_lp_data(data)
 
         if len(df) == 0:
             return
@@ -212,6 +208,18 @@ class RawDataHandler(SQLConnector):
         df.apply(insert_lp_row, axis=1)
         # Commit the changes
         self.conn.commit()
+    
+    def insert_pool_metrics(self, data):
+        pass
+
+    def insert_pool_aggregate_metrics(self, data):
+        pass
+
+    def insert_token_metrics(self, data):
+        pass
+
+    def insert_token_aggregate_metrics(self, data):
+        pass
 
     @staticmethod
     def format_pool_metadata(data):
@@ -246,6 +254,7 @@ class RawDataHandler(SQLConnector):
             df[col] = df[col].astype(int)
         df['inputTokenWeights'] = df['inputTokenWeights'].apply(lambda x: json.dumps(list(map(float, x))))
         df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: json.dumps(list(map(int, x))))
+        df = df.sort_values(by='block', ascending=True)
         df['approxTimestamp'] = np.linspace(start_timestamp, end_timestamp, len(df), dtype=int)
         # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
         df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'approxTimestamp']]
@@ -272,6 +281,7 @@ class RawDataHandler(SQLConnector):
         df = df[['id', 'timestamp', 'tx', 'pool_id', 'amountBought', 'amountSold', 'tokenBought', 'tokenSold', 'buyer', 'gasLimit', 'gasUsed', 'isUnderlying', 'block_gte', 'block_lt', 'block']]
         return df
     
+    @staticmethod
     def format_lp_data(data):
         df = pd.DataFrame([x for y in data for x in y])
         if len(df) == 0:
@@ -283,6 +293,22 @@ class RawDataHandler(SQLConnector):
         # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
         df = df[['id', 'block', 'liquidityProvider', 'removal', 'timestamp', 'tokenAmounts', 'totalSupply', 'tx', 'pool_id', 'block_gte', 'block_lt']]
         return df
+    
+    @staticmethod
+    def format_pool_metrics(data):
+        pass
+
+    @staticmethod
+    def format_pool_aggregate_metrics(data):
+        pass
+
+    @staticmethod
+    def format_token_metrics(data):
+        pass
+
+    @staticmethod
+    def format_token_aggregate_metrics(data):
+        pass
 
     def _execute_query(
             self, 
@@ -359,10 +385,5 @@ class RawDataHandler(SQLConnector):
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.sort_index()
         return df
-
-class MetricsDataHandler(SQLConnector):
-
-    def __init__(self, db_name=PATH+'../database/database.db'):
-        super().__init__(db_name)
 
     

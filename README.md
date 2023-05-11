@@ -58,7 +58,7 @@ This backfills raw data (reserves, swaps, lp events) from January to May 2023, b
 You can verify if the job failed for any date with:
 
 ```
-find ./logs -type f -exec grep -L "Done :)" {} \;
+find ./logs -type f -exec grep -L "Done :)" {} \; | sort
 ```
 
 Which checks for our `Done :)` exit status.

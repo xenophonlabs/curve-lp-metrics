@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS pool_metrics (
     timestamp INTEGER,
     pool_id TEXT REFERENCES pools (id),
     metric TEXT,
-    value TEXT, -- JSON TEXT, given that some metrics (e.g. token swap flow) have one val for each token in the pool ([x,y,z])
+    value REAL, 
     PRIMARY KEY (pool_id, metric, timestamp)
 );
 
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS pool_aggregates (
     metric TEXT,
     type TEXT,
     window_size TEXT,
-    value TEXT, -- JSON TEXT, given that some metrics (e.g. token swap flow) have one val for each token in the pool ([x,y,z])
+    value REAL,
     PRIMARY KEY (pool_id, metric, type, window_size, timestamp)
 );
 
