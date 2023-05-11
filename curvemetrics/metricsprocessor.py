@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from typing import List
 import json
+from scipy.optimize import minimize
+from datetime import datetime
 
 class MetricsProcessor:
 
@@ -25,6 +27,8 @@ class MetricsProcessor:
         for token_idx, token_id in enumerate(self.pool_metadata[pool_id]['coins']):
             metrics.append(MetricsProcessor.net_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq))
             metrics.append(MetricsProcessor.net_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq))
+            metrics.append(MetricsProcessor.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq))
+            metrics.append(MetricsProcessor.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq))
         
         metrics_df = pd.concat(metrics, axis=1)
         metrics_df = metrics_df.fillna(0)
@@ -92,7 +96,6 @@ class MetricsProcessor:
 
     @staticmethod
     def net_swap_flow(df, token_id, symbol, freq='1min'):
-        # TODO: Need to ensure we get zeroes between start and end time
         """
         Calculate the net swap flow of a token in a pool in the discretized frequencies.
 
@@ -118,7 +121,6 @@ class MetricsProcessor:
 
     @staticmethod
     def net_lp_flow(df, token_idx, symbol, freq='1min'):
-        # TODO: Need to ensure we get zeroes between start and end time
         if len(df) == 0:
             return pd.Series([], name=f'{symbol}.netLPFlow')
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
@@ -150,3 +152,215 @@ class MetricsProcessor:
         metric = np.log(df['close']/df['close'].shift()).resample(freq).sum()
         metric.name = f'{symbol}.logReturns'
         return metric
+
+    @staticmethod
+    def abs_swap_flow(df, token_id, symbol, freq='1min'):
+        """
+        Calculate the absolute swap flow of a token in a pool in the discretized frequencies.
+
+        @Params:    
+            df : pd.DataFrame
+                DataFrame of swap events
+            token : str
+                token_id
+
+        @Returns
+            flow['netSwapFlow'] : pd.Series
+                net swap flow of the token in the pool
+        """
+        if len(df) == 0:
+            return pd.Series([], name=f'{symbol}.netSwapFlow')
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        swap_in = df[df['tokenBought']==token_id]['amountBought']
+        swap_out = df[df['tokenSold']==token_id]['amountSold']
+        flow = pd.merge(swap_in, swap_out, left_index=True, right_index=True, how='outer').fillna(0)
+        metric = (flow['amountBought'] + flow['amountSold']).resample(freq).sum()
+        metric.name = f'{symbol}.absSwapFlow'
+        return metric
+
+    @staticmethod
+    def abs_lp_flow(df, token_idx, symbol, freq='1min'):
+        if len(df) == 0:
+            return pd.Series([], name=f'{symbol}.netLPFlow')
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        deposits = df[df['removal']==False]
+        deposits = deposits['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx])
+        deposits.name = "deposits"
+        withdraws = df[df['removal']==True]
+        withdraws = withdraws['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx])
+        withdraws.name = "withdraws"
+        flow = pd.merge(deposits, withdraws, left_index=True, right_index=True, how='outer').fillna(0)
+        metric = (flow['deposits'] + flow['withdraws']).resample(freq).sum()
+        metric.name = f'{symbol}.absLPFlow'
+        return metric
+    
+    ### PIN ###
+
+    @staticmethod
+    def init_pin_params(df):
+        """
+        PIN MLE initial params.
+        """
+        avg_B = df['Buy'].mean()
+        avg_S = df['Sell'].mean()
+        alph = 0.1
+        delt = 0.3
+        gamm = 0.5
+        B_bar = avg_B
+        epsiB = gamm*B_bar
+        miu = (B_bar-epsiB)/(alph*(1-delt))
+        epsiS = avg_S-alph*delt*miu
+        return [alph,delt,miu,epsiB,epsiS]
+
+    @staticmethod
+    def pin_likelihood_LK(params, df):
+        """
+        Estimate joint likelihood function using factorization from Lin and Ke(2011)
+        
+        @Params
+            params (tuple): \alpha, \delta \mu, \epsilon_B, \epsilon_S 
+            df (pd.DataFrame): timeseries DataFrame with Buy and Sell columns
+        
+        @Returns
+            likelihood (float): joint likelihood function, the likelihood of the params given the buy and sell flow
+        
+        @Credit: modified from https://github.com/shuangology/Probability-of-Informed-Trading/tree/master 
+            by shuangology
+        """
+        #initialize parameter values
+        alph, delt, mu, epsiB, epsiS = params
+
+        # Constraints from the model
+        if any(x < 0 for x in params) or alph > 1 or delt > 1:
+            return np.inf
+
+        def likelihood(row):
+            buy_s = row['Buy']
+            sell_s = row['Sell']
+            
+            #compute values of interest for the log-likelihood function
+            e1 = -mu-sell_s*np.log(1+mu/epsiS)
+            e2 = -mu-buy_s*np.log(1+mu/epsiB)
+            e3 = -buy_s*np.log(1+mu/epsiB)-sell_s*np.log(1+mu/epsiS)
+            e_m = max(e1,e2,e3)
+            
+            part1 = -epsiB-epsiS+buy_s*np.log(mu+epsiB)+sell_s*np.log(mu+epsiS)+e_m
+            part2 = np.log(alph*(1-delt)*np.exp(e1-e_m)+alph*delt*np.exp(e2-e_m)+(1-alph)*np.exp(e3-e_m))
+        
+            return part1+part2
+
+        return -1 * df.apply(likelihood, axis=1).sum()
+
+    @staticmethod
+    def pin_likelihood_EHO(params, df):
+        """
+        Estimate joint likelihood function using factorization from Easley, Hvidkjaer, and O’Hara (2010)
+        
+        @Params
+            params (tuple): \alpha, \delta \mu, \epsilon_B, \epsilon_S 
+            df (pd.DataFrame): timeseries DataFrame with Buy and Sell columns
+        
+        @Returns
+            likelihood (float): joint likelihood function, the likelihood of the params given the buy and sell flow
+        
+        @Credit: modified from https://github.com/shuangology/Probability-of-Informed-Trading/tree/master 
+            by shuangology
+        """
+        #initialize parameter values
+        alph, delt, mu, epsiB, epsiS = params
+
+        # Constraints from the model
+        if any(x < 0 for x in params) or alph > 1 or delt > 1:
+            return np.inf
+
+        def likelihood(row):
+            #number of buy- and sell-trades for the trading day
+            buy_s = row['Buy']
+            sell_s = row['Sell']
+
+            # Avoid invalid computations
+            if mu <= 0 or epsiB <= 0 or epsiS <= 0:
+                return np.inf
+
+            #compute values of interest for the log-likelihood function
+            M  = int(min(buy_s,sell_s)+max(buy_s,sell_s)/2)
+            Xs = epsiS/(mu+epsiS)
+            Xb = epsiB/(mu+epsiB)
+
+            a1 = np.exp(-mu)
+            a2 = Xs**(sell_s-M) if sell_s-M >= 0 else 0
+            a3 = Xb**(buy_s-M) if buy_s-M >= 0 else 0
+            a4 = Xs**(-M) if M >= 0 else 0
+            a5 = Xb**(-M) if M >= 0 else 0
+
+            # Avoid NaN and Inf in logarithmic operations
+            if any(x <= 0 for x in [Xb, Xs, mu+epsiB, mu+epsiS, a1*a2*a5, a1*a3*a4, a2*a3]):
+                return np.inf
+
+            part1 = -epsiB-epsiS+M*(np.log(Xb)+np.log(Xs))+buy_s*np.log(mu+epsiB)+sell_s*np.log(mu+epsiS)
+            part2 = np.log(alph*(1-delt)*a1*a2*a5+alph*delt*a1*a3*a4+(1-alph)*a2*a3)
+
+            return part1+part2
+
+        return -1 * df.apply(likelihood, axis=1).sum()
+
+    @staticmethod
+    def _pin(params):
+        """
+        Calculate PIN value given the params.
+
+        @Params
+            params (tuple): \alpha, \delta \mu, \epsilon_B, \epsilon_S
+        
+        @Returns
+            PIN (float): PIN value
+        """
+        alph,delt,mu,epsiB,epsiS = params
+        return (alph*mu)/(alph*mu+epsiB+epsiS)
+
+    @staticmethod
+    def pin_period(df):
+        """
+        Given a df corresponding to a window of data, calculate the PIN.
+
+        @Params
+            df (pd.DataFrame): timeseries DataFrame with Buy and Sell columns
+        
+        @Returns
+            PIN (float): PIN value for the window
+        """
+        initial_params = MetricsProcessor.init_pin_params(df)
+        opt_params = minimize(MetricsProcessor.pin_likelihood_EHO, initial_params, args = (df),method = 'Nelder-Mead').x
+        return MetricsProcessor._pin(opt_params)
+
+    # @staticmethod
+    # def pin(df, token, window=100, freq='1h'):
+    #     """
+    #     Calculate PIN values for each resampled period. We take a swaps_df, convert it into 
+    #     a timeseries dataframe of "Buy" and "Sell" columns (which count swaps for a token).
+    #     Then we partition our DF into windows of size `window` and calculate the PIN value
+    #     on that window. This PIN corresponds to the value of the last timestamp in the window.
+
+    #     @Params
+    #         df (pd.DataFrame): swaps_df
+    #         window (int): window size (e.g. 100 minutes, or 100 hours, etc..)
+    #         freq (str): resample frequency
+        
+    #     @Returns
+    #         PIN (pd.Series): PIN values for each resampled period
+    #     """
+    #     token_df = df.copy()
+    #     token_df['Buy'] = (token_df['tokenBought'] == token)
+    #     token_df['Sell'] = (token_df['tokenSold'] == token)
+    #     token_df['timestamp'] = token_df['timestamp'].apply(datetime.fromtimestamp)
+    #     token_df = token_df.set_index('timestamp')
+    #     token_df = token_df.resample(freq).agg({'Buy': 'sum', 'Sell': 'sum'})
+
+    #     def rolling_apply(df, delta=timedelta(days=1)):
+    #         curr = df.index[0]
+    #         end = df.index[-1]
+    #         while curr <= end - delta:
+    #             print(curr, curr+delta)
+    #             df.loc[curr+delta, "PIN"] = pin(df.loc[curr:curr+delta])
+    #             curr += timedelta(hours=6) # TODO: Fix this with the actual step size  
+    #         return df

@@ -39,7 +39,7 @@ async def main(start: str, end: str):
 
             if pool_metadata[pool]['creationDate'] < start_ts:
                 pool_start_ts, pool_start_block = start_ts, start_block
-            elif start_ts < pool_metadata[pool]['creationDate'] < start_ts:
+            elif start_ts < pool_metadata[pool]['creationDate'] < end_ts:
                 pool_start_ts, pool_start_block = pool_metadata[pool]['creationDate'], pool_metadata[pool]['creationBlock']
             else:
                 print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...")

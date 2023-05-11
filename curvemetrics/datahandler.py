@@ -5,6 +5,7 @@ import numpy as np
 import os
 import logging
 from typing import Dict, List
+from datetime import datetime
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
@@ -254,7 +255,7 @@ class DataHandler():
             df[col] = df[col].astype(int)
         df['inputTokenWeights'] = df['inputTokenWeights'].apply(lambda x: json.dumps(list(map(float, x))))
         df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: json.dumps(list(map(int, x))))
-        df = df.sort_values(by='block', ascending=True)
+        df = df.sort_values(by='block')
         df['approxTimestamp'] = np.linspace(start_timestamp, end_timestamp, len(df), dtype=int)
         # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
         df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'approxTimestamp']]
@@ -295,8 +296,13 @@ class DataHandler():
         return df
     
     @staticmethod
-    def format_pool_metrics(data):
-        pass
+    def format_pool_metrics(df, pool_id):
+        df = df.melt(var_name='metric', value_name='value', ignore_index=False)
+        df = df.reset_index(names='timestamp')
+        df['timestamp'] = df['timestamp'].apply(lambda x: int(datetime.timestamp(x)))
+        df['pool_id'] = pool_id
+        df = df[['timestamp', 'pool_id', 'metric', 'value']]
+        return df
 
     @staticmethod
     def format_pool_aggregate_metrics(data):
@@ -340,8 +346,6 @@ class DataHandler():
                 params.append(end)
             to_execute += f' ORDER BY {timecol} ASC'
         
-        self.logger.info(f"Executing: {to_execute}...")
-
         try:
             cursor.execute(to_execute, params)
             results = cursor.fetchall()
