@@ -126,6 +126,7 @@ class DataFetcher():
         query = query(**kwargs)
         async with self.session.post(url, json={'query': query}) as res:
             block_data_object = await res.json()
+            if key == 'virtualPrice': key = 'pool'
             block_data_object = block_data_object['data'][key]
 
             # Ensure all outputs are lists of dicts (some are just 1 dict)
@@ -250,6 +251,19 @@ class DataFetcher():
         Get lp deposits and withdrawals data from Convex-community subgraph.
         """
         return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'liquidityEvents', step_size, True)
+    
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    def get_virtual_price(
+        self,
+        start_block: int,
+        end_block: int,
+        pool_id: str,
+        step_size: int = 1
+    ) -> Any:
+        """
+        Get virtual price data from Convex-community subgraph.
+        """
+        return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'virtualPrice', step_size, False)
 
     async def get_ohlcv_async(
         self,

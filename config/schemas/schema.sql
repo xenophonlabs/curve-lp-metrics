@@ -21,6 +21,11 @@ CREATE TABLE IF NOT EXISTS pools (
     symbol TEXT
 );
 
+CREATE TABLE IF NOT EXISTS block_timestamps (
+    block INTEGER PRIMARY KEY,
+    timestamp INTEGER,
+)
+
 -- Storing pool <-> token one-to-many relationship. Ignore this table for now
 CREATE TABLE IF NOT EXISTS pool_tokens (
     pool_id TEXT REFERENCES pools (id),
@@ -59,6 +64,7 @@ CREATE TABLE IF NOT EXISTS pool_data (
     inputTokenBalances TEXT,
     inputTokenWeights TEXT,
     approxTimestamp INTEGER,
+    outputTokenSupply INTEGER,
     UNIQUE (pool_id, block)
 );
 

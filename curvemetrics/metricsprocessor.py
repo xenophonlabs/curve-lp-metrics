@@ -3,7 +3,7 @@ import numpy as np
 from typing import List
 import json
 from scipy.optimize import minimize
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class MetricsProcessor:
 
@@ -17,6 +17,14 @@ class MetricsProcessor:
         self.pool_metadata = pool_metadata
         self.token_metadata = token_metadata
         self.freq = freq
+    
+    @staticmethod
+    def round_date(x):
+        mydate = datetime.fromtimestamp(x)
+        rounded_minute = mydate.minute + round(mydate.second/60)
+        minute_difference = rounded_minute - mydate.minute
+        mydate = mydate.replace(second=0) + timedelta(minutes=minute_difference)
+        return mydate
     
     def process_metrics_for_pool(self, pool_id, pool_data, swaps_data, lp_data):
         metrics = []
@@ -332,6 +340,44 @@ class MetricsProcessor:
         initial_params = MetricsProcessor.init_pin_params(df)
         opt_params = minimize(MetricsProcessor.pin_likelihood_EHO, initial_params, args = (df),method = 'Nelder-Mead').x
         return MetricsProcessor._pin(opt_params)
+    
+    ### Markout
+
+    @staticmethod
+    def markout(df, ohlcvs, window=timedelta(days=1), who='swapper'):
+        """
+        markout price = price at t0 + window
+        current price = price at t0
+        execution price = converts token sold to token bought units
+
+        Add "{window}Markout" column to df, window in seconds
+        """
+        markout_col = f'{int(window.total_seconds())}.Markout'
+        cols = list(df.columns) + [markout_col]
+
+        df['executionPrice'] = df['amountBought'] / df['amountSold']
+        df['roundedDate'] = df['timestamp'].apply(MetricsProcessor.round_date)
+        last = df['roundedDate'].iloc[-1]
+        df = df[df['roundedDate'] <= last - window]
+        df['markoutBoughtPrice'] = df.apply(lambda x: ohlcvs[x['tokenBought']].loc[x['roundedDate'] + window]['close'], axis=1)
+        df['currentSoldPrice'] = df.apply(lambda x: ohlcvs[x['tokenSold']].loc[x['roundedDate']]['close'], axis=1)
+        df[markout_col] = df['amountSold'] * (df['executionPrice'] * df['markoutBoughtPrice'] - df['currentSoldPrice'])
+        df = df.set_index('roundedDate')
+
+        if who == 'swapper':
+            # TODO: Include gas fees
+            return df[cols]
+        elif who == 'lp':
+            df[markout_col] = df[markout_col] * -1
+            return df[cols]
+        else:
+            raise ValueError(f"who must be 'swapper' or 'lp', was {who}.")
+    
+    ### Sharks
+
+    # NOTE: 1Inch executor contract is considered a "buyer" (i.e. not the actual address that
+    # submitted the 1Inch transaction). This is okay when looking at sharks: we can assume
+    # sharks are less likely to be going through 1Inch.
 
     # @staticmethod
     # def pin(df, token, window=100, freq='1h'):

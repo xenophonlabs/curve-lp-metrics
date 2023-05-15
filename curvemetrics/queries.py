@@ -44,7 +44,6 @@ liquidity_query = (
     }}"""
 )
 
-# NOTE: Don't need inputTokens because that data will be in the pool_tokens table
 liquidity_pool_query = (
     lambda **kwargs: f"""
     {{ liquidityPool(
@@ -54,6 +53,7 @@ liquidity_pool_query = (
         totalValueLockedUSD
         inputTokenBalances
         inputTokenWeights
+        outputTokenSupply
         }}
     }}"""
 )
@@ -86,6 +86,7 @@ pool_query = (
     }}"""
 )
 
+# Fetch less data to make faster
 virtual_price_query = (
     lambda **kwargs: f"""
     {{ pool(
@@ -102,4 +103,5 @@ queries = {
     'liquidityEvents' : liquidity_query,
     'liquidityPool' : liquidity_pool_query,
     'pool' : pool_query,
+    'virtualPrice' : virtual_price_query,
 }

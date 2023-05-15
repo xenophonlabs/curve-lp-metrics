@@ -82,6 +82,19 @@ class DataHandler():
         df = DataHandler.format_pool_metadata(data)
         df.to_sql("pools", self.conn, if_exists="replace", index=False)
         self.conn.commit()
+    
+    def insert_block_timestamps(self):
+        """
+        Used to backfill blocks with timestamps.
+        """
+        for i in range(5):
+            fn = PATH+f'../timestamps_{i}.csv'
+            df = pd.read_csv(fn)
+            df['block'] = df['block'].astype(int)
+            df['timestamp'] = df['unixtime'].apply(lambda x: int(datetime.timestamp(datetime.fromisoformat(x.replace("Z", "+00:00")))))
+            df = df[['block', 'timestamp']]
+            df.to_sql("block_timestamps", self.conn, if_exists="append", index=False)
+            self.conn.commit()
 
     def insert_token_metadata(self, data):
         df = DataHandler.format_token_metadata(data)
@@ -109,8 +122,9 @@ class DataHandler():
                 totalValueLockedUSD,
                 inputTokenBalances,
                 inputTokenWeights,
-                approxTimestamp
-            ) VALUES (?, ?, ?, ?, ?, ?)
+                approxTimestamp,
+                outputTokenSupply
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
             """
             self.conn.execute(sql, row)
         
@@ -251,14 +265,14 @@ class DataHandler():
             return df
         for col in ['totalValueLockedUSD']:
             df[col] = df[col].astype(float)
-        for col in ['block']:
+        for col in ['block', 'outputTokenSupply']:
             df[col] = df[col].astype(int)
         df['inputTokenWeights'] = df['inputTokenWeights'].apply(lambda x: json.dumps(list(map(float, x))))
         df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: json.dumps(list(map(int, x))))
         df = df.sort_values(by='block')
         df['approxTimestamp'] = np.linspace(start_timestamp, end_timestamp, len(df), dtype=int)
         # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
-        df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'approxTimestamp']]
+        df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'approxTimestamp', 'outputTokenSupply']]
         return df
 
     @staticmethod
@@ -388,6 +402,21 @@ class DataHandler():
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.sort_index()
+        df = df.resample('1min').ffill()
         return df
 
-    
+    def get_block_timestamp(self, block: int):
+        cursor = self.conn.cursor()
+        
+        to_execute = f'SELECT * FROM block_timestamps WHERE block == ?'
+        params = [block]
+        
+        try:
+            cursor.execute(to_execute, params)
+            results = cursor.fetchall()
+        except sqlite3.Error as e:
+            raise sqlite3.Error(f'Error executing query: {e}')
+        finally:
+            cursor.close()
+
+        return results
