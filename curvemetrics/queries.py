@@ -87,14 +87,34 @@ pool_query = (
 )
 
 # Fetch less data to make faster
-virtual_price_query = (
+snapshots_query = (
     lambda **kwargs: f"""
-    {{ pool(
-        id: "{kwargs['pool_id']}"
-        block: {{number: {kwargs['block']}}}
-    ) {{
+    {{ dailyPoolSnapshots(
+        where:
+            {{
+                pool: "{kwargs['pool_id']}"
+                timestamp_gte: "{kwargs['block_gte']}"
+                timestamp_lt: "{kwargs['block_lt']}"
+            }}
+    ) 
+    {{
+        A
+        adminFee
+        fee
+        id
+        normalizedReserves
+        offPegFeeMultiplier
+        reserves
+        timestamp
         virtualPrice
-        }}
+        lpPriceUSD
+        tvl
+        totalDailyFeesUSD
+        reservesUSD
+        lpFeesUSD
+        lastPricesTimestamp
+        lastPrices
+    }}
     }}"""
 )
 
@@ -103,5 +123,5 @@ queries = {
     'liquidityEvents' : liquidity_query,
     'liquidityPool' : liquidity_pool_query,
     'pool' : pool_query,
-    'virtualPrice' : virtual_price_query,
+    'dailyPoolSnapshots' : snapshots_query,
 }

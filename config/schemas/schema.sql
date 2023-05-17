@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS pool_data (
     inputTokenBalances TEXT,
     inputTokenWeights TEXT,
     approxTimestamp INTEGER,
-    outputTokenSupply INTEGER,
+    outputTokenSupply NUMERIC,
     UNIQUE (pool_id, block)
 );
 

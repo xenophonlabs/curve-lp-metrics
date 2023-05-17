@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import logging
 import asyncio
+from pandas import Int64Dtype as Int64
 
 from .datafetcher import DataFetcher
 from .datahandler import DataHandler
@@ -27,17 +28,17 @@ def get_output_token_supply(pool, start, end):
     data = datafetcher.get_pool_data(min_block, max_block, pool, step_size=1)
     df = pd.DataFrame([x for y in data for x in y])
     df = df[['block', 'outputTokenSupply']]
-    df = df.astype(int)
-    print(df)
+    df['block'] = df['block'].astype(int)
+    df['outputTokenSupply'] = df['outputTokenSupply'].astype(object)
 
     return df
 
-def update_output_token_supply(df):
+def update_output_token_supply(df, pool):
     for _, row in df.iterrows():
         sql = f"""
             UPDATE pool_data
             SET outputTokenSupply = {row['outputTokenSupply']}
-            WHERE block = {row['block']};
+            WHERE block = {row['block']} AND pool_id = '{pool}';
         """
         datahandler.conn.execute(sql)
     datahandler.conn.commit()
@@ -47,23 +48,21 @@ def update_chunk(pool, start, end):
     LOGGER.info(f"\n[{datetime.now()}] Fetching Output Token Supply")
     df = get_output_token_supply(pool, start, end)
     LOGGER.info(f"\n[{datetime.now()}] Inserting")
-    # update_output_token_supply(df)
+    update_output_token_supply(df, pool)
     LOGGER.info(f"\n[{datetime.now()}] Finished")
 
 start = datetime(2022, 1, 1)
-end = datetime(2022, 1, 4)
-# end = datetime(2023, 5, 1)
+end = datetime(2023, 5, 1)
 
 PROCESSED = []
 
-# for pool in pool_metadata:
 async def main():
     rel = relativedelta(days=1)
     try:
         global datafetcher
         datafetcher = DataFetcher(token_metadata=token_metadata)
 
-        for pool in ["0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"]:
+        for pool in pool_metadata:
             curr = start
             if pool in PROCESSED:
                 LOGGER.info(f"\n[{datetime.now()}] Skipping {pool_metadata[pool]['name']}")

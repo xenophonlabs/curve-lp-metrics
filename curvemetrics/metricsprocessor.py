@@ -29,13 +29,17 @@ class MetricsProcessor:
     def process_metrics_for_pool(self, pool_id, pool_data, swaps_data, lp_data):
         metrics = []
 
-        metrics.append(MetricsProcessor.gini(pool_data))
-        metrics.append(MetricsProcessor.shannons_entropy(pool_data))
+        metrics.append(MetricsProcessor.gini(pool_data, pool_id, freq=self.freq))
+        # metrics.append(MetricsProcessor.shannons_entropy(pool_data, freq=self.freq))
+
+        tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))
+
+        for token_id in tokens:
+            metrics.append(MetricsProcessor.net_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq))
+            metrics.append(MetricsProcessor.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq))
 
         for token_idx, token_id in enumerate(self.pool_metadata[pool_id]['coins']):
-            metrics.append(MetricsProcessor.net_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq))
             metrics.append(MetricsProcessor.net_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq))
-            metrics.append(MetricsProcessor.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq))
             metrics.append(MetricsProcessor.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq))
         
         metrics_df = pd.concat(metrics, axis=1)
@@ -53,7 +57,7 @@ class MetricsProcessor:
         return metrics_df
     
     @staticmethod
-    def _gini(x: List) -> int:
+    def _gini(x: List, decimals) -> int:
         """
         Gini coefficient measures the inequality in the pool. 
 
@@ -65,7 +69,7 @@ class MetricsProcessor:
             coef : Double 
                 Gini coefficient 
         """
-        x = np.array(x)
+        x = np.array([x[i]/10**decimals[i] for i in range(len(x))])
         x.sort()
         n = len(x)
         index = np.arange(1, n + 1)
@@ -73,8 +77,13 @@ class MetricsProcessor:
         return coef
 
     @staticmethod
-    def gini(df, freq='1min'):
-        metric = df['inputTokenWeights'].apply(MetricsProcessor._gini).resample(freq).mean()
+    def gini(df, pool_id, freq='1min'):
+        # TODO: fix pool_metadata to get correct order for messari subgraph tokens, for now hardcode
+        if pool_id == "0xceaf7747579696a2f0bb206a14210e3c9e6fb269":
+            decimals = 18, 6            
+        else:
+            raise Exception("Need to fix Gini decimals")
+        metric = df['inputTokenBalances'].apply(lambda x: MetricsProcessor._gini(x, decimals)).resample(freq).mean()
         metric.name = 'giniCoefficient'
         return metric
 
@@ -98,7 +107,7 @@ class MetricsProcessor:
 
     @staticmethod
     def shannons_entropy(df, freq='1min'):
-        metric = df['inputTokenWeights'].apply(MetricsProcessor._shannons_entropy).resample(freq).mean()
+        metric = df['inputTokenBalances'].apply(MetricsProcessor._shannons_entropy).resample(freq).mean()
         metric.name = 'shannonsEntropy'
         return metric
 
@@ -346,29 +355,31 @@ class MetricsProcessor:
     @staticmethod
     def markout(df, ohlcvs, window=timedelta(days=1), who='swapper'):
         """
-        markout price = price at t0 + window
-        current price = price at t0
-        execution price = converts token sold to token bought units
+        We define markout as the difference in value between an entity's portfolio
+        at the markout time vs at the current time. That is, we subtract the value
+        of the tokens sold from the value of the tokens bought. This is different
+        from other markout definition, which take the difference between the 
+        markout value and the value at execution.
 
         Add "{window}Markout" column to df, window in seconds
+        NOTE: Could alternatively be using curve `candles` data instead of CEX/Chainlink prices
         """
         markout_col = f'{int(window.total_seconds())}.Markout'
         cols = list(df.columns) + [markout_col]
 
-        df['executionPrice'] = df['amountBought'] / df['amountSold']
         df['roundedDate'] = df['timestamp'].apply(MetricsProcessor.round_date)
         last = df['roundedDate'].iloc[-1]
         df = df[df['roundedDate'] <= last - window]
         df['markoutBoughtPrice'] = df.apply(lambda x: ohlcvs[x['tokenBought']].loc[x['roundedDate'] + window]['close'], axis=1)
-        df['currentSoldPrice'] = df.apply(lambda x: ohlcvs[x['tokenSold']].loc[x['roundedDate']]['close'], axis=1)
-        df[markout_col] = df['amountSold'] * (df['executionPrice'] * df['markoutBoughtPrice'] - df['currentSoldPrice'])
+        df['markoutSoldPrice'] = df.apply(lambda x: ohlcvs[x['tokenSold']].loc[x['roundedDate'] + window]['close'], axis=1)
+        df[markout_col] = df['amountBought']*df['markoutBoughtPrice'] - df['amountSold']*df['markoutSoldPrice']
         df = df.set_index('roundedDate')
 
         if who == 'swapper':
             # TODO: Include gas fees
             return df[cols]
         elif who == 'lp':
-            df[markout_col] = df[markout_col] * -1
+            df[markout_col] *= -1
             return df[cols]
         else:
             raise ValueError(f"who must be 'swapper' or 'lp', was {who}.")

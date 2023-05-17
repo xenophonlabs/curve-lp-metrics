@@ -265,7 +265,7 @@ class DataHandler():
             return df
         for col in ['totalValueLockedUSD']:
             df[col] = df[col].astype(float)
-        for col in ['block', 'outputTokenSupply']:
+        for col in ['block']:
             df[col] = df[col].astype(int)
         df['inputTokenWeights'] = df['inputTokenWeights'].apply(lambda x: json.dumps(list(map(float, x))))
         df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: json.dumps(list(map(int, x))))

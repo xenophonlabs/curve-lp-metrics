@@ -18,6 +18,7 @@ nest_asyncio.apply()
 
 RETRY_AMOUNTS = 3
 CURVE_SUBGRAPH_URL_CVX = 'https://api.thegraph.com/subgraphs/name/convex-community/curve-mainnet'
+CURVE_SUBGRAPH_URL_VOLUME_CVX = "https://api.thegraph.com/subgraphs/name/convex-community/volume-mainnet"
 CURVE_SUBGRAPH_URL_MESSARI = 'https://api.thegraph.com/subgraphs/name/messari/curve-finance-ethereum'
 LLAMA_BLOCK_GETTER = 'https://coins.llama.fi/block/ethereum/'
 
@@ -126,7 +127,6 @@ class DataFetcher():
         query = query(**kwargs)
         async with self.session.post(url, json={'query': query}) as res:
             block_data_object = await res.json()
-            if key == 'virtualPrice': key = 'pool'
             block_data_object = block_data_object['data'][key]
 
             # Ensure all outputs are lists of dicts (some are just 1 dict)
@@ -187,8 +187,8 @@ class DataFetcher():
 
     def execute_queries(
         self,
-        start_block,
-        end_block,
+        start, # block or ts
+        end, # block or ts
         pool_id: str,
         source: str,
         key: str,
@@ -210,7 +210,7 @@ class DataFetcher():
         """
         query = queries[key]
         url = DataFetcher.get_url(source)
-        data = asyncio.run(self.execute_queries_async(start_block, end_block, query, key, url, step_size, full, pool_id=pool_id))
+        data = asyncio.run(self.execute_queries_async(start, end, query, key, url, step_size, full, pool_id=pool_id))
         return data
 
     @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
@@ -232,7 +232,7 @@ class DataFetcher():
         start_block,
         end_block,
         pool_id: str,
-        step_size: int = 10 # NOTE: increasing step_size risks losing txs. This is a subgraph bug.
+        step_size: int = 10 # NOTE: increasing step_size risks losing txs, limits to 100 results per response
     ) -> Any:
         """
         Get swaps data from Convex-community subgraph.
@@ -245,25 +245,25 @@ class DataFetcher():
         start_block,
         end_block,
         pool_id: str,
-        step_size: int = 10 # NOTE: increasing step_size risks losing txs. This is a subgraph bug.
+        step_size: int = 10 # NOTE: increasing step_size risks losing txs, limits to 100 results per response
     ) -> Any:
         """
         Get lp deposits and withdrawals data from Convex-community subgraph.
         """
         return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'liquidityEvents', step_size, True)
     
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
-    def get_virtual_price(
+    # @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    def get_snapshots(
         self,
-        start_block: int,
-        end_block: int,
+        start_ts: int,
+        end_ts: int,
         pool_id: str,
-        step_size: int = 1
+        step_size: int = 60*60*24 # Expect 1 response per day, timestamps increment in seconds
     ) -> Any:
         """
-        Get virtual price data from Convex-community subgraph.
+        Get  daily pool snapshots from Convex-community subgraph.
         """
-        return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'virtualPrice', step_size, False)
+        return self.execute_queries(start_ts, end_ts, pool_id, 'cvx-volume', 'dailyPoolSnapshots', step_size, True)
 
     async def get_ohlcv_async(
         self,
@@ -383,7 +383,14 @@ class DataFetcher():
         client = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{INFURA_KEY}"))
         contract = client.eth.contract(address=chainlink_address, abi=abi)
         symbol = contract.functions.description().call().replace(" ", "")
-        roundnr = self.search_rounds(contract, start_timestamp)
+        # Testing UST and USDN Chainlink market feeds
+        if token == "0x674C6Ad92Fd080e4004b2312b45f796a192D27a0":
+            roundnr = 376 # For USDN (has 0 phases?) # Sep 30 2022
+        elif token == "0xa693b19d2931d498c5b318df961919bb4aee87a5":
+            roundnr = 18446744073709551766 # For UST (has two phases) # April 6th 2022
+        else:
+            roundnr = self.search_rounds(contract, start_timestamp)
+
         decimals = contract.functions.decimals().call()
         current_timestamp = 0
         data = []
@@ -422,4 +429,5 @@ class DataFetcher():
     def get_url(source: str) -> str:
         if source == "messari": return CURVE_SUBGRAPH_URL_MESSARI
         elif source == "cvx": return CURVE_SUBGRAPH_URL_CVX
-        else: raise Exception(f'Invalid source {source}. Must be "messari" or "cvx"')
+        elif source == "cvx-volume": return CURVE_SUBGRAPH_URL_VOLUME_CVX
+        else: raise Exception(f'Invalid source {source}')
