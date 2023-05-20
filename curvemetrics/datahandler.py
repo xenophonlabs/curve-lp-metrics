@@ -391,11 +391,15 @@ class DataHandler():
     
     def get_swaps_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
         results = self._execute_query('swaps', pool_id=pool_id, start=start, end=end)
-        return pd.DataFrame.from_dict(results)
+        df = pd.DataFrame.from_dict(results)
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s')).sort_index()
+        return df
     
     def get_lp_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
         results = self._execute_query('lp_events', pool_id=pool_id, start=start, end=end)
-        return pd.DataFrame.from_dict(results)
+        df = pd.DataFrame.from_dict(results)
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s')).sort_index()
+        return df
     
     def get_ohlcv_data(self, token_id: str, start: int=None, end: int=None) -> pd.DataFrame:
         results = self._execute_query('token_ohlcv', token_id=token_id, start=start, end=end)

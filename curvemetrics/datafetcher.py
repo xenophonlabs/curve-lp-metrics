@@ -385,7 +385,7 @@ class DataFetcher():
         symbol = contract.functions.description().call().replace(" ", "")
         # Testing UST and USDN Chainlink market feeds
         if token == "0x674C6Ad92Fd080e4004b2312b45f796a192D27a0":
-            roundnr = 376 # For USDN (has 0 phases?) # Sep 30 2022
+            roundnr = 1 # For USDN (has 0 phases?) # Sep 30 2022
         elif token == "0xa693b19d2931d498c5b318df961919bb4aee87a5":
             roundnr = 18446744073709551766 # For UST (has two phases) # April 6th 2022
         else:

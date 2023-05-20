@@ -27,10 +27,11 @@ class MetricsProcessor:
         return mydate
     
     def process_metrics_for_pool(self, pool_id, pool_data, swaps_data, lp_data):
+
         metrics = []
 
         metrics.append(MetricsProcessor.gini(pool_data, pool_id, freq=self.freq))
-        # metrics.append(MetricsProcessor.shannons_entropy(pool_data, freq=self.freq))
+        metrics.append(MetricsProcessor.shannons_entropy(pool_data, pool_id, freq=self.freq))
 
         tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))
 
@@ -81,6 +82,8 @@ class MetricsProcessor:
         # TODO: fix pool_metadata to get correct order for messari subgraph tokens, for now hardcode
         if pool_id == "0xceaf7747579696a2f0bb206a14210e3c9e6fb269":
             decimals = 18, 6            
+        elif pool_id == "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7":
+            decimals = 18, 6, 6
         else:
             raise Exception("Need to fix Gini decimals")
         metric = df['inputTokenBalances'].apply(lambda x: MetricsProcessor._gini(x, decimals)).resample(freq).mean()
@@ -88,7 +91,7 @@ class MetricsProcessor:
         return metric
 
     @staticmethod
-    def _shannons_entropy(x: List) -> int:
+    def _shannons_entropy(x: List, decimals) -> int:
         """
         Imagine a pool is a basket and each unit of each asset is a ball with that asset's color.
         Shannon entropy [loosely] measures how easy it is to predict the color of a ball picked at random.
@@ -101,13 +104,20 @@ class MetricsProcessor:
             entropy : Double
                 Shannon's Entropy measurement
         """
+        x = np.array([x[i]/10**decimals[i] for i in range(len(x))])
         proportions = x / np.sum(x)
         entropy = -np.sum(proportions * np.log2(proportions))
         return entropy
 
     @staticmethod
-    def shannons_entropy(df, freq='1min'):
-        metric = df['inputTokenBalances'].apply(MetricsProcessor._shannons_entropy).resample(freq).mean()
+    def shannons_entropy(df, pool_id, freq='1min'):
+        if pool_id == "0xceaf7747579696a2f0bb206a14210e3c9e6fb269":
+            decimals = 18, 6            
+        elif pool_id == "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7":
+            decimals = 18, 6, 6
+        else:
+            raise Exception("Need to fix Shannon decimals")
+        metric = df['inputTokenBalances'].apply(lambda x: MetricsProcessor._shannons_entropy(x, decimals)).resample(freq).mean()
         metric.name = 'shannonsEntropy'
         return metric
 
@@ -128,9 +138,8 @@ class MetricsProcessor:
         """
         if len(df) == 0:
             return pd.Series([], name=f'{symbol}.netSwapFlow')
-        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
-        swap_in = df[df['tokenBought']==token_id]['amountBought']
-        swap_out = -1*df[df['tokenSold']==token_id]['amountSold']
+        swap_in = df[df['tokenBought']==token_id]['amountBought'].groupby(level=0).sum()
+        swap_out = -1*df[df['tokenSold']==token_id]['amountSold'].groupby(level=0).sum()
         flow = pd.merge(swap_in, swap_out, left_index=True, right_index=True, how='outer').fillna(0)
         metric = (flow['amountBought'] + flow['amountSold']).resample(freq).sum()
         metric.name = f'{symbol}.netSwapFlow'
@@ -140,12 +149,11 @@ class MetricsProcessor:
     def net_lp_flow(df, token_idx, symbol, freq='1min'):
         if len(df) == 0:
             return pd.Series([], name=f'{symbol}.netLPFlow')
-        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         deposits = df[df['removal']==False]
-        deposits = deposits['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx])
+        deposits = deposits['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx]).groupby(level=0).sum().groupby(level=0).sum()
         deposits.name = "deposits"
         withdraws = df[df['removal']==True]
-        withdraws = withdraws['tokenAmounts'].apply(lambda x: -1*json.loads(x)[token_idx])
+        withdraws = withdraws['tokenAmounts'].apply(lambda x: -1*json.loads(x)[token_idx]).groupby(level=0).sum().groupby(level=0).sum()
         withdraws.name = "withdraws"
         flow = pd.merge(deposits, withdraws, left_index=True, right_index=True, how='outer').fillna(0)
         metric = (flow['deposits'] + flow['withdraws']).resample(freq).sum()
@@ -187,9 +195,8 @@ class MetricsProcessor:
         """
         if len(df) == 0:
             return pd.Series([], name=f'{symbol}.netSwapFlow')
-        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
-        swap_in = df[df['tokenBought']==token_id]['amountBought']
-        swap_out = df[df['tokenSold']==token_id]['amountSold']
+        swap_in = df[df['tokenBought']==token_id]['amountBought'].groupby(level=0).sum()
+        swap_out = df[df['tokenSold']==token_id]['amountSold'].groupby(level=0).sum()
         flow = pd.merge(swap_in, swap_out, left_index=True, right_index=True, how='outer').fillna(0)
         metric = (flow['amountBought'] + flow['amountSold']).resample(freq).sum()
         metric.name = f'{symbol}.absSwapFlow'
@@ -199,12 +206,11 @@ class MetricsProcessor:
     def abs_lp_flow(df, token_idx, symbol, freq='1min'):
         if len(df) == 0:
             return pd.Series([], name=f'{symbol}.netLPFlow')
-        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         deposits = df[df['removal']==False]
-        deposits = deposits['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx])
+        deposits = deposits['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx]).groupby(level=0).sum()
         deposits.name = "deposits"
         withdraws = df[df['removal']==True]
-        withdraws = withdraws['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx])
+        withdraws = withdraws['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx]).groupby(level=0).sum()
         withdraws.name = "withdraws"
         flow = pd.merge(deposits, withdraws, left_index=True, right_index=True, how='outer').fillna(0)
         metric = (flow['deposits'] + flow['withdraws']).resample(freq).sum()
@@ -383,6 +389,10 @@ class MetricsProcessor:
             return df[cols]
         else:
             raise ValueError(f"who must be 'swapper' or 'lp', was {who}.")
+
+    ### Mean Reversion
+
+    
     
     ### Sharks
 

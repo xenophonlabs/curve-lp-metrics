@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS pools (
     symbol TEXT
 );
 
+-- used to backfill 2022-01-01 to 2022-05-01
 CREATE TABLE IF NOT EXISTS block_timestamps (
     block INTEGER PRIMARY KEY,
     timestamp INTEGER,

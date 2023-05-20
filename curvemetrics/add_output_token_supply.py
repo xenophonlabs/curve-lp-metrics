@@ -1,5 +1,7 @@
 """
 Need to add outputTokenSupply to table
+
+NOTE: Modify this script to add new column to SQL table.
 """
 import pandas as pd
 import numpy as np
