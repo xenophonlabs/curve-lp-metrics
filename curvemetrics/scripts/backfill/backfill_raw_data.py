@@ -1,10 +1,15 @@
-from ..datafetcher import DataFetcher
-from ..datahandler import DataHandler
-from datetime import datetime
+"""
+Backfill raw data into SQL database.
+"""
 import argparse
 import asyncio
 import os
 import json
+
+from datetime import datetime
+
+from ...src.classes.datafetcher import DataFetcher
+from ...src.classes.datahandler import DataHandler
 
 STEP_SIZE = 10 # NOTE: increasing this risks losing txs, 10 is probably safe
 

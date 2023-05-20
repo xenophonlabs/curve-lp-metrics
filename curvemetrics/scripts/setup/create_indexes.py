@@ -1,6 +1,9 @@
-from .datahandler import DataHandler
-import os
-import json
+"""
+Create indexes for the SQL tables.
+NOTE: Don't do this too before backfilling, it will slow down the process.
+"""
+
+from ...src.classes.datahandler import DataHandler
 
 def main():
 

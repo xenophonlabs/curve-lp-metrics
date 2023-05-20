@@ -1,10 +1,15 @@
-from ..src.metricsprocessor import MetricsProcessor
-from .datahandler import DataHandler
-from datetime import datetime
+"""
+Backfill metrics for given time period into SQL database.
+"""
 import argparse
 import asyncio
 import os
 import json
+
+from datetime import datetime
+
+from ...src.classes.metricsprocessor import MetricsProcessor
+from ...src.classes.datahandler import DataHandler
 
 STEP_SIZE = 10 # NOTE: increasing this risks losing txs, 10 is probably safe
 

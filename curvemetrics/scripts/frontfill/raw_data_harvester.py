@@ -1,7 +1,11 @@
+"""
+Frontfills the SQL database with raw data from theGraph.
+"""
 import asyncio
 import schedule
 import time
-from curvemetrics.datafetcher import DataFetcher
+
+from ...src.classes.datafetcher import DataFetcher
 
 async def main():
     async with DataFetcher() as datafetcher:

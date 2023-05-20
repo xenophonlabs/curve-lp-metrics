@@ -58,6 +58,20 @@ liquidity_pool_query = (
     }}"""
 )
 
+messari_pool_tokens = (
+    lambda **kwargs: f"""
+    {{ liquidityPool(
+        id: "{kwargs['pool_id']}"
+        block: {{number: {kwargs['block']}}}
+    ) {{
+        inputTokens {{
+            id
+        }}
+        id
+        }}
+    }}"""
+)
+
 pool_query = (
     lambda **kwargs: f"""
     {{ pool(
@@ -124,4 +138,5 @@ queries = {
     'liquidityPool' : liquidity_pool_query,
     'pool' : pool_query,
     'dailyPoolSnapshots' : snapshots_query,
+    'messari_pool_tokens' : messari_pool_tokens,
 }

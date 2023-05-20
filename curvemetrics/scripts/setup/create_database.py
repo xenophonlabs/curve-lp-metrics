@@ -1,7 +1,11 @@
-from .datafetcher import DataFetcher
-from .datahandler import DataHandler
+"""
+Create the SQL database tables.
+"""
 import os
 import json
+
+from ...src.classes.datafetcher import DataFetcher
+from ...src.classes.datahandler import DataHandler
 
 def load_config():
     # Load the configuration
@@ -24,6 +28,7 @@ def main():
         datahandler.insert_pool_metadata(pool_metadata)
         datahandler.insert_token_metadata(token_metadata)
         datahandler.insert_pool_tokens_metadata(pool_metadata)
+        datahandler.insert_block_timestamps()
     except Exception as e:
         print(f"An error occurred during raw database creation: {e}")
     finally:

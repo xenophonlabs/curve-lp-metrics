@@ -1,9 +1,11 @@
-import pandas as pd
-import numpy as np
-from typing import List
 import json
+
 from scipy.optimize import minimize
 from datetime import datetime, timedelta
+from typing import List
+
+import pandas as pd
+import numpy as np
 
 class MetricsProcessor:
 
@@ -26,12 +28,23 @@ class MetricsProcessor:
         mydate = mydate.replace(second=0) + timedelta(minutes=minute_difference)
         return mydate
     
+    def normalize(self, row, pool_id):
+        new_balances = []
+        tokens = self.pool_metadata[pool_id]['inputTokens']
+        for i, balance in enumerate(row):
+            decimals = self.token_metadata[tokens[i]]['decimals']
+            new_balances.append(balance/10**decimals)
+        return new_balances
+    
     def process_metrics_for_pool(self, pool_id, pool_data, swaps_data, lp_data):
 
         metrics = []
 
-        metrics.append(MetricsProcessor.gini(pool_data, pool_id, freq=self.freq))
-        metrics.append(MetricsProcessor.shannons_entropy(pool_data, pool_id, freq=self.freq))
+        pool_data['inputTokenBalances'] = pool_data['inputTokenBalances'].apply(lambda x: self.normalize(x, pool_id))
+        pool_data['inputTokenWeights'] = pool_data['inputTokenWeights'].apply(lambda x: self.normalize(x, pool_id))
+
+        metrics.append(MetricsProcessor.gini(pool_data, freq=self.freq))
+        metrics.append(MetricsProcessor.shannons_entropy(pool_data, freq=self.freq))
 
         tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))
 
@@ -58,7 +71,7 @@ class MetricsProcessor:
         return metrics_df
     
     @staticmethod
-    def _gini(x: List, decimals) -> int:
+    def _gini(x: List) -> int:
         """
         Gini coefficient measures the inequality in the pool. 
 
@@ -70,7 +83,7 @@ class MetricsProcessor:
             coef : Double 
                 Gini coefficient 
         """
-        x = np.array([x[i]/10**decimals[i] for i in range(len(x))])
+        x = np.array(x)
         x.sort()
         n = len(x)
         index = np.arange(1, n + 1)
@@ -78,20 +91,13 @@ class MetricsProcessor:
         return coef
 
     @staticmethod
-    def gini(df, pool_id, freq='1min'):
-        # TODO: fix pool_metadata to get correct order for messari subgraph tokens, for now hardcode
-        if pool_id == "0xceaf7747579696a2f0bb206a14210e3c9e6fb269":
-            decimals = 18, 6            
-        elif pool_id == "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7":
-            decimals = 18, 6, 6
-        else:
-            raise Exception("Need to fix Gini decimals")
-        metric = df['inputTokenBalances'].apply(lambda x: MetricsProcessor._gini(x, decimals)).resample(freq).mean()
+    def gini(df, freq='1min'):
+        metric = df['inputTokenBalances'].apply(MetricsProcessor._gini).resample(freq).mean()
         metric.name = 'giniCoefficient'
         return metric
 
     @staticmethod
-    def _shannons_entropy(x: List, decimals) -> int:
+    def _shannons_entropy(x: List) -> int:
         """
         Imagine a pool is a basket and each unit of each asset is a ball with that asset's color.
         Shannon entropy [loosely] measures how easy it is to predict the color of a ball picked at random.
@@ -104,20 +110,14 @@ class MetricsProcessor:
             entropy : Double
                 Shannon's Entropy measurement
         """
-        x = np.array([x[i]/10**decimals[i] for i in range(len(x))])
+        x = np.array(x)
         proportions = x / np.sum(x)
         entropy = -np.sum(proportions * np.log2(proportions))
         return entropy
 
     @staticmethod
-    def shannons_entropy(df, pool_id, freq='1min'):
-        if pool_id == "0xceaf7747579696a2f0bb206a14210e3c9e6fb269":
-            decimals = 18, 6            
-        elif pool_id == "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7":
-            decimals = 18, 6, 6
-        else:
-            raise Exception("Need to fix Shannon decimals")
-        metric = df['inputTokenBalances'].apply(lambda x: MetricsProcessor._shannons_entropy(x, decimals)).resample(freq).mean()
+    def shannons_entropy(df, freq='1min'):
+        metric = df['inputTokenBalances'].apply(MetricsProcessor._shannons_entropy).resample(freq).mean()
         metric.name = 'shannonsEntropy'
         return metric
 

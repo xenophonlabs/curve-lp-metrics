@@ -1,9 +1,11 @@
 import sqlite3
-import pandas as pd
 import json
-import numpy as np
 import os
 import logging
+
+import pandas as pd
+import numpy as np
+
 from typing import Dict, List
 from datetime import datetime
 
@@ -15,7 +17,7 @@ class DataHandler():
     Formats raw data and inserts it into the rawadata.db database.
     """
 
-    def __init__(self, db_name=PATH+'../database/database.db'):
+    def __init__(self, db_name=PATH+'../../../database/database.db'):
         self.conn = sqlite3.connect(db_name)
         self.conn.row_factory = self.dict_factory
         self.logger = logging.getLogger(__name__)
@@ -29,7 +31,7 @@ class DataHandler():
         if len(existing_tables) != 0:
             self.logger.info("Tables already exist in the database: {}".format(existing_tables))
 
-        with open(PATH+'../config/schemas/schema.sql', 'r') as f:
+        with open(PATH+'../../../config/schemas/schema.sql', 'r') as f:
             create_tables_sql = f.read()
         
         self.conn.executescript(create_tables_sql)
@@ -42,7 +44,7 @@ class DataHandler():
         if len(existing_indexes) != 0:
             self.logger.info("Indexes already exist in the database: {}".format(existing_indexes))
 
-        with open(PATH+'../config/schemas/indexes.sql', 'r') as f:
+        with open(PATH+'../../../config/schemas/indexes.sql', 'r') as f:
             create_indexes_sql = f.read()
         
         self.conn.executescript(create_indexes_sql)
@@ -88,7 +90,7 @@ class DataHandler():
         Used to backfill blocks with timestamps.
         """
         for i in range(5):
-            fn = PATH+f'../timestamps_{i}.csv'
+            fn = PATH+f'../../../data/timestamps_{i}.csv'
             df = pd.read_csv(fn)
             df['block'] = df['block'].astype(int)
             df['timestamp'] = df['unixtime'].apply(lambda x: int(datetime.timestamp(datetime.fromisoformat(x.replace("Z", "+00:00")))))
@@ -103,6 +105,11 @@ class DataHandler():
     
     def insert_pool_tokens_metadata(self, data):
         df = DataHandler.format_pool_tokens_metadata(data)
+        df.to_sql("pool_tokens", self.conn, if_exists="replace", index=False)
+        self.conn.commit()
+
+    def insert_pool_tokens_messari_metadata(self, data):
+        df = DataHandler.format_pool_tokens_messari_metadata(data)
         df.to_sql("pool_tokens", self.conn, if_exists="replace", index=False)
         self.conn.commit()
 
@@ -122,7 +129,7 @@ class DataHandler():
                 totalValueLockedUSD,
                 inputTokenBalances,
                 inputTokenWeights,
-                approxTimestamp,
+                timestamp,
                 outputTokenSupply
             ) VALUES (?, ?, ?, ?, ?, ?, ?)
             """
@@ -244,6 +251,7 @@ class DataHandler():
         for col in ['baseApr']:
             df[col] = df[col].astype(float)
         df['coins'] = df['coins'].apply(lambda x: json.dumps(x))
+        df['inputTokens'] = df['coins'].apply(lambda x: json.dumps(x))
         return df
 
     @staticmethod
@@ -259,7 +267,13 @@ class DataHandler():
         return df
     
     @staticmethod
-    def format_pool_data(data, start_timestamp, end_timestamp):
+    def format_pool_tokens_messari_metadata(data):
+        df = pd.DataFrame([[k, coin] for k,v in data.items() for coin in v['coins']], columns=['pool_id', 'token_id'])
+        return df
+    
+    @staticmethod
+    def format_pool_data(data):
+        hack = DataHandler()
         df = pd.DataFrame([x for y in data for x in y])
         if len(df) == 0:
             return df
@@ -269,10 +283,10 @@ class DataHandler():
             df[col] = df[col].astype(int)
         df['inputTokenWeights'] = df['inputTokenWeights'].apply(lambda x: json.dumps(list(map(float, x))))
         df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: json.dumps(list(map(int, x))))
-        df = df.sort_values(by='block')
-        df['approxTimestamp'] = np.linspace(start_timestamp, end_timestamp, len(df), dtype=int)
+        if 'timestamp' not in df.columns:
+            df['timestamp'] = df['block'].apply(lambda x: hack.get_block_timestamp(x)[0]['timestamp'])
         # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
-        df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'approxTimestamp', 'outputTokenSupply']]
+        df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'timestamp', 'outputTokenSupply']]
         return df
 
     @staticmethod
@@ -379,14 +393,15 @@ class DataHandler():
         metadata = {row["id"]: row for row in results}
         for data in metadata.values():
             data['coins'] = json.loads(data['coins'])
+            data['inputTokens'] = json.loads(data['inputTokens'])
         return metadata
 
     def get_pool_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        results = self._execute_query('pool_data', pool_id=pool_id, start=start, end=end, timecol='approxTimestamp')
+        results = self._execute_query('pool_data', pool_id=pool_id, start=start, end=end, timecol='timestamp')
         df = pd.DataFrame.from_dict(results)
         df['inputTokenWeights'] = df['inputTokenWeights'].apply(json.loads)
         df['inputTokenBalances'] = df['inputTokenBalances'].apply(json.loads)
-        df = df.set_index(pd.to_datetime(df['approxTimestamp'], unit='s'))
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
     
     def get_swaps_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:

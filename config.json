@@ -27,6 +27,7 @@
         "BUSD" : ["chainlink", "0x833D8Eb16D306ed1FbB5D7A2E019e106B960965A"],
         "LUSD" : ["chainlink", "0x3D7aE7E594f2f2091Ad8798313450130d0Aba3a0"],
         "sUSD" : ["chainlink", "0xad35Bd71b9aFE6e4bDc266B345c198eaDEf9Ad94"],
-        "stETH" : ["chainlink", "0xCfE54B5cD566aB89272946F602D76Ea879CAb4a8"]
+        "stETH" : ["chainlink", "0xCfE54B5cD566aB89272946F602D76Ea879CAb4a8"],
+        "USDN" : ["chainlink", "0x099c9588D8C6F7579C89014e59002881CE0c46A1"]
     }
 } 

@@ -1,17 +1,20 @@
-import requests as req
 import nest_asyncio
 import asyncio
 import aiohttp
 import os
 import json
-import ccxt.async_support as ccxt
 import logging
+
+import ccxt.async_support as ccxt
+import requests as req
+
 from datetime import datetime, timedelta
 from typing import Any, List, Tuple, Callable, Dict, Union
-from .queries import queries
 from web3 import Web3
 from dotenv import load_dotenv
 from tenacity import retry, stop_after_attempt, after_log
+
+from ..queries import queries
 
 load_dotenv()
 nest_asyncio.apply()
@@ -67,11 +70,15 @@ class DataFetcher():
     @staticmethod
     @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_pool_metadata(pool_id, datetime_):
-        url = DataFetcher.get_url('cvx')
+        cvx_url = DataFetcher.get_url('cvx')
+        messari_url = DataFetcher.get_url('messari')
         _, block = DataFetcher.get_block(datetime_)
-        query = queries['pool'](pool_id=pool_id, block=block)
-        res = req.post(url, json={'query': query})
-        return res.json()['data']['pool']
+        cvx_query = queries['pool'](pool_id=pool_id, block=block)
+        cvx_res = req.post(cvx_url, json={'query': cvx_query})
+        messari_query = queries['messari_pool_tokens'](pool_id=pool_id, block=block)
+        data = cvx_res.json()['data']['pool']
+        data['inputTokens'] = [x['id'] for x in req.post(messari_url, json={'query': messari_query}).json()['data']['liquidityPool']['inputTokens']]
+        return data
     
     @staticmethod
     def get_pools_metadata(pools):
@@ -223,6 +230,7 @@ class DataFetcher():
     ) -> Any:
         """
         Get pool reserves data from Messari subgraph.
+        TODO: Add timestamp using Web3 INFURA fetch for blocks not in the csvs
         """
         return self.execute_queries(start_block, end_block, pool_id, 'messari', 'liquidityPool', step_size, False)
     
@@ -387,6 +395,7 @@ class DataFetcher():
         if token == "0x674C6Ad92Fd080e4004b2312b45f796a192D27a0":
             roundnr = 1 # For USDN (has 0 phases?) # Sep 30 2022
         elif token == "0xa693b19d2931d498c5b318df961919bb4aee87a5":
+            # NOTE: UST actually uses ccxt but we cross-checked with Chainlink
             roundnr = 18446744073709551766 # For UST (has two phases) # April 6th 2022
         else:
             roundnr = self.search_rounds(contract, start_timestamp)

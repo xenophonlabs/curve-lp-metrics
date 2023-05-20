@@ -18,14 +18,15 @@ CREATE TABLE IF NOT EXISTS pools (
     name TEXT,
     poolType TEXT,
     virtualPrice INTEGER,
-    symbol TEXT
+    symbol TEXT,
+    inputTokens TEXT
 );
 
 -- used to backfill 2022-01-01 to 2022-05-01
 CREATE TABLE IF NOT EXISTS block_timestamps (
     block INTEGER PRIMARY KEY,
-    timestamp INTEGER,
-)
+    timestamp INTEGER
+);
 
 -- Storing pool <-> token one-to-many relationship. Ignore this table for now
 CREATE TABLE IF NOT EXISTS pool_tokens (
@@ -64,9 +65,16 @@ CREATE TABLE IF NOT EXISTS pool_data (
     totalValueLockedUSD REAL,
     inputTokenBalances TEXT,
     inputTokenWeights TEXT,
-    approxTimestamp INTEGER,
+    timestamp INTEGER,
     outputTokenSupply NUMERIC,
     UNIQUE (pool_id, block)
+);
+
+-- Storing token mapping for pool data from Messari
+CREATE TABLE IF NOT EXISTS pool_tokens_messari (
+    pool_id TEXT REFERENCES pools (id),
+    token_id TEXT REFERENCES tokens (id),
+    PRIMARY KEY (pool_id, token_id)
 );
 
 -- Storing lp events NOTE: we could avoid json TEXT repr for tokenAmounts by storing as a separate table

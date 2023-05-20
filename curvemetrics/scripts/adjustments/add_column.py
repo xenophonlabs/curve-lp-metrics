@@ -1,18 +1,19 @@
 """
-Need to add outputTokenSupply to table
+Need to add column to pool_data table.
+Used to add outputTokenSupply and inputTokens
 
 NOTE: Modify this script to add new column to SQL table.
 """
 import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
 import logging
 import asyncio
-from pandas import Int64Dtype as Int64
+import json
 
-from ..datafetcher import DataFetcher
-from ..datahandler import DataHandler
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+from ...src.classes.datafetcher import DataFetcher
+from ...src.classes.datahandler import DataHandler
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
@@ -21,25 +22,32 @@ LOGGER.addHandler(logging.StreamHandler())
 datahandler = DataHandler()
 token_metadata = datahandler.get_token_metadata()
 pool_metadata = datahandler.get_pool_metadata()
+datafetcher = DataFetcher(token_metadata=token_metadata)
 
-def get_output_token_supply(pool, start, end):
+start = datetime(2022, 1, 1)
+end = datetime(2023, 5, 1)
+
+PROCESSED = []
+COL = 'inputTokens'
+
+def get(pool, start, end):
 
     _, min_block = DataFetcher.get_block(start)
     _, max_block = DataFetcher.get_block(end)
 
     data = datafetcher.get_pool_data(min_block, max_block, pool, step_size=1)
     df = pd.DataFrame([x for y in data for x in y])
-    df = df[['block', 'outputTokenSupply']]
+    df = df[['block', COL]]
     df['block'] = df['block'].astype(int)
-    df['outputTokenSupply'] = df['outputTokenSupply'].astype(object)
+    df[COL] = df[COL].apply(lambda x: json.dumps([y['id'] for y in x]))
 
     return df
 
-def update_output_token_supply(df, pool):
+def insert(df, pool):
     for _, row in df.iterrows():
         sql = f"""
             UPDATE pool_data
-            SET outputTokenSupply = {row['outputTokenSupply']}
+            SET {COL} = '{row[COL]}'
             WHERE block = {row['block']} AND pool_id = '{pool}';
         """
         datahandler.conn.execute(sql)
@@ -47,23 +55,15 @@ def update_output_token_supply(df, pool):
 
 def update_chunk(pool, start, end):
     LOGGER.info(f"\n[{datetime.now()}] Executing {start} to {end}")
-    LOGGER.info(f"\n[{datetime.now()}] Fetching Output Token Supply")
-    df = get_output_token_supply(pool, start, end)
+    LOGGER.info(f"\n[{datetime.now()}] Fetching new data")
+    df = get(pool, start, end)
     LOGGER.info(f"\n[{datetime.now()}] Inserting")
-    update_output_token_supply(df, pool)
+    insert(df, pool)
     LOGGER.info(f"\n[{datetime.now()}] Finished")
-
-start = datetime(2022, 1, 1)
-end = datetime(2023, 5, 1)
-
-PROCESSED = []
 
 async def main():
     rel = relativedelta(days=1)
     try:
-        global datafetcher
-        datafetcher = DataFetcher(token_metadata=token_metadata)
-
         for pool in pool_metadata:
             curr = start
             if pool in PROCESSED:
