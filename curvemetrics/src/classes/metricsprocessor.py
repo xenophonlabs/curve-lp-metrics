@@ -29,11 +29,9 @@ class MetricsProcessor:
         return mydate
     
     def normalize(self, row, pool_id):
-        new_balances = []
         tokens = self.pool_metadata[pool_id]['inputTokens']
-        for i, balance in enumerate(row):
-            decimals = self.token_metadata[tokens[i]]['decimals']
-            new_balances.append(balance/10**decimals)
+        decimals = [self.token_metadata[token]['decimals'] for token in tokens]
+        new_balances = [balance / 10**decimal for balance, decimal in zip(row, decimals)]
         return new_balances
     
     def process_metrics_for_pool(self, pool_id, pool_data, swaps_data, lp_data):
@@ -43,8 +41,10 @@ class MetricsProcessor:
         pool_data['inputTokenBalances'] = pool_data['inputTokenBalances'].apply(lambda x: self.normalize(x, pool_id))
         pool_data['inputTokenWeights'] = pool_data['inputTokenWeights'].apply(lambda x: self.normalize(x, pool_id))
 
-        metrics.append(MetricsProcessor.gini(pool_data, freq=self.freq))
-        metrics.append(MetricsProcessor.shannons_entropy(pool_data, freq=self.freq))
+        metrics.extend([
+            MetricsProcessor.gini(pool_data, freq=self.freq),
+            MetricsProcessor.shannons_entropy(pool_data, freq=self.freq)
+        ])
 
         tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))
 
@@ -328,7 +328,7 @@ class MetricsProcessor:
         return -1 * df.apply(likelihood, axis=1).sum()
 
     @staticmethod
-    def _pin(params):
+    def pin(params):
         """
         Calculate PIN value given the params.
 
@@ -356,6 +356,41 @@ class MetricsProcessor:
         opt_params = minimize(MetricsProcessor.pin_likelihood_EHO, initial_params, args = (df),method = 'Nelder-Mead').x
         return MetricsProcessor._pin(opt_params)
     
+    # NOTE: 1Inch executor contract is considered a "buyer" (i.e. not the actual address that
+    # submitted the 1Inch transaction). This is okay when looking at sharks: we can assume
+    # sharks are less likely to be going through 1Inch.
+
+    @staticmethod
+    def rolling_pin(df, token, window=timedelta('1d'), freq='1h'):
+        """
+        Calculate PIN values for each resampled period. We take a swaps_df, convert it into 
+        a timeseries dataframe of "Buy" and "Sell" columns (which count swaps for a token).
+        Then we partition our DF into windows of size `window` and calculate the PIN value
+        on that window. This PIN corresponds to the value of the last timestamp in the window.
+
+        @Params
+            df (pd.DataFrame): swaps_df
+            window (int): window size (e.g. 100 minutes, or 100 hours, etc..)
+            freq (str): resample frequency
+        
+        @Returns
+            PIN (pd.Series): PIN values for each resampled period
+        """
+        token_df = df.copy()
+        token_df['Buy'] = (token_df['tokenBought'] == token)
+        token_df['Sell'] = (token_df['tokenSold'] == token)
+        token_df['timestamp'] = token_df['timestamp'].apply(datetime.fromtimestamp)
+        token_df = token_df.set_index('timestamp')
+        token_df = token_df.resample(freq).agg({'Buy': 'sum', 'Sell': 'sum'})
+
+        curr = token_df.index[0]
+        end = token_df.index[-1]
+        while curr <= end - window:
+            token_df.loc[curr+window, "PIN"] = MetricsProcessor.pin_period(token_df.loc[curr:curr+window])
+            curr += window
+        
+        return token_df
+
     ### Markout
 
     @staticmethod
@@ -395,39 +430,3 @@ class MetricsProcessor:
     
     
     ### Sharks
-
-    # NOTE: 1Inch executor contract is considered a "buyer" (i.e. not the actual address that
-    # submitted the 1Inch transaction). This is okay when looking at sharks: we can assume
-    # sharks are less likely to be going through 1Inch.
-
-    # @staticmethod
-    # def pin(df, token, window=100, freq='1h'):
-    #     """
-    #     Calculate PIN values for each resampled period. We take a swaps_df, convert it into 
-    #     a timeseries dataframe of "Buy" and "Sell" columns (which count swaps for a token).
-    #     Then we partition our DF into windows of size `window` and calculate the PIN value
-    #     on that window. This PIN corresponds to the value of the last timestamp in the window.
-
-    #     @Params
-    #         df (pd.DataFrame): swaps_df
-    #         window (int): window size (e.g. 100 minutes, or 100 hours, etc..)
-    #         freq (str): resample frequency
-        
-    #     @Returns
-    #         PIN (pd.Series): PIN values for each resampled period
-    #     """
-    #     token_df = df.copy()
-    #     token_df['Buy'] = (token_df['tokenBought'] == token)
-    #     token_df['Sell'] = (token_df['tokenSold'] == token)
-    #     token_df['timestamp'] = token_df['timestamp'].apply(datetime.fromtimestamp)
-    #     token_df = token_df.set_index('timestamp')
-    #     token_df = token_df.resample(freq).agg({'Buy': 'sum', 'Sell': 'sum'})
-
-    #     def rolling_apply(df, delta=timedelta(days=1)):
-    #         curr = df.index[0]
-    #         end = df.index[-1]
-    #         while curr <= end - delta:
-    #             print(curr, curr+delta)
-    #             df.loc[curr+delta, "PIN"] = pin(df.loc[curr:curr+delta])
-    #             curr += timedelta(hours=6) # TODO: Fix this with the actual step size  
-    #         return df

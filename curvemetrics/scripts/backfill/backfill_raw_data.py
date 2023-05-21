@@ -77,12 +77,23 @@ async def main(start: str, end: str):
                 print(f"[{datetime.now()}] {token_metadata[token]['symbol']} assumed to be = ETH. Skipping...\n")
                 continue
 
-            elif token_metadata[token]['symbol'] in ["3Crv", "frxETH", "cvxCRV", "USDN"]:
+            elif token_metadata[token]['symbol'] in ["3Crv", "frxETH", "cvxCRV"]:
                 print(f"[{datetime.now()}] TODO: Add support for {token_metadata[token]['symbol']}. Skipping...\n")
                 continue
 
+            elif token_metadata[token]['symbol'] == "USDN":
+                if token_start_ts > 1635284389:
+                    print(f"[{datetime.now()}] USDN only indexed from 1635284389 2023-02-07 13:32:35. Skipping...")
+                    continue
+                elif token_start_ts < 1635284389 < token_end_ts:
+                    print(f"[{datetime.now()}] USDN only indexed from 1635284389 2021-10-26 21:39:49. Setting start ts to 1661444040.")
+                    token_start_ts = 1635284389
+                elif token_end_ts > 1675776755:
+                    token_end_ts = 1675776755
+                    print(f"[{datetime.now()}] USDN only indexed until 1675776755 2023-02-07 13:32:35. Skipping...")
+
             elif token_metadata[token]['symbol'] == "UST":
-                if end_ts > 1653667380:
+                if token_end_ts > 1653667380:
                     token_end_ts = 1653667380
                     print(f"[{datetime.now()}] UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to {datetime.fromtimestamp(end_ts)}.")
                 
