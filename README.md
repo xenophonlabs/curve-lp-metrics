@@ -8,6 +8,9 @@ source venv/bin/activate
 python3 -m pip install -r requirements.txt
 ```
 
+# Dependencies
+Don't need R
+
 # Metrics
 
 <Describe metrics>

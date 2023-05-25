@@ -4,7 +4,6 @@ import os
 import logging
 
 import pandas as pd
-import numpy as np
 
 from typing import Dict, List
 from datetime import datetime
@@ -251,7 +250,7 @@ class DataHandler():
         for col in ['baseApr']:
             df[col] = df[col].astype(float)
         df['coins'] = df['coins'].apply(lambda x: json.dumps(x))
-        df['inputTokens'] = df['coins'].apply(lambda x: json.dumps(x))
+        df['inputTokens'] = df['inputTokens'].apply(lambda x: json.dumps(x))
         return df
 
     @staticmethod
@@ -332,6 +331,20 @@ class DataHandler():
         df = df[['timestamp', 'pool_id', 'metric', 'value']]
         return df
 
+    def format_pool_snapshots(data):
+        df = pd.DataFrame.from_dict([x for y in data for x in y])
+        for col in ['A', 'offPegFeeMultiplier', 'timestamp', 'virtualPrice', 'lastPricesTimestamp', 'block_gte', 'block_lt']:
+            df[col] = df[col].astype(int)
+        for col in ['adminFee', 'fee', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'lpFeesUSD']:
+            df[col] = df[col].astype(float)
+        for col in ['normalizedReserves', 'reserves']:
+            df[col] = df[col].apply(lambda x: [int(y) for y in x])
+        for col in ['reservesUSD']:
+            df[col] = df[col].apply(lambda x: [float(y) for y in x])
+        # df = df.sort_values(by='timestamp')
+        # df.index = df['timestamp'].apply(datetime.fromtimestamp)
+        return df
+
     @staticmethod
     def format_pool_aggregate_metrics(data):
         pass
@@ -346,81 +359,64 @@ class DataHandler():
 
     def _execute_query(
             self, 
-            table: str, 
-            pool_id: str=None,
-            token_id: str=None,
-            start: int=None,
-            end: int=None,
-            timecol: str='timestamp'
+            query: str,
+            params: List=[],
         ) -> Dict:
         cursor = self.conn.cursor()
-        
-        to_execute = f'SELECT * FROM {table}'
-        params = []
-
-        if pool_id or token_id:
-            to_execute += ' WHERE'
-            if pool_id:
-                to_execute += ' pool_id=?'
-                params.append(pool_id)
-            elif token_id:
-                to_execute += ' token_id=?'
-                params.append(token_id)
-            if start:
-                to_execute += f' AND {timecol} >= ?'
-                params.append(start)
-            if end:
-                to_execute += f' AND {timecol} <= ?'
-                params.append(end)
-            to_execute += f' ORDER BY {timecol} ASC'
-        
         try:
-            cursor.execute(to_execute, params)
+            cursor.execute(query, params)
             results = cursor.fetchall()
         except sqlite3.Error as e:
             raise sqlite3.Error(f'Error executing query: {e}')
         finally:
             cursor.close()
-
         return results
     
     def get_token_metadata(self) -> Dict:
-        results = self._execute_query("tokens")
-        return {row["id"]: row for row in results}
+        query = f'SELECT * FROM tokens'
+        results = self._execute_query(query)
+        metadata = {row["id"]: row for row in results}
+        self.token_metadata = metadata
+        return metadata
     
     def get_pool_metadata(self) -> Dict:
-        results = self._execute_query("pools")
+        query = f'SELECT * FROM pools'
+        results = self._execute_query(query)
         metadata = {row["id"]: row for row in results}
         for data in metadata.values():
             data['coins'] = json.loads(data['coins'])
             data['inputTokens'] = json.loads(data['inputTokens'])
+        self.pool_metadata = metadata
         return metadata
 
     def get_pool_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        results = self._execute_query('pool_data', pool_id=pool_id, start=start, end=end, timecol='timestamp')
+        query = f'SELECT * FROM pool_data WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        results = self._execute_query(query, params=[pool_id, start, end])
         df = pd.DataFrame.from_dict(results)
-        df['inputTokenWeights'] = df['inputTokenWeights'].apply(json.loads)
-        df['inputTokenBalances'] = df['inputTokenBalances'].apply(json.loads)
+        df['inputTokenWeights'] = df['inputTokenWeights'].apply(json.loads).apply(lambda x: self.normalize(x, pool_id))
+        df['inputTokenBalances'] = df['inputTokenBalances'].apply(json.loads).apply(lambda x: self.normalize(x, pool_id))
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
     
     def get_swaps_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        results = self._execute_query('swaps', pool_id=pool_id, start=start, end=end)
+        query = f'SELECT * FROM swaps WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        results = self._execute_query(query, params=[pool_id, start, end])
         df = pd.DataFrame.from_dict(results)
-        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s')).sort_index()
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
     
     def get_lp_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        results = self._execute_query('lp_events', pool_id=pool_id, start=start, end=end)
+        query = f'SELECT * FROM lp_events WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        results = self._execute_query(query, params=[pool_id, start, end])
         df = pd.DataFrame.from_dict(results)
-        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s')).sort_index()
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
     
     def get_ohlcv_data(self, token_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        results = self._execute_query('token_ohlcv', token_id=token_id, start=start, end=end)
+        query = f'SELECT * FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        results = self._execute_query(query, params=[token_id, start, end])
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
-        df = df.sort_index()
         df = df.resample('1min').ffill()
         return df
 
@@ -439,3 +435,9 @@ class DataHandler():
             cursor.close()
 
         return results
+    
+    def normalize(self, row, pool_id):
+        tokens = self.pool_metadata[pool_id]['inputTokens']
+        decimals = [self.token_metadata[token]['decimals'] for token in tokens]
+        new_balances = [balance / 10**decimal for balance, decimal in zip(row, decimals)]
+        return new_balances

@@ -1,0 +1,3 @@
+[submodule "curvemetrics/src/detection/bocd"]
+	path = curvemetrics/src/detection/bocd
+	url = https://github.com/hildensia/bayesian_changepoint_detection.git
