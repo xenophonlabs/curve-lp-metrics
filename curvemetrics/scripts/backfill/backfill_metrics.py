@@ -57,7 +57,17 @@ def main(start: str, end: str):
             swaps_data = datahandler.get_swaps_data(pool, pool_start_ts, end_ts)
             lp_data = datahandler.get_lp_data(pool, pool_start_ts, end_ts)
 
-            pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data)
+            tokens = {token_metadata[v]['symbol']:v for v in set(swaps_data['tokenBought'])}
+            ohlcvs = {}
+            for k, v in tokens.items():
+                if k == "3Crv":
+                    continue
+                ohlcv = datahandler.get_ohlcv_data(v, start=start_ts, end=end_ts)
+                ohlcvs[v] = ohlcv
+
+            pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+            lp_share_price = metricsprocessor.lp_share_price(pool, pool_data, ohlcvs)
+            cps, error, vp, rp = metricsprocessor.true_cps(lp_share_price, snapshots)
             # datahandler.insert
 
             print(f"[{datetime.now()}] Finished processing pool {pool_metadata[pool]['name']}.\n")

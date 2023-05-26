@@ -111,6 +111,29 @@ CREATE TABLE IF NOT EXISTS swaps (
     block INTEGER
 );
 
+-- Snapshots
+CREATE TABLE IF NOT EXISTS snapshots (
+    id TEXT PRIMARY KEY,
+    A INTEGER,
+    adminFee REAL,
+    fee REAL,
+    timestamp INTEGER,
+    normalizedReserves TEXT,
+    offPegFeeMultiplier REAL,
+    reserves TEXT,
+    virtualPrice INTEGER,
+    lpPriceUSD REAL,
+    tvl REAL,
+    totalDailyFeesUSD REAL,
+    reservesUSD TEXT,
+    lpFeesUSD REAL,
+    lastPricesTimestamp INTEGER,
+    lastPrices TEXT,
+    pool_id TEXT REFERENCES pools (id),
+    block_gte INTEGER,
+    block_lt INTEGER
+);
+
 -- storing raw pool metrics
 CREATE TABLE IF NOT EXISTS pool_metrics (
     timestamp INTEGER,
@@ -149,4 +172,13 @@ CREATE TABLE IF NOT EXISTS token_aggregates (
     window_size TEXT,
     value REAL,
     PRIMARY KEY (token_id, metric, type, window_size, timestamp)
+);
+
+-- store changepoints
+CREATE TABLE IF NOT EXISTS changepoints (
+    PRIMARY KEY (pool_id, model, metric, timestamp)
+    pool_id TEXT REFERENCES pools (id),
+    model TEXT,
+    metric TEXT,
+    timestamp INTEGER
 );

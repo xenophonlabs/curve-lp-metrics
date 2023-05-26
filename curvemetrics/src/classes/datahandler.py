@@ -229,6 +229,47 @@ class DataHandler():
         df.apply(insert_lp_row, axis=1)
         # Commit the changes
         self.conn.commit()
+
+    def insert_pool_snapshots(self, data):
+        # Convert JSON data to a pandas DataFrame
+        df = DataHandler.format_pool_snapshots(data)
+
+        if len(df) == 0:
+            return
+
+        # Insert the DataFrame into the `lp_events` table
+        def insert_snapshots_row(row):
+            # Create an SQL INSERT OR IGNORE statement
+            sql = """
+            INSERT OR IGNORE INTO snapshots (
+                id,
+                A,
+                adminFee,
+                fee,
+                timestamp,
+                normalizedReserves,
+                offPegFeeMultiplier,
+                reserves,
+                virtualPrice,
+                lpPriceUSD,
+                tvl,
+                totalDailyFeesUSD,
+                reservesUSD,
+                lpFeesUSD,
+                lastPricesTimestamp,
+                lastPrices,
+                pool_id,
+                block_gte,
+                block_lt
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """
+            # Insert the row into the `lp_events` table
+            self.conn.execute(sql, row)
+
+        # Apply the custom function to each row in the DataFrame
+        df.apply(insert_snapshots_row, axis=1)
+        # Commit the changes
+        self.conn.commit()
     
     def insert_pool_metrics(self, data):
         pass
@@ -338,11 +379,10 @@ class DataHandler():
         for col in ['adminFee', 'fee', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'lpFeesUSD']:
             df[col] = df[col].astype(float)
         for col in ['normalizedReserves', 'reserves']:
-            df[col] = df[col].apply(lambda x: [int(y) for y in x])
+            df[col] = df[col].apply(lambda x: json.dumps(list(map(int, x))))
         for col in ['reservesUSD']:
-            df[col] = df[col].apply(lambda x: [float(y) for y in x])
-        # df = df.sort_values(by='timestamp')
-        # df.index = df['timestamp'].apply(datetime.fromtimestamp)
+            df[col] = df[col].apply(lambda x: json.dumps(list(map(float, x))))
+        df = df[['id', 'A', 'adminFee', 'fee', 'timestamp', 'normalizedReserves', 'offPegFeeMultiplier', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'reservesUSD', 'lpFeesUSD', 'lastPricesTimestamp', 'lastPrices', 'pool_id', 'block_gte', 'block_lt']]
         return df
 
     @staticmethod

@@ -260,7 +260,7 @@ class DataFetcher():
         """
         return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'liquidityEvents', step_size, True)
     
-    # @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_snapshots(
         self,
         start_ts: int,
@@ -346,11 +346,13 @@ class DataFetcher():
         symbol = self.token_metadata[token]['symbol']
         return f'{symbol}/USD'.upper()
 
-    def search_rounds(self, contract, desired_timestamp, first_round=18446744073709551617):
+    def search_rounds(self, token, contract, desired_timestamp, first_round=18446744073709551617):
         # Binary search for the round corresponding to the closest timestamp
         latest_round = contract.functions.latestRoundData().call()[0]
-
-        assert latest_round >> 64 == 1, "Binary search only works for 1 underlying aggregator. TODO: Implement for multiple aggregators. https://docs.chain.link/data-feeds/historical-data"
+        if token == "0x674c6ad92fd080e4004b2312b45f796a192d27a0":
+            first_round = 1 # For USDN (has 0 phases?) # Sep 30 2022
+        else:
+            assert latest_round >> 64 == 1, "Binary search only works for 1 underlying aggregator. TODO: Implement for multiple aggregators. https://docs.chain.link/data-feeds/historical-data"
 
         left = first_round
         right = latest_round
@@ -384,21 +386,20 @@ class DataFetcher():
 
         return closest_round
     
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    # @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
     def get_chainlink_prices(self, token, chainlink_address, start_timestamp, end_timestamp):
         chainlink_address = Web3.to_checksum_address(chainlink_address)
         abi = abi = '[{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"description","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint80","name":"_roundId","type":"uint80"}],"name":"getRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"latestRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]'
         client = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{INFURA_KEY}"))
         contract = client.eth.contract(address=chainlink_address, abi=abi)
         symbol = contract.functions.description().call().replace(" ", "")
-        # Testing UST and USDN Chainlink market feeds
-        if token == "0x674C6Ad92Fd080e4004b2312b45f796a192D27a0":
-            roundnr = 1 # For USDN (has 0 phases?) # Sep 30 2022
-        elif token == "0xa693b19d2931d498c5b318df961919bb4aee87a5":
+        
+        # Testing UST
+        if token == "0xa693b19d2931d498c5b318df961919bb4aee87a5":
             # NOTE: UST actually uses ccxt but we cross-checked with Chainlink
             roundnr = 18446744073709551766 # For UST (has two phases) # April 6th 2022
         else:
-            roundnr = self.search_rounds(contract, start_timestamp)
+            roundnr = self.search_rounds(token, contract, start_timestamp)
 
         decimals = contract.functions.decimals().call()
         current_timestamp = 0

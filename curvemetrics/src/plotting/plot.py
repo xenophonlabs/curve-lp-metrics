@@ -10,6 +10,11 @@ plt.rcParams.update({'font.size': 10})
 EPSILON = 1e-7
 
 def bocd_plot_dm(data, maxes, R, sparsity=5, title='', label='', ylab='', file='', show=False):
+    """
+    This requires a different BOCD implementation which retains the p(r_t) matrix for the entire run.
+    Maintaining this matrix creates an O(n^2) memory requirement, which is not feasible for years
+    of minutely data.
+    """
     f = plt.figure(figsize=[12, 10])
 
     gs = gridspec.GridSpec(2, 2, width_ratios=[1, 0.05], wspace=0.05)  # create 2x2 grid, colorbar is 0.05 times the size of the plot
@@ -77,12 +82,12 @@ def bocd_plot(data, maxes, title='', label='', ylab='', file='', show=False):
     else:
         plt.close()
 
-def bocd_plot_comp(metric, port, cps, peaks):
+def bocd_plot_comp(metric, port, true, pred):
 
     f, axs = plt.subplots(2, 1, sharex=True, figsize=(8, 8))
 
-    if len(cps):
-        for cp in cps:
+    if len(true):
+        for cp in true:
             axs[0].axvline(cp, linestyle='--', linewidth=0.5, color='darkgreen')
         axs[0].plot([], [], label='True CPs', color='darkgreen', linestyle='--', linewidth=0.5)
 
@@ -91,9 +96,9 @@ def bocd_plot_comp(metric, port, cps, peaks):
     axs[0].set_ylabel('Price (USD)')
     axs[0].legend()
 
-    if len(peaks):
-        for peak in peaks[:-1]:
-            axs[1].axvline(metric.index[peak], linestyle='--', color='darkred', linewidth=0.5)
+    if len(pred):
+        for p in pred:
+            axs[1].axvline(p, linestyle='--', color='darkred', linewidth=0.5)
         axs[1].plot([], [], color='darkred', linestyle='--', linewidth=0.5, label='Pred CPs')
 
     axs[1].legend()

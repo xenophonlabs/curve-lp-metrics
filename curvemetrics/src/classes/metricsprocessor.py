@@ -56,7 +56,7 @@ class MetricsProcessor:
         for token_id in tokens:
             metrics.extend([
                 MetricsProcessor.net_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
-                MetricsProcessor.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
+                # MetricsProcessor.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
                 # MetricsProcessor.rolling_pin(swaps_data, token_id, self.token_metadata[token_id]['symbol'], window=timedelta(days=7), freq=timedelta(days=1)),
                 # MetricsProcessor.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp', freq=self.freq),
             ])
@@ -64,7 +64,7 @@ class MetricsProcessor:
         for token_idx, token_id in enumerate(self.pool_metadata[pool_id]['coins']):
             metrics.extend([
                 MetricsProcessor.net_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq),
-                MetricsProcessor.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq)
+                # MetricsProcessor.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq)
             ])
         
         metrics_df = pd.concat(metrics, axis=1)
@@ -434,14 +434,14 @@ class MetricsProcessor:
 
         return df['lpSharePrice']
 
-    def true_cps(self, lp_share_price, snapshots, freq = timedelta(minutes=1)):
+    def true_cps(self, lp_share_price, snapshots, freq = timedelta(minutes=1), thresh = 0.05):
         
         vp = (snapshots['virtualPrice']/10**18).resample(freq).mean().fillna(method='ffill')
         rp = lp_share_price.resample(freq).mean().fillna(method='ffill')
 
         error = abs((vp - rp) / vp)
 
-        cps = error[error > 0.05].index
+        cps = error[error > thresh].index
         cps = np.array([cp for i, cp in enumerate(cps) if cp != cps[i-1] + freq])
         
         return cps, error, vp, rp
