@@ -329,6 +329,32 @@ class DataHandler():
     def insert_token_aggregate_metrics(self, data):
         pass
 
+    def insert_changepoints(self, data, pool_id, model, metric):
+        # Convert JSON data to a pandas DataFrame
+        df = DataHandler.format_changepoints(data, pool_id, model, metric)
+
+        if len(df) == 0:
+            return
+
+        # Insert the DataFrame into the `lp_events` table
+        def insert_changepoints_row(row):
+            # Create an SQL INSERT OR IGNORE statement
+            sql = """
+            INSERT OR IGNORE INTO changepoints (
+                pool_id,
+                model,
+                metric,
+                timestamp,
+            ) VALUES (?, ?, ?, ?)
+            """
+            # Insert the row into the `lp_events` table
+            self.conn.execute(sql, row)
+
+        # Apply the custom function to each row in the DataFrame
+        df.apply(insert_changepoints_row, axis=1)
+        # Commit the changes
+        self.conn.commit()
+
     @staticmethod
     def format_pool_metadata(data):
         df = pd.DataFrame.from_dict(data).T.reset_index(drop=True)
@@ -408,6 +434,16 @@ class DataHandler():
         # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
         df = df[['id', 'block', 'liquidityProvider', 'removal', 'timestamp', 'tokenAmounts', 'totalSupply', 'tx', 'pool_id', 'block_gte', 'block_lt']]
         return df
+
+    @staticmethod
+    def format_changepoints(data, pool_id, model, metric):
+        df = pd.DataFrame(data, columns=['timestamp'])
+        df['timestamp'] = df['timestamp'].apply(lambda x: int(datetime.timestamp(x)))
+        df['pool_id'] = pool_id
+        df['model'] = model
+        df['metric'] = metric
+        df = df[['pool_id', 'model', 'metric', 'timestamp']]
+        return df
     
     @staticmethod
     def format_pool_metrics(df, pool_id):
@@ -467,8 +503,11 @@ class DataHandler():
         query = f'SELECT * FROM tokens'
         results = self._execute_query(query)
         metadata = {row["id"]: row for row in results}
-        self.token_metadata = metadata
         return metadata
+
+    @property
+    def token_metadata(self):
+        return self.get_token_metadata()
     
     def get_pool_metadata(self) -> Dict:
         query = f'SELECT * FROM pools'
@@ -477,8 +516,11 @@ class DataHandler():
         for data in metadata.values():
             data['coins'] = json.loads(data['coins'])
             data['inputTokens'] = json.loads(data['inputTokens'])
-        self.pool_metadata = metadata
         return metadata
+
+    @property
+    def pool_metadata(self):
+        return self.get_pool_metadata()
 
     def get_pool_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
         query = f'SELECT * FROM pool_data WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
@@ -512,11 +554,18 @@ class DataHandler():
         return df
 
     def get_ohlcv_data(self, token_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        query = f'SELECT * FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[token_id, start, end])
+        if self.token_metadata[token_id]['symbol'] == "3Crv":
+            query = "SELECT timestamp, lpPriceUSD FROM snapshots WHERE pool_id == ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC"
+            params = ["0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", start, end] # 3Crv pool LP token price
+        else:
+            query = f'SELECT * FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+            params = [token_id, start, end]
+        results = self._execute_query(query, params=params)
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.resample('1min').ffill()
+        if 'lpPriceUSD' in df.columns:
+            df = df.rename(columns={'lpPriceUSD': 'close'})
         return df
     
     def get_pool_metric(self, pool_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
@@ -535,6 +584,15 @@ class DataHandler():
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['value']
         series.name = metric
+        return series
+
+    def get_changepoints(self, pool_id, model, metric, start: int=None, end: int=None) -> pd.Series:
+        query = f'SELECT timestamp FROM changepoints WHERE pool_id = ? AND model = ? AND metric = ? timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        results = self._execute_query(query, params=[pool_id, model, metric, start, end])
+        df = pd.DataFrame.from_dict(results)
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        series = df['timestamp']
+        series.name = 'changepoints'
         return series
 
     def get_block_timestamp(self, block: int):

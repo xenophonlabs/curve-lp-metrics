@@ -444,4 +444,4 @@ class MetricsProcessor:
         cps = error[error > thresh].index
         cps = np.array([cp for i, cp in enumerate(cps) if cp != cps[i-1] + freq])
         
-        return cps, error, vp, rp
+        return cps
