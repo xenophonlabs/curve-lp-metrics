@@ -39,6 +39,8 @@ class BOCD():
 
         self.results = {}
         self.params = self.default_params
+
+        self.cps = None
     
     def update(self, params):
         new_params = {key: params.get(key) or self.default_params.get(key) for key in self.default_params.keys()}
@@ -66,6 +68,8 @@ class BOCD():
     
     def _tune(self, chunk, X, cps):
         results = {}
+        cps = []
+        score = 0
         for a, b, k in chunk:
             self.update({'alpha': a, 'beta': b, 'kappa': k})
             pred = self.predict(X)
@@ -73,8 +77,10 @@ class BOCD():
                 results[(a, b, k)] = (0, 0, 0)
             else:
                 results[(a, b, k)] = f_measure({1: cps}, pred, margin=self.margin, alpha=self.alpha, return_PR=True)
+            if results[(a, b, k)][0] > score:
+                cps = pred
         self.logger.info('Finished processing chunk with alpha=%s, beta=%s, kappa=%s', a, b, k)
-        return results
+        return results, (cps, score)
 
     def tune(self, grid, X, cps):
         num_cpus = cpu_count()
@@ -84,12 +90,12 @@ class BOCD():
         chunks = [grid[i:i + chunk_size] for i in range(0, len(grid), chunk_size)]
 
         with Pool(processes=num_cpus) as pool:
-            result_list = pool.map(lambda args: self._tune(*args), [(chunk, X, cps) for chunk in chunks])
+            result_list, (cps, score) = pool.map(lambda args: self._tune(*args), [(chunk, X, cps) for chunk in chunks])
 
         for result_dict in result_list:
             self.results.update(result_dict)
 
-        return self.results
+        self.cps = max(cps, key=lambda x: x[1])[0]
     
     @property
     def best_params(self):

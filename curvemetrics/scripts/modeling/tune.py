@@ -54,13 +54,11 @@ def main():
 
             model = BOCD()
             model.tune(GRID, X, y_true)
+            datahandler.insert_changepoints(model.cps, pool, 'bocd', metric)
 
             print(f'Results: {model.results}\n')
             print(f'Best Params: {model.best_params}')
             print(f'FPR: {model.best_results}')
-
-            # TODO: insert predicted cps from best_params here? Need to track them in the tune method
-            # datahandler.insert_changepoints(y_pred, pool, 'bocd', metric)
 
             a, b, k = model.best_params
 
