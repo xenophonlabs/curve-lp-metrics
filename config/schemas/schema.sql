@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS swaps (
     block INTEGER
 );
 
--- Snapshots
+-- snapshots
 CREATE TABLE IF NOT EXISTS snapshots (
     id TEXT PRIMARY KEY,
     A INTEGER,

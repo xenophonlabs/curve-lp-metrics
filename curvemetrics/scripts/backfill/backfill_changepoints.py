@@ -37,6 +37,7 @@ def main(start: str, end: str):
     print(f"\n[{datetime.now()}] Processing pool metrics.\n")
 
     try:
+        # Fetch and insert pool data
         for pool in pool_metadata.keys():
 
             print(f"[{datetime.now()}] Processing pool {pool_metadata[pool]['name']}.")
@@ -55,6 +56,7 @@ def main(start: str, end: str):
             pool_data = datahandler.get_pool_data(pool, pool_start_ts, end_ts)
             swaps_data = datahandler.get_swaps_data(pool, pool_start_ts, end_ts)
             lp_data = datahandler.get_lp_data(pool, pool_start_ts, end_ts)
+            snapshots = datahandler.get_snapshots(pool, pool_start_ts, end_ts)
 
             tokens = {token_metadata[v]['symbol']:v for v in set(swaps_data['tokenBought'])}
             ohlcvs = {}
@@ -65,57 +67,39 @@ def main(start: str, end: str):
                 ohlcvs[v] = ohlcv
 
             pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-            datahandler.insert_pool_metrics(pool_metrics)
+            lp_share_price = metricsprocessor.lp_share_price(pool, pool_data, ohlcvs)
+            cps, _, _, _ = metricsprocessor.true_cps(lp_share_price, snapshots)
 
             print(f"[{datetime.now()}] Finished processing pool {pool_metadata[pool]['name']}.\n")
 
+        # Fetch and insert token data
         for token in token_metadata.keys():
 
-            token_start_ts, token_end_ts = start_ts, end_ts 
-
-            print(f"[{datetime.now()}] Processing token {token_metadata[token]['symbol']}.")
-
+            token_start_ts, token_end_ts = start_ts, end_ts # TODO: Check when token was created
+            token_ohlcv = datahandler.get_ohlcv_data(ust, start, end)
 
             if token_metadata[token]['symbol'] == "WETH":
                 print(f"[{datetime.now()}] {token_metadata[token]['symbol']} assumed to be = ETH. Skipping...\n")
                 continue
-
-            elif token_metadata[token]['symbol'] in ["3Crv", "frxETH", "cvxCRV"]:
+    
+            elif token_metadata[token]['symbol'] in ["3Crv", "frxETH", "cvxCRV", "USDN"]:
                 print(f"[{datetime.now()}] TODO: Add support for {token_metadata[token]['symbol']}. Skipping...\n")
                 continue
 
-            elif token_metadata[token]['symbol'] == "USDN":
-                if token_start_ts < 1635284389:
-                    print(f"[{datetime.now()}] USDN only indexed from 1635284389 2021-10-26. Skipping...")
-                    continue
-                elif token_start_ts < 1635284389 < token_end_ts:
-                    print(f"[{datetime.now()}] USDN only indexed from 1635284389 2021-10-26 21:39:49. Setting start ts to 1661444040.")
-                    token_start_ts = 1635284389
-                elif token_end_ts > 1675776755:
-                    token_end_ts = 1675776755
-                    print(f"[{datetime.now()}] USDN only indexed until 1675776755 2023-02-07 13:32:35. Skipping...")
-
             elif token_metadata[token]['symbol'] == "UST":
-                if token_end_ts > 1653667380:
+                if end_ts > 1653667380:
                     token_end_ts = 1653667380
                     print(f"[{datetime.now()}] UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to {datetime.fromtimestamp(end_ts)}.")
-                
-            elif token_metadata[token]['symbol'] == "cbETH":
-                if token_start_ts < 1661444040 < token_end_ts:
-                    print(f"[{datetime.now()}] cbETH only indexed from 1661444040 (2022 12:14:00 PM GMT-04:00 DST). Setting start ts to 1661444040.")
-                    token_start_ts = 1661444040
-                elif token_end_ts < 1661444040:
-                    print(f"[{datetime.now()}] cbETH only indexed from 1661444040 (2022 12:14:00 PM GMT-04:00 DST). Skipping...")
-                    continue
 
-            print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(token_start_ts)}")
-            print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(token_end_ts)}")
+            api, source = config['token_exchange_map'][token_metadata[token]['symbol']]
+            print(f"[{datetime.now()}] Backfilling token {token_metadata[token]['symbol']} OHLCV using {api}.")
 
-            token_ohlcv = datahandler.get_ohlcv_data(token, token_start_ts, token_end_ts)
-            token_metrics = metricsprocessor.process_metrics_for_token(token, token_ohlcv)
-            datahandler.insert_token_metrics(token_metrics)
+            if api == "ccxt":
+                token_data = datafetcher.get_ohlcv(token_start_ts, token_end_ts, token, default_exchange=source)
+            elif api == "chainlink":
+                token_data = datafetcher.get_chainlink_prices(token, source, token_start_ts, token_end_ts)
 
-            print(f"[{datetime.now()}] Finished processing token {token_metadata[token]['symbol']}.\n")
+            datahandler.insert_token_data(token_data)
 
         print(f"[{datetime.now()}] Done :)")
     
@@ -126,7 +110,7 @@ def main(start: str, end: str):
         datahandler.close()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Backfill pool and token metrics in SQL tables.')
+    parser = argparse.ArgumentParser(description='Backfill pool and token data in SQL table.')
     parser.add_argument('start', type=str, help='Start date in format YYYY-MM-DD HH:MM:SS')
     parser.add_argument('end', type=str, help='end date in format YYYY-MM-DD HH:MM:SS')
     args = parser.parse_args()

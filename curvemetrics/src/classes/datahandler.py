@@ -272,13 +272,59 @@ class DataHandler():
         self.conn.commit()
     
     def insert_pool_metrics(self, data):
-        pass
+        # Convert JSON data to a pandas DataFrame
+        df = DataHandler.format_pool_metrics(data)
+
+        if len(df) == 0:
+            return
+
+        # Insert the DataFrame into the `lp_events` table
+        def insert_metrics_row(row):
+            # Create an SQL INSERT OR IGNORE statement
+            sql = """
+            INSERT OR IGNORE INTO pool_metrics (
+                timestamp,
+                pool_id,
+                metric,
+                value,
+            ) VALUES (?, ?, ?, ?)
+            """
+            # Insert the row into the `lp_events` table
+            self.conn.execute(sql, row)
+
+        # Apply the custom function to each row in the DataFrame
+        df.apply(insert_metrics_row, axis=1)
+        # Commit the changes
+        self.conn.commit()
 
     def insert_pool_aggregate_metrics(self, data):
         pass
 
     def insert_token_metrics(self, data):
-        pass
+        # Convert JSON data to a pandas DataFrame
+        df = DataHandler.format_token_metrics(data)
+
+        if len(df) == 0:
+            return
+
+        # Insert the DataFrame into the `lp_events` table
+        def insert_metrics_row(row):
+            # Create an SQL INSERT OR IGNORE statement
+            sql = """
+            INSERT OR IGNORE INTO token_metrics (
+                timestamp,
+                token_id,
+                metric,
+                value,
+            ) VALUES (?, ?, ?, ?)
+            """
+            # Insert the row into the `lp_events` table
+            self.conn.execute(sql, row)
+
+        # Apply the custom function to each row in the DataFrame
+        df.apply(insert_metrics_row, axis=1)
+        # Commit the changes
+        self.conn.commit()
 
     def insert_token_aggregate_metrics(self, data):
         pass
@@ -390,8 +436,13 @@ class DataHandler():
         pass
 
     @staticmethod
-    def format_token_metrics(data):
-        pass
+    def format_token_metrics(df, token_id):
+        df = df.melt(var_name='metric', value_name='value', ignore_index=False)
+        df = df.reset_index(names='timestamp')
+        df['timestamp'] = df['timestamp'].apply(lambda x: int(datetime.timestamp(x)))
+        df['token_id'] = token_id
+        df = df[['timestamp', 'token_id', 'metric', 'value']]
+        return df
 
     @staticmethod
     def format_token_aggregate_metrics(data):
@@ -451,7 +502,15 @@ class DataHandler():
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
-    
+
+    def get_pool_snapshots(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
+        query = f'SELECT * FROM snapshots WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        results = self._execute_query(query, params=[pool_id, start, end])
+        df = pd.DataFrame.from_dict(results)
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        df = df.sort_values(by='timestamp')
+        return df
+
     def get_ohlcv_data(self, token_id: str, start: int=None, end: int=None) -> pd.DataFrame:
         query = f'SELECT * FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[token_id, start, end])
@@ -459,6 +518,24 @@ class DataHandler():
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.resample('1min').ffill()
         return df
+    
+    def get_pool_metric(self, pool_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
+        query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        results = self._execute_query(query, params=[pool_id, metric, start, end])
+        df = pd.DataFrame.from_dict(results)
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        series = df['value']
+        series.name = metric
+        return series
+
+    def get_token_metric(self, token_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
+        query = f'SELECT timestamp, value FROM token_metrics WHERE pool_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        results = self._execute_query(query, params=[token_id, metric, start, end])
+        df = pd.DataFrame.from_dict(results)
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        series = df['value']
+        series.name = metric
+        return series
 
     def get_block_timestamp(self, block: int):
         cursor = self.conn.cursor()
