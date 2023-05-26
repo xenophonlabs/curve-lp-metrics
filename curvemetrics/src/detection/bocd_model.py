@@ -1,6 +1,6 @@
 from functools import partial
 
-from .bocd.bayesian_changepoint_detection.online_likelihoods import StudentT as online_ll
+from .bocd.bayesian_changepoint_detection.online_likelihoods import StudentT
 from .bocd.bayesian_changepoint_detection.bayesian_models import online_changepoint_detection
 from .bocd.bayesian_changepoint_detection.hazard_functions import constant_hazard
 
@@ -8,7 +8,7 @@ def _constant_hazard(lambda_):
     return partial(constant_hazard, lambda_)
 
 def _log_likelihood_class(alpha, beta, kappa, mu):
-    return online_ll.StudentT(alpha=alpha, beta=beta, kappa=kappa, mu=mu)
+    return StudentT(alpha=alpha, beta=beta, kappa=kappa, mu=mu)
 
 def parse_args(**kwargs):
     lambda_ = kwargs.get("lambda_", 100)
