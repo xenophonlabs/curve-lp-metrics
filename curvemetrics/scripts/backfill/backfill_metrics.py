@@ -3,21 +3,11 @@ Backfill metrics for given time period into SQL database.
 """
 import argparse
 import asyncio
-import os
-import json
 
 from datetime import datetime
 
 from ...src.classes.metricsprocessor import MetricsProcessor
 from ...src.classes.datahandler import DataHandler
-
-STEP_SIZE = 10 # NOTE: increasing this risks losing txs, 10 is probably safe
-
-def load_config():
-    # Load the configuration
-    with open(os.path.join(os.path.abspath('config.json')), "r") as config_file:
-        config = json.load(config_file)
-    return config
 
 def main(start: str, end: str):
 
@@ -31,8 +21,6 @@ def main(start: str, end: str):
     start_ts, end_ts = datetime.timestamp(start), datetime.timestamp(end)
 
     metricsprocessor = MetricsProcessor(pool_metadata, token_metadata)
-
-    config = load_config()
 
     print(f"\n[{datetime.now()}] Processing pool metrics.\n")
 

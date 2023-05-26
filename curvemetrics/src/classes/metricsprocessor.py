@@ -411,7 +411,7 @@ class MetricsProcessor:
 
     ### Sharks
 
-    def lp_share_price(self, pool, pool_data, ohlcvs, thresh=0.99) -> pd.Series:
+    def lp_share_price(self, pool, pool_data, ohlcvs) -> pd.Series:
         """
         Computes the LP Share Price for the given pool and the changepoints.
         """

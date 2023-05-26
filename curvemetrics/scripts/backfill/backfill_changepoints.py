@@ -1,5 +1,6 @@
 """
-Backfill metrics for given time period into SQL database.
+Backfill changepoints for given time period into SQL database.
+Assumes we have optimal hyperparameters for models in config.json.
 """
 import argparse
 import asyncio

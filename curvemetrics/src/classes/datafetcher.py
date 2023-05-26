@@ -4,6 +4,7 @@ import aiohttp
 import os
 import json
 import logging
+import time
 
 import ccxt.async_support as ccxt
 import requests as req
@@ -346,41 +347,51 @@ class DataFetcher():
         symbol = self.token_metadata[token]['symbol']
         return f'{symbol}/USD'.upper()
 
-    def search_rounds(self, token, contract, desired_timestamp, first_round=18446744073709551617):
-        # Binary search for the round corresponding to the closest timestamp
-        latest_round = contract.functions.latestRoundData().call()[0]
-        if token == "0x674c6ad92fd080e4004b2312b45f796a192d27a0":
-            first_round = 1 # For USDN (has 0 phases?) # Sep 30 2022
-        else:
-            assert latest_round >> 64 == 1, "Binary search only works for 1 underlying aggregator. TODO: Implement for multiple aggregators. https://docs.chain.link/data-feeds/historical-data"
+    def search_rounds(self, contract, target):
+        # Let's start by determining the current phase and aggregator round.
+        curr_round = contract.functions.latestRoundData().call()[0]
+        curr_phase = curr_round >> 64
 
-        left = first_round
-        right = latest_round
+        # Reverse O(n) search for correct phase
+        for phase in range(curr_phase, -1, -1):
+            first_round_for_phase = (phase << 64) + 1
+            first_ts = contract.functions.getRoundData(first_round_for_phase).call()[2]
+            if target >= first_ts:
+                break
+        
+        left = first_round_for_phase
+        right = curr_round
 
         closest_round = -1
         closest_diff = float('inf')
         count = 0
-
+        print(f'phase {phase}')
         while left <= right:
+            time.sleep(10)
+            print(f"left: {left}, right: {right}")
             count += 1
             mid = (left + right) // 2
-            round_data = contract.functions.getRoundData(mid).call()
-            round_timestamp = round_data[3]
+            try:
+                round_data = contract.functions.getRoundData(mid).call()
+                round_timestamp = round_data[3]
 
-            diff = desired_timestamp - round_timestamp
-            if 0 < diff < closest_diff:
-                closest_round = mid
-                closest_diff = diff
-                closest_timestamp = round_timestamp
-            if round_timestamp < desired_timestamp:
-                left = mid + 1
-            else:
+                diff = target - round_timestamp
+                if 0 < diff < closest_diff:
+                    closest_round = mid
+                    closest_diff = diff
+                    closest_timestamp = round_timestamp
+                if round_timestamp < target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            except Exception as e:
+                print(e)
                 right = mid - 1
 
         if closest_round != -1:
             self.logger.info(f"Found the closest round: {closest_round}, at {datetime.fromtimestamp(closest_timestamp)}.")
         else:
-            self.logger.error("No round found.")
+            self.logger.info("No round found.")
 
         self.logger.info(f"Number of iterations: {count}")
 
@@ -394,23 +405,28 @@ class DataFetcher():
         contract = client.eth.contract(address=chainlink_address, abi=abi)
         symbol = contract.functions.description().call().replace(" ", "")
         
-        # Testing UST
-        if token == "0xa693b19d2931d498c5b318df961919bb4aee87a5":
-            # NOTE: UST actually uses ccxt but we cross-checked with Chainlink
-            roundnr = 18446744073709551766 # For UST (has two phases) # April 6th 2022
-        else:
-            roundnr = self.search_rounds(token, contract, start_timestamp)
+        # # Testing UST
+        # if token == "0xa693b19d2931d498c5b318df961919bb4aee87a5":
+        #     # NOTE: UST actually uses ccxt but we cross-checked with Chainlink
+        #     roundnr = 18446744073709551766 # For UST (has two phases) # April 6th 2022
+        # else:
+        #     roundnr = self.search_rounds(token, contract, start_timestamp)
+        roundnr = self.search_rounds(contract, start_timestamp)
 
         decimals = contract.functions.decimals().call()
         current_timestamp = 0
         data = []
         while True:
-            round_data = contract.functions.getRoundData(roundnr).call()
-            data.append([token, symbol, round_data[2]*1000, None, None, None, round_data[1]/10**decimals, None])
-            current_timestamp = round_data[3]
-            if current_timestamp > end_timestamp:
-                break
-            roundnr += 1
+            try:
+                round_data = contract.functions.getRoundData(roundnr).call()
+                data.append([token, symbol, round_data[2]*1000, None, None, None, round_data[1]/10**decimals, None])
+                current_timestamp = round_data[3]
+                if current_timestamp > end_timestamp:
+                    break
+                roundnr += 1
+            except Exception as e:
+                self.logger.info(f"Chainlink exception: {e}")
+                roundnr = (((roundnr >> 64) + 1) << 64) + 1 # first round of next aggregator
         return data
 
     @staticmethod

@@ -5,12 +5,12 @@ from multiprocessing import cpu_count
 import logging
 
 # Local imports
-from .bocd_stream.bocd.bocd import BayesianOnlineChangePointDetection
-from .bocd_stream.bocd.distribution import StudentT
-from .bocd_stream.bocd.hazard import ConstantHazard
-from .scorer import f_measure
+from ..detection.bocd_stream.bocd.bocd import BayesianOnlineChangePointDetection
+from ..detection.bocd_stream.bocd.distribution import StudentT
+from ..detection.bocd_stream.bocd.hazard import ConstantHazard
+from ..detection.scorer import f_measure
 
-class HyperParameterTuner():
+class BOCD():
 
     default_params = {
         'lambda': 100,
@@ -38,6 +38,7 @@ class HyperParameterTuner():
         self.logger.addHandler(logging.StreamHandler())
 
         self.results = {}
+        self.params = self.default_params
     
     def update(self, params):
         new_params = {key: params.get(key) or self.default_params.get(key) for key in self.default_params.keys()}
@@ -51,6 +52,8 @@ class HyperParameterTuner():
                 beta=new_params['beta']
             )
         )
+
+        self.params = new_params
 
     def predict(self, X):
 
