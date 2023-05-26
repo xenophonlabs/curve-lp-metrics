@@ -271,9 +271,9 @@ class DataHandler():
         # Commit the changes
         self.conn.commit()
     
-    def insert_pool_metrics(self, data):
+    def insert_pool_metrics(self, data, pool_id):
         # Convert JSON data to a pandas DataFrame
-        df = DataHandler.format_pool_metrics(data)
+        df = DataHandler.format_pool_metrics(data, pool_id)
 
         if len(df) == 0:
             return

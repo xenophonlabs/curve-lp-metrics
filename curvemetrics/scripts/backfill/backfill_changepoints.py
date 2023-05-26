@@ -6,6 +6,7 @@ import argparse
 import asyncio
 import os
 import json
+import pandas as pd
 
 from datetime import datetime
 
@@ -55,7 +56,7 @@ def main(start: str, end: str):
             print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
 
             pool_data = datahandler.get_pool_data(pool, pool_start_ts, end_ts)
-            snapshots = datahandler.get_snapshots(pool, pool_start_ts, end_ts)
+            snapshots = datahandler.get_pool_snapshots(pool, pool_start_ts, end_ts)
 
             ohlcvs = {}
             for token in pool_metadata[pool]['inputTokens']:
@@ -63,7 +64,10 @@ def main(start: str, end: str):
                 ohlcvs[token] = ohlcv
 
             lp_share_price = metricsprocessor.lp_share_price(pool, pool_data, ohlcvs)
-            cps, _, _, _ = metricsprocessor.true_cps(lp_share_price, snapshots)
+            datahandler.insert_pool_metrics(pd.DataFrame(lp_share_price), pool)
+
+            cps = metricsprocessor.true_cps(lp_share_price, snapshots)
+            datahandler.insert_changepoints(cps)
 
             print(f"[{datetime.now()}] Finished processing pool {pool_metadata[pool]['name']}.\n")
 

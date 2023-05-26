@@ -60,6 +60,7 @@ def main():
             print(f'FPR: {model.best_results}')
 
             # TODO: insert predicted cps from best_params here? Need to track them in the tune method
+            # datahandler.insert_changepoints(y_pred, pool, 'bocd', metric)
 
             a, b, k = model.best_params
 
@@ -73,6 +74,7 @@ def main():
 
             y_true = datahandler.get_changepoints(pool, 'baseline', 'baseline', train_start_ts, train_end_ts)
             y_pred = model.predict(X)
+            datahandler.insert_changepoints(y_pred, pool, 'bocd', metric)
 
             if len(y_pred) == 0:
                 F, P, R = 0, 0, 0
@@ -80,8 +82,6 @@ def main():
                 F, P, R = f_measure({1: y_true}, y_pred, margin=MARGIN, alpha=ALPHA, return_PR=True)
 
             print(f'FPR: {F}, Precision: {P}, Recall: {R}')
-
-            # TODO: insert predicted cps from best_params here?
 
             # Track results
             if pool not in config['hyperparameters']['bocd']:

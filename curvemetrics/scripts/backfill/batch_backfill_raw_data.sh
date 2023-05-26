@@ -37,4 +37,5 @@ while [ $current_sec -lt $end_sec ]; do
   current_sec=$((next_sec - overlap_sec))
   current_sec=$(date -d "$(date -d "@$current_sec" "+%Y-%m-%d") 23:55:00" +%s)
   next_sec=$((current_sec + day_sec + overlap_sec))
+  
 done
