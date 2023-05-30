@@ -176,9 +176,9 @@ CREATE TABLE IF NOT EXISTS token_aggregates (
 
 -- store changepoints
 CREATE TABLE IF NOT EXISTS changepoints (
-    PRIMARY KEY (pool_id, model, metric, timestamp)
     pool_id TEXT REFERENCES pools (id),
     model TEXT,
     metric TEXT,
-    timestamp INTEGER
+    timestamp INTEGER,
+    PRIMARY KEY (pool_id, model, metric, timestamp)
 );

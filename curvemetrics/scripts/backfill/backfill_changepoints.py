@@ -7,6 +7,7 @@ import asyncio
 import os
 import json
 import pandas as pd
+import traceback
 
 from datetime import datetime
 
@@ -21,7 +22,7 @@ def load_config():
         config = json.load(config_file)
     return config
 
-def main(start: str, end: str):
+async def main(start: str, end: str):
 
     print(f"\n[{datetime.now()}] Processing metrics...\n")
 
@@ -36,7 +37,7 @@ def main(start: str, end: str):
 
     config = load_config()
 
-    print(f"\n[{datetime.now()}] Processing pool metrics.\n")
+    print(f"\n[{datetime.now()}] Processing pool changepoints.\n")
 
     try:
         # Fetch and insert pool data
@@ -49,7 +50,7 @@ def main(start: str, end: str):
             elif start_ts < pool_metadata[pool]['creationDate'] < start_ts:
                 pool_start_ts = pool_metadata[pool]['creationDate']
             else:
-                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...")
+                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...\n")
                 continue
 
             print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
@@ -71,39 +72,10 @@ def main(start: str, end: str):
 
             print(f"[{datetime.now()}] Finished processing pool {pool_metadata[pool]['name']}.\n")
 
-        # Fetch and insert token data
-        for token in token_metadata.keys():
-
-            token_start_ts, token_end_ts = start_ts, end_ts # TODO: Check when token was created
-            token_ohlcv = datahandler.get_ohlcv_data(ust, start, end)
-
-            if token_metadata[token]['symbol'] == "WETH":
-                print(f"[{datetime.now()}] {token_metadata[token]['symbol']} assumed to be = ETH. Skipping...\n")
-                continue
-    
-            elif token_metadata[token]['symbol'] in ["3Crv", "frxETH", "cvxCRV", "USDN"]:
-                print(f"[{datetime.now()}] TODO: Add support for {token_metadata[token]['symbol']}. Skipping...\n")
-                continue
-
-            elif token_metadata[token]['symbol'] == "UST":
-                if end_ts > 1653667380:
-                    token_end_ts = 1653667380
-                    print(f"[{datetime.now()}] UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to {datetime.fromtimestamp(end_ts)}.")
-
-            api, source = config['token_exchange_map'][token_metadata[token]['symbol']]
-            print(f"[{datetime.now()}] Backfilling token {token_metadata[token]['symbol']} OHLCV using {api}.")
-
-            if api == "ccxt":
-                token_data = datafetcher.get_ohlcv(token_start_ts, token_end_ts, token, default_exchange=source)
-            elif api == "chainlink":
-                token_data = datafetcher.get_chainlink_prices(token, source, token_start_ts, token_end_ts)
-
-            datahandler.insert_token_data(token_data)
-
         print(f"[{datetime.now()}] Done :)")
     
     except Exception as e:
-        print(f"\n[{datetime.now()}] An error occurred during raw database backfilling: {e}\n")
+        print(f"\n[{datetime.now()}] An error occurred during raw database backfilling:\n{traceback.print_exc()}\n")
     
     finally:
         datahandler.close()

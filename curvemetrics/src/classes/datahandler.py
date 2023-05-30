@@ -286,7 +286,7 @@ class DataHandler():
                 timestamp,
                 pool_id,
                 metric,
-                value,
+                value
             ) VALUES (?, ?, ?, ?)
             """
             # Insert the row into the `lp_events` table
@@ -344,7 +344,7 @@ class DataHandler():
                 pool_id,
                 model,
                 metric,
-                timestamp,
+                timestamp
             ) VALUES (?, ?, ?, ?)
             """
             # Insert the row into the `lp_events` table
@@ -550,7 +550,7 @@ class DataHandler():
         results = self._execute_query(query, params=[pool_id, start, end])
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
-        df = df.sort_values(by='timestamp')
+        df = df.sort_index()
         return df
 
     def get_ohlcv_data(self, token_id: str, start: int=None, end: int=None) -> pd.DataFrame:

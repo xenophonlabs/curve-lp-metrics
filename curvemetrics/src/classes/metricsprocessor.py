@@ -416,7 +416,7 @@ class MetricsProcessor:
         Computes the LP Share Price for the given pool and the changepoints.
         """
 
-        df = pool_data[['inputTokenBalances', 'outputTokenSupply']].resample('1min').last().fillna(method='ffill')
+        df = pool_data[['inputTokenBalances', 'outputTokenSupply']].resample('1min').last().fillna(method='ffill').dropna()
 
         tokens = self.pool_metadata[pool]['inputTokens']
 
@@ -438,8 +438,8 @@ class MetricsProcessor:
         """
         Our baseline model
         """
-        vp = (snapshots['virtualPrice']/10**18).resample(freq).mean().fillna(method='ffill')
-        rp = lp_share_price.resample(freq).mean().fillna(method='ffill')
+        vp = (snapshots['virtualPrice']/10**18).resample(freq).mean().fillna(method='ffill').dropna()
+        rp = lp_share_price.resample(freq).mean().fillna(method='ffill').dropna()
 
         error = abs((vp - rp) / vp)
 

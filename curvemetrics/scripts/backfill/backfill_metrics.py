@@ -9,7 +9,7 @@ from datetime import datetime
 from ...src.classes.metricsprocessor import MetricsProcessor
 from ...src.classes.datahandler import DataHandler
 
-def main(start: str, end: str):
+async def main(start: str, end: str):
 
     print(f"\n[{datetime.now()}] Processing metrics...\n")
 
