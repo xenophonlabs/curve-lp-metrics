@@ -67,7 +67,7 @@ def main(start: str, end: str):
             datahandler.insert_pool_metrics(pd.DataFrame(lp_share_price), pool)
 
             cps = metricsprocessor.true_cps(lp_share_price, snapshots)
-            datahandler.insert_changepoints(cps)
+            datahandler.insert_changepoints(cps, pool, 'baseline', 'baseline')
 
             print(f"[{datetime.now()}] Finished processing pool {pool_metadata[pool]['name']}.\n")
 
