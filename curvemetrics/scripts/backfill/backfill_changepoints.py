@@ -45,23 +45,55 @@ async def main(start: str, end: str):
 
             print(f"[{datetime.now()}] Processing pool {pool_metadata[pool]['name']}.")
 
+            if pool in ["0xa1f8a6807c402e4a15ef4eba36528a3fed24e577", "0x971add32ea87f10bd192671630be3be8a11b8623"]:
+                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']}, no price data for underlying. Skipping...\n")
+                continue
+
             if pool_metadata[pool]['creationDate'] < start_ts:
                 pool_start_ts = start_ts
+                pool_end_ts = end_ts
             elif start_ts < pool_metadata[pool]['creationDate'] < start_ts:
                 pool_start_ts = pool_metadata[pool]['creationDate']
+                pool_end_ts = end_ts
             else:
                 print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...\n")
                 continue
+                
+            # Edge cases
+
+            if pool == "0xceaf7747579696a2f0bb206a14210e3c9e6fb269": # UST pool
+                if 1653667380 < start_ts:
+                    print(f"[{datetime.now()}] Pool {pool_metadata[pool]['name']}, UST no longer indexed after {1653667380}. Skipping...\n")
+                    continue
+                elif start_ts < 1653667380 < end_ts:
+                    pool_start_ts = start_ts
+                    pool_end_ts = 1653667380
+            
+            elif pool == "0xdcef968d416a41cdac0ed8702fac8128a64241a2": # FRAX
+                if start_ts < 1656399149 < end_ts:
+                    pool_start_ts = 1656399149
+                    pool_end_ts = end_ts
+                elif end_ts < 1656399149:
+                    print(f"[{datetime.now()}] Pool {pool_metadata[pool]['name']}, no output token supply until {1653667380}. Skipping...\n")
+                    continue
+             
+            elif pool == "0x0f9cb53ebe405d49a0bbdbd291a65ff571bc83e1": # USDN
+                if 1675776755 < start_ts:
+                    print(f"[{datetime.now()}] Pool {pool_metadata[pool]['name']}, USDN no longer indexed after {1675776755}. Skipping...\n")
+                    continue
+                elif start_ts < 1675776755 < end_ts:
+                    pool_start_ts = start_ts
+                    pool_end_ts = 1675776755
 
             print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
-            print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
+            print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(pool_end_ts)}")
 
-            pool_data = datahandler.get_pool_data(pool, pool_start_ts, end_ts)
-            snapshots = datahandler.get_pool_snapshots(pool, pool_start_ts, end_ts)
+            pool_data = datahandler.get_pool_data(pool, pool_start_ts, pool_end_ts)
+            snapshots = datahandler.get_pool_snapshots(pool, pool_start_ts, pool_end_ts)
 
             ohlcvs = {}
             for token in pool_metadata[pool]['inputTokens']:
-                ohlcv = datahandler.get_ohlcv_data(token, start=start_ts, end=end_ts)
+                ohlcv = datahandler.get_ohlcv_data(token, start=start_ts, end=pool_end_ts)
                 ohlcvs[token] = ohlcv
 
             lp_share_price = metricsprocessor.lp_share_price(pool, pool_data, ohlcvs)

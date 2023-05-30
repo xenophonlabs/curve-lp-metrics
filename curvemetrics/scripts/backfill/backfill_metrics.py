@@ -31,22 +31,50 @@ async def main(start: str, end: str):
 
             if pool_metadata[pool]['creationDate'] < start_ts:
                 pool_start_ts = start_ts
+                pool_end_ts = end_ts
             elif start_ts < pool_metadata[pool]['creationDate'] < start_ts:
                 pool_start_ts = pool_metadata[pool]['creationDate']
+                pool_end_ts = end_ts
             else:
-                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...")
+                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...\n")
                 continue
 
-            print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
-            print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
+            # Edge cases
 
-            pool_data = datahandler.get_pool_data(pool, pool_start_ts, end_ts)
-            swaps_data = datahandler.get_swaps_data(pool, pool_start_ts, end_ts)
-            lp_data = datahandler.get_lp_data(pool, pool_start_ts, end_ts)
+            if pool == "0xceaf7747579696a2f0bb206a14210e3c9e6fb269": # UST pool
+                if 1653667380 < start_ts:
+                    print(f"[{datetime.now()}] Pool {pool_metadata[pool]['name']}, UST no longer indexed after {1653667380}. Skipping...\n")
+                    continue
+                elif start_ts < 1653667380 < end_ts:
+                    pool_start_ts = start_ts
+                    pool_end_ts = 1653667380
+            
+            elif pool == "0xdcef968d416a41cdac0ed8702fac8128a64241a2": # FRAX
+                if start_ts < 1656399149 < end_ts:
+                    pool_start_ts = 1656399149
+                    pool_end_ts = end_ts
+                elif end_ts < 1656399149:
+                    print(f"[{datetime.now()}] Pool {pool_metadata[pool]['name']}, no output token supply until {1653667380}. Skipping...\n")
+                    continue
+             
+            elif pool == "0x0f9cb53ebe405d49a0bbdbd291a65ff571bc83e1": # USDN
+                if 1675776755 < start_ts:
+                    print(f"[{datetime.now()}] Pool {pool_metadata[pool]['name']}, USDN no longer indexed after {1675776755}. Skipping...\n")
+                    continue
+                elif start_ts < 1675776755 < end_ts:
+                    pool_start_ts = start_ts
+                    pool_end_ts = 1675776755
+
+            print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
+            print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(pool_end_ts)}")
+
+            pool_data = datahandler.get_pool_data(pool, pool_start_ts, pool_end_ts)
+            swaps_data = datahandler.get_swaps_data(pool, pool_start_ts, pool_end_ts)
+            lp_data = datahandler.get_lp_data(pool, pool_start_ts, pool_end_ts)
 
             ohlcvs = {}
             for token in set(swaps_data['tokenBought']):
-                ohlcv = datahandler.get_ohlcv_data(token, start=start_ts, end=end_ts)
+                ohlcv = datahandler.get_ohlcv_data(token, start=start_ts, end=pool_end_ts)
                 ohlcvs[token] = ohlcv
 
             pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
@@ -68,17 +96,14 @@ async def main(start: str, end: str):
             elif token_metadata[token]['symbol'] in ["3Crv", "frxETH", "cvxCRV"]:
                 print(f"[{datetime.now()}] TODO: Add support for {token_metadata[token]['symbol']}. Skipping...\n")
                 continue
-
+            
             elif token_metadata[token]['symbol'] == "USDN":
-                if token_start_ts < 1635284389:
+                if token_end_ts < 1635284389:
                     print(f"[{datetime.now()}] USDN only indexed from 1635284389 2021-10-26. Skipping...")
                     continue
                 elif token_start_ts < 1635284389 < token_end_ts:
-                    print(f"[{datetime.now()}] USDN only indexed from 1635284389 2021-10-26 21:39:49. Setting start ts to 1661444040.")
+                    print(f"[{datetime.now()}] USDN only indexed from 1635284389 2021-10-26 21:39:49. Setting start ts to 1635284389.")
                     token_start_ts = 1635284389
-                elif token_end_ts > 1675776755:
-                    token_end_ts = 1675776755
-                    print(f"[{datetime.now()}] USDN only indexed until 1675776755 2023-02-07 13:32:35. Skipping...")
 
             elif token_metadata[token]['symbol'] == "UST":
                 if token_end_ts > 1653667380:

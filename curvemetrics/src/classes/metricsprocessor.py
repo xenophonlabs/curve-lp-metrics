@@ -48,7 +48,8 @@ class MetricsProcessor:
 
         metrics.extend([
             MetricsProcessor.gini(pool_data, freq=self.freq),
-            MetricsProcessor.shannons_entropy(pool_data, freq=self.freq)
+            MetricsProcessor.shannons_entropy(pool_data, freq=self.freq),
+            MetricsProcessor.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp', freq=self.freq)
         ])
 
         tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))
@@ -58,7 +59,6 @@ class MetricsProcessor:
                 MetricsProcessor.net_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
                 # MetricsProcessor.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
                 # MetricsProcessor.rolling_pin(swaps_data, token_id, self.token_metadata[token_id]['symbol'], window=timedelta(days=7), freq=timedelta(days=1)),
-                # MetricsProcessor.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp', freq=self.freq),
             ])
 
         for token_idx, token_id in enumerate(self.pool_metadata[pool_id]['coins']):
@@ -161,10 +161,10 @@ class MetricsProcessor:
         if len(df) == 0:
             return pd.Series([], name=f'{symbol}.netLPFlow')
         deposits = df[df['removal']==False]
-        deposits = deposits['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx]).groupby(level=0).sum().groupby(level=0).sum()
+        deposits = deposits['tokenAmounts'].apply(lambda x: x[token_idx]).groupby(level=0).sum().groupby(level=0).sum()
         deposits.name = "deposits"
         withdraws = df[df['removal']==True]
-        withdraws = withdraws['tokenAmounts'].apply(lambda x: -1*json.loads(x)[token_idx]).groupby(level=0).sum().groupby(level=0).sum()
+        withdraws = withdraws['tokenAmounts'].apply(lambda x: -1*x[token_idx]).groupby(level=0).sum().groupby(level=0).sum()
         withdraws.name = "withdraws"
         flow = pd.merge(deposits, withdraws, left_index=True, right_index=True, how='outer').fillna(0)
         metric = (flow['deposits'] + flow['withdraws']).resample(freq).sum()
@@ -178,14 +178,15 @@ class MetricsProcessor:
 
         @Params:    
             df : pd.DataFrame
-                DataFrame of swap events
+                DataFrame of price data including a `close` column
             symbol : str
                 token symbol
 
         @Returns
             
         """
-        metric = np.log(df['close']/df['close'].shift()).resample(freq).sum()
+        close = df['close'].resample(freq).last()
+        metric = np.log(close/close.shift())
         metric.name = f'{symbol}.logReturns'
         return metric
 

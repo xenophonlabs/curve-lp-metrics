@@ -4,4 +4,5 @@ CREATE INDEX IF NOT EXISTS idx_swaps_pool_id_timestamp ON swaps(pool_id, timesta
 CREATE INDEX IF NOT EXISTS idx_lp_events_pool_id_timestamp ON lp_events(pool_id, timestamp);
 CREATE INDEX IF NOT EXISTS ids_block_timestamp ON block_timestamps(block);
 CREATE INDEX IF NOT EXISTS idx_snapshots_pool_id_timestamp ON snapshots(pool_id, timestamp);
+CREATE INDEX IF NOT EXISTS idx_pool_metrics_pool_id_metric_timestamp ON pool_metrics(pool_id, metric, timestamp);
 -- TODO: metrics indexes

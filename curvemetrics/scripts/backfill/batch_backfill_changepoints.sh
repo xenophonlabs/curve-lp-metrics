@@ -14,7 +14,7 @@ end_sec=$(date -d "$end_date" +%s)
 
 # Calculate the number of seconds per period and 5 minutes
 # Period is 1 week
-day_sec=$((7 * 24 * 60 * 60))
+day_sec=$((14 * 24 * 60 * 60))
 overlap_sec=$((5 * 60))
 
 # Loop through daily batches
