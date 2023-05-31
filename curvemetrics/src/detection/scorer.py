@@ -66,7 +66,11 @@ def f_measure(annotations, predictions, margin=timedelta(hours=12), alpha=0.5, r
     TPk = {k: true_positives(Tks[k], X, margin=margin) for k in Tks}
     R = 1 / K * sum(len(TPk[k]) / len(Tks[k]) for k in Tks)
 
-    F = P * R / (alpha * R + (1 - alpha) * P)
+    if P == 0 and R == 0:
+        F = 0 # avoid division by 0
+    else:
+        F = P * R / (alpha * R + (1 - alpha) * P)
+
     if return_PR:
         return F, P, R
     return F

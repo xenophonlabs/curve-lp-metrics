@@ -4,6 +4,15 @@
             "threshold": 0.05
         },
         "bocd": {
+            "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7": {
+                "shannonsEntropy": {
+                    "lambda": 100,
+                    "alpha": 1000,
+                    "beta": 0.0001,
+                    "kappa": 0.01,
+                    "mu": 0
+                }
+            }
         }
     },
     "splits": {
@@ -19,5 +28,12 @@
         }
     },
     "results": {
+        "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7": {
+            "shannonsEntropy": [
+                0.00044961055791380703,
+                0.00022485582773398234,
+                1.0
+            ]
+        }
     }
 }

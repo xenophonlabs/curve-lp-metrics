@@ -35,16 +35,16 @@ class BOCD():
 
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
-        self.logger.addHandler(logging.StreamHandler())
+        if not self.logger.handlers:
+            self.logger.addHandler(logging.StreamHandler())
 
         self.results = {}
         self.params = self.default_params
 
-        self.cps = None
+        self.y_pred = None
     
     def update(self, params):
         new_params = {key: params.get(key) or self.default_params.get(key) for key in self.default_params.keys()}
-
         self.model.reset_params(
             hazard=ConstantHazard(new_params['lambda']),
             distribution=StudentT(
@@ -54,11 +54,9 @@ class BOCD():
                 beta=new_params['beta']
             )
         )
-
         self.params = new_params
 
     def predict(self, X):
-
         rt_mle = np.empty(X.shape)
         for i, x in enumerate(X):
             self.model.update(x)
@@ -66,36 +64,40 @@ class BOCD():
 
         return X.index[np.where(np.diff(rt_mle)!=1)[0]+1]
     
-    def _tune(self, chunk, X, cps):
+    def _tune(self, chunk, X, y_true):
         results = {}
-        cps = []
-        score = 0
+        y_pred = []
+        score = -1
         for a, b, k in chunk:
             self.update({'alpha': a, 'beta': b, 'kappa': k})
             pred = self.predict(X)
             if len(pred) == 0:
                 results[(a, b, k)] = (0, 0, 0)
             else:
-                results[(a, b, k)] = f_measure({1: cps}, pred, margin=self.margin, alpha=self.alpha, return_PR=True)
+                results[(a, b, k)] = f_measure({1: y_true}, pred, margin=self.margin, alpha=self.alpha, return_PR=True)
             if results[(a, b, k)][0] > score:
-                cps = pred
-        self.logger.info('Finished processing chunk with alpha=%s, beta=%s, kappa=%s', a, b, k)
-        return results, (cps, score)
+                y_pred = pred
+        self.logger.info('Finished processing chunk {chunk}')
+        return results, y_pred, score
 
-    def tune(self, grid, X, cps):
+    def tune(self, grid, X, y_true):
         num_cpus = cpu_count()
         if len(grid) <= num_cpus:
             num_cpus = len(grid)
         chunk_size = len(grid) // num_cpus
         chunks = [grid[i:i + chunk_size] for i in range(0, len(grid), chunk_size)]
-
         with Pool(processes=num_cpus) as pool:
-            result_list, (cps, score) = pool.map(lambda args: self._tune(*args), [(chunk, X, cps) for chunk in chunks])
+            results = pool.map(lambda args: self._tune(*args), [(chunk, X, y_true) for chunk in chunks])
+        for result in results:
+            self.results.update(result[0])
 
-        for result_dict in result_list:
-            self.results.update(result_dict)
+        self.y_pred = max(results, key=lambda x: x[2])[1]
 
-        self.cps = max(cps, key=lambda x: x[1])[0]
+        self.logger.info('\nFinished tuning hyperparameters\n')
+        self.logger.info(f'Results: {self.results}')
+        self.logger.info(f'Best Params: {self.best_params}')
+        self.logger.info(f'FPR: {self.best_results}')
+        self.logger.info(f'Predicted CPs: {self.y_pred}\n')
     
     @property
     def best_params(self):

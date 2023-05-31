@@ -539,7 +539,6 @@ class DataHandler():
 
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
-
     
     def get_swaps_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
         query = f'SELECT * FROM swaps WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
@@ -565,7 +564,7 @@ class DataHandler():
         return df
 
     def get_pool_snapshots(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        query = f'SELECT * FROM snapshots WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        query = f'SELECT timestamp, normalizedReserves, reserves, virtualPrice, lpPriceUSD, tvl, reservesUSD FROM snapshots WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[pool_id, start, end])
         if not len(results):
             return pd.DataFrame()
@@ -604,6 +603,8 @@ class DataHandler():
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['value']
         series.name = metric
+        if metric in ['shannonsEntropy', 'giniCoefficient']:
+            series.replace(0, method='ffill', inplace=True)
         return series
 
     def get_token_metric(self, token_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
