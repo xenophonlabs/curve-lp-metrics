@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from typing import Dict, List
-from datetime import datetime
+from datetime import datetime, timedelta
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
@@ -291,11 +291,7 @@ class DataHandler():
             ) VALUES (?, ?, ?, ?)
             """
             # Insert the row into the `pool_metrics` table
-            try: 
-                self.conn.execute(sql, row)
-            except Exception as e:
-                print(f'Row: {row}\nException: {e}\n')
-                raise e
+            self.conn.execute(sql, row)
 
         # Apply the custom function to each row in the DataFrame
         df.apply(insert_metrics_row, axis=1)
@@ -305,9 +301,9 @@ class DataHandler():
     def insert_pool_aggregate_metrics(self, data):
         pass
 
-    def insert_token_metrics(self, data):
+    def insert_token_metrics(self, data, token_id):
         # Convert JSON data to a pandas DataFrame
-        df = DataHandler.format_token_metrics(data)
+        df = DataHandler.format_token_metrics(data, token_id)
 
         if len(df) == 0:
             return
@@ -320,7 +316,7 @@ class DataHandler():
                 timestamp,
                 token_id,
                 metric,
-                value,
+                value
             ) VALUES (?, ?, ?, ?)
             """
             # Insert the row into the `lp_events` table
@@ -528,15 +524,17 @@ class DataHandler():
         return self.get_pool_metadata()
 
     def get_pool_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        query = f'SELECT * FROM pool_data WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        query = f'SELECT inputTokenBalances, timestamp, outputTokenSupply FROM pool_data WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[pool_id, start, end])
+        if not len(results):
+            return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
 
         tokens = self.pool_metadata[pool_id]['inputTokens']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
 
         # convert JSON strings to lists and then to numpy arrays, then normalize balances
-        df['inputTokenWeights'] = np.array(df['inputTokenWeights'].map(json.loads).to_list())
+        # df['inputTokenWeights'] = np.array(df['inputTokenWeights'].map(json.loads).to_list())
         df['inputTokenBalances'] = (np.array(df['inputTokenBalances'].map(json.loads).to_list()) / 10**decimals).tolist()
 
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
@@ -546,6 +544,8 @@ class DataHandler():
     def get_swaps_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
         query = f'SELECT * FROM swaps WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[pool_id, start, end])
+        if not len(results):
+            return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
@@ -553,11 +553,13 @@ class DataHandler():
     def get_lp_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
         query = f'SELECT * FROM lp_events WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[pool_id, start, end])
+        if not len(results):
+            return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
 
-        tokens = self.pool_metadata[pool_id]['inputTokens']
+        tokens = self.pool_metadata[pool_id]['coins']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
-        
+
         df['tokenAmounts'] = (np.array(df['tokenAmounts'].map(json.loads).to_list()) / 10**decimals).tolist()
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
@@ -565,24 +567,30 @@ class DataHandler():
     def get_pool_snapshots(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
         query = f'SELECT * FROM snapshots WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[pool_id, start, end])
+        if not len(results):
+            return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.sort_index()
         return df
 
     def get_ohlcv_data(self, token_id: str, start: int=None, end: int=None) -> pd.DataFrame:
+        delta = int(timedelta(days=2).total_seconds()) # Hack to avoid missing data for chainlink
         if self.token_metadata[token_id]['symbol'] == "3Crv":
             query = "SELECT timestamp, lpPriceUSD FROM snapshots WHERE pool_id == ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC"
-            params = ["0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", start, end] # 3Crv pool LP token price
+            params = ["0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", start - delta, end + delta] # 3Crv pool LP token price
         else:
             if self.token_metadata[token_id]['symbol'] == "WETH":
                 token_id = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" # get ETH instead of WETH
-            query = f'SELECT * FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-            params = [token_id, start, end]
+            query = f'SELECT timestamp, close FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+            params = [token_id, start - delta, end + delta]
         results = self._execute_query(query, params=params)
+        if not len(results):
+            return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.resample('1min').ffill()
+        df = df.loc[datetime.fromtimestamp(start):datetime.fromtimestamp(end)]
         if 'lpPriceUSD' in df.columns:
             df = df.rename(columns={'lpPriceUSD': 'close'})
         return df
@@ -590,6 +598,8 @@ class DataHandler():
     def get_pool_metric(self, pool_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
         query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[pool_id, metric, start, end])
+        if not len(results):
+            return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['value']
@@ -597,8 +607,10 @@ class DataHandler():
         return series
 
     def get_token_metric(self, token_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
-        query = f'SELECT timestamp, value FROM token_metrics WHERE pool_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+        query = f'SELECT timestamp, value FROM token_metrics WHERE token_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[token_id, metric, start, end])
+        if not len(results):
+            return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['value']
@@ -608,6 +620,8 @@ class DataHandler():
     def get_changepoints(self, pool_id, model, metric, start: int=None, end: int=None) -> pd.Series:
         query = f'SELECT timestamp FROM changepoints WHERE pool_id = ? AND model = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[pool_id, model, metric, start, end])
+        if not len(results):
+            return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['timestamp']

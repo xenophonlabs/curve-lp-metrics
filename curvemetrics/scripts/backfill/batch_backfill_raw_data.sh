@@ -13,16 +13,23 @@ start_sec=$(date -d "$start_date" +%s)
 end_sec=$(date -d "$end_date" +%s)
 
 # Calculate the number of seconds per day and 5 minutes
-day_sec=$((24 * 60 * 60))
+day_sec=$((7 * 60 * 60))
 overlap_sec=$((5 * 60))
 
 # Loop through daily batches
 current_sec=$start_sec
 next_sec=$((current_sec + day_sec))
-while [ $current_sec -lt $end_sec ]; do
+
+finish_sec=$((end_sec - overlap_sec))
+
+while [ $current_sec -lt $finish_sec ]; do
 
   # Convert seconds to date string format
   current_date=$(date -d "@$current_sec" "+%Y-%m-%d %H:%M:%S")
+
+  if [ $next_sec -gt $end_sec ]; then
+    next_sec=$end_sec
+  fi
   next_date=$(date -d "@$next_sec" "+%Y-%m-%d %H:%M:%S")
 
   log_sec=$((current_sec + overlap_sec))

@@ -56,7 +56,7 @@ def main():
             model.tune(GRID, X, y_true)
             datahandler.insert_changepoints(model.cps, pool, 'bocd', metric)
 
-            print(f'Results: {model.results}\n')
+            print(f'Results: {model.results}')
             print(f'Best Params: {model.best_params}')
             print(f'FPR: {model.best_results}')
 
