@@ -10,16 +10,16 @@ from ...src.classes.model import BOCD
 from ...src.classes.datahandler import DataHandler
 from ...src.detection.scorer import f_measure
 
-FREQ = '1min'
-# ALPHA = [10**i for i in range(1, 5)]
-# BETA = [10**i for i in range(-5, -1)]
-# KAPPA = [10**i for i in range(-5, -1)]
-ALPHA = [1000]
-BETA = [0.0001]
-KAPPA = [0.01]
+FREQ = '1h'
+ALPHA = [10**i for i in range(-1, 5)]
+BETA = [10**i for i in range(-5, 1)]
+KAPPA = [10**i for i in range(-5, 1)]
+# ALPHA = [1000]
+# BETA = [0.0001]
+# KAPPA = [0.01]
 GRID = [(a, b, k) for a in ALPHA for b in BETA for k in KAPPA]
 MARGIN = timedelta(hours=24)
-ALPHA = 1/2
+ALPHA = 1/5
 
 def load_config():
     # Load the configuration
@@ -55,14 +55,18 @@ def main():
             
             data = datahandler.get_pool_metric(pool, metric, train_start_ts, train_end_ts)
 
-            X = np.log1p(data.pct_change()).dropna().resample(FREQ).mean()
+            if metric == 'shannonsEntropy':
+                X = np.log1p(data.resample(FREQ).last().pct_change()).dropna()
+            else:
+                X = data.resample(FREQ).mean()
+
             y_true = datahandler.get_changepoints(pool, 'baseline', 'baseline', train_start_ts, train_end_ts).index
 
             if not len(y_true):
                 print(f"\n[{datetime.now()}] No CPs in train set. Skipping...\n")
                 continue
 
-            model = BOCD()
+            model = BOCD(margin=MARGIN, alpha=ALPHA)
             model.tune(GRID, X, y_true)
             datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
 
@@ -70,7 +74,7 @@ def main():
 
             print(f"\n[{datetime.now()}] Testing {metric}\n")
 
-            model = BOCD()
+            model = BOCD(margin=MARGIN, alpha=ALPHA)
             model.update({'alpha':a, 'beta':b, 'kappa':k})
 
             data = datahandler.get_pool_metric(pool, metric, test_start_ts, test_end_ts)

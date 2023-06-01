@@ -435,11 +435,11 @@ class MetricsProcessor:
 
         return df['lpSharePrice']
 
-    def true_cps(self, lp_share_price, snapshots, freq = timedelta(minutes=1), thresh = 0.05):
+    def true_cps(self, lp_share_price, virtual_price, freq = timedelta(minutes=1), thresh = 0.05):
         """
         Our baseline model
         """
-        vp = (snapshots['virtualPrice']/10**18).resample(freq).mean().fillna(method='ffill').dropna()
+        vp = (virtual_price).resample(freq).mean().fillna(method='ffill').dropna()
         rp = lp_share_price.resample(freq).mean().fillna(method='ffill').dropna()
 
         error = abs((vp - rp) / vp)

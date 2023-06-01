@@ -82,7 +82,7 @@ def bocd_plot(data, maxes, title='', label='', ylab='', file='', show=False):
     else:
         plt.close()
 
-def bocd_plot_comp(metric, port, true, pred):
+def bocd_plot_comp(X, port, true, pred, show=False, save=True, file='', metric=''):
 
     f, axs = plt.subplots(2, 1, sharex=True, figsize=(8, 8))
 
@@ -91,7 +91,7 @@ def bocd_plot_comp(metric, port, true, pred):
             axs[0].axvline(cp, linestyle='--', linewidth=0.5, color='darkgreen')
         axs[0].plot([], [], label='True CPs', color='darkgreen', linestyle='--', linewidth=0.5)
 
-    axs[0].plot(port.index, port, linewidth=0.5, c='darkblue')
+    axs[0].plot(port.index, port, linewidth=0.5, c='darkblue', label='LP Share Price')
     axs[0].set_title('LP Share Price')
     axs[0].set_ylabel('Price (USD)')
     axs[0].legend()
@@ -103,10 +103,16 @@ def bocd_plot_comp(metric, port, true, pred):
 
     axs[1].legend()
 
-    axs[1].plot(metric.index, metric, linewidth=0.5, c='darkblue')
-    axs[1].set_title('Entropy Log Diffs')
-    axs[1].set_ylabel('Entropy Log Diff')
+    axs[1].plot(X.index, X, linewidth=0.5, c='darkblue', label=metric)
+    axs[1].set_title(metric)
+    axs[1].set_ylabel(metric)
 
     axs[1].tick_params(axis='x', rotation=45)
 
-    f.show()
+    if show:
+        plt.show()
+    else:
+        plt.close()
+
+    if save:
+        f.savefig(file)

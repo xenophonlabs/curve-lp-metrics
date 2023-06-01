@@ -618,7 +618,7 @@ class DataHandler():
         series.name = metric
         return series
 
-    def get_changepoints(self, pool_id, model, metric, start: int=None, end: int=None) -> pd.Series:
+    def get_changepoints(self, pool_id, model, metric, start: int=None, end: int=None, freq='1min') -> pd.Series:
         query = f'SELECT timestamp FROM changepoints WHERE pool_id = ? AND model = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
         results = self._execute_query(query, params=[pool_id, model, metric, start, end])
         if not len(results):
@@ -627,6 +627,8 @@ class DataHandler():
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['timestamp']
         series.name = 'changepoints'
+        series = series.resample(freq).first().dropna()
+        series = series.astype(int)
         return series
 
     def get_block_timestamp(self, block: int):
@@ -649,3 +651,13 @@ class DataHandler():
         tokens = self.pool_metadata[pool_id]['inputTokens']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
         return np.array(row) / 10**decimals
+
+    def get_X(self, metric, pool, start_ts, end_ts, freq):
+        data = self.get_pool_metric(pool, metric, start_ts, end_ts)
+
+        if metric == 'shannonsEntropy':
+            X = np.log1p(data.resample(freq).last().pct_change()).dropna()
+        else:
+            X = data.resample(freq).mean()
+
+        return X
