@@ -439,8 +439,8 @@ class MetricsProcessor:
         """
         Our baseline model
         """
-        vp = (virtual_price).resample(freq).mean().fillna(method='ffill').dropna()
-        rp = lp_share_price.resample(freq).mean().fillna(method='ffill').dropna()
+        vp = virtual_price.resample(freq).last().fillna(method='ffill').dropna()
+        rp = lp_share_price.resample(freq).last().fillna(method='ffill').dropna()
 
         error = abs((vp - rp) / vp)
 

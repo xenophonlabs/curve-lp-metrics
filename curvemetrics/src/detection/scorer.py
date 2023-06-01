@@ -23,7 +23,7 @@ def true_positives(T, X, margin=timedelta(hours=MARGIN), weight_func=None):
     TP = set()
     weights = []
     for tau in T:
-        close = [(abs(tau - x), x) for x in X if timedelta() <= tau - x <= margin] # Consider leading indicators up to `margin`
+        close = [(tau - x, x) for x in X if timedelta() <= tau - x <= margin] # Consider leading indicators up to `margin`
         close.sort()
         if not close:
             continue
@@ -31,7 +31,7 @@ def true_positives(T, X, margin=timedelta(hours=MARGIN), weight_func=None):
         TP.add(tau)
         X.remove(xstar)
         if weight_func is not None:
-            weights.append(weight_func(dist))
+            weights.append(weight_func(dist, margin=margin))
         else:
             weights.append(1)
     return TP, weights
@@ -78,7 +78,7 @@ def f_measure(annotations, predictions, margin=timedelta(hours=MARGIN), alpha=0.
         P = sum(true_positives(Tstar, X, margin=margin, weight_func=weight_func)[1]) / len(X)
         TPk = {k: true_positives(Tks[k], X, margin=margin, weight_func=weight_func)[1] for k in Tks}
         
-        R = 1 / K * sum(sum(TPk[k]) / len(Tks[k]) for k in Tks)
+        R = 1 / K * sum(len(TPk[k]) / len(Tks[k]) for k in Tks)
 
         if P == 0 and R == 0:
             F = 0 # avoid division by 0

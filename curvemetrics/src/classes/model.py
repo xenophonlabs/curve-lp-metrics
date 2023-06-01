@@ -102,6 +102,7 @@ class BOCD():
             # self.logger.info(f'Results: {self.results}')
             self.logger.info(f'Best Params: {self.best_params}')
             self.logger.info(f'FPR: {self.best_results}')
+            self.logger.info(f'True CPs: {y_true}')
             self.logger.info(f'Predicted CPs: {self.y_pred}\n')
 
     @property
