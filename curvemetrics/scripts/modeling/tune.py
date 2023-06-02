@@ -49,8 +49,16 @@ ETH_TOKENS = [
 ]
 
 def setup_pool(pool, metric, start, end):
+    """
+    Retrieve the relevant data for modeling a pool metric.
+
+    :param pool: (str) The pool address
+    :param metric: (str) The metric to model
+    :param start: (str) The start date (ISO8601)
+    :param end: (str) The end date (ISO8601)
+    """
     metricsprocessor = MetricsProcessor(datahandler.pool_metadata, datahandler.token_metadata)
-    pool_name = datahandler.pool_metadata[pool]['name']
+    name = datahandler.pool_metadata[pool]['name']
 
     start_ts = datetime.timestamp(datetime.fromisoformat(start))
     end_ts = datetime.timestamp(datetime.fromisoformat(end))
@@ -67,11 +75,19 @@ def setup_pool(pool, metric, start, end):
     y_true = metricsprocessor.true_cps(lp_share_price, virtual_price, freq=FREQ, thresh=THRESH)
     X = datahandler.get_pool_X(metric, pool, start_ts, end_ts, FREQ)
 
-    return X, y_true, lp_share_price.resample(FREQ).last(), virtual_price, pool_name
+    return X, y_true, lp_share_price.resample(FREQ).last(), virtual_price, name
 
 def setup_token(token, metric, start, end):
+    """
+    Retrieve the relevant data for modeling a token metric.
+
+    :param pool: (str) The pool address
+    :param metric: (str) The metric to model
+    :param start: (str) The start date (ISO8601)
+    :param end: (str) The end date (ISO8601)
+    """
     metricsprocessor = MetricsProcessor(datahandler.pool_metadata, datahandler.token_metadata)
-    token_name = datahandler.token_metadata[token]['name']
+    symbol = datahandler.token_metadata[token]['symbol']
 
     start_ts = datetime.timestamp(datetime.fromisoformat(start))
     end_ts = datetime.timestamp(datetime.fromisoformat(end))
@@ -84,15 +100,26 @@ def setup_token(token, metric, start, end):
     if token in ETH_TOKENS:
         eth = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
         eth_price = datahandler.get_ohlcv_data(eth, start=start_ts, end=end_ts)['close']
-        price /= eth_price
+        price /= eth_price # Get numeraire price, all ohlcv prices in dollars
     
     y_true = metricsprocessor.true_cps(price, peg, freq=FREQ, thresh=THRESH)
+    if metric == 'logReturns':
+        metric = f'{datahandler.token_metadata[token]["symbol"]}.{metric}'
     X = datahandler.get_token_X(metric, token, start_ts, end_ts, FREQ)
 
-    return X, y_true, price.resample(FREQ).last(), peg, token_name
+    return X, y_true, price.resample(FREQ).last(), peg, symbol
 
-def test(pool, metric, start, end, params, pool_token):
+def test(pool, metric, start, end, params, pool_token):    
+    """
+    Run model.predict() with the trained hyperparameters.
 
+    :param pool: (str) The pool address
+    :param metric: (str) The metric to model
+    :param start: (str) The start date (ISO8601)
+    :param end: (str) The end date (ISO8601)
+    :param params: (dict) The hyperparameters to use
+    :param pool_token: (str) Whether to model a pool or token metric
+    """
     if pool_token == 'pool':
         X, y_true, price, peg, name = setup_pool(pool, metric, start, end)
     elif pool_token == 'token':
@@ -111,13 +138,21 @@ def test(pool, metric, start, end, params, pool_token):
 
     # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
 
-    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/testing/{pool_token}/{metric}/{pool}.png', metric=metric, pool=pool_name)
+    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/testing/{pool_token}/{metric}/{pool}.png', metric=metric, pool=name)
     print(f"\n[{datetime.now()}] Finished testing {name}\n")
 
     return params, (F, P, R)
 
 def train(pool, metric, start, end, pool_token):
+    """
+    Run model.tune() and return best performing hyperparameters.
 
+    :param pool: (str) The pool address
+    :param metric: (str) The metric to model
+    :param start: (str) The start date (ISO8601)
+    :param end: (str) The end date (ISO8601)
+    :param pool_token: (str) Whether to model a pool or token metric
+    """
     if pool_token == 'pool':
         X, y_true, price, peg, name = setup_pool(pool, metric, start, end)
     elif pool_token == 'token':
@@ -134,45 +169,76 @@ def train(pool, metric, start, end, pool_token):
 
     # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
 
-    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/training/{pool_token}/{metric}/{pool}.png', metric=metric, pool=pool_name)
+    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/training/{pool_token}/{metric}/{pool}.png', metric=metric, pool=name)
     print(f"\n[{datetime.now()}] Finished training {name}\n")
 
     return model.best_params_dict, model.best_results
 
 def main():
+    """
+    Train and test hyperparameters for each combination of pool/token and metric. 
+    Save corresponding results in hyperparameters.json and plots in ./figs directory.
+    """
 
-    print(f"\n[{datetime.now()}] Tuning hyperparameters...\n")
-
+    print(f"[{datetime.now()}] Tuning hyperparameters...\n")
     print(f"[{datetime.now()}] Using margin: {MARGIN}")
     print(f"[{datetime.now()}] Using alpha: {ALPHA}")
     print(f"[{datetime.now()}] Testing grid of length {len(GRID)}\n")
 
     config = load_config()
 
-    # Pool metrics
-    # metrics = ['shannonsEntropy', 'giniCoefficient', 'netSwapFlow', 'netLPFlow', '300.Markout']
-    metrics = ['300.Markout']
-    for metric in metrics:
+    pool_metrics = ['shannonsEntropy', 'giniCoefficient', 'netSwapFlow', 'netLPFlow', '300.Markout']
+    for metric in pool_metrics:
 
         ### TRAINING
+
         train_pool = "0xceaf7747579696a2f0bb206a14210e3c9e6fb269"
         train_start = "2022-01-01"
         train_end = "2022-06-01"
 
-        params, _ = train(train_pool, metric, train_start, train_end)
+        params, _ = train(train_pool, metric, train_start, train_end, 'pool')
         
         ### TESTING
 
         test_end = "2023-05-01"
 
         for pool in datahandler.pool_metadata:
+            if pool == train_pool:
+                continue
             try:
                 test_start = min('2022-01-01', datetime.fromtimestamp(datahandler.pool_metadata[pool]['creationDate']).__str__())
-                _, results = test(pool, metric, test_start, test_end, params=params)
+                _, results = test(pool, metric, test_start, test_end, params, 'pool')
             except Exception as e:
                 print(f"\n[{datetime.now()}] Failed for {datahandler.pool_metadata[pool]['name']}: {e}\n")
                 continue
     
+    token_metrics = ['logReturns']
+    for metric in token_metrics:
+        
+        ### TRAINING
+
+        train_token = '0xa693b19d2931d498c5b318df961919bb4aee87a5'
+        train_start = "2022-01-01"
+        train_end = "2022-06-01"
+
+        params, _ = train(train_token, metric, train_start, train_end, 'token')
+
+        ### TESTING
+
+        test_end = "2023-05-01"
+
+        for token in datahandler.token_metadata:
+            if token in ['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2']:
+                continue
+            if token == train_token:
+                continue
+            try:
+                test_start = '2022-01-01'
+                _, results = test(token, metric, test_start, test_end, params, 'token')
+            except Exception as e:
+                print(f"\n[{datetime.now()}] Failed for {datahandler.token_metadata[token]['symbol']}: {e}\n")
+                continue
+
     # Token metrics
 
     #         # Track results
