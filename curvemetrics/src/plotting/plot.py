@@ -100,12 +100,6 @@ def bocd_plot_comp(X, lp_share_price, virtual_price, true, pred, show=False, sav
     else: ncol=2
     axs[0].legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), ncol=ncol)
 
-    bottom, top = axs[0].get_ylim()
-    axs[0].fill_betweenx([bottom, top], datetime(2022, 5, 7), datetime(2022, 5, 15), color='slategrey', alpha=0.2)
-    axs[0].fill_betweenx([bottom, top], datetime(2022, 11, 1), datetime(2022, 11, 15), color='slategrey', alpha=0.2)
-    axs[0].fill_betweenx([bottom, top], datetime(2023, 3, 9), datetime(2023, 3, 15), color='slategrey', alpha=0.2)
-    axs[0].set_ylim(bottom, top)
-
     if len(pred):
         for p in pred:
             axs[1].axvline(p, linestyle='--', color='darkred', linewidth=0.5)
@@ -114,6 +108,13 @@ def bocd_plot_comp(X, lp_share_price, virtual_price, true, pred, show=False, sav
     axs[1].plot(X.index, X, linewidth=0.5, c='darkblue', label=metric)
 
     axs[0].set_xlim(X.index[0], X.index[-1])
+
+    for ax in axs:
+        bottom, top = ax.get_ylim()
+        ax.fill_betweenx([bottom, top], datetime(2022, 5, 7), datetime(2022, 5, 15), color='slategrey', alpha=0.2)
+        ax.fill_betweenx([bottom, top], datetime(2022, 11, 1), datetime(2022, 11, 15), color='slategrey', alpha=0.2)
+        ax.fill_betweenx([bottom, top], datetime(2023, 3, 9), datetime(2023, 3, 15), color='slategrey', alpha=0.2)
+        ax.set_ylim(bottom, top)
 
     if len(true): ncol=2
     else: ncol=1

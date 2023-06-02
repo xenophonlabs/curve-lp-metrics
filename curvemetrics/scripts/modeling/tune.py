@@ -6,8 +6,6 @@ import json
 from datetime import datetime, timedelta
 import numpy as np
 import warnings
-import logging
-import sys
 
 from ...src.classes.model import BOCD
 from ...src.classes.datahandler import DataHandler
@@ -19,8 +17,8 @@ from ...src.plotting.plot import bocd_plot_comp
 warnings.filterwarnings("ignore")
 
 ALPHA = [10**i for i in range(-5, 5)]
-BETA = [10**i for i in range(-5, 2)]
-KAPPA = [10**i for i in range(-5, 2)]
+BETA = [10**i for i in range(-5, 5)]
+KAPPA = [10**i for i in range(-5, 5)]
 GRID = [(a, b, k) for a in ALPHA for b in BETA for k in KAPPA]
 
 FREQ = timedelta(hours=1)
@@ -44,7 +42,13 @@ ETH_POOLS = [
     '0xa1f8a6807c402e4a15ef4eba36528a3fed24e577',
 ]
 
-def setup(pool, metric, start, end):
+ETH_TOKENS = [
+    '0xae7ab96520de3a18e5e111b5eaab095312d7fe84',
+    '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
+    '0x5e8422345238f34275888049021821e8e08caa1f',
+]
+
+def setup_pool(pool, metric, start, end):
     metricsprocessor = MetricsProcessor(datahandler.pool_metadata, datahandler.token_metadata)
     pool_name = datahandler.pool_metadata[pool]['name']
 
@@ -61,15 +65,40 @@ def setup(pool, metric, start, end):
     snapshots = datahandler.get_pool_snapshots(pool, start_ts, end_ts)
     virtual_price = snapshots['virtualPrice'] / 10**18
     y_true = metricsprocessor.true_cps(lp_share_price, virtual_price, freq=FREQ, thresh=THRESH)
-    X = datahandler.get_X(metric, pool, start_ts, end_ts, FREQ)
+    X = datahandler.get_pool_X(metric, pool, start_ts, end_ts, FREQ)
 
     return X, y_true, lp_share_price.resample(FREQ).last(), virtual_price, pool_name
 
-def test(pool, metric, start, end, params):
+def setup_token(token, metric, start, end):
+    metricsprocessor = MetricsProcessor(datahandler.pool_metadata, datahandler.token_metadata)
+    token_name = datahandler.token_metadata[token]['name']
 
-    X, y_true, lp_share_price, virtual_price, pool_name = setup(pool, metric, start, end)
+    start_ts = datetime.timestamp(datetime.fromisoformat(start))
+    end_ts = datetime.timestamp(datetime.fromisoformat(end))
 
-    print(f"[{datetime.now()}] Testing {metric} on {pool_name} from {start} to {end}")
+    ohlcv = datahandler.get_ohlcv_data(token, start_ts, end_ts)
+    ohlcv['peg'] = 1
+    peg = ohlcv['peg']
+    price = ohlcv['close']
+
+    if token in ETH_TOKENS:
+        eth = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+        eth_price = datahandler.get_ohlcv_data(eth, start=start_ts, end=end_ts)['close']
+        price /= eth_price
+    
+    y_true = metricsprocessor.true_cps(price, peg, freq=FREQ, thresh=THRESH)
+    X = datahandler.get_token_X(metric, token, start_ts, end_ts, FREQ)
+
+    return X, y_true, price.resample(FREQ).last(), peg, token_name
+
+def test(pool, metric, start, end, params, pool_token):
+
+    if pool_token == 'pool':
+        X, y_true, price, peg, name = setup_pool(pool, metric, start, end)
+    elif pool_token == 'token':
+        X, y_true, price, peg, name = setup_token(pool, metric, start, end)
+
+    print(f"[{datetime.now()}] Testing {metric} on {name} from {start} to {end}")
 
     model = BOCD(margin=MARGIN, alpha=ALPHA, verbose=True, weight_func=WEIGHT_FUNC)
     model.update({'alpha':params['alpha'], 'beta':params['beta'], 'kappa':params['kappa']})
@@ -82,19 +111,22 @@ def test(pool, metric, start, end, params):
 
     # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
 
-    bocd_plot_comp(X, lp_share_price, virtual_price, y_true, y_pred, save=True, file=f'./figs/testing/{metric}/{pool}.png', metric=metric, pool=pool_name)
-    print(f"\n[{datetime.now()}] Finished testing {pool_name}\n")
+    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/testing/{pool_token}/{metric}/{pool}.png', metric=metric, pool=pool_name)
+    print(f"\n[{datetime.now()}] Finished testing {name}\n")
 
     return params, (F, P, R)
 
-def train(pool, metric, start, end):
+def train(pool, metric, start, end, pool_token):
 
-    X, y_true, lp_share_price, virtual_price, pool_name = setup(pool, metric, start, end)
+    if pool_token == 'pool':
+        X, y_true, price, peg, name = setup_pool(pool, metric, start, end)
+    elif pool_token == 'token':
+        X, y_true, price, peg, name = setup_token(pool, metric, start, end)
 
     if not len(y_true):
         raise Exception("No CPs in training set")
 
-    print(f"[{datetime.now()}] Training {metric} on {pool_name} from {start} to {end}")
+    print(f"[{datetime.now()}] Training {metric} on {name} from {start} to {end}")
 
     model = BOCD(margin=MARGIN, alpha=ALPHA, verbose=True, weight_func=WEIGHT_FUNC)
     model.tune(GRID, X, y_true)
@@ -102,8 +134,8 @@ def train(pool, metric, start, end):
 
     # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
 
-    bocd_plot_comp(X, lp_share_price, virtual_price, y_true, y_pred, save=True, file=f'./figs/training/{metric}/{pool}.png', metric=metric, pool=pool_name)
-    print(f"\n[{datetime.now()}] Finished training {pool_name}\n")
+    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/training/{pool_token}/{metric}/{pool}.png', metric=metric, pool=pool_name)
+    print(f"\n[{datetime.now()}] Finished training {name}\n")
 
     return model.best_params_dict, model.best_results
 
@@ -118,12 +150,9 @@ def main():
     config = load_config()
 
     # Pool metrics
-    metrics = ['shannonsEntropy', 'netSwapFlow', 'netLPFlow', '300.Markout']
+    # metrics = ['shannonsEntropy', 'giniCoefficient', 'netSwapFlow', 'netLPFlow', '300.Markout']
+    metrics = ['300.Markout']
     for metric in metrics:
-
-        filename = f'./logs/{metric}.log'
-        logging.basicConfig(filename=filename, level=logging.INFO)
-        sys.stdout = open(filename, 'w')
 
         ### TRAINING
         train_pool = "0xceaf7747579696a2f0bb206a14210e3c9e6fb269"
@@ -167,6 +196,3 @@ def main():
 if __name__ == "__main__":
     main()
     datahandler.close()
-    # Close the file after redirecting print statements
-    sys.stdout.close()
-    sys.stdout = sys.__stdout__  # Reset stdout to its default value

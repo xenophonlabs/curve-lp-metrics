@@ -656,7 +656,7 @@ class DataHandler():
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
         return np.array(row) / 10**decimals
 
-    def get_X(self, metric, pool, start_ts, end_ts, freq):
+    def get_pool_X(self, metric, pool, start_ts, end_ts, freq):
         data = self.get_pool_metric(pool, metric, start_ts, end_ts)
 
         if metric in ['giniCoefficient', 'shannonsEntropy']:
@@ -668,4 +668,16 @@ class DataHandler():
             X = (X - X.mean()) / X.std()
         else:
             raise Exception('Not Implemented Error')
+
+        return X
+
+    def get_token_X(self, metric, token, start_ts, end_ts, freq):
+        data = self.get_token_metric(token, metric, start_ts, end_ts)
+
+        if 'logReturns' in metric:
+            X = data.resample(freq).sum()
+            X = (X - X.mean()) / X.std()
+        else:
+            raise Exception('Not Implemented Error')
+
         return X
