@@ -6,6 +6,8 @@ import json
 from datetime import datetime, timedelta
 import numpy as np
 import warnings
+import logging
+import sys
 
 from ...src.classes.model import BOCD
 from ...src.classes.datahandler import DataHandler
@@ -23,7 +25,7 @@ GRID = [(a, b, k) for a in ALPHA for b in BETA for k in KAPPA]
 
 FREQ = timedelta(hours=1)
 MARGIN = timedelta(hours=24)
-WEIGHT_FUNC = None
+WEIGHT_FUNC = early_weight # linearly weighs early predictions over later ones up to MARGIN
 ALPHA = 1/2
 THRESH = 0.05
 
@@ -71,15 +73,16 @@ def test(pool, metric, start, end, params):
 
     model = BOCD(margin=MARGIN, alpha=ALPHA, verbose=True, weight_func=WEIGHT_FUNC)
     model.update({'alpha':params['alpha'], 'beta':params['beta'], 'kappa':params['kappa']})
-    y_pred = model.predict(X)
+    y_pred, y_ps = model.predict(X)
     print(f'[{datetime.now()}] True CPs: {y_true}')
     print(f'[{datetime.now()}] Predicted CPs: {y_pred}')
+    print(f'[{datetime.now()}] Predicted CPs probabilities: {y_ps}')
     F, P, R = f_measure(y_true, y_pred, margin=MARGIN, alpha=ALPHA, return_PR=True, weight_func=early_weight)
     print(f'[{datetime.now()}] FPR: {F}, Precision: {P}, Recall: {R}')
 
     # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
 
-    bocd_plot_comp(X, lp_share_price, virtual_price, y_true, y_pred, save=True, file=f'./figs/testing/{metric}_{pool}.png', metric=metric, pool=pool_name)
+    bocd_plot_comp(X, lp_share_price, virtual_price, y_true, y_pred, save=True, file=f'./figs/testing/{metric}/{pool}.png', metric=metric, pool=pool_name)
     print(f"\n[{datetime.now()}] Finished testing {pool_name}\n")
 
     return params, (F, P, R)
@@ -99,7 +102,7 @@ def train(pool, metric, start, end):
 
     # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
 
-    bocd_plot_comp(X, lp_share_price, virtual_price, y_true, y_pred, save=True, file=f'./figs/training/{metric}_{pool}.png', metric=metric, pool=pool_name)
+    bocd_plot_comp(X, lp_share_price, virtual_price, y_true, y_pred, save=True, file=f'./figs/training/{metric}/{pool}.png', metric=metric, pool=pool_name)
     print(f"\n[{datetime.now()}] Finished training {pool_name}\n")
 
     return model.best_params_dict, model.best_results
@@ -114,28 +117,34 @@ def main():
 
     config = load_config()
 
-    # metric = 'shannonsEntropy' 
-    metric = 'netSwapFlow'
+    # Pool metrics
+    metrics = ['shannonsEntropy', 'netSwapFlow', 'netLPFlow', '300.Markout']
+    for metric in metrics:
 
-    ### TRAINING
+        filename = f'./logs/{metric}.log'
+        logging.basicConfig(filename=filename, level=logging.INFO)
+        sys.stdout = open(filename, 'w')
 
-    train_pool = "0xceaf7747579696a2f0bb206a14210e3c9e6fb269"
-    train_start = "2022-01-01"
-    train_end = "2022-06-01"
+        ### TRAINING
+        train_pool = "0xceaf7747579696a2f0bb206a14210e3c9e6fb269"
+        train_start = "2022-01-01"
+        train_end = "2022-06-01"
 
-    params, _ = train(train_pool, metric, train_start, train_end)
+        params, _ = train(train_pool, metric, train_start, train_end)
+        
+        ### TESTING
+
+        test_end = "2023-05-01"
+
+        for pool in datahandler.pool_metadata:
+            try:
+                test_start = min('2022-01-01', datetime.fromtimestamp(datahandler.pool_metadata[pool]['creationDate']).__str__())
+                _, results = test(pool, metric, test_start, test_end, params=params)
+            except Exception as e:
+                print(f"\n[{datetime.now()}] Failed for {datahandler.pool_metadata[pool]['name']}: {e}\n")
+                continue
     
-    ### TESTING
-
-    test_end = "2023-05-01"
-
-    for pool in datahandler.pool_metadata:
-        try:
-            test_start = min('2022-01-01', datetime.fromtimestamp(datahandler.pool_metadata[pool]['creationDate']).__str__())
-            _, results = test(pool, metric, test_start, test_end, params=params)
-        except Exception as e:
-            print(f"\n[{datetime.now()}] Failed for {datahandler.pool_metadata[pool]['name']}: {e}\n")
-            continue
+    # Token metrics
 
     #         # Track results
     #         if pool not in config['hyperparameters']['bocd']:
@@ -158,3 +167,6 @@ def main():
 if __name__ == "__main__":
     main()
     datahandler.close()
+    # Close the file after redirecting print statements
+    sys.stdout.close()
+    sys.stdout = sys.__stdout__  # Reset stdout to its default value

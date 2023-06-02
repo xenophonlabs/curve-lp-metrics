@@ -3,6 +3,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.cm as cm
 from matplotlib.cm import ScalarMappable
 import numpy as np
+from datetime import datetime
 
 plt.rcParams["font.family"] = "serif"
 plt.rcParams.update({'font.size': 10})
@@ -88,27 +89,41 @@ def bocd_plot_comp(X, lp_share_price, virtual_price, true, pred, show=False, sav
 
     if len(true):
         for cp in true:
-            axs[0].axvline(cp, linestyle='--', linewidth=0.5, color='darkgreen')
-        axs[0].plot([], [], label='True CPs', color='darkgreen', linestyle='--', linewidth=0.5)
+            axs[0].axvline(cp, linestyle='--', linewidth=0.5, color='black')
+        axs[0].plot([], [], label='True CPs', color='black', linestyle='--', linewidth=0.5)
 
     axs[0].plot(lp_share_price.index, lp_share_price, linewidth=0.5, c='darkblue', label='LP Share Price')
     axs[0].plot(virtual_price.index, virtual_price, linewidth=0.5, c='darkgreen', label='Virtual Price')
     axs[0].set_title(f'{pool} LP Share Price vs Virtual Price')
     axs[0].set_ylabel('Price (USD)')
-    axs[0].legend()
+    if len(true): ncol=3
+    else: ncol=2
+    axs[0].legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), ncol=ncol)
+
+    bottom, top = axs[0].get_ylim()
+    axs[0].fill_betweenx([bottom, top], datetime(2022, 5, 7), datetime(2022, 5, 15), color='slategrey', alpha=0.2)
+    axs[0].fill_betweenx([bottom, top], datetime(2022, 11, 1), datetime(2022, 11, 15), color='slategrey', alpha=0.2)
+    axs[0].fill_betweenx([bottom, top], datetime(2023, 3, 9), datetime(2023, 3, 15), color='slategrey', alpha=0.2)
+    axs[0].set_ylim(bottom, top)
 
     if len(pred):
         for p in pred:
             axs[1].axvline(p, linestyle='--', color='darkred', linewidth=0.5)
         axs[1].plot([], [], color='darkred', linestyle='--', linewidth=0.5, label='Pred CPs')
 
-    axs[1].legend()
-
     axs[1].plot(X.index, X, linewidth=0.5, c='darkblue', label=metric)
+
+    axs[0].set_xlim(X.index[0], X.index[-1])
+
+    if len(true): ncol=2
+    else: ncol=1
+    axs[1].legend(loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=ncol)
     axs[1].set_title(f'{pool} {metric}')
     axs[1].set_ylabel(metric)
 
     axs[1].tick_params(axis='x', rotation=45)
+
+    f.tight_layout()
 
     if show:
         plt.show()

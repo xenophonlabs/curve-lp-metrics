@@ -39,6 +39,7 @@ class BOCD():
         self.results = {}
         self.params = self.default_params
         self.y_pred = None
+        self.y_ps = None
         self.verbose = verbose
         self.weight_func = weight_func
     
@@ -57,23 +58,29 @@ class BOCD():
 
     def predict(self, X):
         rt_mle = np.empty(X.shape)
+        p = np.empty(X.shape)
         for i, x in enumerate(X):
             self.model.update(x)
             rt_mle[i] = self.model.rt
-        return X.index[np.where(np.diff(rt_mle)!=1)[0]+1]
+            p[i] = self.model.p
+        cps = np.where(np.diff(rt_mle)!=1)[0]+1
+        ps = p[cps] # probabilities
+        return X.index[cps], ps
 
     def _tune(self, chunk, X, y_true):
         results = {}
         y_pred = []
+        y_ps = []
         score = -1
         for a, b, k in chunk:
             self.update({'alpha': a, 'beta': b, 'kappa': k})
-            pred = self.predict(X)
+            pred, ps = self.predict(X)
             results[(a, b, k)] = f_measure(y_true, pred, margin=self.margin, alpha=self.alpha, return_PR=True, weight_func=self.weight_func)
             if results[(a, b, k)][0] > score:
                 y_pred = pred
+                y_ps = ps
                 score = results[(a, b, k)][0]
-        return results, y_pred, score
+        return results, y_pred, score, y_ps
 
     def tune(self, grid, X, y_true):
         num_cpus = cpu_count()
@@ -91,6 +98,7 @@ class BOCD():
             self.results.update(result[0])
 
         self.y_pred = max(results, key=lambda x: x[2])[1]
+        self.y_ps = max(results, key=lambda x: x[2])[3]
 
         if self.verbose:
             self.logger.info('\nFinished tuning hyperparameters\n')
@@ -98,7 +106,8 @@ class BOCD():
             self.logger.info(f'Best Params: {self.best_params}')
             self.logger.info(f'FPR: {self.best_results}')
             self.logger.info(f'True CPs: {y_true}')
-            self.logger.info(f'Predicted CPs: {self.y_pred}\n')
+            self.logger.info(f'Predicted CPs: {self.y_pred}')
+            self.logger.info(f'Predicted CPs Probabilities: {self.y_ps}\n')
 
     @property
     def best_params_dict(self):

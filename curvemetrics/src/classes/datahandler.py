@@ -595,7 +595,7 @@ class DataHandler():
         return df
     
     def get_pool_metric(self, pool_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
-        if metric == 'netSwapFlow':
+        if metric in ['netSwapFlow', 'netLPFlow']:
             query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric LIKE ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
             results = self._execute_query(query, params=[pool_id, '%'+metric, start, end])
         else:
@@ -659,11 +659,12 @@ class DataHandler():
     def get_X(self, metric, pool, start_ts, end_ts, freq):
         data = self.get_pool_metric(pool, metric, start_ts, end_ts)
 
-        if metric == 'shannonsEntropy':
+        if metric in ['giniCoefficient', 'shannonsEntropy']:
             X = np.log1p(data.resample(freq).last().pct_change()).dropna()
-        elif 'netSwapFlow' in metric or 'netLPFlow' in metric:
+        elif 'netSwapFlow' in metric \
+            or 'netLPFlow' in metric \
+            or 'Markout' in metric:
             X = data.resample(freq).sum()
-            # TODO: This might not make sense since I am not getting all the data
             X = (X - X.mean()) / X.std()
         else:
             raise Exception('Not Implemented Error')
