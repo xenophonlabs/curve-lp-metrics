@@ -60,13 +60,11 @@ class BOCD():
 
     def predict(self, X):
         rt_mle = np.empty(X.shape)
-
         for i, x in enumerate(X):
             self.model.update(x)
             rt_mle[i] = self.model.rt
-
         return X.index[np.where(np.diff(rt_mle)!=1)[0]+1]
-    
+
     def _tune(self, chunk, X, y_true):
         results = {}
         y_pred = []
@@ -74,7 +72,7 @@ class BOCD():
         for a, b, k in chunk:
             self.update({'alpha': a, 'beta': b, 'kappa': k})
             pred = self.predict(X)
-            results[(a, b, k)] = f_measure({1: y_true}, pred, margin=self.margin, alpha=self.alpha, return_PR=True, weight_func=early_weight)
+            results[(a, b, k)] = f_measure(y_true, pred, margin=self.margin, alpha=self.alpha, return_PR=True, weight_func=early_weight)
             if results[(a, b, k)][0] > score:
                 y_pred = pred
                 score = results[(a, b, k)][0]

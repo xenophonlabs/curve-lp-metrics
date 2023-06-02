@@ -179,6 +179,7 @@ CREATE TABLE IF NOT EXISTS changepoints (
     pool_id TEXT REFERENCES pools (id),
     model TEXT,
     metric TEXT,
+    freq TEXT,
     timestamp INTEGER,
-    PRIMARY KEY (pool_id, model, metric, timestamp)
+    PRIMARY KEY (pool_id, model, metric, freq, timestamp)
 );

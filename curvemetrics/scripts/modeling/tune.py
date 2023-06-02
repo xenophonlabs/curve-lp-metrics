@@ -1,5 +1,5 @@
 """
-Train hyperparameters for BOCD models. Write them to config.json.
+Train hyperparameters for BOCD models. Write them to hyperparameters.json.
 """
 import os
 import json
@@ -23,8 +23,10 @@ GRID = [(a, b, k) for a in ALPHA for b in BETA for k in KAPPA]
 
 FREQ = timedelta(hours=1)
 MARGIN = timedelta(hours=24)
-ALPHA = 1/2
+ALPHA = 1/5
 THRESH = 0.05
+
+datahandler = DataHandler()
 
 def load_config():
     # Load the configuration
@@ -33,11 +35,13 @@ def load_config():
     return config
 
 ETH_POOLS = [
-    '0xdc24316b9ae028f1497c275eb9192a3ea0f67022'
+    '0xdc24316b9ae028f1497c275eb9192a3ea0f67022',
+    '0x5fae7e604fc3e24fd43a72867cebac94c65b404a',
+    '0x828b154032950c8ff7cf8085d841723db2696056',
+    '0xa1f8a6807c402e4a15ef4eba36528a3fed24e577',
 ]
 
 def setup(pool, metric, start, end):
-    datahandler = DataHandler()
     metricsprocessor = MetricsProcessor(datahandler.pool_metadata, datahandler.token_metadata)
     pool_name = datahandler.pool_metadata[pool]['name']
 
@@ -58,8 +62,6 @@ def setup(pool, metric, start, end):
         raise Exception("No CPs in dataset")
     X = datahandler.get_X(metric, pool, start_ts, end_ts, FREQ)
 
-    datahandler.close()
-
     return X, y_true, lp_share_price.resample(FREQ).last(), pool_name
 
 def test(pool, metric, start, end, params):
@@ -71,14 +73,14 @@ def test(pool, metric, start, end, params):
     model = BOCD(margin=MARGIN, alpha=ALPHA, verbose=True)
     model.update({'alpha':params['alpha'], 'beta':params['beta'], 'kappa':params['kappa']})
     y_pred = model.predict(X)
-    print(f'True CPs: {y_true}')
-    print(f'Predicted CPs: {y_pred}')
-    F, P, R = f_measure({1: y_true}, y_pred, margin=MARGIN, alpha=ALPHA, return_PR=True, weight_func=early_weight)
+    print(f'[{datetime.now()}] True CPs: {y_true}')
+    print(f'[{datetime.now()}] Predicted CPs: {y_pred}')
+    F, P, R = f_measure(y_true, y_pred, margin=MARGIN, alpha=ALPHA, return_PR=True, weight_func=early_weight)
     print(f'[{datetime.now()}]FPR: {F}, Precision: {P}, Recall: {R}')
 
     # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
 
-    bocd_plot_comp(X, lp_share_price, y_true, y_pred, save=True, file=f'./figs/testing/{metric}_{pool}.png', metric=metric)
+    bocd_plot_comp(X, lp_share_price, y_true, y_pred, save=True, file=f'./figs/testing/{metric}_{pool}.png', metric=metric, pool=pool_name)
     print(f"\n[{datetime.now()}] Finished testing {pool_name}\n")
 
     return params, (F, P, R)
@@ -95,7 +97,7 @@ def train(pool, metric, start, end):
 
     # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
 
-    bocd_plot_comp(X, lp_share_price, y_true, y_pred, save=True, file=f'./figs/training/{metric}_{pool}.png', metric=metric)
+    bocd_plot_comp(X, lp_share_price, y_true, y_pred, save=True, file=f'./figs/training/{metric}_{pool}.png', metric=metric, pool=pool_name)
     print(f"\n[{datetime.now()}] Finished training {pool_name}\n")
 
     return model.best_params_dict, model.best_results
@@ -104,9 +106,9 @@ def main():
 
     print(f"\n[{datetime.now()}] Tuning hyperparameters...\n")
 
-    print(f"Using margin: {MARGIN}")
-    print(f"Using alpha: {ALPHA}")
-    print(f"Testing grid of length {len(GRID)}: {GRID}\n")
+    print(f"[{datetime.now()}] Using margin: {MARGIN}")
+    print(f"[{datetime.now()}] Using alpha: {ALPHA}")
+    print(f"[{datetime.now()}] Testing grid of length {len(GRID)}\n")
 
     config = load_config()
 
@@ -122,17 +124,15 @@ def main():
     
     ### TESTING
 
-    test_pool = "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"
-    test_start = "2022-01-01"
     test_end = "2023-05-01"
 
-    _, results = test(test_pool, metric, test_start, test_end, params=params)
-
-    # test_pool = "0xdc24316b9ae028f1497c275eb9192a3ea0f67022"
-    # test_start = "2022-01-01"
-    # test_end = "2023-05-01"
-
-    # _, results = test(test_pool, metric, test_start, test_end, params=params)
+    for pool in datahandler.pool_metadata:
+        try:
+            test_start = min('2022-01-01', datetime.fromtimestamp(datahandler.pool_metadata[pool]['creationDate']).__str__())
+            _, results = test(pool, metric, test_start, test_end, params=params)
+        except Exception as e:
+            print(f"\n[{datetime.now()}] Failed for {datahandler.pool_metadata[pool]['name']}: {e}\n")
+            continue
 
     #         # Track results
     #         if pool not in config['hyperparameters']['bocd']:
@@ -154,3 +154,4 @@ def main():
     
 if __name__ == "__main__":
     main()
+    datahandler.close()

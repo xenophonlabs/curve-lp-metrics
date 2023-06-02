@@ -82,9 +82,9 @@ def bocd_plot(data, maxes, title='', label='', ylab='', file='', show=False):
     else:
         plt.close()
 
-def bocd_plot_comp(X, port, true, pred, show=False, save=True, file='', metric=''):
+def bocd_plot_comp(X, port, true, pred, show=False, save=True, file='', metric='', pool=''):
 
-    f, axs = plt.subplots(2, 1, sharex=True, figsize=(8, 8))
+    f, axs = plt.subplots(2, 1, sharex=False, figsize=(8, 8))
 
     if len(true):
         for cp in true:
@@ -92,7 +92,7 @@ def bocd_plot_comp(X, port, true, pred, show=False, save=True, file='', metric='
         axs[0].plot([], [], label='True CPs', color='darkgreen', linestyle='--', linewidth=0.5)
 
     axs[0].plot(port.index, port, linewidth=0.5, c='darkblue', label='LP Share Price')
-    axs[0].set_title('LP Share Price')
+    axs[0].set_title(f'{pool} LP Share Price')
     axs[0].set_ylabel('Price (USD)')
     axs[0].legend()
 
@@ -104,7 +104,7 @@ def bocd_plot_comp(X, port, true, pred, show=False, save=True, file='', metric='
     axs[1].legend()
 
     axs[1].plot(X.index, X, linewidth=0.5, c='darkblue', label=metric)
-    axs[1].set_title(metric)
+    axs[1].set_title(f'{pool} {metric}')
     axs[1].set_ylabel(metric)
 
     axs[1].tick_params(axis='x', rotation=45)

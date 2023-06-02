@@ -40,45 +40,26 @@ def early_weight(delta, margin=timedelta(hours=MARGIN)):
     # For example, weight predictions that lead by 12 hours twice as heavily as those that lead by 1 hour.
     return delta.total_seconds() / margin.total_seconds()  # weight is proportional to lead time in hours
 
-def f_measure(annotations, predictions, margin=timedelta(hours=MARGIN), alpha=0.5, return_PR=False, weight_func=None):
-    """Compute the F-measure based on human annotations.
+def f_measure(truth, predictions, margin=timedelta(hours=MARGIN), alpha=0.5, return_PR=False, weight_func=None):
+    """Compute the F-measure.
 
-    annotations : dict from user_id to iterable of CP locations
-    predictions : iterable of predicted CP locations
-    alpha : value for the F-measure, alpha=0.5 gives the F1-measure
-    return_PR : whether to return precision and recall too
-
-    Remember that all CP locations are 0-based!
-
-    >>> f_measure({1: [10, 20], 2: [11, 20], 3: [10], 4: [0, 5]}, [10, 20])
-    1.0
-    >>> f_measure({1: [], 2: [10], 3: [50]}, [10])
-    0.9090909090909091
-    >>> f_measure({1: [], 2: [10], 3: [50]}, [])
-    0.8
-
-    Modified from: G.J.J. van den Burg, Copyright (c) 2020 - The Alan Turing Institute
+    :param annotations : list of CP locations
+    :param predictions : iterable of predicted CP locations
+    :param alpha : value for the F-measure, alpha=0.5 gives the F1-measure
+    :param return_PR : whether to return precision and recall too
+    :param weight_func : weighs each true positive by how much of a leading indicator it was
     """
     if len(predictions) == 0:
         F, P, R = 0, 0, 0
     
     else:
-        # ensure 0 is in all the sets
-        Tks = {k + 1: set(annotations[uid]) for k, uid in enumerate(annotations)}
-
         X = set(predictions)
+        T = set(truth)
 
-        Tstar = set()
-        for Tk in Tks.values():
-            for tau in Tk:
-                Tstar.add(tau)
+        TPs, weights = true_positives(T, X, margin=margin, weight_func=weight_func)
 
-        K = len(Tks)
-
-        P = sum(true_positives(Tstar, X, margin=margin, weight_func=weight_func)[1]) / len(X)
-        TPk = {k: true_positives(Tks[k], X, margin=margin, weight_func=weight_func)[1] for k in Tks}
-        
-        R = 1 / K * sum(len(TPk[k]) / len(Tks[k]) for k in Tks)
+        P = len(TPs) / len(X)
+        R = sum(weights) / len(T)
 
         if P == 0 and R == 0:
             F = 0 # avoid division by 0
