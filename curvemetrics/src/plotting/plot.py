@@ -82,17 +82,18 @@ def bocd_plot(data, maxes, title='', label='', ylab='', file='', show=False):
     else:
         plt.close()
 
-def bocd_plot_comp(X, port, true, pred, show=False, save=True, file='', metric='', pool=''):
+def bocd_plot_comp(X, lp_share_price, virtual_price, true, pred, show=False, save=True, file='', metric='', pool=''):
 
-    f, axs = plt.subplots(2, 1, sharex=False, figsize=(8, 8))
+    f, axs = plt.subplots(2, 1, sharex=True, figsize=(8, 8))
 
     if len(true):
         for cp in true:
             axs[0].axvline(cp, linestyle='--', linewidth=0.5, color='darkgreen')
         axs[0].plot([], [], label='True CPs', color='darkgreen', linestyle='--', linewidth=0.5)
 
-    axs[0].plot(port.index, port, linewidth=0.5, c='darkblue', label='LP Share Price')
-    axs[0].set_title(f'{pool} LP Share Price')
+    axs[0].plot(lp_share_price.index, lp_share_price, linewidth=0.5, c='darkblue', label='LP Share Price')
+    axs[0].plot(virtual_price.index, virtual_price, linewidth=0.5, c='darkgreen', label='Virtual Price')
+    axs[0].set_title(f'{pool} LP Share Price vs Virtual Price')
     axs[0].set_ylabel('Price (USD)')
     axs[0].legend()
 

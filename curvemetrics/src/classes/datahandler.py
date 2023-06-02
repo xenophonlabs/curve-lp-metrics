@@ -595,8 +595,12 @@ class DataHandler():
         return df
     
     def get_pool_metric(self, pool_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
-        query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, metric, start, end])
+        if metric == 'netSwapFlow':
+            query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric LIKE ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+            results = self._execute_query(query, params=[pool_id, '%'+metric, start, end])
+        else:
+            query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+            results = self._execute_query(query, params=[pool_id, metric, start, end])
         if not len(results):
             return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
@@ -605,6 +609,8 @@ class DataHandler():
         series.name = metric
         if metric in ['shannonsEntropy', 'giniCoefficient']:
             series.replace(0, method='ffill', inplace=True)
+        elif metric == 'netSwapFlow': # aggregate all netSwapFlows
+            series.groupby(series.index).sum()            
         return series
 
     def get_token_metric(self, token_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
@@ -655,7 +661,10 @@ class DataHandler():
 
         if metric == 'shannonsEntropy':
             X = np.log1p(data.resample(freq).last().pct_change()).dropna()
+        elif 'netSwapFlow' in metric or 'netLPFlow' in metric:
+            X = data.resample(freq).sum()
+            # TODO: This might not make sense since I am not getting all the data
+            X = (X - X.mean()) / X.std()
         else:
-            X = data.resample(freq).last()
-
+            raise Exception('Not Implemented Error')
         return X

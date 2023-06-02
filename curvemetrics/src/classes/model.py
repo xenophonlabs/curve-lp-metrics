@@ -20,8 +20,7 @@ class BOCD():
         'mu': 0
     }
 
-    def __init__(self, margin=timedelta(hours=24), alpha=1/5, verbose=False):
-
+    def __init__(self, margin=timedelta(hours=24), alpha=1/5, verbose=False, weight_func=None):
         self.model = BayesianOnlineChangePointDetection(
             ConstantHazard(self.default_params['lambda']), 
             StudentT(mu=self.default_params['mu'], 
@@ -29,7 +28,6 @@ class BOCD():
             alpha=self.default_params['alpha'], 
             beta=self.default_params['beta'])
         )
-
         self.margin = margin
         self.alpha = alpha
 
@@ -40,10 +38,9 @@ class BOCD():
 
         self.results = {}
         self.params = self.default_params
-
         self.y_pred = None
-
-        self.verbose=verbose
+        self.verbose = verbose
+        self.weight_func = weight_func
     
     def update(self, params):
         new_params = {key: params.get(key) or self.default_params.get(key) for key in self.default_params.keys()}
@@ -72,7 +69,7 @@ class BOCD():
         for a, b, k in chunk:
             self.update({'alpha': a, 'beta': b, 'kappa': k})
             pred = self.predict(X)
-            results[(a, b, k)] = f_measure(y_true, pred, margin=self.margin, alpha=self.alpha, return_PR=True, weight_func=early_weight)
+            results[(a, b, k)] = f_measure(y_true, pred, margin=self.margin, alpha=self.alpha, return_PR=True, weight_func=self.weight_func)
             if results[(a, b, k)][0] > score:
                 y_pred = pred
                 score = results[(a, b, k)][0]
