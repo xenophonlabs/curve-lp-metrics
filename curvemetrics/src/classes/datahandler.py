@@ -8,6 +8,7 @@ import pandas as pd
 
 from typing import Dict, List
 from datetime import datetime, timedelta
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
@@ -650,13 +651,8 @@ class DataHandler():
             cursor.close()
 
         return results
-    
-    def normalize(self, row, pool_id):
-        tokens = self.pool_metadata[pool_id]['inputTokens']
-        decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
-        return np.array(row) / 10**decimals
 
-    def get_pool_X(self, metric, pool, start_ts, end_ts, freq):
+    def get_pool_X(self, metric, pool, start_ts, end_ts, freq, normalize=False, standardize=False):
         data = self.get_pool_metric(pool, metric, start_ts, end_ts)
 
         if metric in ['giniCoefficient', 'shannonsEntropy']:
@@ -665,19 +661,29 @@ class DataHandler():
             or 'netLPFlow' in metric \
             or 'Markout' in metric:
             X = data.resample(freq).sum()
-            X = (X - X.mean()) / X.std()
         else:
             raise Exception('Not Implemented Error')
-
+        
+        if normalize:
+            scaler = MinMaxScaler(feature_range=(-1, 1))
+            X = scaler.fit_transform(X)
+        elif standardize:
+            scaler = StandardScaler()
+            X = scaler.fit_transform(X)
         return X
 
-    def get_token_X(self, metric, token, start_ts, end_ts, freq):
+    def get_token_X(self, metric, token, start_ts, end_ts, freq, normalize=False, standardize=False):
         data = self.get_token_metric(token, metric, start_ts, end_ts)
 
         if 'logReturns' in metric:
             X = data.resample(freq).sum()
-            X = (X - X.mean()) / X.std()
         else:
             raise Exception('Not Implemented Error')
 
+        if normalize:
+            scaler = MinMaxScaler(feature_range=(-1, 1))
+            X = scaler.fit_transform(X)
+        elif standardize:
+            scaler = StandardScaler()
+            X = scaler.fit_transform(X)
         return X

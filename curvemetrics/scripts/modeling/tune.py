@@ -27,6 +27,10 @@ WEIGHT_FUNC = early_weight # linearly weighs early predictions over later ones u
 ALPHA = 1/2
 THRESH = 0.05
 
+# Pre-processing
+NORMALIZE = True
+STANDARDIZE = False
+
 datahandler = DataHandler()
 
 def load_config():
@@ -73,7 +77,7 @@ def setup_pool(pool, metric, start, end):
     snapshots = datahandler.get_pool_snapshots(pool, start_ts, end_ts)
     virtual_price = snapshots['virtualPrice'] / 10**18
     y_true = metricsprocessor.true_cps(lp_share_price, virtual_price, freq=FREQ, thresh=THRESH)
-    X = datahandler.get_pool_X(metric, pool, start_ts, end_ts, FREQ)
+    X = datahandler.get_pool_X(metric, pool, start_ts, end_ts, FREQ, normalize=NORMALIZE, standardize=STANDARDIZE)
 
     return X, y_true, lp_share_price.resample(FREQ).last(), virtual_price, name
 
@@ -105,7 +109,7 @@ def setup_token(token, metric, start, end):
     y_true = metricsprocessor.true_cps(price, peg, freq=FREQ, thresh=THRESH)
     if metric == 'logReturns':
         metric = f'{datahandler.token_metadata[token]["symbol"]}.{metric}'
-    X = datahandler.get_token_X(metric, token, start_ts, end_ts, FREQ)
+    X = datahandler.get_token_X(metric, token, start_ts, end_ts, FREQ, normalize=NORMALIZE, standardize=STANDARDIZE)
 
     return X, y_true, price.resample(FREQ).last(), peg, symbol
 
