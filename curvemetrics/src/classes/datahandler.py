@@ -666,10 +666,10 @@ class DataHandler():
         
         if normalize:
             scaler = MinMaxScaler(feature_range=(-1, 1))
-            X = scaler.fit_transform(X)
+            X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
         elif standardize:
             scaler = StandardScaler()
-            X = scaler.fit_transform(X)
+            X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
         return X
 
     def get_token_X(self, metric, token, start_ts, end_ts, freq, normalize=False, standardize=False):
@@ -682,8 +682,8 @@ class DataHandler():
 
         if normalize:
             scaler = MinMaxScaler(feature_range=(-1, 1))
-            X = scaler.fit_transform(X)
+            X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
         elif standardize:
             scaler = StandardScaler()
-            X = scaler.fit_transform(X)
+            X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
         return X
