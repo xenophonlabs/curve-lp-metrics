@@ -6,6 +6,7 @@ import json
 from datetime import datetime, timedelta
 import numpy as np
 import warnings
+import pandas as pd
 
 from ...src.classes.model import BOCD
 from ...src.classes.datahandler import DataHandler
@@ -24,20 +25,15 @@ GRID = [(a, b, k) for a in ALPHA for b in BETA for k in KAPPA]
 FREQ = timedelta(hours=1)
 MARGIN = timedelta(hours=24)
 WEIGHT_FUNC = early_weight # linearly weighs early predictions over later ones up to MARGIN
+# WEIGHT_FUNC = None
 ALPHA = 1/2
 THRESH = 0.05
 
 # Pre-processing
-NORMALIZE = True
-STANDARDIZE = False
+NORMALIZE = False
+STANDARDIZE = True
 
 datahandler = DataHandler()
-
-def load_config():
-    # Load the configuration
-    with open(os.path.join(os.path.abspath('hyperparameters.json')), "r") as f:
-        config = json.load(f)
-    return config
 
 ETH_POOLS = [
     '0xdc24316b9ae028f1497c275eb9192a3ea0f67022',
@@ -189,8 +185,7 @@ def main():
     print(f"[{datetime.now()}] Using alpha: {ALPHA}")
     print(f"[{datetime.now()}] Testing grid of length {len(GRID)}\n")
 
-    config = load_config()
-
+    pool_results = []
     pool_metrics = ['shannonsEntropy', 'giniCoefficient', 'netSwapFlow', 'netLPFlow', '300.Markout']
     for metric in pool_metrics:
 
@@ -211,11 +206,17 @@ def main():
                 continue
             try:
                 test_start = min('2022-01-01', datetime.fromtimestamp(datahandler.pool_metadata[pool]['creationDate']).__str__())
-                _, results = test(pool, metric, test_start, test_end, params, 'pool')
+                _, res = test(pool, metric, test_start, test_end, params, 'pool')
+                F, P, R = res
+                pool_results.append([pool, metric, F, P, R, params])
             except Exception as e:
                 print(f"\n[{datetime.now()}] Failed for {datahandler.pool_metadata[pool]['name']}: {e}\n")
                 continue
     
+    pool_df = pd.DataFrame(pool_results, columns=['pool', 'metric', 'F', 'P', 'R', 'params'])
+    pool_df.to_csv('./results/pool_results.csv', index=False)
+    
+    token_results = []
     token_metrics = ['logReturns']
     for metric in token_metrics:
         
@@ -239,29 +240,14 @@ def main():
             try:
                 test_start = '2022-01-01'
                 _, results = test(token, metric, test_start, test_end, params, 'token')
+                F, P, R = results
+                token_results.append([token, metric, F, P, R, params])
             except Exception as e:
                 print(f"\n[{datetime.now()}] Failed for {datahandler.token_metadata[token]['symbol']}: {e}\n")
                 continue
-
-    # Token metrics
-
-    #         # Track results
-    #         if pool not in config['hyperparameters']['bocd']:
-    #             config['hyperparameters']['bocd'][pool] = {}
-    #         if metric not in config['hyperparameters']['bocd'][pool]:
-    #             config['hyperparameters']['bocd'][pool][metric] = {}
-    #         config['hyperparameters']['bocd'][pool][metric] = model.params
-
-    #         if pool not in config['results']:
-    #             config['results'][pool] = {}
-    #         if metric not in config['results'][pool]:
-    #             config['results'][pool][metric] = {}
-    #         config['results'][pool][metric] = [F, P, R]
-
-    #         print(f'[{datetime.now()}]Successfully tuned hyperparameters for {metric} in {pool}\n')
-
-    # with open(os.path.join(os.path.abspath('hyperparameters.json')), "w") as f:
-    #     json.dump(config, f, indent=4)
+    
+    token_df = pd.DataFrame(token_results, columns=['token', 'metric', 'F', 'P', 'R', 'params'])
+    token_df.to_csv('./results/token_results.csv', index=False)
     
 if __name__ == "__main__":
     main()

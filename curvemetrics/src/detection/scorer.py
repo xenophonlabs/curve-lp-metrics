@@ -49,7 +49,7 @@ def f_measure(truth, predictions, margin=timedelta(hours=MARGIN), alpha=0.5, ret
     :param return_PR : whether to return precision and recall too
     :param weight_func : weighs each true positive by how much of a leading indicator it was
     """
-    if len(predictions) == 0:
+    if len(predictions) == 0 or len(truth) == 0:
         F, P, R = 0, 0, 0
     
     else:

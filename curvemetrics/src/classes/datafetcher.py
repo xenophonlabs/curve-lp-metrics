@@ -365,10 +365,8 @@ class DataFetcher():
         closest_round = -1
         closest_diff = float('inf')
         count = 0
-        print(f'phase {phase}')
         while left <= right:
-            time.sleep(10)
-            print(f"left: {left}, right: {right}")
+            time.sleep(1)
             count += 1
             mid = (left + right) // 2
             try:
