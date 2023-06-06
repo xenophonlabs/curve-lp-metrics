@@ -33,7 +33,8 @@ class MetricsProcessor:
         self.pool_metadata = pool_metadata
         self.token_metadata = token_metadata
         self.freq = freq
-    
+        self.markout_window = None
+
     @staticmethod
     def round_date(x):
         mydate = datetime.fromtimestamp(x)
@@ -43,28 +44,28 @@ class MetricsProcessor:
         return mydate
 
     def process_metrics_for_pool(self, pool_id, pool_data, swaps_data, lp_data, ohlcvs):
-
+        
         metrics = []
 
         metrics.extend([
-            MetricsProcessor.gini(pool_data, freq=self.freq),
-            MetricsProcessor.shannons_entropy(pool_data, freq=self.freq),
-            MetricsProcessor.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp', freq=self.freq)
+            self.gini(pool_data, freq=self.freq),
+            self.shannons_entropy(pool_data, freq=self.freq),
+            self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp', freq=self.freq)
         ])
 
         tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))
 
         for token_id in tokens:
             metrics.extend([
-                MetricsProcessor.net_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
-                # MetricsProcessor.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
-                # MetricsProcessor.rolling_pin(swaps_data, token_id, self.token_metadata[token_id]['symbol'], window=timedelta(days=7), freq=timedelta(days=1)),
+                self.net_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
+                # self.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
+                # self.rolling_pin(swaps_data, token_id, self.token_metadata[token_id]['symbol'], window=timedelta(days=7), freq=timedelta(days=1)),
             ])
 
         for token_idx, token_id in enumerate(self.pool_metadata[pool_id]['coins']):
             metrics.extend([
-                MetricsProcessor.net_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq),
-                # MetricsProcessor.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq)
+                self.net_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq),
+                # self.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq)
             ])
         
         metrics_df = pd.concat(metrics, axis=1)
@@ -74,7 +75,7 @@ class MetricsProcessor:
 
     def process_metrics_for_token(self, token_id, token_ohlcv):
         metrics = []
-        metrics.append(MetricsProcessor.log_returns(token_ohlcv, self.token_metadata[token_id]['symbol'], freq=self.freq))
+        metrics.append(self.log_returns(token_ohlcv, self.token_metadata[token_id]['symbol'], freq=self.freq))
     
         metrics_df = pd.concat(metrics, axis=1)
         metrics_df = metrics_df.fillna(0)
@@ -101,9 +102,8 @@ class MetricsProcessor:
         coef = (np.sum((2 * index - n - 1) * x)) / (n * np.sum(x))
         return coef
 
-    @staticmethod
-    def gini(df, freq='1min') -> pd.Series:
-        metric = df['inputTokenBalances'].apply(MetricsProcessor._gini).resample(freq).last().fillna(method='ffill')
+    def gini(self, df) -> pd.Series:
+        metric = df['inputTokenBalances'].apply(self._gini).resample(self.freq).last().fillna(method='ffill')
         metric.name = 'giniCoefficient'
         return metric
 
@@ -126,14 +126,39 @@ class MetricsProcessor:
         entropy = -np.sum(proportions * np.log2(proportions))
         return entropy
 
-    @staticmethod
-    def shannons_entropy(df, freq='1min') -> pd.Series:
-        metric = df['inputTokenBalances'].apply(MetricsProcessor._shannons_entropy).resample(freq).last().fillna(method='ffill')
+    def shannons_entropy(self, df) -> pd.Series:
+        metric = df['inputTokenBalances'].apply(self._shannons_entropy).resample(self.freq).last().fillna(method='ffill')
         metric.name = 'shannonsEntropy'
         return metric
+    
+    def takers(self, df, ohlcvs, window) -> pd.DataFrame:
+        markouts = self.get_markout(df, ohlcvs, window, 'swapper')
+        if markouts.empty:
+            return pd.DataFrame(columns=['amountBought', 'amountSold', 'cumulativeMarkout', 'meanMarkout', 'count'])
+        takers = markouts.groupby(['buyer']).agg({
+            'amountBought': 'sum',
+            'amountSold': 'sum',
+            self.markout_col: ['sum', 'mean', 'count'],
+        })
+        takers.columns = ['amountBought', 'amountSold', 'cumulativeMarkout', 'meanMarkout', 'count']
+        return takers
 
-    @staticmethod
-    def net_swap_flow(df, token_id, symbol, freq='1min') -> pd.Series:
+    # NOTE: 1Inch executor contract is considered a "buyer" (i.e. not the actual address that
+    # submitted the 1Inch transaction). This is okay when looking at sharks: we can assume
+    # sharks are less likely to be going through 1Inch.
+
+    def sharks(self, takers, top) -> np.array:
+        sharks = takers[takers['cumulativeMarkout'] > takers['cumulativeMarkout'].quantile(top)]
+        return np.array(sharks.index)
+    
+    def sharkflow(self, swaps, takers, token_id, symbol, top=0.9):
+        sharks = self.sharks(takers, top)
+        sharkswaps = swaps[swaps['buyer'].isin(sharks)]
+        sharkflow = self.net_swap_flow(sharkswaps, token_id, symbol)
+        sharkflow.name = f'{symbol}.sharkflow'
+        return sharkflow
+
+    def net_swap_flow(self, df, token_id, symbol) -> pd.Series:
         """
         Calculate the net swap flow of a token in a pool in the discretized frequencies.
 
@@ -152,12 +177,13 @@ class MetricsProcessor:
         swap_in = df[df['tokenBought']==token_id]['amountBought'].groupby(level=0).sum()
         swap_out = -1*df[df['tokenSold']==token_id]['amountSold'].groupby(level=0).sum()
         flow = pd.merge(swap_in, swap_out, left_index=True, right_index=True, how='outer').fillna(0)
-        metric = (flow['amountBought'] + flow['amountSold']).resample(freq).sum()
+        if len(flow) == 0:
+            return pd.Series([], name=f'{symbol}.netSwapFlow')
+        metric = (flow['amountBought'] + flow['amountSold']).resample(self.freq).sum()
         metric.name = f'{symbol}.netSwapFlow'
         return metric
 
-    @staticmethod
-    def net_lp_flow(df, token_idx, symbol, freq='1min') -> pd.Series:
+    def net_lp_flow(self, df, token_idx, symbol) -> pd.Series:
         if len(df) == 0:
             return pd.Series([], name=f'{symbol}.netLPFlow')
         deposits = df[df['removal']==False]
@@ -167,12 +193,11 @@ class MetricsProcessor:
         withdraws = withdraws['tokenAmounts'].apply(lambda x: -1*x[token_idx]).groupby(level=0).sum().groupby(level=0).sum()
         withdraws.name = "withdraws"
         flow = pd.merge(deposits, withdraws, left_index=True, right_index=True, how='outer').fillna(0)
-        metric = (flow['deposits'] + flow['withdraws']).resample(freq).sum()
+        metric = (flow['deposits'] + flow['withdraws']).resample(self.freq).sum()
         metric.name = f'{symbol}.netLPFlow'
         return metric
         
-    @staticmethod
-    def log_returns(df, symbol, freq='1min') -> pd.Series:
+    def log_returns(self, df, symbol) -> pd.Series:
         """
         Calculate the log returns of a token in a pool in the discretized frequencies.
 
@@ -185,13 +210,12 @@ class MetricsProcessor:
         @Returns
             
         """
-        close = df['close'].resample(freq).last()
+        close = df['close'].resample(self.freq).last()
         metric = np.log(close/close.shift())
         metric.name = f'{symbol}.logReturns'
         return metric
 
-    @staticmethod
-    def abs_swap_flow(df, token_id, symbol, freq='1min') -> pd.Series:
+    def abs_swap_flow(self, df, token_id, symbol) -> pd.Series:
         """
         Calculate the absolute swap flow of a token in a pool in the discretized frequencies.
 
@@ -210,12 +234,11 @@ class MetricsProcessor:
         swap_in = df[df['tokenBought']==token_id]['amountBought'].groupby(level=0).sum()
         swap_out = df[df['tokenSold']==token_id]['amountSold'].groupby(level=0).sum()
         flow = pd.merge(swap_in, swap_out, left_index=True, right_index=True, how='outer').fillna(0)
-        metric = (flow['amountBought'] + flow['amountSold']).resample(freq).sum()
+        metric = (flow['amountBought'] + flow['amountSold']).resample(self.freq).sum()
         metric.name = f'{symbol}.absSwapFlow'
         return metric
 
-    @staticmethod
-    def abs_lp_flow(df, token_idx, symbol, freq='1min') -> pd.Series:
+    def abs_lp_flow(self, df, token_idx, symbol) -> pd.Series:
         if len(df) == 0:
             return pd.Series([], name=f'{symbol}.netLPFlow')
         deposits = df[df['removal']==False]
@@ -225,7 +248,7 @@ class MetricsProcessor:
         withdraws = withdraws['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx]).groupby(level=0).sum()
         withdraws.name = "withdraws"
         flow = pd.merge(deposits, withdraws, left_index=True, right_index=True, how='outer').fillna(0)
-        metric = (flow['deposits'] + flow['withdraws']).resample(freq).sum()
+        metric = (flow['deposits'] + flow['withdraws']).resample(self.freq).sum()
         metric.name = f'{symbol}.absLPFlow'
         return metric
     
@@ -324,12 +347,7 @@ class MetricsProcessor:
             opt_params = minimize(MetricsProcessor.pin_likelihood_EHO, initial_params, args = (df),method = 'Nelder-Mead').x
             return MetricsProcessor._pin(opt_params)
     
-    # NOTE: 1Inch executor contract is considered a "buyer" (i.e. not the actual address that
-    # submitted the 1Inch transaction). This is okay when looking at sharks: we can assume
-    # sharks are less likely to be going through 1Inch.
-
-    @staticmethod
-    def rolling_pin(df, token, symbol, window=timedelta(days=1), freq=timedelta(hours=1)) -> pd.Series:
+    def rolling_pin(self, df, token, symbol, window=timedelta(days=1), freq=timedelta(hours=1)) -> pd.Series:
         """
         Calculate PIN values for each resampled period. We take a swaps_df, convert it into 
         a timeseries dataframe of "Buy" and "Sell" columns (which count swaps for a token).
@@ -361,8 +379,11 @@ class MetricsProcessor:
 
     ### Markout
 
-    @staticmethod
-    def get_markout(df, ohlcvs, window, who) -> pd.DataFrame:
+    @property
+    def markout_col(self):
+        return f'{int(self.markout_window.total_seconds())}.Markout'
+
+    def get_markout(self, df, ohlcvs, window, who) -> pd.DataFrame:
         """
         We define markout as the difference in value between a portfolio
         at the markout time vs at the current time. That is, we subtract the value
@@ -374,28 +395,25 @@ class MetricsProcessor:
 
         NOTE: Could alternatively be using curve `candles` data instead of CEX/Chainlink prices
         """
+        self.markout_window = window
 
         tmp = df.copy()
 
-        markout_col = f'{int(window.total_seconds())}.Markout'
-
         tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-        last = tmp['roundedDate'].iloc[-1]
-        tmp = tmp[tmp['roundedDate'] <= last - window]
+        last = min([x.index[-1] for x in ohlcvs.values()])
+        tmp = tmp[tmp['roundedDate'] <= last - window] # prevent index out of bounds
+        if tmp.empty:
+            return tmp
         tmp['markoutBoughtPrice'] = tmp.apply(lambda x: ohlcvs[x['tokenBought']].loc[x['roundedDate'] + window]['close'], axis=1)
         tmp['markoutSoldPrice'] = tmp.apply(lambda x: ohlcvs[x['tokenSold']].loc[x['roundedDate'] + window]['close'], axis=1)
-        tmp[markout_col] = tmp['amountBought']*tmp['markoutBoughtPrice'] - tmp['amountSold']*tmp['markoutSoldPrice']
+        tmp[self.markout_col] = tmp['amountBought']*tmp['markoutBoughtPrice'] - tmp['amountSold']*tmp['markoutSoldPrice']
 
-        if who == 'swapper':
-            return tmp
-        elif who == 'lp':
-            tmp[markout_col] *= -1
-            return tmp
-        else:
-            raise ValueError(f"who must be 'swapper' or 'lp', was {who}.")
+        if who == 'lp':
+            tmp[self.markout_col] *= -1
+        
+        return tmp
     
-    @staticmethod
-    def markout(df, ohlcvs, window=timedelta(days=1), who='lp', freq='1min') -> pd.Series:
+    def markout(self, df, ohlcvs, window=timedelta(minutes=5), who='lp') -> pd.Series:
         """
         Convenience wrapper for get_markout(.)
 
@@ -403,14 +421,12 @@ class MetricsProcessor:
         2. resample to required frequency
         3. shift forward by window (so markout at time t is the markout of trades at time t-window with markout prices at t)
         """
-        markout_col = f'{int(window.total_seconds())}.Markout'
-        markouts = MetricsProcessor.get_markout(df, ohlcvs, window, who)[markout_col]
-        markouts = markouts.resample(freq).sum()
+        markouts = self.get_markout(df, ohlcvs, window, who)
+        markouts = markouts[self.markout_col]
+        markouts = markouts.resample(self.freq).sum()
         markouts.index += pd.Timedelta(window)
-        markouts.name = markout_col
+        markouts.name = self.markout_col
         return markouts
-
-    ### Sharks
 
     def lp_share_price(self, pool, pool_data, ohlcvs) -> pd.Series:
         """

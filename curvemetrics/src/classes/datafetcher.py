@@ -403,12 +403,6 @@ class DataFetcher():
         contract = client.eth.contract(address=chainlink_address, abi=abi)
         symbol = contract.functions.description().call().replace(" ", "")
         
-        # # Testing UST
-        # if token == "0xa693b19d2931d498c5b318df961919bb4aee87a5":
-        #     # NOTE: UST actually uses ccxt but we cross-checked with Chainlink
-        #     roundnr = 18446744073709551766 # For UST (has two phases) # April 6th 2022
-        # else:
-        #     roundnr = self.search_rounds(token, contract, start_timestamp)
         roundnr = self.search_rounds(contract, start_timestamp)
 
         decimals = contract.functions.decimals().call()

@@ -299,9 +299,6 @@ class DataHandler():
         # Commit the changes
         self.conn.commit()
 
-    def insert_pool_aggregate_metrics(self, data):
-        pass
-
     def insert_token_metrics(self, data, token_id):
         # Convert JSON data to a pandas DataFrame
         df = DataHandler.format_token_metrics(data, token_id)
@@ -328,9 +325,6 @@ class DataHandler():
         # Commit the changes
         self.conn.commit()
 
-    def insert_token_aggregate_metrics(self, data):
-        pass
-
     def insert_changepoints(self, data, pool_id, model, metric):
         # Convert JSON data to a pandas DataFrame
         df = DataHandler.format_changepoints(data, pool_id, model, metric)
@@ -356,6 +350,41 @@ class DataHandler():
         df.apply(insert_changepoints_row, axis=1)
         # Commit the changes
         self.conn.commit()
+    
+    def insert_takers(self, takers):
+        # Convert JSON data to a pandas DataFrame
+        df = DataHandler.format_takers(takers)
+
+        if len(df) == 0:
+            return
+
+        # Insert the DataFrame into the `lp_events` table
+        def insert_takers_row(row):
+            # Create an SQL INSERT OR IGNORE statement
+            sql = """
+            INSERT OR REPLACE INTO takers (
+                buyer,
+                amountBought,
+                amountSold,
+                cumulativeMarkout,
+                meanMarkout,
+                count,
+                windowSize
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            """
+            # Insert the row into the `lp_events` table
+            self.conn.execute(sql, row)
+
+        # Apply the custom function to each row in the DataFrame
+        df.apply(insert_takers_row, axis=1)
+        # Commit the changes
+        self.conn.commit()
+    
+    @staticmethod
+    def format_takers(data):
+        df = data.reset_index()
+        df = df[['buyer', 'amountBought', 'amountSold', 'cumulativeMarkout', 'meanMarkout', 'count', 'windowSize']]
+        return df
 
     @staticmethod
     def format_pool_metadata(data):
@@ -409,6 +438,14 @@ class DataHandler():
         if len(df) == 0:
             return df
         df['timestamp'] = (df['timestamp'] / 1000).astype(int)
+        # In case there are two prices observed in the same timestamp, e.g. from 2 curve swaps
+        df = df.groupby(['token_id', 'symbol', 'timestamp']).agg({
+            'open': 'mean', 
+            'high': 'max', 
+            'low': 'min', 
+            'close': 'mean', # simple mean, not perfect weighted average but good enough. Doesn't make sense to take `last` since they coincided in timestamp
+            'volume': 'sum'
+        }).reset_index() 
         return df
     
     @staticmethod
@@ -470,10 +507,6 @@ class DataHandler():
         return df
 
     @staticmethod
-    def format_pool_aggregate_metrics(data):
-        pass
-
-    @staticmethod
     def format_token_metrics(df, token_id):
         df = df.melt(var_name='metric', value_name='value', ignore_index=False)
         df = df.reset_index(names='timestamp')
@@ -510,6 +543,10 @@ class DataHandler():
     @property
     def token_metadata(self):
         return self.get_token_metadata()
+
+    @property
+    def token_ids(self):
+        return {v['symbol']:k for k, v in self.token_metadata.items()}
     
     def get_pool_metadata(self) -> Dict:
         query = f'SELECT * FROM pools'
@@ -610,7 +647,7 @@ class DataHandler():
         series.name = metric
         if metric in ['shannonsEntropy', 'giniCoefficient']:
             series.replace(0, method='ffill', inplace=True)
-        elif metric == 'netSwapFlow': # aggregate all netSwapFlows
+        elif metric in ['netSwapFlow', 'netLPFlow']:
             series.groupby(series.index).sum()            
         return series
 
@@ -687,3 +724,38 @@ class DataHandler():
             scaler = StandardScaler()
             X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
         return X
+
+    def get_fees(self, pool):
+        fees = self._execute_query('SELECT timestamp, fee, adminFee FROM snapshots WHERE pool_id = ?', params=[pool])
+        fees = pd.DataFrame(fees)
+        fees.sort_values('timestamp', inplace=True, ascending=True)
+        return fees
+
+    def get_curve_price(self, token, pool, start_ts, end_ts, numeraire):
+        """
+        Get numeraire price for a token in a StableSwap pool.
+        Assumes that the numeraire is ETH, and that ETH or WETH are included
+        in the pool. Accounts for fees and adminFees.
+
+        Relies on swaps and snapshots being filled in first.
+        """
+        symbol = f"{self.token_metadata[token]['symbol']}/{self.token_metadata[numeraire]['symbol']}"
+
+        df = self.get_swaps_data(pool, start_ts, end_ts).reset_index(drop=True)
+        df = (df.groupby(['timestamp', 'tokenBought', 'tokenSold'], as_index=False)
+                        .agg({'amountBought': 'sum', 'amountSold': 'sum'}))
+        
+        assert df['tokenBought'].nunique() == 2 and df['tokenSold'].nunique() == 2, 'Too many tokens in pool'
+        
+        fees = self.get_fees(pool)
+        ohlcv = []
+        for i, row in df.iterrows():
+            fee, admin_fee = fees[fees['timestamp'] >= row['timestamp']].iloc[0][['fee', 'adminFee']]
+            if row['amountBought'] == 0 or row['amountSold'] == 0:
+                continue
+            price = row['amountSold'] / (row['amountBought'] * (1 + fee + admin_fee))
+            if row['tokenSold'] != numeraire:
+                price = 1 / price
+            ohlcv.append([token, symbol, row['timestamp']*1000, None, None, None, price, None])
+
+        return ohlcv

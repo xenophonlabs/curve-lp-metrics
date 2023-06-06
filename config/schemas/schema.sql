@@ -152,26 +152,16 @@ CREATE TABLE IF NOT EXISTS token_metrics (
     PRIMARY KEY (token_id, metric, timestamp)
 );
 
--- storing windowed/aggregated pool metrics
-CREATE TABLE IF NOT EXISTS pool_aggregates (
-    timestamp INTEGER,
-    pool_id TEXT REFERENCES pools (id),
-    metric TEXT,
-    type TEXT,
-    window_size TEXT,
-    value REAL,
-    PRIMARY KEY (pool_id, metric, type, window_size, timestamp)
-);
-
--- storing windowed/aggregated token metrics
-CREATE TABLE IF NOT EXISTS token_aggregates (
-    timestamp INTEGER,
-    token_id TEST REFERENCES tokens (id),
-    metric TEXT,
-    type TEXT,
-    window_size TEXT,
-    value REAL,
-    PRIMARY KEY (token_id, metric, type, window_size, timestamp)
+-- storing data on takers for rankings
+CREATE TABLE IF NOT EXISTS takers (
+    buyer TEXT,
+    amountBought REAL,
+    amountSold REAL,
+    cumulativeMarkout REAL,
+    meanMarkout REAL,
+    count REAL,
+    windowSize INTEGER,
+    PRIMARY KEY (buyer, windowSize)
 );
 
 -- store changepoints

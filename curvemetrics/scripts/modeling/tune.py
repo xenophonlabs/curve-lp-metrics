@@ -39,13 +39,13 @@ ETH_POOLS = [
     '0xdc24316b9ae028f1497c275eb9192a3ea0f67022',
     '0x5fae7e604fc3e24fd43a72867cebac94c65b404a',
     '0x828b154032950c8ff7cf8085d841723db2696056',
-    '0xa1f8a6807c402e4a15ef4eba36528a3fed24e577',
+    # '0xa1f8a6807c402e4a15ef4eba36528a3fed24e577', # frxETH is in ETH prices
 ]
 
 ETH_TOKENS = [
     '0xae7ab96520de3a18e5e111b5eaab095312d7fe84',
     '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
-    '0x5e8422345238f34275888049021821e8e08caa1f',
+    # '0x5e8422345238f34275888049021821e8e08caa1f', # frxETH is in ETH prices
 ]
 
 def setup_pool(pool, metric, start, end):

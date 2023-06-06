@@ -37,43 +37,44 @@ async def main(start: str, end: str):
 
     try:
         # Fetch and insert pool data
-        for pool in pool_metadata.keys():
+        # for pool in pool_metadata.keys():
 
-            print(f"[{datetime.now()}] Backfilling pool {pool_metadata[pool]['name']}.")
+        #     print(f"[{datetime.now()}] Backfilling pool {pool_metadata[pool]['name']}.")
 
-            if pool_metadata[pool]['creationDate'] < start_ts:
-                pool_start_ts, pool_start_block = start_ts, start_block
-            elif start_ts < pool_metadata[pool]['creationDate'] < end_ts:
-                pool_start_ts, pool_start_block = pool_metadata[pool]['creationDate'], pool_metadata[pool]['creationBlock']
-            else:
-                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...\n")
-                continue
+        #     if pool_metadata[pool]['creationDate'] < start_ts:
+        #         pool_start_ts, pool_start_block = start_ts, start_block
+        #     elif start_ts < pool_metadata[pool]['creationDate'] < end_ts:
+        #         pool_start_ts, pool_start_block = pool_metadata[pool]['creationDate'], pool_metadata[pool]['creationBlock']
+        #     else:
+        #         print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...\n")
+        #         continue
 
-            print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
-            print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
+        #     print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
+        #     print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
 
-            pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
-            datahandler.insert_pool_data(pool_data, start_ts, end_ts)
+        #     pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
+        #     datahandler.insert_pool_data(pool_data, start_ts, end_ts)
 
-            print(f"[{datetime.now()}] Finished reserve data...")
+        #     print(f"[{datetime.now()}] Finished reserve data...")
 
-            swaps_data = datafetcher.get_swaps_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
-            datahandler.insert_swaps_data(swaps_data)
+        #     swaps_data = datafetcher.get_swaps_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
+        #     datahandler.insert_swaps_data(swaps_data)
 
-            print(f"[{datetime.now()}] Finished swap data...")
+        #     print(f"[{datetime.now()}] Finished swap data...")
             
-            lp_data = datafetcher.get_lp_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
-            datahandler.insert_lp_data(lp_data)
+        #     lp_data = datafetcher.get_lp_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
+        #     datahandler.insert_lp_data(lp_data)
 
-            print(f"[{datetime.now()}] Finished lp event data...\n")
+        #     print(f"[{datetime.now()}] Finished lp event data...\n")
 
-            snapshots = datafetcher.get_snapshots(pool_start_ts, end_ts, pool, step_size=STEP_SIZE)
-            datahandler.insert_pool_snapshots(snapshots)
+        #     snapshots = datafetcher.get_snapshots(pool_start_ts, end_ts, pool, step_size=STEP_SIZE)
+        #     datahandler.insert_pool_snapshots(snapshots)
 
-            print(f"[{datetime.now()}] Finished snapshots data...\n")
+        #     print(f"[{datetime.now()}] Finished snapshots data...\n")
 
         # Fetch and insert token data
-        for token in token_metadata.keys():
+        # for token in token_metadata.keys():
+        for token in [datahandler.token_ids(x) for x in ["frxETH", "cvxCRV"]]:
 
             token_start_ts, token_end_ts = start_ts, end_ts 
 
@@ -81,8 +82,8 @@ async def main(start: str, end: str):
                 print(f"[{datetime.now()}] {token_metadata[token]['symbol']} assumed to be = ETH. Skipping...\n")
                 continue
 
-            elif token_metadata[token]['symbol'] in ["3Crv", "frxETH", "cvxCRV"]:
-                print(f"[{datetime.now()}] TODO: Add support for {token_metadata[token]['symbol']}. Skipping...\n")
+            elif token_metadata[token]['symbol'] == "3Crv":
+                print(f"[{datetime.now()}] {token_metadata[token]['symbol']} uses pool virtual price. Skipping...\n")
                 continue
 
             elif token_metadata[token]['symbol'] == "USDN":
@@ -105,15 +106,24 @@ async def main(start: str, end: str):
                 elif token_end_ts < 1661444040:
                     print(f"[{datetime.now()}] cbETH only indexed from 1661444040 (2022 12:14:00 PM GMT-04:00 DST). Skipping...")
                     continue
+            print("sdfasd")
+            token_config = config['token_exchange_map'][token_metadata[token]['symbol']]
+            if len(token_config) == 2:
+                api, source = token_config
+            else:
+                api, source, numeraire = token_config
+            print("sdfaqewreqrsd")
 
-            api, source = config['token_exchange_map'][token_metadata[token]['symbol']]
             print(f"[{datetime.now()}] Backfilling token {token_metadata[token]['symbol']} OHLCV using {api}.")
 
             if api == "ccxt":
                 token_data = datafetcher.get_ohlcv(token_start_ts, token_end_ts, token, default_exchange=source)
             elif api == "chainlink":
                 token_data = datafetcher.get_chainlink_prices(token, source, token_start_ts, token_end_ts)
+            elif api == "curveswaps":
+                token_data = datahandler.get_curve_price(token, source, start_ts, end_ts, numeraire=datahandler.token_ids[numeraire])
 
+            print("sdfaqewsdafasfreqrsd")
             datahandler.insert_token_data(token_data)
 
         print(f"[{datetime.now()}] Done :)")

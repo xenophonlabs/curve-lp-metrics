@@ -28,7 +28,7 @@ def main():
         datahandler.insert_pool_metadata(pool_metadata)
         datahandler.insert_token_metadata(token_metadata)
         datahandler.insert_pool_tokens_metadata(pool_metadata)
-        datahandler.insert_block_timestamps()
+        # datahandler.insert_block_timestamps()
     except Exception as e:
         print(f"An error occurred during raw database creation: {e}")
     finally:

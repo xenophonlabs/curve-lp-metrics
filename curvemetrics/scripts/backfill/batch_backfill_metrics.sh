@@ -12,14 +12,13 @@ end_date="$2"
 start_sec=$(date -d "$start_date" +%s)
 end_sec=$(date -d "$end_date" +%s)
 
-# Calculate the number of seconds per period and 5 minutes
-# Period is 1 week
-day_sec=$((14 * 24 * 60 * 60))
+# Calculate the number of seconds per period and 5 minutes overlap
+period_sec=$((30 * 24 * 60 * 60))
 overlap_sec=$((5 * 60))
 
 # Loop through daily batches
 current_sec=$start_sec
-next_sec=$((current_sec + day_sec))
+next_sec=$((current_sec + period_sec))
 
 finish_sec=$((end_sec - overlap_sec))
 
@@ -44,6 +43,6 @@ while [ $current_sec -lt $finish_sec ]; do
   # Move to the next batch, subtracting the 5-minute overlap
   current_sec=$((next_sec - overlap_sec))
   current_sec=$(date -d "$(date -d "@$current_sec" "+%Y-%m-%d") 23:55:00" +%s)
-  next_sec=$((current_sec + day_sec + overlap_sec))
+  next_sec=$((current_sec + period_sec + overlap_sec))
   
 done
