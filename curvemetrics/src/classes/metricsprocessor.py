@@ -50,7 +50,8 @@ class MetricsProcessor:
         metrics.extend([
             self.gini(pool_data),
             self.shannons_entropy(pool_data),
-            self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp')
+            self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
+            self.lp_share_price(pool_id, pool_data, ohlcvs)
         ])
 
         tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))

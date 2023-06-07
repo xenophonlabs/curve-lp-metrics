@@ -83,7 +83,8 @@ async def main(start: str, end: str):
             lp_data = datahandler.get_lp_data(pool, pool_start_ts, pool_end_ts)
 
             ohlcvs = {}
-            for token in set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold'])):
+            tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold'])).union(set(pool_metadata[pool]['inputTokens']))
+            for token in tokens:
                 ohlcv = datahandler.get_ohlcv_data(token, start=start_ts, end=pool_end_ts)
                 ohlcvs[token] = ohlcv
 

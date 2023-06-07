@@ -39,43 +39,44 @@ async def main(start: str, end: str):
     try:
         # Fetch and insert pool data
         # for pool in pool_metadata.keys():
+        for pool in ["0xceaf7747579696a2f0bb206a14210e3c9e6fb269"]:
 
-        #     print(f"[{datetime.now()}] Backfilling pool {pool_metadata[pool]['name']}.")
+            print(f"[{datetime.now()}] Backfilling pool {pool_metadata[pool]['name']}.")
 
-        #     if pool_metadata[pool]['creationDate'] < start_ts:
-        #         pool_start_ts, pool_start_block = start_ts, start_block
-        #     elif start_ts < pool_metadata[pool]['creationDate'] < end_ts:
-        #         pool_start_ts, pool_start_block = pool_metadata[pool]['creationDate'], pool_metadata[pool]['creationBlock']
-        #     else:
-        #         print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...\n")
-        #         continue
+            if pool_metadata[pool]['creationDate'] < start_ts:
+                pool_start_ts, pool_start_block = start_ts, start_block
+            elif start_ts < pool_metadata[pool]['creationDate'] < end_ts:
+                pool_start_ts, pool_start_block = pool_metadata[pool]['creationDate'], pool_metadata[pool]['creationBlock']
+            else:
+                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...\n")
+                continue
 
-        #     print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
-        #     print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
+            print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(pool_start_ts)}")
+            print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
 
-        #     pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
-        #     datahandler.insert_pool_data(pool_data, start_ts, end_ts)
+            pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
+            datahandler.insert_pool_data(pool_data)
 
-        #     print(f"[{datetime.now()}] Finished reserve data...")
+            print(f"[{datetime.now()}] Finished reserve data...")
 
-        #     swaps_data = datafetcher.get_swaps_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
-        #     datahandler.insert_swaps_data(swaps_data)
+            swaps_data = datafetcher.get_swaps_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
+            datahandler.insert_swaps_data(swaps_data)
 
-        #     print(f"[{datetime.now()}] Finished swap data...")
+            print(f"[{datetime.now()}] Finished swap data...")
             
-        #     lp_data = datafetcher.get_lp_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
-        #     datahandler.insert_lp_data(lp_data)
+            lp_data = datafetcher.get_lp_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
+            datahandler.insert_lp_data(lp_data)
 
-        #     print(f"[{datetime.now()}] Finished lp event data...\n")
+            print(f"[{datetime.now()}] Finished lp event data...\n")
 
-        #     snapshots = datafetcher.get_snapshots(pool_start_ts, end_ts, pool, step_size=STEP_SIZE)
-        #     datahandler.insert_pool_snapshots(snapshots)
+            snapshots = datafetcher.get_snapshots(pool_start_ts, end_ts, pool, step_size=STEP_SIZE)
+            datahandler.insert_pool_snapshots(snapshots)
 
-        #     print(f"[{datetime.now()}] Finished snapshots data...\n")
+            print(f"[{datetime.now()}] Finished snapshots data...\n")
 
         # Fetch and insert token data
         # for token in token_metadata.keys():
-        for token in [datahandler.token_ids[x] for x in ["frxETH", "cvxCRV"]]:
+        for token in ['0x853d955acef822db058eb8505911ed77f175b99e', '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', '0x6b175474e89094c44da98b954eedeac495271d0f', '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', '0xdac17f958d2ee523a2206206994597c13d831ec7']:
 
             token_start_ts, token_end_ts = start_ts, end_ts 
 

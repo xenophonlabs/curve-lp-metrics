@@ -24,11 +24,12 @@ Setting up PostgreSQL: https://www.digitalocean.com/community/tutorials how-to-i
 ```sudo apt-get install postgresql```
 ```sudo systemctl start postgresql.service```
 ```sudo -u postgres psql```
-```CREATE USER curvemetrics WITH PASSWORD 'curvemetrics';```
-```ALTER USER curvemetrics CREATEDB;```
-```psql -U curvemetrics -h localhost -d postgres```
-```CREATE DATABASE curvemetrics;```
+```CREATE USER <user> WITH PASSWORD '<pwd>';```
+```ALTER USER <user> CREATEDB;```
+```psql -U <user> -h localhost -d postgres```
+```CREATE DATABASE <user>;```
 
+<user> and <pwd> should be defined as 'PSQL_USER' and 'PSQL_PASSWORD' in your `.env`.
 
 We use a DataWarehouse design with a few ``star`` tables and two ``dimension`` tables. Our star tables correspond to numeric data that we track ("facts"). We track raw data and metrics data. Our dimension tables store metadata on our "facts"; we have a `pools` dimension table and a `tokens` dimension table. The `pools` table tells us the name, symbol, address, etc., of each pool, as well as which tokens it holds. Similarly, our `tokens` table tells us metadata about each token.
 

@@ -13,7 +13,8 @@ start_sec=$(date -d "$start_date" +%s)
 end_sec=$(date -d "$end_date" +%s)
 
 # Calculate the number of seconds per day and 5 minutes
-period_sec=$((30 * 24 * 60 * 60))
+# We hit an OOM error if periods are too large, but its slow if they are too small
+period_sec=$((24 * 60 * 60))
 overlap_sec=$((5 * 60))
 
 # Loop through daily batches
