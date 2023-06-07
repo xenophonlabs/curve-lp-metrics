@@ -48,24 +48,24 @@ class MetricsProcessor:
         metrics = []
 
         metrics.extend([
-            self.gini(pool_data, freq=self.freq),
-            self.shannons_entropy(pool_data, freq=self.freq),
-            self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp', freq=self.freq)
+            self.gini(pool_data),
+            self.shannons_entropy(pool_data),
+            self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp')
         ])
 
         tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))
 
         for token_id in tokens:
             metrics.extend([
-                self.net_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
-                # self.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol'], freq=self.freq),
+                self.net_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol']),
+                # self.abs_swap_flow(swaps_data, token_id, self.token_metadata[token_id]['symbol']),
                 # self.rolling_pin(swaps_data, token_id, self.token_metadata[token_id]['symbol'], window=timedelta(days=7), freq=timedelta(days=1)),
             ])
 
         for token_idx, token_id in enumerate(self.pool_metadata[pool_id]['coins']):
             metrics.extend([
-                self.net_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq),
-                # self.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'], freq=self.freq)
+                self.net_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol']),
+                # self.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'])
             ])
         
         metrics_df = pd.concat(metrics, axis=1)
@@ -75,7 +75,7 @@ class MetricsProcessor:
 
     def process_metrics_for_token(self, token_id, token_ohlcv):
         metrics = []
-        metrics.append(self.log_returns(token_ohlcv, self.token_metadata[token_id]['symbol'], freq=self.freq))
+        metrics.append(self.log_returns(token_ohlcv, self.token_metadata[token_id]['symbol']))
     
         metrics_df = pd.concat(metrics, axis=1)
         metrics_df = metrics_df.fillna(0)
@@ -439,12 +439,22 @@ class MetricsProcessor:
 
         closes = pd.DataFrame()
         for token in tokens:
-            closes[self.token_metadata[token]['symbol']] = ohlcvs[token]['close']
+            close = ohlcvs[token]['close']
+            numeraire = ohlcvs[token]['symbol'].dropna().unique()[0].split('/')[1]
+            if numeraire != 'USD':
+                symbols = {v['symbol']:k for k, v in self.token_metadata.items()}
+                if symbols[numeraire] in ohlcvs.keys():
+                    close = close * ohlcvs[symbols[numeraire]]['close'] # e.g. frxETH/ETH * ETH/USD = frxETH/USD
+                else:
+                    raise Exception(f'Need numeraire price data for {numeraire}')
+            closes[self.token_metadata[token]['symbol']] = close
         
         closes['prices'] = closes.apply(lambda row: np.array(row.tolist()), axis=1)
         closes = closes[['prices']]
 
         df = df.join(closes)
+
+        df = df[df['outputTokenSupply'] != 0]
 
         df['lpSharePrice'] = (df['inputTokenBalances'] * df['prices']) / (df['outputTokenSupply'] / 10**18)
         df['lpSharePrice'] = df['lpSharePrice'].apply(lambda x: np.sum(x))

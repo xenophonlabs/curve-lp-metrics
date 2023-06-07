@@ -39,13 +39,11 @@ ETH_POOLS = [
     '0xdc24316b9ae028f1497c275eb9192a3ea0f67022',
     '0x5fae7e604fc3e24fd43a72867cebac94c65b404a',
     '0x828b154032950c8ff7cf8085d841723db2696056',
-    # '0xa1f8a6807c402e4a15ef4eba36528a3fed24e577', # frxETH is in ETH prices
+    '0xa1f8a6807c402e4a15ef4eba36528a3fed24e577',
 ]
 
-ETH_TOKENS = [
-    '0xae7ab96520de3a18e5e111b5eaab095312d7fe84',
-    '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
-    # '0x5e8422345238f34275888049021821e8e08caa1f', # frxETH is in ETH prices
+CRV_POOLS = [
+    '0x971add32ea87f10bd192671630be3be8a11b8623'
 ]
 
 def setup_pool(pool, metric, start, end):
@@ -66,9 +64,11 @@ def setup_pool(pool, metric, start, end):
     lp_share_price = datahandler.get_pool_metric(pool, 'lpSharePrice', start_ts, end_ts) 
 
     if pool in ETH_POOLS:
-        eth = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-        eth_price = datahandler.get_ohlcv_data(eth, start=start_ts, end=end_ts)['close']
+        eth_price = datahandler.get_ohlcv_data(datahandler.token_ids['ETH'], start=start_ts, end=end_ts)['close']
         lp_share_price /= eth_price
+    elif pool in CRV_POOLS:
+        crv_price = datahandler.get_ohlcv_data(datahandler.token_ids['CRV'], start=start_ts, end=end_ts)['close']
+        lp_share_price /= crv_price
     
     snapshots = datahandler.get_pool_snapshots(pool, start_ts, end_ts)
     virtual_price = snapshots['virtualPrice'] / 10**18
@@ -97,10 +97,10 @@ def setup_token(token, metric, start, end):
     peg = ohlcv['peg']
     price = ohlcv['close']
 
-    if token in ETH_TOKENS:
-        eth = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-        eth_price = datahandler.get_ohlcv_data(eth, start=start_ts, end=end_ts)['close']
-        price /= eth_price # Get numeraire price, all ohlcv prices in dollars
+    numeraire = ohlcv['symbol'].dropna().unique()[0].split('/')[1]
+    if numeraire != 'USD':
+        numeraire_price = datahandler.get_ohlcv_data(datahandler.token_ids[numeraire], start=start_ts, end=end_ts)['close']
+        price /= numeraire_price # Get numeraire price, all ohlcv prices in dollars
     
     y_true = metricsprocessor.true_cps(price, peg, freq=FREQ, thresh=THRESH)
     if metric == 'logReturns':
@@ -109,7 +109,7 @@ def setup_token(token, metric, start, end):
 
     return X, y_true, price.resample(FREQ).last(), peg, symbol
 
-def test(pool, metric, start, end, params, pool_token):    
+def test(address, metric, start, end, params, pool_token):    
     """
     Run model.predict() with the trained hyperparameters.
 
@@ -121,9 +121,9 @@ def test(pool, metric, start, end, params, pool_token):
     :param pool_token: (str) Whether to model a pool or token metric
     """
     if pool_token == 'pool':
-        X, y_true, price, peg, name = setup_pool(pool, metric, start, end)
+        X, y_true, price, peg, name = setup_pool(address, metric, start, end)
     elif pool_token == 'token':
-        X, y_true, price, peg, name = setup_token(pool, metric, start, end)
+        X, y_true, price, peg, name = setup_token(address, metric, start, end)
 
     print(f"[{datetime.now()}] Testing {metric} on {name} from {start} to {end}")
 
@@ -136,14 +136,14 @@ def test(pool, metric, start, end, params, pool_token):
     F, P, R = f_measure(y_true, y_pred, margin=MARGIN, alpha=ALPHA, return_PR=True, weight_func=early_weight)
     print(f'[{datetime.now()}] FPR: {F}, Precision: {P}, Recall: {R}')
 
-    # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
+    # datahandler.insert_changepoints(model.y_pred, address, 'bocd', metric)
 
-    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/testing/{pool_token}/{metric}/{pool}.png', metric=metric, pool=name)
+    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/testing/{pool_token}/{metric}/{address}.png', metric=metric, pool=name)
     print(f"\n[{datetime.now()}] Finished testing {name}\n")
 
     return params, (F, P, R)
 
-def train(pool, metric, start, end, pool_token):
+def train(address, metric, start, end, pool_token):
     """
     Run model.tune() and return best performing hyperparameters.
 
@@ -154,9 +154,9 @@ def train(pool, metric, start, end, pool_token):
     :param pool_token: (str) Whether to model a pool or token metric
     """
     if pool_token == 'pool':
-        X, y_true, price, peg, name = setup_pool(pool, metric, start, end)
+        X, y_true, price, peg, name = setup_pool(address, metric, start, end)
     elif pool_token == 'token':
-        X, y_true, price, peg, name = setup_token(pool, metric, start, end)
+        X, y_true, price, peg, name = setup_token(address, metric, start, end)
 
     if not len(y_true):
         raise Exception("No CPs in training set")
@@ -167,9 +167,9 @@ def train(pool, metric, start, end, pool_token):
     model.tune(GRID, X, y_true)
     y_pred = model.y_pred
 
-    # datahandler.insert_changepoints(model.y_pred, pool, 'bocd', metric)
+    # datahandler.insert_changepoints(model.y_pred, address, 'bocd', metric)
 
-    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/training/{pool_token}/{metric}/{pool}.png', metric=metric, pool=name)
+    bocd_plot_comp(X, price, peg, y_true, y_pred, save=True, file=f'./figs/training/{pool_token}/{metric}/{address}.png', metric=metric, pool=name)
     print(f"\n[{datetime.now()}] Finished training {name}\n")
 
     return model.best_params_dict, model.best_results
@@ -186,7 +186,7 @@ def main():
     print(f"[{datetime.now()}] Testing grid of length {len(GRID)}\n")
 
     pool_results = []
-    pool_metrics = ['shannonsEntropy', 'giniCoefficient', 'netSwapFlow', 'netLPFlow', '300.Markout']
+    pool_metrics = ['shannonsEntropy', 'giniCoefficient', 'netSwapFlow', 'netLPFlow', '300.Markout', 'sharkFlow']
     for metric in pool_metrics:
 
         ### TRAINING

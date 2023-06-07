@@ -111,6 +111,7 @@ def bocd_plot_comp(X, lp_share_price, virtual_price, true, pred, show=False, sav
 
     for ax in axs:
         bottom, top = ax.get_ylim()
+        print(bottom, top)
         ax.fill_betweenx([bottom, top], datetime(2022, 5, 7), datetime(2022, 5, 15), color='slategrey', alpha=0.2)
         ax.fill_betweenx([bottom, top], datetime(2022, 11, 1), datetime(2022, 11, 15), color='slategrey', alpha=0.2)
         ax.fill_betweenx([bottom, top], datetime(2023, 3, 9), datetime(2023, 3, 15), color='slategrey', alpha=0.2)

@@ -41,13 +41,10 @@ async def main(start: str, end: str):
 
     try:
         # Fetch and insert pool data
-        for pool in pool_metadata.keys():
+        # for pool in pool_metadata.keys():
+        for pool in ["0xa1f8a6807c402e4a15ef4eba36528a3fed24e577", "0x971add32ea87f10bd192671630be3be8a11b8623"]:
 
             print(f"[{datetime.now()}] Processing pool {pool_metadata[pool]['name']}.")
-
-            if pool in ["0xa1f8a6807c402e4a15ef4eba36528a3fed24e577", "0x971add32ea87f10bd192671630be3be8a11b8623"]:
-                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']}, no price data for underlying. Skipping...\n")
-                continue
 
             if pool_metadata[pool]['creationDate'] < start_ts:
                 pool_start_ts = start_ts

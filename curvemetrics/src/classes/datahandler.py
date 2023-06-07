@@ -609,6 +609,7 @@ class DataHandler():
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.sort_index()
+        df = df.loc[~(df['virtualPrice']==0)].dropna() # Drop rows where virtualPrice is 0
         return df
 
     def get_ohlcv_data(self, token_id: str, start: int=None, end: int=None) -> pd.DataFrame:
@@ -619,7 +620,7 @@ class DataHandler():
         else:
             if self.token_metadata[token_id]['symbol'] == "WETH":
                 token_id = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" # get ETH instead of WETH
-            query = f'SELECT timestamp, close FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
+            query = f'SELECT timestamp, symbol, close FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
             params = [token_id, start - delta, end + delta]
         results = self._execute_query(query, params=params)
         if not len(results):
@@ -630,10 +631,11 @@ class DataHandler():
         df = df.loc[datetime.fromtimestamp(start):datetime.fromtimestamp(end)]
         if 'lpPriceUSD' in df.columns:
             df = df.rename(columns={'lpPriceUSD': 'close'})
+            df['symbol'] = f'{self.token_metadata[token_id]["symbol"]}/VP'
         return df
     
     def get_pool_metric(self, pool_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
-        if metric in ['netSwapFlow', 'netLPFlow']:
+        if metric in ['netSwapFlow', 'netLPFlow', 'sharkFlow']:
             query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric LIKE ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
             results = self._execute_query(query, params=[pool_id, '%'+metric, start, end])
         else:
@@ -647,8 +649,10 @@ class DataHandler():
         series.name = metric
         if metric in ['shannonsEntropy', 'giniCoefficient']:
             series.replace(0, method='ffill', inplace=True)
-        elif metric in ['netSwapFlow', 'netLPFlow']:
+        elif metric in ['netSwapFlow', 'netLPFlow', 'sharkFlow']:
             series.groupby(series.index).sum()            
+        if metric == 'lpSharePrice':
+            series = series.ffill()
         return series
 
     def get_token_metric(self, token_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
@@ -673,6 +677,18 @@ class DataHandler():
         series.name = 'changepoints'
         return series
 
+    def get_takers(self) -> pd.DataFrame:
+        query = f'SELECT * FROM takers ORDER BY cumulativeMarkout DESC'
+        results = self._execute_query(query)
+        df = pd.DataFrame.from_dict(results)
+        df.set_index('buyer', inplace=True)
+        return df
+
+    def get_sharks(self, top=0.9) -> np.array:
+        takers = self.get_takers()
+        sharks = takers[takers['cumulativeMarkout'] > takers['cumulativeMarkout'].quantile(top)]
+        return np.array(sharks.index)
+
     def get_block_timestamp(self, block: int):
         cursor = self.conn.cursor()
         
@@ -696,6 +712,7 @@ class DataHandler():
             X = np.log1p(data.resample(freq).last().pct_change()).dropna()
         elif 'netSwapFlow' in metric \
             or 'netLPFlow' in metric \
+            or 'sharkFlow' in metric \
             or 'Markout' in metric:
             X = data.resample(freq).sum()
         else:
@@ -707,6 +724,7 @@ class DataHandler():
         elif standardize:
             scaler = StandardScaler()
             X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
+
         return X
 
     def get_token_X(self, metric, token, start_ts, end_ts, freq, normalize=False, standardize=False):
@@ -731,7 +749,7 @@ class DataHandler():
         fees.sort_values('timestamp', inplace=True, ascending=True)
         return fees
 
-    def get_curve_price(self, token, pool, start_ts, end_ts, numeraire):
+    def get_curve_price(self, token, pool, start_ts, end_ts, numeraire) -> List:
         """
         Get numeraire price for a token in a StableSwap pool.
         Assumes that the numeraire is ETH, and that ETH or WETH are included
@@ -742,6 +760,8 @@ class DataHandler():
         symbol = f"{self.token_metadata[token]['symbol']}/{self.token_metadata[numeraire]['symbol']}"
 
         df = self.get_swaps_data(pool, start_ts, end_ts).reset_index(drop=True)
+        if df.shape[0] == 0:
+            return []
         df = (df.groupby(['timestamp', 'tokenBought', 'tokenSold'], as_index=False)
                         .agg({'amountBought': 'sum', 'amountSold': 'sum'}))
         

@@ -5,6 +5,7 @@ import argparse
 import asyncio
 import os
 import json
+import traceback
 
 from datetime import datetime
 
@@ -74,7 +75,7 @@ async def main(start: str, end: str):
 
         # Fetch and insert token data
         # for token in token_metadata.keys():
-        for token in [datahandler.token_ids(x) for x in ["frxETH", "cvxCRV"]]:
+        for token in [datahandler.token_ids[x] for x in ["frxETH", "cvxCRV"]]:
 
             token_start_ts, token_end_ts = start_ts, end_ts 
 
@@ -106,13 +107,12 @@ async def main(start: str, end: str):
                 elif token_end_ts < 1661444040:
                     print(f"[{datetime.now()}] cbETH only indexed from 1661444040 (2022 12:14:00 PM GMT-04:00 DST). Skipping...")
                     continue
-            print("sdfasd")
+
             token_config = config['token_exchange_map'][token_metadata[token]['symbol']]
             if len(token_config) == 2:
                 api, source = token_config
             else:
                 api, source, numeraire = token_config
-            print("sdfaqewreqrsd")
 
             print(f"[{datetime.now()}] Backfilling token {token_metadata[token]['symbol']} OHLCV using {api}.")
 
@@ -123,13 +123,15 @@ async def main(start: str, end: str):
             elif api == "curveswaps":
                 token_data = datahandler.get_curve_price(token, source, start_ts, end_ts, numeraire=datahandler.token_ids[numeraire])
 
-            print("sdfaqewsdafasfreqrsd")
-            datahandler.insert_token_data(token_data)
+            if token_data:
+                datahandler.insert_token_data(token_data)
+            else:
+                print(f'[{datetime.now()}] No price data for token {token_metadata[token]["symbol"]} at this time.\n')
 
         print(f"[{datetime.now()}] Done :)")
     
     except Exception as e:
-        print(f"\n[{datetime.now()}] An error occurred during raw database backfilling: {e}\n")
+        print(f"\n[{datetime.now()}] An error occurred during raw database backfilling: {traceback.print_exc()}\n")
     
     finally:
         datahandler.close()

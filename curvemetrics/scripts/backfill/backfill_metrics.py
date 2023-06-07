@@ -4,15 +4,25 @@ Backfill metrics for given time period into SQL database.
 import argparse
 import asyncio
 import traceback
+import os
+import json
 
 from datetime import datetime
 
 from ...src.classes.metricsprocessor import MetricsProcessor
 from ...src.classes.datahandler import DataHandler
 
+def load_config():
+    # Load the configuration
+    with open(os.path.join(os.path.abspath('config.json')), "r") as config_file:
+        config = json.load(config_file)
+    return config
+
 async def main(start: str, end: str):
 
     print(f"\n[{datetime.now()}] Processing metrics...\n")
+
+    config = load_config()
 
     datahandler = DataHandler()
     token_metadata = datahandler.get_token_metadata()
@@ -27,12 +37,7 @@ async def main(start: str, end: str):
 
     try:
         for pool in pool_metadata.keys():
-
             print(f"[{datetime.now()}] Processing pool {pool_metadata[pool]['name']}.")
-
-            if pool in ["0xa1f8a6807c402e4a15ef4eba36528a3fed24e577", "0x971add32ea87f10bd192671630be3be8a11b8623"]:
-                print(f"[{datetime.now()}] Pools {pool_metadata[pool]['name']}, no price data for underlying. Skipping...\n")
-                continue
 
             if pool_metadata[pool]['creationDate'] < start_ts:
                 pool_start_ts = start_ts
@@ -99,8 +104,8 @@ async def main(start: str, end: str):
                 print(f"[{datetime.now()}] {token_metadata[token]['symbol']} assumed to be = ETH. Skipping...\n")
                 continue
 
-            elif token_metadata[token]['symbol'] in ["3Crv", "frxETH", "cvxCRV"]:
-                print(f"[{datetime.now()}] TODO: Add support for {token_metadata[token]['symbol']}. Skipping...\n")
+            elif token_metadata[token]['symbol'] in ["3Crv"]:
+                print(f"[{datetime.now()}] We use virtual prices for {token_metadata[token]['symbol']}. Skipping...\n")
                 continue
             
             elif token_metadata[token]['symbol'] == "USDN":
@@ -131,6 +136,19 @@ async def main(start: str, end: str):
                     token_start_ts = 1661444040
                 elif token_end_ts < 1661444040:
                     print(f"[{datetime.now()}] cbETH only indexed from 1661444040 (2022 12:14:00 PM GMT-04:00 DST). Skipping...")
+                    continue
+            
+            elif token_metadata[token]['symbol'] in ["frxETH", "cvxCRV"]:
+                # depend on the pool creation date.
+                _, pool, _ = config['token_exchange_map'][datahandler.token_metadata[token]['symbol']]
+                if pool_metadata[pool]['creationDate'] < start_ts:
+                    token_start_ts = start_ts
+                    token_end_ts = end_ts
+                elif start_ts < pool_metadata[pool]['creationDate'] < start_ts:
+                    token_start_ts = pool_metadata[pool]['creationDate']
+                    token_end_ts = end_ts
+                else:
+                    print(f"[{datetime.now()}] Token {token_metadata[token]['symbol']} has no pricing data before {end_ts}. Skipping...\n")
                     continue
 
             print(f"[{datetime.now()}] Start time: {datetime.fromtimestamp(token_start_ts)}")
