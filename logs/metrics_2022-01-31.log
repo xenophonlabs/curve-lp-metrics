@@ -50,3 +50,9 @@
 [2023-06-08 16:33:21.450651] Start time: 2022-01-30 23:55:00
 [2023-06-08 16:33:21.450667] End time: 2022-03-02 00:00:00
 [2023-06-08 16:33:28.361233] Inserting metrics.
+[2023-06-08 16:38:37.853408] Finished processing pool Curve.fi Factory USD Metapool: Liquity.
+
+[2023-06-08 16:38:37.853518] Processing pool Curve.fi Factory USD Metapool: Binance USD.
+[2023-06-08 16:38:37.853530] Start time: 2022-01-30 23:55:00
+[2023-06-08 16:38:37.853543] End time: 2022-03-02 00:00:00
+[2023-06-08 16:38:43.880501] Inserting metrics.
