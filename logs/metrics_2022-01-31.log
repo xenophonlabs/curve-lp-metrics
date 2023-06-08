@@ -1,0 +1,52 @@
+
+[2023-06-08 16:03:48.418258] Processing metrics...
+
+
+[2023-06-08 16:03:48.500191] Processing pool metrics.
+
+[2023-06-08 16:03:48.500237] Processing pool Curve.fi ETH/stETH.
+[2023-06-08 16:03:48.500247] Start time: 2022-01-30 23:55:00
+[2023-06-08 16:03:48.500257] End time: 2022-03-02 00:00:00
+[2023-06-08 16:03:54.074541] Inserting metrics.
+[2023-06-08 16:07:31.464581] Finished processing pool Curve.fi ETH/stETH.
+
+[2023-06-08 16:07:31.464672] Processing pool Curve.fi DAI/USDC/USDT.
+[2023-06-08 16:07:31.464690] Start time: 2022-01-30 23:55:00
+[2023-06-08 16:07:31.464701] End time: 2022-03-02 00:00:00
+[2023-06-08 16:07:38.298668] Inserting metrics.
+[2023-06-08 16:12:11.279918] Finished processing pool Curve.fi DAI/USDC/USDT.
+
+[2023-06-08 16:12:11.280020] Processing pool Curve.fi FRAX/USDC.
+[2023-06-08 16:12:11.280032] Pools Curve.fi FRAX/USDC was created after the end date. Skipping...
+
+[2023-06-08 16:12:11.280044] Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+[2023-06-08 16:12:11.280053] Start time: 2022-01-30 23:55:00
+[2023-06-08 16:12:11.280065] End time: 2022-03-02 00:00:00
+[2023-06-08 16:12:17.933517] Inserting metrics.
+[2023-06-08 16:17:22.837335] Finished processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+
+[2023-06-08 16:17:22.837413] Processing pool Curve.fi USDN/3Crv.
+[2023-06-08 16:17:22.837426] Start time: 2022-01-30 23:55:00
+[2023-06-08 16:17:22.837437] End time: 2022-03-02 00:00:00
+[2023-06-08 16:17:29.274715] Inserting metrics.
+[2023-06-08 16:22:33.635210] Finished processing pool Curve.fi USDN/3Crv.
+
+[2023-06-08 16:22:33.635299] Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+[2023-06-08 16:22:33.635315] Start time: 2022-01-30 23:55:00
+[2023-06-08 16:22:33.635330] End time: 2022-03-02 00:00:00
+[2023-06-08 16:22:40.432150] Inserting metrics.
+[2023-06-08 16:27:40.570930] Finished processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+[2023-06-08 16:27:40.571018] Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+[2023-06-08 16:27:40.571033] Start time: 2022-01-30 23:55:00
+[2023-06-08 16:27:40.571049] End time: 2022-03-02 00:00:00
+[2023-06-08 16:27:47.675789] Inserting metrics.
+[2023-06-08 16:33:21.450524] Finished processing pool Curve.fi DAI/USDC/USDT/sUSD.
+
+[2023-06-08 16:33:21.450602] Processing pool Curve.fi ETH/frxETH.
+[2023-06-08 16:33:21.450623] Pools Curve.fi ETH/frxETH was created after the end date. Skipping...
+
+[2023-06-08 16:33:21.450640] Processing pool Curve.fi Factory USD Metapool: Liquity.
+[2023-06-08 16:33:21.450651] Start time: 2022-01-30 23:55:00
+[2023-06-08 16:33:21.450667] End time: 2022-03-02 00:00:00
+[2023-06-08 16:33:28.361233] Inserting metrics.

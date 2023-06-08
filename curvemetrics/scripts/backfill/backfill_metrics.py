@@ -88,6 +88,8 @@ async def main(start: str, end: str):
                 ohlcv = datahandler.get_ohlcv_data(token, start=start_ts, end=pool_end_ts)
                 ohlcvs[token] = ohlcv
 
+            print(f"[{datetime.now()}] Inserting metrics.")
+
             pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
             datahandler.insert_pool_metrics(pool_metrics, pool)
 
@@ -157,6 +159,7 @@ async def main(start: str, end: str):
 
             token_ohlcv = datahandler.get_ohlcv_data(token, token_start_ts, token_end_ts)
             token_metrics = metricsprocessor.process_metrics_for_token(token, token_ohlcv)
+            print(f"[{datetime.now()}] Inserting metrics.")
             datahandler.insert_token_metrics(token_metrics, token)
 
             print(f"[{datetime.now()}] Finished processing token {token_metadata[token]['symbol']}.\n")

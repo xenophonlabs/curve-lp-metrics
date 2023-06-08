@@ -148,9 +148,9 @@ class MetricsProcessor:
     # submitted the 1Inch transaction). This is okay when looking at sharks: we can assume
     # sharks are less likely to be going through 1Inch.
 
-    def sharks(self, takers, top) -> np.array:
+    def sharks(self, takers, top) -> List[str]:
         sharks = takers[takers['cumulativeMarkout'] > takers['cumulativeMarkout'].quantile(top)]
-        return np.array(sharks.index)
+        return list(sharks.index)
     
     def sharkflow(self, swaps, takers, token_id, symbol, top=0.9):
         sharks = self.sharks(takers, top)
@@ -442,7 +442,7 @@ class MetricsProcessor:
         for token in tokens:
             close = ohlcvs[token]['close']
             numeraire = ohlcvs[token]['symbol'].dropna().unique()[0].split('/')[1]
-            if numeraire != 'USD':
+            if numeraire not in ['USD', 'VP']: # VP stands for Virtual Price, no need to convert
                 symbols = {v['symbol']:k for k, v in self.token_metadata.items()}
                 if symbols[numeraire] in ohlcvs.keys():
                     close = close * ohlcvs[symbols[numeraire]]['close'] # e.g. frxETH/ETH * ETH/USD = frxETH/USD

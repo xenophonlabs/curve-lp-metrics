@@ -1,9 +1,6 @@
-from sqlalchemy.ext.declarative import declarative_base
-import ast
+from ....app import db
 
-base = declarative_base()
-
-class Entity(base):
+class Entity(db.Model):
 
     __abstract__ = True
     

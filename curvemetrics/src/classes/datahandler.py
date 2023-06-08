@@ -1,11 +1,10 @@
-import json
 import os
 import logging
 import re
 from typing import Dict, List
 from datetime import datetime, timedelta
 
-from sqlalchemy import create_engine, text, MetaData, Table
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.postgresql import insert
 
@@ -429,9 +428,10 @@ class DataHandler():
                          token_id: str, 
                          metric: str, 
                          start: int=None, 
-                         end: int=None
+                         end: int=None,
+                         cols: List=['timestamp', 'value']
         ) -> pd.Series:
-        query = self.session.query(*[getattr(TokenMetrics, col) for col in ['timestamp, value']])
+        query = self.session.query(*[getattr(TokenMetrics, col) for col in cols])
         query = query.filter(
             TokenMetrics.token_id == token_id,
             TokenMetrics.metric == metric,
@@ -440,9 +440,6 @@ class DataHandler():
         )
         query = query.order_by(TokenMetrics.timestamp.asc())
         results = query.all()
-        return results
-        query = f'SELECT timestamp, value FROM token_metrics WHERE token_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[token_id, metric, start, end])
         if not len(results):
             return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
@@ -456,9 +453,10 @@ class DataHandler():
                          model: str, 
                          metric: str, 
                          start: int=None, 
-                         end: int=None
+                         end: int=None,
+                         cols: List=['timestamp']
         ) -> pd.Series:
-        query = self.session.query(*[getattr(Changepoints, col) for col in ['timestamp']])
+        query = self.session.query(*[getattr(Changepoints, col) for col in cols])
         query = query.filter(
             Changepoints.pool_id == pool_id,
             Changepoints.model == model,
@@ -492,10 +490,10 @@ class DataHandler():
         df.set_index('buyer', inplace=True)
         return df
 
-    def get_sharks(self, top: float=0.9) -> np.array:
+    def get_sharks(self, top: float=0.9) -> List[str]:
         takers = self.get_takers()
         sharks = takers[takers['cumulativeMarkout'] > takers['cumulativeMarkout'].quantile(top)]
-        return np.array(sharks.index)
+        return list(sharks.index)
 
     def get_block_timestamp(self, block: int):
         query = self.session.query(BlockTimestamps)
