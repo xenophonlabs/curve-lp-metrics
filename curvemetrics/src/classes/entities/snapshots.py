@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ARRAY, ForeignKey, Index
+from sqlalchemy import Column, Integer, String, Float, ARRAY, ForeignKey, Index, Numeric
 
 from .entity import Entity
 
@@ -10,17 +10,17 @@ class Snapshots(Entity):
     adminFee = Column(Float)
     fee = Column(Float)
     timestamp = Column(Integer)
-    normalizedReserves = Column(ARRAY(String))
+    normalizedReserves = Column(ARRAY(Numeric))
     offPegFeeMultiplier = Column(Float)
-    reserves = Column(ARRAY(String))
-    virtualPrice = Column(Integer)
+    reserves = Column(ARRAY(Numeric))
+    virtualPrice = Column(Numeric)
     lpPriceUSD = Column(Float)
     tvl = Column(Float)
     totalDailyFeesUSD = Column(Float)
-    reservesUSD = Column(ARRAY(String))
+    reservesUSD = Column(ARRAY(Float))
     lpFeesUSD = Column(Float)
-    lastPricestimestamp = Column(Integer)
-    lastPrices = Column(ARRAY(String))
+    lastPricesTimestamp = Column(Integer)
+    lastPrices = Column(ARRAY(Float))
     pool_id = Column(String, ForeignKey('pools.id'))
     block_gte = Column(Integer)
     block_lt = Column(Integer)
@@ -47,7 +47,7 @@ class Snapshots(Entity):
         self.totalDailyFeesUSD = totalDailyFeesUSD
         self.reservesUSD = reservesUSD
         self.lpFeesUSD = lpFeesUSD
-        self.lastPricestimestamp = lastPricestimestamp
+        self.lastPricesTimestamp = lastPricestimestamp
         self.lastPrices = lastPrices
         self.pool_id = pool_id
         self.block_gte = block_gte

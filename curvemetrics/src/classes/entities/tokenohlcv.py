@@ -5,10 +5,9 @@ from .entity import Entity
 class TokenOHLCV(Entity):
     __tablename__ = 'token_ohlcv'
 
-    id = Column(Integer, primary_key=True)
-    token_id = Column(String, ForeignKey('tokens.id'))
-    symbol = Column(String)
-    timestamp = Column(Integer)
+    token_id = Column(String, ForeignKey('tokens.id'), primary_key=True)
+    symbol = Column(String, primary_key=True)
+    timestamp = Column(Integer, primary_key=True)
     open = Column(Float)
     high = Column(Float)
     low = Column(Float)
@@ -17,7 +16,7 @@ class TokenOHLCV(Entity):
 
     idx = Index('idx_token_ohlcv_token_id_timestamp', 'token_id', 'timestamp')
 
-    def __init__(self, id, token_id, symbol, timestamp, open, high, low, close, volume):
+    def __init__(self, token_id, symbol, timestamp, open, high, low, close, volume):
                 
         super().__init__()
         

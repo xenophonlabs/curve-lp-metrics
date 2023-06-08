@@ -39,7 +39,7 @@ async def main(start: str, end: str):
     try:
         # Fetch and insert pool data
         # for pool in pool_metadata.keys():
-        for pool in ["0xceaf7747579696a2f0bb206a14210e3c9e6fb269"]:
+        for pool in ["0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"]:
 
             print(f"[{datetime.now()}] Backfilling pool {pool_metadata[pool]['name']}.")
 
@@ -57,7 +57,7 @@ async def main(start: str, end: str):
             pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
             datahandler.insert_pool_data(pool_data)
 
-            print(f"[{datetime.now()}] Finished reserve data...")
+            print(f"[{datetime.now()}] Finished pool data...")
 
             swaps_data = datafetcher.get_swaps_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
             datahandler.insert_swaps_data(swaps_data)
@@ -67,12 +67,14 @@ async def main(start: str, end: str):
             lp_data = datafetcher.get_lp_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
             datahandler.insert_lp_data(lp_data)
 
-            print(f"[{datetime.now()}] Finished lp event data...\n")
+            print(f"[{datetime.now()}] Finished lp event data...")
 
             snapshots = datafetcher.get_snapshots(pool_start_ts, end_ts, pool, step_size=STEP_SIZE)
             datahandler.insert_pool_snapshots(snapshots)
 
-            print(f"[{datetime.now()}] Finished snapshots data...\n")
+            print(f"[{datetime.now()}] Finished snapshots data...")
+
+            print(f"\n[{datetime.now()}] Finishes pool {pool_metadata[pool]['name']}.\n")
 
         # Fetch and insert token data
         # for token in token_metadata.keys():

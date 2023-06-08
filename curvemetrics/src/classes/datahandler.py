@@ -39,18 +39,8 @@ class DataHandler():
         Entity.metadata.create_all(self.engine)
         self.logger.info("Tables created in the database.")
     
-    def create_indexes(self):
-        with open(PATH+'../../../config/schemas/indexes.sql', 'r') as f:
-            sql = f.read()
-        
-        with self.engine.connect() as connection:
-            connection.execute(text(sql))
-        
-        self.logger.info("Indexes created in the database.")
-
     def close(self):
         self.session.close()
-        self.logger.info("Database session closed.")
     
     def reset(self):
         self.logger.warning(f"WARNING: DROPPING ALL TABLES...")
@@ -81,11 +71,13 @@ class DataHandler():
         Used to backfill blocks with timestamps.
         """
         for i in range(5):
+            print(f'[{datetime.now()}] Inserting block_timestamps {i}...')
             fn = PATH+f'../../../data/timestamps_{i}.csv'
             df = pd.read_csv(fn)
-            df['block'] = df['block'].astype(int)
             df['timestamp'] = df['unixtime'].apply(lambda x: int(datetime.timestamp(datetime.fromisoformat(x.replace("Z", "+00:00")))))
             df = df[['block', 'timestamp']]
+            df['timestamp'] = df['timestamp'].astype(object)
+            df['block'] = df['block'].astype(object)
             self.insert(df, BlockTimestamps, replace=True, index_elements=[BlockTimestamps.block])
 
         self.logger.info(f"Old blocktimestamps have been inserted.")
@@ -100,22 +92,20 @@ class DataHandler():
         """
         if len(df) == 0:
             return
+        
+        for _, row in df.iterrows():
+            stmt = insert(entity.__table__).values(**row)
+            if replace:
+                stmt = stmt.on_conflict_do_update(index_elements=index_elements, set_=dict(row))
+            else:
+                stmt = stmt.on_conflict_do_nothing()
+            try:
+                self.session.execute(stmt)
+            except Exception as e:
+                self.session.rollback()
+                raise e
 
-        data = df.to_dict(orient='records') # convert dataframe to list of dictionaries
-
-        stmt = insert(entity.__table__).values(data)
-
-        if replace:
-            stmt = stmt.on_conflict_do_update(index_elements=index_elements, set_=dict(df.iloc[-1]))
-        else:
-            stmt = stmt.on_conflict_do_nothing()
-
-        try:
-            self.session.execute(stmt)
-            self.session.commit()
-        except Exception as e:
-            self.session.rollback()
-            raise e
+        self.session.commit()
 
     def insert_pool_data(self, data):
         df = DataHandler.format_pool_data(data)
@@ -171,17 +161,16 @@ class DataHandler():
 
     @staticmethod
     def format_pool_data(data):
-        hack = DataHandler()
         df = pd.DataFrame([x for y in data for x in y])
+
         if len(df) == 0:
             return df
-        # for col in ['totalValueLockedUSD']:
-        #     df[col] = df[col].astype(float)
-        # for col in ['block']:
-        #     df[col] = df[col].astype(int)
+
+        hack = DataHandler()        
         df['timestamp'] = df['block'].apply(lambda x: hack.get_block_timestamp(x))
-        df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'timestamp', 'outputTokenSupply']]
         hack.close()
+
+        df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'timestamp', 'outputTokenSupply']]
         return df
 
     @staticmethod
@@ -205,10 +194,10 @@ class DataHandler():
         df = pd.DataFrame([x for y in data for x in y])
         if len(df) == 0:
             return df
-        for col in ['amountBought', 'amountSold', 'isUnderlying']:
-            df[col] = df[col].astype(float)
-        for col in ['timestamp', 'block', 'gasLimit', 'gasUsed']:
-            df[col] = df[col].astype(int)
+        # for col in ['amountBought', 'amountSold', 'isUnderlying']:
+        #     df[col] = df[col].astype(float)
+        # for col in ['timestamp', 'block', 'gasLimit', 'gasUsed']:
+        #     df[col] = df[col].astype(int)
         df = df[['id', 'timestamp', 'tx', 'pool_id', 'amountBought', 'amountSold', 'tokenBought', 'tokenSold', 'buyer', 'gasLimit', 'gasUsed', 'isUnderlying', 'block_gte', 'block_lt', 'block']]
         return df
     
@@ -217,10 +206,10 @@ class DataHandler():
         df = pd.DataFrame([x for y in data for x in y])
         if len(df) == 0:
             return df
-        for col in ['timestamp', 'block', 'removal']:
-            df[col] = df[col].astype(int)
-        df['totalSupply'] = df['totalSupply'].astype(float)
-        df['tokenAmounts'] = df['tokenAmounts'].apply(lambda x: json.dumps(list(map(int, x))))
+        # for col in ['timestamp', 'block', 'removal']:
+        #     df[col] = df[col].astype(int)
+        # df['totalSupply'] = df['totalSupply'].astype(float)
+        # df['tokenAmounts'] = df['tokenAmounts'].apply(lambda x: json.dumps(list(map(int, x))))
         df = df[['id', 'block', 'liquidityProvider', 'removal', 'timestamp', 'tokenAmounts', 'totalSupply', 'tx', 'pool_id', 'block_gte', 'block_lt']]
         return df
 
@@ -238,21 +227,21 @@ class DataHandler():
     def format_pool_metrics(df, pool_id):
         df = df.melt(var_name='metric', value_name='value', ignore_index=False)
         df = df.reset_index(names='timestamp')
-        df['timestamp'] = df['timestamp'].apply(lambda x: int(datetime.timestamp(x)))
+        df['timestamp'] = df['timestamp'].apply(datetime.timestamp)
         df['pool_id'] = pool_id
         df = df[['timestamp', 'pool_id', 'metric', 'value']]
         return df
 
     def format_pool_snapshots(data):
         df = pd.DataFrame.from_dict([x for y in data for x in y])
-        for col in ['A', 'offPegFeeMultiplier', 'timestamp', 'virtualPrice', 'lastPricesTimestamp', 'block_gte', 'block_lt']:
-            df[col] = df[col].astype(int)
-        for col in ['adminFee', 'fee', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'lpFeesUSD']:
-            df[col] = df[col].astype(float)
-        for col in ['normalizedReserves', 'reserves']:
-            df[col] = df[col].apply(lambda x: json.dumps(list(map(int, x))))
-        for col in ['reservesUSD']:
-            df[col] = df[col].apply(lambda x: json.dumps(list(map(float, x))))
+        # for col in ['A', 'offPegFeeMultiplier', 'timestamp', 'virtualPrice', 'lastPricesTimestamp', 'block_gte', 'block_lt']:
+        #     df[col] = df[col].astype(int)
+        # for col in ['adminFee', 'fee', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'lpFeesUSD']:
+        #     df[col] = df[col].astype(float)
+        # for col in ['normalizedReserves', 'reserves']:
+        #     df[col] = df[col].apply(lambda x: json.dumps(list(map(int, x))))
+        # for col in ['reservesUSD']:
+        #     df[col] = df[col].apply(lambda x: json.dumps(list(map(float, x))))
         df = df[['id', 'A', 'adminFee', 'fee', 'timestamp', 'normalizedReserves', 'offPegFeeMultiplier', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'reservesUSD', 'lpFeesUSD', 'lastPricesTimestamp', 'lastPrices', 'pool_id', 'block_gte', 'block_lt']]
         return df
 
@@ -269,10 +258,6 @@ class DataHandler():
         query = self.session.query(Pools)
         results = query.all()
         results = {d['id']:d for d in [row.as_dict() for row in results]}
-        for k, v in results.items():
-            v['coins'] = self.pg_array_to_list(v['coins'])
-            v['inputTokens'] = self.pg_array_to_list(v['inputTokens'])
-            results[k] = v
         return results
     
     def get_token_metadata(self) -> Dict:
@@ -287,7 +272,7 @@ class DataHandler():
                       end: int, 
                       cols: List=['inputTokenBalances', 'timestamp', 'outputTokenSupply']
         ) -> pd.DataFrame:
-        query = self.session.query([getattr(PoolData, col) for col in cols])
+        query = self.session.query(*[getattr(PoolData, col) for col in cols])
         query = query.filter(
             PoolData.pool_id == pool_id,
             PoolData.timestamp >= start,
@@ -295,11 +280,6 @@ class DataHandler():
         )
         query = query.order_by(PoolData.timestamp.asc())
         results = query.all()
-        df = pd.DataFrame(results, columns=cols)
-        # self.pg_array_to_list(v['inputTokens'])
-        return df
-        query = f'SELECT  FROM pool_data WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, start, end])
         if not len(results):
             return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
@@ -307,9 +287,7 @@ class DataHandler():
         tokens = self.pool_metadata[pool_id]['inputTokens']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
 
-        # convert JSON strings to lists and then to numpy arrays, then normalize balances
-        # df['inputTokenWeights'] = np.array(df['inputTokenWeights'].map(json.loads).to_list())
-        df['inputTokenBalances'] = (np.array(df['inputTokenBalances'].map(json.loads).to_list()) / 10**decimals).tolist()
+        df['inputTokenBalances'] = (np.array(df['inputTokenBalances'].to_list()) / 10**decimals).tolist()
 
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
@@ -327,12 +305,9 @@ class DataHandler():
         )
         query = query.order_by(Swaps.timestamp.asc())
         results = query.all()
-        return results
-        query = f'SELECT * FROM swaps WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, start, end])
         if not len(results):
             return pd.DataFrame()
-        df = pd.DataFrame.from_dict(results)
+        df = pd.DataFrame.from_dict([row.as_dict() for row in results])
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
     
@@ -349,17 +324,12 @@ class DataHandler():
         )
         query = query.order_by(LPEvents.timestamp.asc())
         results = query.all()
-        return results
-        query = f'SELECT * FROM lp_events WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, start, end])
         if not len(results):
             return pd.DataFrame()
-        df = pd.DataFrame.from_dict(results)
-
+        df = pd.DataFrame.from_dict([row.as_dict() for row in results])
         tokens = self.pool_metadata[pool_id]['coins']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
-
-        df['tokenAmounts'] = (np.array(df['tokenAmounts'].map(json.loads).to_list()) / 10**decimals).tolist()
+        # df['tokenAmounts'] = (np.array(df['tokenAmounts'].map(json.loads).to_list()) / 10**decimals).tolist()
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
 
@@ -369,7 +339,7 @@ class DataHandler():
                            end: int=None,
                            cols: List=['timestamp', 'normalizedReserves', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'reservesUSD']
         ) -> pd.DataFrame:
-        query = self.session.query([getattr(Snapshots, col) for col in cols])
+        query = self.session.query(*[getattr(Snapshots, col) for col in cols])
         query = query.filter(
             Snapshots.pool_id == pool_id,
             Snapshots.timestamp >= start,
@@ -377,9 +347,6 @@ class DataHandler():
         )
         query = query.order_by(Snapshots.timestamp.asc())
         results = query.all()
-        return results
-        query = f'SELECT timestamp, normalizedReserves, reserves, virtualPrice, lpPriceUSD, tvl, reservesUSD FROM snapshots WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, start, end])
         if not len(results):
             return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
@@ -398,7 +365,7 @@ class DataHandler():
 
         if self.token_metadata[token_id]['symbol'] == "3Crv":
             threepool = "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"
-            query = self.session.query([getattr(Snapshots, col) for col in ['timestamp', 'lpPriceUSD']])
+            query = self.session.query(*[getattr(Snapshots, col) for col in ['timestamp', 'lpPriceUSD']])
             query = query.filter(
                 Snapshots.pool_id == threepool,
                 Snapshots.timestamp >= start - delta,
@@ -410,7 +377,7 @@ class DataHandler():
         else:
             if self.token_metadata[token_id]['symbol'] == "WETH":
                 token_id = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" # get ETH instead of WETH
-            query = self.session.query([getattr(TokenOHLCV, col) for col in ['timestamp', 'symbol', 'close']])
+            query = self.session.query(*[getattr(TokenOHLCV, col) for col in ['timestamp', 'symbol', 'close']])
             query = query.filter(
                 TokenOHLCV.token_id == token_id,
                 TokenOHLCV.timestamp >= start - delta,
@@ -419,19 +386,9 @@ class DataHandler():
             query = query.order_by(TokenOHLCV.timestamp.asc())
             results = query.all()
 
-        return results
-        delta = int(timedelta(days=2).total_seconds()) # Hack to avoid missing data for chainlink
-        if self.token_metadata[token_id]['symbol'] == "3Crv":
-            query = "SELECT timestamp, lpPriceUSD FROM snapshots WHERE pool_id == ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC"
-            params = ["0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", start - delta, end + delta] # 3Crv pool LP token price
-        else:
-            if self.token_metadata[token_id]['symbol'] == "WETH":
-                token_id = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" # get ETH instead of WETH
-            query = f'SELECT timestamp, symbol, close FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-            params = [token_id, start - delta, end + delta]
-        results = self._execute_query(query, params=params)
         if not len(results):
             return pd.DataFrame()
+        
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.resample('1min').ffill()
@@ -439,8 +396,8 @@ class DataHandler():
         if 'lpPriceUSD' in df.columns:
             df = df.rename(columns={'lpPriceUSD': 'close'})
             df['symbol'] = f'{self.token_metadata[token_id]["symbol"]}/VP'
-        return df
-    
+        return df       
+
     def get_pool_metric(self, 
                         pool_id: str, 
                         metric: str, 
@@ -448,7 +405,7 @@ class DataHandler():
                         end: int=None,
                         cols: List=['timestamp', 'value']
         ) -> pd.Series:
-        query = self.session.query([getattr(PoolMetrics, col) for col in cols])
+        query = self.session.query(*[getattr(PoolMetrics, col) for col in cols])
         query = query.filter(
             PoolMetrics.pool_id == pool_id,
             PoolMetrics.timestamp >= start,
@@ -487,7 +444,7 @@ class DataHandler():
                          start: int=None, 
                          end: int=None
         ) -> pd.Series:
-        query = self.session.query([getattr(TokenMetrics, col) for col in ['timestamp, value']])
+        query = self.session.query(*[getattr(TokenMetrics, col) for col in ['timestamp, value']])
         query = query.filter(
             TokenMetrics.token_id == token_id,
             TokenMetrics.metric == metric,
@@ -514,7 +471,7 @@ class DataHandler():
                          start: int=None, 
                          end: int=None
         ) -> pd.Series:
-        query = self.session.query([getattr(Changepoints, col) for col in ['timestamp']])
+        query = self.session.query(*[getattr(Changepoints, col) for col in ['timestamp']])
         query = query.filter(
             Changepoints.pool_id == pool_id,
             Changepoints.model == model,

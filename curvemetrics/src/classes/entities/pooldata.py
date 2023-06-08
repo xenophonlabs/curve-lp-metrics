@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Float, ARRAY, Numeric, ForeignKey, Index
+from sqlalchemy import Column, String, Integer, Float, ARRAY, Numeric, ForeignKey, Index, DECIMAL
 
 from .entity import Entity
 
@@ -9,8 +9,8 @@ class PoolData(Entity):
     pool_id = Column(String, ForeignKey('pools.id'))
     block = Column(Integer)
     totalValueLockedUSD = Column(Float)
-    inputTokenBalances = Column(ARRAY(String))
-    inputTokenWeights = Column(ARRAY(String))
+    inputTokenBalances = Column(ARRAY(Numeric))
+    inputTokenWeights = Column(ARRAY(DECIMAL))
     timestamp = Column(Integer)
     outputTokenSupply = Column(Numeric)
     

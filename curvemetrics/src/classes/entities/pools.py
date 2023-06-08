@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Float, ARRAY, Boolean, BigInteger
+from sqlalchemy import Column, String, Integer, Float, ARRAY, Boolean, Numeric
 
 from .entity import Entity
 
@@ -21,7 +21,7 @@ class Pools(Entity):
     metapool = Column(String)
     name = Column(String)
     poolType = Column(String)
-    virtualPrice = Column(BigInteger)
+    virtualPrice = Column(Numeric)
     symbol = Column(String)
     inputTokens = Column(ARRAY(String))
     

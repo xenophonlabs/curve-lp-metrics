@@ -1,6 +1,29 @@
 
-[2023-06-07 21:10:50.053873] Starting backfilling process.
+[2023-06-08 00:13:22.389571] Starting backfilling process.
 
-[2023-06-07 21:10:51.468515] Backfilling pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
-[2023-06-07 21:10:51.468811] Start time: 2022-01-01 00:00:03
-[2023-06-07 21:10:51.468921] End time: 2022-01-02 00:00:27
+[2023-06-08 00:13:23.251439] Backfilling pool Curve.fi DAI/USDC/USDT.
+[2023-06-08 00:13:23.251501] Start time: 2022-01-01 00:00:03
+[2023-06-08 00:13:23.251512] End time: 2022-01-02 00:00:27
+[2023-06-08 00:13:39.940145] Finished pool data...
+[2023-06-08 00:13:40.887301] Finished swap data...
+[2023-06-08 00:13:42.305954] Finished lp event data...
+[2023-06-08 00:13:54.266386] Finished snapshots data...
+
+[2023-06-08 00:13:54.266447] Finishes pool Curve.fi DAI/USDC/USDT.
+
+[2023-06-08 00:13:54.266462] Backfilling token FRAX OHLCV using chainlink.
+Found the closest round: 18446744073709551839, at 2021-12-31 05:20:40.
+Number of iterations: 14
+[2023-06-08 00:14:09.065538] Backfilling token USDC OHLCV using ccxt.
+Using Binance US for USDC/USD.
+
+[2023-06-08 00:14:11.542584] Backfilling token DAI OHLCV using ccxt.
+Using Binance US for DAI/USD.
+
+[2023-06-08 00:14:13.860241] Backfilling token USDC OHLCV using ccxt.
+Using Binance US for USDC/USD.
+
+[2023-06-08 00:14:16.176958] Backfilling token USDT OHLCV using ccxt.
+Using Binance US for USDT/USD.
+
+[2023-06-08 00:14:18.507245] Done :)

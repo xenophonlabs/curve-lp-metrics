@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, Float, ARRAY, ForeignKey, Index
+from sqlalchemy import Column, Integer, String, Boolean, Float, ARRAY, ForeignKey, Index, Numeric
 
 from .entity import Entity
 
@@ -10,7 +10,7 @@ class LPEvents(Entity):
     liquidityProvider = Column(String)
     removal = Column(Boolean)
     timestamp = Column(Integer)
-    tokenAmounts = Column(ARRAY(String))
+    tokenAmounts = Column(ARRAY(Numeric))
     totalSupply = Column(Float)
     tx = Column(String)
     pool_id = Column(String, ForeignKey('pools.id'))
