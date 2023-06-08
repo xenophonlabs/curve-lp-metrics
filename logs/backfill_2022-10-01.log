@@ -60,3 +60,413 @@
 [2023-06-08 16:40:39.467685] Finished pool data...
 [2023-06-08 16:40:46.998434] Inserting swap data...
 [2023-06-08 16:40:47.070779] Finished swap data...
+[2023-06-08 16:40:53.229987] Inserting lp event data...
+[2023-06-08 16:40:53.254448] Finished lp event data...
+[2023-06-08 16:40:57.515033] Inserting snapshots data...
+[2023-06-08 16:40:57.531176] Finished snapshots data...
+[2023-06-08 16:40:57.531215] Finished pool Curve.fi USDN/3Crv.
+
+[2023-06-08 16:40:57.531224] Backfilling pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+[2023-06-08 16:40:57.531232] Start time: 2022-09-30 23:55:11
+[2023-06-08 16:40:57.531242] End time: 2022-10-08 00:00:11
+[2023-06-08 16:42:00.393995] Inserting pool data...
+[2023-06-08 16:43:06.126493] Finished pool data...
+[2023-06-08 16:43:12.755426] Inserting swap data...
+[2023-06-08 16:43:12.882658] Finished swap data...
+[2023-06-08 16:43:19.245615] Inserting lp event data...
+[2023-06-08 16:43:19.318328] Finished lp event data...
+[2023-06-08 16:43:19.448795] Inserting snapshots data...
+[2023-06-08 16:43:19.468109] Finished snapshots data...
+[2023-06-08 16:43:19.468155] Finished pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+[2023-06-08 16:43:19.468170] Backfilling pool Curve.fi DAI/USDC/USDT/sUSD.
+[2023-06-08 16:43:19.468182] Start time: 2022-09-30 23:55:11
+[2023-06-08 16:43:19.468198] End time: 2022-10-08 00:00:11
+[2023-06-08 16:44:20.788601] Inserting pool data...
+[2023-06-08 16:45:29.351209] Finished pool data...
+[2023-06-08 16:45:36.623716] Inserting swap data...
+[2023-06-08 16:45:36.946557] Finished swap data...
+[2023-06-08 16:45:43.399288] Inserting lp event data...
+[2023-06-08 16:45:43.463878] Finished lp event data...
+[2023-06-08 16:45:43.590590] Inserting snapshots data...
+[2023-06-08 16:45:43.615000] Finished snapshots data...
+[2023-06-08 16:45:43.615043] Finished pool Curve.fi DAI/USDC/USDT/sUSD.
+
+[2023-06-08 16:45:43.615053] Backfilling pool Curve.fi ETH/frxETH.
+[2023-06-08 16:45:43.615060] Pools Curve.fi ETH/frxETH was created after the end date. Skipping...
+
+[2023-06-08 16:45:43.615068] Backfilling pool Curve.fi Factory USD Metapool: Liquity.
+[2023-06-08 16:45:43.615075] Start time: 2022-09-30 23:55:11
+[2023-06-08 16:45:43.615085] End time: 2022-10-08 00:00:11
+[2023-06-08 16:46:44.427441] Inserting pool data...
+[2023-06-08 16:47:51.733033] Finished pool data...
+[2023-06-08 16:47:59.312414] Inserting swap data...
+[2023-06-08 16:47:59.616960] Finished swap data...
+[2023-06-08 16:48:05.964899] Inserting lp event data...
+[2023-06-08 16:48:05.995223] Finished lp event data...
+[2023-06-08 16:48:06.115800] Inserting snapshots data...
+[2023-06-08 16:48:06.131101] Finished snapshots data...
+[2023-06-08 16:48:06.131145] Finished pool Curve.fi Factory USD Metapool: Liquity.
+
+[2023-06-08 16:48:06.131157] Backfilling pool Curve.fi Factory USD Metapool: Binance USD.
+[2023-06-08 16:48:06.131164] Start time: 2022-09-30 23:55:11
+[2023-06-08 16:48:06.131175] End time: 2022-10-08 00:00:11
+[2023-06-08 16:49:08.257380] Inserting pool data...
+[2023-06-08 16:50:15.375826] Finished pool data...
+[2023-06-08 16:50:21.826369] Inserting swap data...
+[2023-06-08 16:50:21.879497] Finished swap data...
+[2023-06-08 16:50:28.447633] Inserting lp event data...
+[2023-06-08 16:50:28.467973] Finished lp event data...
+[2023-06-08 16:50:28.588608] Inserting snapshots data...
+[2023-06-08 16:50:28.603131] Finished snapshots data...
+[2023-06-08 16:50:28.603187] Finished pool Curve.fi Factory USD Metapool: Binance USD.
+
+[2023-06-08 16:50:28.603203] Backfilling pool Curve.fi Factory Plain Pool: stETH concentrated.
+[2023-06-08 16:50:28.603215] Start time: 2022-09-30 23:55:11
+[2023-06-08 16:50:28.603232] End time: 2022-10-08 00:00:11
+[2023-06-08 16:51:30.349545] Inserting pool data...
+[2023-06-08 16:52:36.149397] Finished pool data...
+[2023-06-08 16:52:42.595069] Inserting swap data...
+[2023-06-08 16:52:42.683224] Finished swap data...
+[2023-06-08 16:52:49.531318] Inserting lp event data...
+[2023-06-08 16:52:49.541608] Finished lp event data...
+[2023-06-08 16:52:49.739933] Inserting snapshots data...
+[2023-06-08 16:52:49.755956] Finished snapshots data...
+[2023-06-08 16:52:49.755993] Finished pool Curve.fi Factory Plain Pool: stETH concentrated.
+
+[2023-06-08 16:52:49.756002] Backfilling pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+[2023-06-08 16:52:49.756010] Start time: 2022-09-30 23:55:11
+[2023-06-08 16:52:49.756020] End time: 2022-10-08 00:00:11
+[2023-06-08 16:53:50.841846] Inserting pool data...
+[2023-06-08 16:54:57.508255] Finished pool data...
+[2023-06-08 16:55:04.665715] Inserting swap data...
+[2023-06-08 16:55:04.700398] Finished swap data...
+[2023-06-08 17:00:13.106944] Inserting lp event data...
+[2023-06-08 17:00:13.112761] Finished lp event data...
+[2023-06-08 17:00:16.863739] Inserting snapshots data...
+[2023-06-08 17:00:16.880781] Finished snapshots data...
+[2023-06-08 17:00:16.880824] Finished pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+
+[2023-06-08 17:00:16.880836] Backfilling pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+[2023-06-08 17:00:16.880847] Pools Curve.fi Factory Plain Pool: cvxCrv/Crv was created after the end date. Skipping...
+
+[2023-06-08 17:00:16.880870] Backfilling token LUSD OHLCV using chainlink.
+Found the closest round: 18446744073709557350, at 2022-09-30 23:38:59.
+Number of iterations: 14
+[2023-06-08 17:00:36.845303] Inserting OHLCV.
+[2023-06-08 17:00:37.048900] Backfilling token FRAX OHLCV using chainlink.
+Found the closest round: 18446744073709557339, at 2022-09-30 23:09:35.
+Number of iterations: 13
+[2023-06-08 17:00:55.885971] Inserting OHLCV.
+[2023-06-08 17:00:56.085944] Backfilling token MIM OHLCV using ccxt.
+Using Bitfinex for MIM/USD.
+
+[2023-06-08 17:01:02.195975] Inserting OHLCV.
+[2023-06-08 17:01:04.835284] Backfilling token USDC OHLCV using ccxt.
+Using Binance US for USDC/USD.
+
+[2023-06-08 17:01:07.339551] Inserting OHLCV.
+[2023-06-08 17:01:16.597095] Backfilling token stETH OHLCV using chainlink.
+Found the closest round: 18446744073709563091, at 2022-09-30 23:08:23.
+Number of iterations: 14
+[2023-06-08 17:01:36.786006] Inserting OHLCV.
+[2023-06-08 17:01:36.979810] Backfilling token cbETH OHLCV using ccxt.
+Failed to fetch CBETH/USD using Coinbase Pro: coinbasepro GET https://api.pro.coinbase.com/currencies 403 Forbidden <!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Just a moment...</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="/cdn-cgi/styles/challenges.css" rel="stylesheet">
+    
+
+</head>
+<body class="no-js">
+    <div class="main-wrapper" role="main">
+    <div class="main-content">
+        <noscript>
+            <div id="challenge-error-title">
+                <div class="h2">
+                    <span class="icon-wrapper">
+                        <div class="heading-icon warning-icon"></div>
+                    </span>
+                    <span id="challenge-error-text">
+                        Enable JavaScript and cookies to continue
+                    </span>
+                </div>
+            </div>
+        </noscript>
+        <div id="trk_jschal_js" style="display:none;background-image:url('/cdn-cgi/images/trace/managed/nojs/transparent.gif?ray=7d42b2a29e048cee')"></div>
+        <form id="challenge-form" action="/currencies?__cf_chl_f_tk=K_xQlSXu0jIZ24NUwoJ4aGFQ_6DxIHzvK21WKJLLFT0-1686243697-0-gaNycGzNA3s" method="POST" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="md" value="1zQ91WwLWnpdvgmppWGe8woAZSQbN0xBbEoE4QFvtyg-1686243697-0-AWCtNKTBHq1L3Qy6kBUWQIQb8AqKLmJGYF3Sq3L0QSFiZKfS4gFVxDEBm9d9RfHzaIu1x4iUfE7fdyEWwTYekKN8xIThXtUxIF5moFoz5TT0wX3tGYbzqODunXY9FRcdZ999JLQIdkKH5tGtGxLM8_zPaegi5UJa6aJoiaYABU8CwR3UWyfTkILgD1A0H3yZzERX0bV1n6ceeAI4ghzqxefKfNVgF8le8iaCqGhdmeCdUwEjgLXR_g9llbbbt3FE_e1MdyMYFgDRdi7qmxCaCeQBNkLdpr8GL00Cq3RgNtD_on8n0JvGvthFui8Kl1VjH2ETuqz7K7Mk-WGAotQC8cgfX9IAxWfC9rquN-mXCOrVdO2YELMbwZfF30OlHBNdQaJ9VZDDyPxY43Cy9B3YLdLtDuF9Pb6xxxSSldNz2frwGkwoLJDLA-7rgMSg5odK_ALbLY7UyfP_9dYzWbg1L5ZPcMNL6f0Vs9C34cTgxPG-vmEY46uKojhXj94Kw5ziBqGWV5eMLPhf4jJGNB-LxFbYAQGNI7gAKDUBDfSaFq84zsdnJeU35u3ZGKwpo-u2vDSoaQB4SqOkkbomhtY6UY5GvXiWMrZOa8s9yw5HTkCkKTBX9vbHax-ilW-iGcSCJ1s7UWDs97krtaeF716TY8r9YTEnXb7EmmA_nQVXrOsodvcE2SBG8hiFK0t2MXeHpfM9VhhGGws9f91jIX1reKwbyZq0c-T6bTrvtTPr0Gz6SbE6HT0HBSrJMAbysTrIiCYB0PmJ-_Uoemm7X9mt0KhagM-xniRyRLb-hZVpoZQoey0cLQI_SDZqmhJ6JPJnog">
+        </form>
+    </div>
+</div>
+<script>
+    (function(){
+        window._cf_chl_opt={
+            cvId: '2',
+            cZone: 'api.pro.coinbase.com',
+            cType: 'managed',
+            cNounce: '11348',
+            cRay: '7d42b2a29e048cee',
+            cHash: '04726d1be985d2d',
+            cUPMDTk: "\/currencies?__cf_chl_tk=K_xQlSXu0jIZ24NUwoJ4aGFQ_6DxIHzvK21WKJLLFT0-1686243697-0-gaNycGzNA3s",
+            cFPWv: 'b',
+            cTTimeMs: '1000',
+            cMTimeMs: '0',
+            cTplV: 5,
+            cTplB: 'cf',
+            cK: "",
+            cRq: {
+                ru: 'aHR0cHM6Ly9hcGkucHJvLmNvaW5iYXNlLmNvbS9jdXJyZW5jaWVz',
+                ra: 'TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzYyLjAuMzIwMi45NCBTYWZhcmkvNTM3LjM2',
+                rm: 'R0VU',
+                d: 'm/ALri3NkKXVT8OR8IunVFGNrgU6AbiduJBwDcF0K6LhSewclhZteFsTOzrqs23vEg1801pshUxD/kI2+IdZe9BJ7XmsEKgnT54JUZISaWfLtxbh2lhSy7WzhoET5F4yKcKMGFyCLUW0FEJwhKB5r1zbKyYXD7JGLBZIJubBcIu4br72+9XOo8zBvrcwrQgYMQANB57AU4rmzRpK6Jo7hU70q4Y/rS0zDJfUhPxUUQKEr4wZZLZ6TcqwMutVzvXjvBwlpGtj/6IW616ANE/ug+TQXBnFFycX9pl0fpkRqaD02hyBJd7vuvYHTViPw0gISITn0bFNzLavJXyrYH7uqRDMkzS36r+mByjege6zYl1qg82VFtUB5swpuVuXwc9rYIH++ZN8qcem1eOHXLzVPf0aZS+ZWEIY9eRLOQJfshb/hpeikc5NqlcZOEZDS8S4Ol3Azjkg121O76jvWtklExbTptP4jQHSRLY7hc2k6xzg5oRM2O1tb7ONrOxKPhyK/TQVz0p88Tf7fWvucQgnyRxL00SyQaR2nf0OL/nmuQ9aBtuHvLznFlUox2dDXgcTmJR7ZEts5BozPIBosN3bx+hQ91QrA7a+k5DaiT41WnT+X7JDYlhxvsID8XJ59fYhxLz5AjlX7b/BwiBOBxoeTw==',
+                t: 'MTY4NjI0MzY5Ny4wODEwMDA=',
+                cT: Math.floor(Date.now() / 1000),
+                m: '/+R6Abz7cSjycCCGakZvMr0xqO7NcdtqgOXMu11MTck=',
+                i1: 'zREuzFhuhTeiWXh+fuuRfA==',
+                i2: '/JEYYRj9aa9ogisAFa4rEg==',
+                zh: '53pGTU2M7ycEQ0W5+riJy/VVyOh6uV/vIWNbMSgY3x0=',
+                uh: 'HlsqEiRm7hA4vBudKfedDdiKV7AYLr/ptA/qwRbKtYM=',
+                hh: 'QDuq4UYF95v3EoK3jiqDEp60C2O3BFKpFVg+zX9GV0E=',
+            }
+        };
+        var trkjs = document.createElement('img');
+        trkjs.setAttribute('src', '/cdn-cgi/images/trace/managed/js/transparent.gif?ray=7d42b2a29e048cee');
+        trkjs.setAttribute('alt', '');
+        trkjs.setAttribute('style', 'display: none');
+        document.body.appendChild(trkjs);
+        var cpo = document.createElement('script');
+        cpo.src = '/cdn-cgi/challenge-platform/h/b/orchestrate/managed/v1?ray=7d42b2a29e048cee';
+        window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;
+        window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;
+        if (window.history && window.history.replaceState) {
+            var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;
+            history.replaceState(null, null, "\/currencies?__cf_chl_rt_tk=K_xQlSXu0jIZ24NUwoJ4aGFQ_6DxIHzvK21WKJLLFT0-1686243697-0-gaNycGzNA3s" + window._cf_chl_opt.cOgUHash);
+            cpo.onload = function() {
+                history.replaceState(null, null, ogU);
+            };
+        }
+        document.getElementsByTagName('head')[0].appendChild(cpo);
+    }());
+</script>
+
+
+</body>
+</html>.
+Failed to fetch CBETH/USD using Binance US: binanceus does not have market symbol CBETH/USD.
+Failed to fetch CBETH/USD using Bitfinex: bitfinex2 does not have market symbol CBETH/USD.
+Failed to fetch CBETH/USD using Coinbase Pro: coinbasepro GET https://api.pro.coinbase.com/currencies 403 Forbidden <!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Just a moment...</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="/cdn-cgi/styles/challenges.css" rel="stylesheet">
+    
+
+</head>
+<body class="no-js">
+    <div class="main-wrapper" role="main">
+    <div class="main-content">
+        <noscript>
+            <div id="challenge-error-title">
+                <div class="h2">
+                    <span class="icon-wrapper">
+                        <div class="heading-icon warning-icon"></div>
+                    </span>
+                    <span id="challenge-error-text">
+                        Enable JavaScript and cookies to continue
+                    </span>
+                </div>
+            </div>
+        </noscript>
+        <div id="trk_jschal_js" style="display:none;background-image:url('/cdn-cgi/images/trace/managed/nojs/transparent.gif?ray=7d42b2b3b867c44d')"></div>
+        <form id="challenge-form" action="/currencies?__cf_chl_f_tk=0xEFj5Dld8WmfdGoH.5gRi6NvfucgwR1JgqL3Ls1X.A-1686243699-0-gaNycGzNA3s" method="POST" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="md" value="SpIiO.B80O4Xl1JBLlOsePlOWD.oORDOb6gg3iUCf8o-1686243699-0-AY38yDeZsAVt4Ft2E_o-cEkKZ7ASDwW6-UmHPWyMvqhk-93lymyhy2GpIsNka8UkFfcBNIZP9nOaKRk85Lk1e0J_N5F7j55mEvSGAE8-ZYXcc-Ewxvdi3LSk8BfkRpUUYZPPAnw0NDfsN_hjU9YBC9xeah9UxCMa1rZXrXxD7KsqXYwCBHM30LG6Lz1yEKPM8m1tqz5WaRaKjEMEBUIYnViEW_wIB_pkNdXNyZ4KILcwCTf5mqawh9gtKDo2m2Vrwp147lX22mRZUOJmBAcb9MYhlmUUDa4T0lkQZjrTOguzr4Z9qDx4lZN6e8-z2meKvBwjx0yfVslSsJO_rWWBtnygBj0NN_h1Bn1d5r-V7okdNPdu2LlXBt-wGuQbYdArjfzW666cgin2dfX8TthbgkF2apw1AiJY3pcAknDebDVp7AyrhIDjy2PY2UhrhJpW1yqtEqFO2nK2WZtAjJu2lkWqLc9eJLkb9aLs4GFC_s55Z4NFD_IlkNmwbxcmJehCozs7tM4cNV_H-C6GfQibG1NyXpMkAQdRs6nWKeUibADC6dNzJO_pU3RNtLRtrhG8gdq0QjlIQ0zWmtQ3JermZniMOAIJ4sLww4QxJB6YiHV4I2trUqrhxEdCOrKNsl0Cc5ODkYwBo3uCKydgd9_4XwEmJzzL71Efg7HOB6muCa6GzqTB8a8cwe25KD_3sQN27V2KByFfsqkNXHrAHgYTXX_i1pxAnbbniW_WThnNPb8wiRQWNZTf1QACqOOATAXnpSFw1YFgQmiYZYzKZNKG6eKe-TA97wTCbL2t3U8qVic6EE3-8ifyCjtpeuQWQRnXPA">
+        </form>
+    </div>
+</div>
+<script>
+    (function(){
+        window._cf_chl_opt={
+            cvId: '2',
+            cZone: 'api.pro.coinbase.com',
+            cType: 'managed',
+            cNounce: '45593',
+            cRay: '7d42b2b3b867c44d',
+            cHash: '828de4172b3b084',
+            cUPMDTk: "\/currencies?__cf_chl_tk=0xEFj5Dld8WmfdGoH.5gRi6NvfucgwR1JgqL3Ls1X.A-1686243699-0-gaNycGzNA3s",
+            cFPWv: 'b',
+            cTTimeMs: '1000',
+            cMTimeMs: '0',
+            cTplV: 5,
+            cTplB: 'cf',
+            cK: "",
+            cRq: {
+                ru: 'aHR0cHM6Ly9hcGkucHJvLmNvaW5iYXNlLmNvbS9jdXJyZW5jaWVz',
+                ra: 'TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzYyLjAuMzIwMi45NCBTYWZhcmkvNTM3LjM2',
+                rm: 'R0VU',
+                d: 'iER07R9MPS6UBS70/1lLPEaWY0BpdEMcTCjLayfwlaYN2x9lUJa5+SndDxyOmrrbimwxdJIrVHxt1wv0oTJBc85u7yGjwF+Un7XWmtQlDjhvVuaVQHS0wL/TiuRvFrvoqZ76jCx4AHNV3or+OoLpBkPek2sfKyMQ/hCOA+WuVUK1b1Z4vyYslTq8LWRcShu2usHRDul4cqZSPORGfVhgPDTqq25nu7/xKvOf28XBWWlfBXtBRthwYYGXPgbs/asa3T1NecxrVgeEuX72M12mZoEAJp9ll4djslPkEJHcrjrSwhx5qCaOmL2+Rpnb3cZNzNbTBZkWbx4Onta5IM0rjQjTOsP7We3H4zqUsljitusvymnnsRhanImYjvla8200iDfXHGyPD2H4FYbxfvBRQzDHWxrnhlfs9yYc2NqS78it1//dUX0EvcCvsdg3+a3md80KrKCq5iN5u3a45vXg1LVP2zRP3/5ujIGj/OjjinHbLcgLyq3ThrMPzxs1g7FzCzRpz1zzrp7rOVyvxO6KB29NslDXnmPVvVieb2crroitf8rCAAUjJGN1KFkNd9mDQt4Y4dI4LEtxxAwMKv9ihyzhVy0N+BhKPTN42M+VgtimRArCM9i+t6sMMWDE1SLYJQdBGU3Pu1TmgbvoleD5Dw==',
+                t: 'MTY4NjI0MzY5OS43OTMwMDA=',
+                cT: Math.floor(Date.now() / 1000),
+                m: 'zuM9sLxLIljKQgPXeYcxpRfYIOK3zfEdeGjTAts/j8I=',
+                i1: 'DHSN/FpXQfGJ5xZ96CHmuw==',
+                i2: '0dyHSzDkTO2vvhHP7T3+xg==',
+                zh: '53pGTU2M7ycEQ0W5+riJy/VVyOh6uV/vIWNbMSgY3x0=',
+                uh: 'HlsqEiRm7hA4vBudKfedDdiKV7AYLr/ptA/qwRbKtYM=',
+                hh: 'QDuq4UYF95v3EoK3jiqDEp60C2O3BFKpFVg+zX9GV0E=',
+            }
+        };
+        var trkjs = document.createElement('img');
+        trkjs.setAttribute('src', '/cdn-cgi/images/trace/managed/js/transparent.gif?ray=7d42b2b3b867c44d');
+        trkjs.setAttribute('alt', '');
+        trkjs.setAttribute('style', 'display: none');
+        document.body.appendChild(trkjs);
+        var cpo = document.createElement('script');
+        cpo.src = '/cdn-cgi/challenge-platform/h/b/orchestrate/managed/v1?ray=7d42b2b3b867c44d';
+        window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;
+        window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;
+        if (window.history && window.history.replaceState) {
+            var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;
+            history.replaceState(null, null, "\/currencies?__cf_chl_rt_tk=0xEFj5Dld8WmfdGoH.5gRi6NvfucgwR1JgqL3Ls1X.A-1686243699-0-gaNycGzNA3s" + window._cf_chl_opt.cOgUHash);
+            cpo.onload = function() {
+                history.replaceState(null, null, ogU);
+            };
+        }
+        document.getElementsByTagName('head')[0].appendChild(cpo);
+    }());
+</script>
+
+
+</body>
+</html>.
+Failed to fetch CBETH/USD using Binance US: binanceus does not have market symbol CBETH/USD.
+Failed to fetch CBETH/USD using Bitfinex: bitfinex2 does not have market symbol CBETH/USD.
+Failed to fetch CBETH/USD using Coinbase Pro: coinbasepro GET https://api.pro.coinbase.com/currencies 403 Forbidden <!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Just a moment...</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="/cdn-cgi/styles/challenges.css" rel="stylesheet">
+    
+
+</head>
+<body class="no-js">
+    <div class="main-wrapper" role="main">
+    <div class="main-content">
+        <noscript>
+            <div id="challenge-error-title">
+                <div class="h2">
+                    <span class="icon-wrapper">
+                        <div class="heading-icon warning-icon"></div>
+                    </span>
+                    <span id="challenge-error-text">
+                        Enable JavaScript and cookies to continue
+                    </span>
+                </div>
+            </div>
+        </noscript>
+        <div id="trk_jschal_js" style="display:none;background-image:url('/cdn-cgi/images/trace/managed/nojs/transparent.gif?ray=7d42b2c64add8c65')"></div>
+        <form id="challenge-form" action="/currencies?__cf_chl_f_tk=BD992Pdix2YeLNGk_HQMSWOzYeBYlw5.OITUgI83y4Q-1686243702-0-gaNycGzNA3s" method="POST" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="md" value="sZxDCvKS7I4JVuqNaNFERgUoKfkU7ZeCSr0tn3c5Ibw-1686243702-0-AY2GiTPc1lUEdXq2b2uhYEkkn3caoi97iESBvY90FEdo05KQPIDuC1VKiZy1MwTgERuQzvpsUvWTVbsTbiigarFpER4tvMWSUuSGyPjU0CBRFbLVJCjA-9X2nkoRncEVR0hsJ8OY4NE22li6wWQyDt89fjnv-eeHCWDFUl2vV52lEwQfoKXdDpWnbBiBSuKv7cE7-9SkGzEPkMjffs6LUEEmqaw0hAkGyDhwy9rYGYLBUoxYzAC_SadyqBxGfRDEMYYi8VzNjqn80szzCZ09xS5LZjwo0cZ_bLdpoEMlXILCmpkECtx7H3TngaCccYghK82t8td67-hgDkswG632XveiM6ZTDaJED3Vg4wIgv3pz8kNpz7MB3gtRsQnMDLQ92UvSqbXMxyHUmltFKN1ipd_bSOF-rrDOrEJ9CVNZjeQCy1F_7Byhwi8b40Y-dI4pAb2JiEgQPZ9_F4vyRT7wm4dyI0zVRC353hhNMp7CKqRtciPndS24T8sLe_sX-mjDn7st6i82nzSR8Es4kxLKmcOEjeb_JzmotUr1wT4e1xGp1-tNHUAvB8EfE7JdkSmcvsnNgm3pdIy_7nbmV7Pkau7YHCDspRy8DH_OzCaLSqH3-IJddlrjudp9y7f_qUXXt8Kucq2aaEQu7ddMs_FhdHRf2Pub0fljuW7m88ep5Q3bRYPa7DWR3HdiblLjIT7eRffz0tFB8W9cngPeKkWZF4BVEuCepxj2Q7krg8OrgtfvIHslPnNLB6pZc-7AwfhFyctvw9jpntZTAfVIz1Q2xuwCiKutDeabLLVz7gEIii0OK2tkDf9NMHnVgJ_-1pcIIQ">
+        </form>
+    </div>
+</div>
+<script>
+    (function(){
+        window._cf_chl_opt={
+            cvId: '2',
+            cZone: 'api.pro.coinbase.com',
+            cType: 'managed',
+            cNounce: '53113',
+            cRay: '7d42b2c64add8c65',
+            cHash: '9277a59bb2564a3',
+            cUPMDTk: "\/currencies?__cf_chl_tk=BD992Pdix2YeLNGk_HQMSWOzYeBYlw5.OITUgI83y4Q-1686243702-0-gaNycGzNA3s",
+            cFPWv: 'b',
+            cTTimeMs: '1000',
+            cMTimeMs: '0',
+            cTplV: 5,
+            cTplB: 'cf',
+            cK: "",
+            cRq: {
+                ru: 'aHR0cHM6Ly9hcGkucHJvLmNvaW5iYXNlLmNvbS9jdXJyZW5jaWVz',
+                ra: 'TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzYyLjAuMzIwMi45NCBTYWZhcmkvNTM3LjM2',
+                rm: 'R0VU',
+                d: 'GA73f9r/5bRSMWK1vFpgt9vurli0rI1NFLut5DsopGXJk3kknk7YUINNtMrZ7xX7rSvpPAf6Z90cgkmTcPBw8FeaStTa2N7yMV4ThKu0LdMQEy7jwmBPFNe2I6GsESwUgsSEmudxNxemAYBpaTfL25+/8UQeskiEpYvh5elHvQXow9jDSS6iEg8/bYgReewFPEKD54v9l/DyMzshfPxoaTiOeVRsYLr1HFxfNiuyfp3DW7xgJvw/eXWBxdfqTn3Ybc08QgMj53Wta33DK/TrlKK8h5ra4eWl3Dji8oHjQ/GurttFhlpR+7V1UUYqK2J0c4xyCS0FrRpDUEltnOyzJoOx9JcwJMx/PRmvvrEMNhljwphIw16z8n+ob2ZVANtTTMZ0yANpOUMXqjHLJqNhbagHVs8+l5G2r1lwsnyORelkwTyoJtXkEWb507WEi+y2zlX+0POTZYyWQT9c3QxfrL/c3bGrxdX/JndE6lR3U08PNIejZ1xq4QFS1iZhtXiAVzrxP4OVplk+jh3cM16ElvYAfuEQwSL+QSX3xOKJrnHK0zNTiE817iA77xAKbWGQ1Nu59emOFLbgFaLaJxNN9MgzrLdKoe9DA2DZXVzV7qi68BR8w9iXUmBKcKnluvs9P9oT4+HpUHgFquC54cJydQ==',
+                t: 'MTY4NjI0MzcwMi43NzAwMDA=',
+                cT: Math.floor(Date.now() / 1000),
+                m: '52VAZi+TxANrHuG0nYuCI86P4nLm2/dBE/gnprheB5c=',
+                i1: 'imrO3lLCM6L9zQPov4Xzww==',
+                i2: '2cmq7vgVuhft/Z+caq3ExQ==',
+                zh: '53pGTU2M7ycEQ0W5+riJy/VVyOh6uV/vIWNbMSgY3x0=',
+                uh: 'HlsqEiRm7hA4vBudKfedDdiKV7AYLr/ptA/qwRbKtYM=',
+                hh: 'QDuq4UYF95v3EoK3jiqDEp60C2O3BFKpFVg+zX9GV0E=',
+            }
+        };
+        var trkjs = document.createElement('img');
+        trkjs.setAttribute('src', '/cdn-cgi/images/trace/managed/js/transparent.gif?ray=7d42b2c64add8c65');
+        trkjs.setAttribute('alt', '');
+        trkjs.setAttribute('style', 'display: none');
+        document.body.appendChild(trkjs);
+        var cpo = document.createElement('script');
+        cpo.src = '/cdn-cgi/challenge-platform/h/b/orchestrate/managed/v1?ray=7d42b2c64add8c65';
+        window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;
+        window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;
+        if (window.history && window.history.replaceState) {
+            var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;
+            history.replaceState(null, null, "\/currencies?__cf_chl_rt_tk=BD992Pdix2YeLNGk_HQMSWOzYeBYlw5.OITUgI83y4Q-1686243702-0-gaNycGzNA3s" + window._cf_chl_opt.cOgUHash);
+            cpo.onload = function() {
+                history.replaceState(null, null, ogU);
+            };
+        }
+        document.getElementsByTagName('head')[0].appendChild(cpo);
+    }());
+</script>
+
+
+</body>
+</html>.
+Failed to fetch CBETH/USD using Binance US: binanceus does not have market symbol CBETH/USD.
+Failed to fetch CBETH/USD using Bitfinex: bitfinex2 does not have market symbol CBETH/USD.
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/tenacity/__init__.py", line 382, in __call__
+    result = fn(*args, **kwargs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/datafetcher.py", line 340, in get_ohlcv
+    data = asyncio.run(self.get_ohlcv_async(start_timestamp, end_timestamp, symbol, limit, timeframe, default_exchange=default_exchange))
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/nest_asyncio.py", line 35, in run
+    return loop.run_until_complete(task)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/nest_asyncio.py", line 90, in run_until_complete
+    return f.result()
+  File "/usr/lib/python3.10/asyncio/futures.py", line 201, in result
+    raise self._exception.with_traceback(self._exception_tb)
+  File "/usr/lib/python3.10/asyncio/tasks.py", line 232, in __step
+    result = coro.send(None)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/datafetcher.py", line 324, in get_ohlcv_async
+    raise Exception(f"Couldn't fetch OHLCV for {symbol} from any of {self.exchanges}.")
+Exception: Couldn't fetch OHLCV for CBETH/USD from any of ['binanceus', 'coinbasepro', 'bitfinex2'].
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/backfill/backfill_raw_data.py", line 121, in main
+    token_data = datafetcher.get_ohlcv(token_start_ts, token_end_ts, token, default_exchange=source)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/tenacity/__init__.py", line 289, in wrapped_f
+    return self(f, *args, **kw)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/tenacity/__init__.py", line 379, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/tenacity/__init__.py", line 326, in iter
+    raise retry_exc from fut.exception()
+tenacity.RetryError: RetryError[<Future at 0x7f86a25cf790 state=finished raised Exception>]
+
+[2023-06-08 17:01:45.360147] An error occurred during raw database backfilling: None
+

@@ -1,0 +1,34 @@
+
+[2023-06-08 19:04:56.927067] Processing metrics...
+
+
+[2023-06-08 19:04:57.008497] Processing pool metrics.
+
+[2023-06-08 19:04:57.008540] Processing pool Curve.fi ETH/stETH.
+[2023-06-08 19:04:57.008550] Start time: 2022-05-30 23:55:00
+[2023-06-08 19:04:57.008560] End time: 2022-06-30 00:00:00
+[2023-06-08 19:05:02.293451] Inserting metrics.
+[2023-06-08 19:08:33.137244] Finished processing pool Curve.fi ETH/stETH.
+
+[2023-06-08 19:08:33.137343] Processing pool Curve.fi DAI/USDC/USDT.
+[2023-06-08 19:08:33.137355] Start time: 2022-05-30 23:55:00
+[2023-06-08 19:08:33.137368] End time: 2022-06-30 00:00:00
+[2023-06-08 19:08:39.520388] Inserting metrics.
+[2023-06-08 19:13:19.777610] Finished processing pool Curve.fi DAI/USDC/USDT.
+
+[2023-06-08 19:13:19.777828] Processing pool Curve.fi FRAX/USDC.
+[2023-06-08 19:13:19.777843] Pools Curve.fi FRAX/USDC was created after the end date. Skipping...
+
+[2023-06-08 19:13:19.777851] Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+[2023-06-08 19:13:19.777859] Pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool, UST no longer indexed after 1653667380. Skipping...
+
+[2023-06-08 19:13:19.777867] Processing pool Curve.fi USDN/3Crv.
+[2023-06-08 19:13:19.777875] Start time: 2022-05-30 23:55:00
+[2023-06-08 19:13:19.777886] End time: 2022-06-30 00:00:00
+[2023-06-08 19:13:25.759713] Inserting metrics.
+[2023-06-08 19:18:29.774484] Finished processing pool Curve.fi USDN/3Crv.
+
+[2023-06-08 19:18:29.774606] Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+[2023-06-08 19:18:29.774630] Start time: 2022-05-30 23:55:00
+[2023-06-08 19:18:29.774646] End time: 2022-06-30 00:00:00
+[2023-06-08 19:18:37.152899] Inserting metrics.

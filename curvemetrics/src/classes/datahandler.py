@@ -266,14 +266,11 @@ class DataHandler():
         if not len(results):
             return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
-
         tokens = self.pool_metadata[pool_id]['inputTokens']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
-
         df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: np.array(x, dtype=float))
         df['inputTokenBalances'] = (df['inputTokenBalances'].tolist() / 10**decimals).tolist()
         df['outputTokenSupply'] = df['outputTokenSupply'].astype(float)
-
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
     
@@ -337,7 +334,6 @@ class DataHandler():
             return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
-        df = df.sort_index()
         df = df.loc[~(df['virtualPrice']==0)].dropna() # Drop rows where virtualPrice is 0
         return df
 
@@ -403,15 +399,8 @@ class DataHandler():
             query = query.filter(PoolMetrics.metric == metric)
         query = query.order_by(PoolMetrics.timestamp.asc())
         results = query.all()
-        return results
-        if metric in ['netSwapFlow', 'netLPFlow', 'sharkFlow']:
-            query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric LIKE ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-            results = self._execute_query(query, params=[pool_id, '%'+metric, start, end])
-        else:
-            query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-            results = self._execute_query(query, params=[pool_id, metric, start, end])
         if not len(results):
-            return pd.DataFrame()
+            return pd.Series()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['value']
@@ -420,7 +409,7 @@ class DataHandler():
             series.replace(0, method='ffill', inplace=True)
         elif metric in ['netSwapFlow', 'netLPFlow', 'sharkFlow']:
             series.groupby(series.index).sum()            
-        if metric == 'lpSharePrice':
+        elif metric == 'lpSharePrice':
             series = series.ffill()
         return series
 
@@ -441,7 +430,7 @@ class DataHandler():
         query = query.order_by(TokenMetrics.timestamp.asc())
         results = query.all()
         if not len(results):
-            return pd.DataFrame()
+            return pd.Series()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['value']
@@ -466,12 +455,8 @@ class DataHandler():
         )
         query = query.order_by(Changepoints.timestamp.asc())
         results = query.all()
-        return results
-        results = self.query(Changepoints, pool_id, start, end, cols=['timestamp'], metric=metric)
-        query = f'SELECT timestamp FROM changepoints WHERE pool_id = ? AND model = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, model, metric, start, end])
         if not len(results):
-            return pd.DataFrame()
+            return pd.Series()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['timestamp']
@@ -482,11 +467,7 @@ class DataHandler():
         query = self.session.query(Takers)
         query = query.order_by(Takers.cumulativeMarkout.desc())
         results = query.all()
-        df = pd.DataFrame(results, columns=Takers.__table__.columns.keys())
-        return df
-        query = f'SELECT * FROM takers ORDER BY cumulativeMarkout DESC'
-        results = self._execute_query(query)
-        df = pd.DataFrame.from_dict(results)
+        df = pd.DataFrame.from_dict([row.as_dict() for row in results])
         df.set_index('buyer', inplace=True)
         return df
 
@@ -539,11 +520,18 @@ class DataHandler():
             X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
         return X
 
-    def get_fees(self, pool):
-        fees = self._execute_query('SELECT timestamp, fee, adminFee FROM snapshots WHERE pool_id = ?', params=[pool])
-        fees = pd.DataFrame(fees)
-        fees.sort_values('timestamp', inplace=True, ascending=True)
-        return fees
+    def get_fees(self, 
+                 pool_id: str,
+                 cols: List=['timestamp', 'fee', 'adminFee'],
+        ) -> pd.DataFrame:
+        query = self.session.query(*[getattr(Snapshots, col) for col in cols])
+        query = query.filter(
+            Snapshots.pool_id == pool_id,
+        )
+        query = query.order_by(Snapshots.timestamp.asc())
+        results = query.all()
+        df = pd.DataFrame.from_dict(results)
+        return df
 
     def get_curve_price(self, token, pool, start_ts, end_ts, numeraire) -> List:
         """

@@ -92,3 +92,39 @@ If there was an issue with the database, you can drop all the tables and vacuum 
 ```
 python3 -m curvemetrics.reset
 ```
+
+# Flask App
+
+Set up using nginx and supervisor in Ubuntu.
+
+The Flask App uses SQLAlchemy to query our Postgres database.
+
+Example query:
+
+```
+curl "http://172.104.8.91/pool_data?pool_id=0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7&start=1640995203&end=1641995203" > example.json
+```
+
+nginx setup
+```
+# curvemetrics config
+server {
+        listen 80;
+        server_name 172.104.8.91;
+        location / {
+                include proxy_params;
+                proxy_pass http://localhost:5000;
+        }
+}
+```
+
+supervisor setup
+```
+[program:curvemetrics]
+command=/root/curve-lp-metrics/venv/bin/python3 -m curvemetrics.app.app
+directory=/root/curve-lp-metrics
+user=root
+autostart=true
+autorestart=true
+redirect_stderr=true
+```

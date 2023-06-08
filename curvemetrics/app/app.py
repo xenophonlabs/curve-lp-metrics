@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
 import os
+from datetime import datetime, timedelta
 
 from flask import Flask, jsonify, request
 
@@ -116,7 +116,9 @@ def get_pool_metrics():
     cols = request.args.get('cols', ['timestamp', 'value'])
     datahandler = DataHandler()
     try:
-        return jsonify(datahandler.get_pool_metric(pool_id, metric, start, end, cols=cols).to_dict())
+        df = datahandler.get_pool_metric(pool_id, metric, start, end, cols=cols)
+        df.index = [int(datetime.timestamp(x)) for x in df.index]
+        return jsonify(df.to_dict())
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
@@ -131,7 +133,9 @@ def get_token_metrics():
     cols = request.args.get('cols', ['timestamp', 'value'])
     datahandler = DataHandler()
     try:
-        return jsonify(datahandler.get_token_metric(token_id, metric, start, end, cols=cols).to_dict())
+        df = datahandler.get_token_metric(token_id, metric, start, end, cols=cols)
+        df.index = [int(datetime.timestamp(x)) for x in df.index]
+        return jsonify(df.to_dict())
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
@@ -147,7 +151,9 @@ def get_changepoints():
     cols = request.args.get('cols', ['timestamp'])
     datahandler = DataHandler()
     try:
-        return jsonify(datahandler.get_changepoints(pool_id, model, metric, start, end, cols=cols).to_dict())
+        df = datahandler.get_changepoints(pool_id, model, metric, start, end, cols=cols)
+        df.index = [int(datetime.timestamp(x)) for x in df.index]
+        return jsonify(df.to_dict())
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
@@ -185,7 +191,9 @@ def get_pool_X():
     standardize = request.args.get('standardize', 'true').lower() == 'true'
     datahandler = DataHandler()
     try:
-        return jsonify(datahandler.get_pool_X(metric, pool_id, start, end, freq, normalize=normalize, standardize=standardize).to_dict())
+        df = datahandler.get_pool_X(metric, pool_id, start, end, freq, normalize=normalize, standardize=standardize)
+        df.index = [int(datetime.timestamp(x)) for x in df.index]
+        return jsonify(df.to_dict())
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
@@ -202,7 +210,9 @@ def get_token_X():
     standardize = request.args.get('standardize', 'true').lower() == 'true'
     datahandler = DataHandler()
     try:
-        return jsonify(datahandler.get_token_X(metric, token_id, start, end, freq, normalize=normalize, standardize=standardize).to_dict())
+        df = datahandler.get_token_X(metric, token_id, start, end, freq, normalize=normalize, standardize=standardize)
+        df.index = [int(datetime.timestamp(x)) for x in df.index]
+        return jsonify(df.to_dict())
     except Exception as e:
         return jsonify({"error": str(e)})
     finally:
