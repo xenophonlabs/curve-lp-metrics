@@ -38,8 +38,7 @@ async def main(start: str, end: str):
 
     try:
         # Fetch and insert pool data
-        # for pool in pool_metadata.keys():
-        for pool in ["0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"]:
+        for pool in pool_metadata.keys():
 
             print(f"[{datetime.now()}] Backfilling pool {pool_metadata[pool]['name']}.")
 
@@ -55,30 +54,29 @@ async def main(start: str, end: str):
             print(f"[{datetime.now()}] End time: {datetime.fromtimestamp(end_ts)}")
 
             pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
+            print(f"[{datetime.now()}] Inserting pool data...")
             datahandler.insert_pool_data(pool_data)
-
             print(f"[{datetime.now()}] Finished pool data...")
 
             swaps_data = datafetcher.get_swaps_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
+            print(f"[{datetime.now()}] Inserting swap data...")
             datahandler.insert_swaps_data(swaps_data)
-
             print(f"[{datetime.now()}] Finished swap data...")
             
             lp_data = datafetcher.get_lp_data(pool_start_block, end_block, pool, step_size=STEP_SIZE)
+            print(f"[{datetime.now()}] Inserting lp event data...")
             datahandler.insert_lp_data(lp_data)
-
             print(f"[{datetime.now()}] Finished lp event data...")
 
-            snapshots = datafetcher.get_snapshots(pool_start_ts, end_ts, pool, step_size=STEP_SIZE)
+            snapshots = datafetcher.get_snapshots(pool_start_ts, end_ts, pool, step_size=60*60*24)
+            print(f"[{datetime.now()}] Inserting snapshots data...")
             datahandler.insert_pool_snapshots(snapshots)
-
             print(f"[{datetime.now()}] Finished snapshots data...")
 
-            print(f"\n[{datetime.now()}] Finishes pool {pool_metadata[pool]['name']}.\n")
+            print(f"[{datetime.now()}] Finished pool {pool_metadata[pool]['name']}.\n")
 
         # Fetch and insert token data
-        # for token in token_metadata.keys():
-        for token in ['0x853d955acef822db058eb8505911ed77f175b99e', '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', '0x6b175474e89094c44da98b954eedeac495271d0f', '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', '0xdac17f958d2ee523a2206206994597c13d831ec7']:
+        for token in token_metadata.keys():
 
             token_start_ts, token_end_ts = start_ts, end_ts 
 
@@ -126,6 +124,7 @@ async def main(start: str, end: str):
             elif api == "curveswaps":
                 token_data = datahandler.get_curve_price(token, source, start_ts, end_ts, numeraire=datahandler.token_ids[numeraire])
 
+            print(f"[{datetime.now()}] Inserting OHLCV.")
             if token_data:
                 datahandler.insert_token_data(token_data)
             else:
@@ -146,3 +145,4 @@ if __name__ == "__main__":
     parser.add_argument('end', type=str, help='end date in format YYYY-MM-DD HH:MM:SS')
     args = parser.parse_args()
     asyncio.run(main(args.start, args.end))
+

@@ -1,29 +1,149 @@
 
-[2023-06-08 00:13:22.389571] Starting backfilling process.
+[2023-06-08 02:09:10.250753] Starting backfilling process.
 
-[2023-06-08 00:13:23.251439] Backfilling pool Curve.fi DAI/USDC/USDT.
-[2023-06-08 00:13:23.251501] Start time: 2022-01-01 00:00:03
-[2023-06-08 00:13:23.251512] End time: 2022-01-02 00:00:27
-[2023-06-08 00:13:39.940145] Finished pool data...
-[2023-06-08 00:13:40.887301] Finished swap data...
-[2023-06-08 00:13:42.305954] Finished lp event data...
-[2023-06-08 00:13:54.266386] Finished snapshots data...
+[2023-06-08 02:09:11.346853] Backfilling pool Curve.fi ETH/stETH.
+[2023-06-08 02:09:11.347066] Start time: 2022-01-01 00:00:03
+[2023-06-08 02:09:11.347206] End time: 2022-01-15 00:00:01
+[2023-06-08 02:12:43.822869] Finished pool data...
+[2023-06-08 02:12:56.017497] Finished swap data...
+[2023-06-08 02:13:08.185298] Finished lp event data...
+[2023-06-08 02:13:08.415024] Finished snapshots data...
 
-[2023-06-08 00:13:54.266447] Finishes pool Curve.fi DAI/USDC/USDT.
+[2023-06-08 02:13:08.415065] Finishes pool Curve.fi ETH/stETH.
 
-[2023-06-08 00:13:54.266462] Backfilling token FRAX OHLCV using chainlink.
+[2023-06-08 02:13:08.415075] Backfilling pool Curve.fi DAI/USDC/USDT.
+[2023-06-08 02:13:08.415082] Start time: 2022-01-01 00:00:03
+[2023-06-08 02:13:08.415093] End time: 2022-01-15 00:00:01
+[2023-06-08 02:18:40.956760] Finished pool data...
+[2023-06-08 02:18:53.160075] Finished swap data...
+[2023-06-08 02:19:09.186832] Finished lp event data...
+[2023-06-08 02:19:09.707220] Finished snapshots data...
+
+[2023-06-08 02:19:09.707260] Finishes pool Curve.fi DAI/USDC/USDT.
+
+[2023-06-08 02:19:09.707269] Backfilling pool Curve.fi FRAX/USDC.
+[2023-06-08 02:19:09.707276] Pools Curve.fi FRAX/USDC was created after the end date. Skipping...
+
+[2023-06-08 02:19:09.707283] Backfilling pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+[2023-06-08 02:19:09.707290] Start time: 2022-01-01 00:00:03
+[2023-06-08 02:19:09.707300] End time: 2022-01-15 00:00:01
+[2023-06-08 02:24:52.594887] Finished pool data...
+[2023-06-08 02:25:04.438696] Finished swap data...
+[2023-06-08 02:25:15.320832] Finished lp event data...
+[2023-06-08 02:25:15.447925] Finished snapshots data...
+
+[2023-06-08 02:25:15.447966] Finishes pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+
+[2023-06-08 02:25:15.447976] Backfilling pool Curve.fi USDN/3Crv.
+[2023-06-08 02:25:15.447984] Start time: 2022-01-01 00:00:03
+[2023-06-08 02:25:15.447994] End time: 2022-01-15 00:00:01
+[2023-06-08 02:30:50.579019] Finished pool data...
+[2023-06-08 02:31:02.337752] Finished swap data...
+[2023-06-08 02:31:13.069583] Finished lp event data...
+[2023-06-08 02:31:19.099538] Finished snapshots data...
+
+[2023-06-08 02:31:19.099573] Finishes pool Curve.fi USDN/3Crv.
+
+[2023-06-08 02:31:19.099582] Backfilling pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+[2023-06-08 02:31:19.099590] Start time: 2022-01-01 00:00:03
+[2023-06-08 02:31:19.099599] End time: 2022-01-15 00:00:01
+[2023-06-08 02:36:56.756349] Finished pool data...
+[2023-06-08 02:37:11.530668] Finished swap data...
+[2023-06-08 02:37:23.863734] Finished lp event data...
+[2023-06-08 02:37:24.071262] Finished snapshots data...
+
+[2023-06-08 02:37:24.071425] Finishes pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+[2023-06-08 02:37:24.071441] Backfilling pool Curve.fi DAI/USDC/USDT/sUSD.
+[2023-06-08 02:37:24.071449] Start time: 2022-01-01 00:00:03
+[2023-06-08 02:37:24.071459] End time: 2022-01-15 00:00:01
+[2023-06-08 02:42:59.404033] Finished pool data...
+[2023-06-08 02:43:13.628678] Finished swap data...
+[2023-06-08 02:43:59.974570] Finished lp event data...
+[2023-06-08 02:44:00.131073] Finished snapshots data...
+
+[2023-06-08 02:44:00.131130] Finishes pool Curve.fi DAI/USDC/USDT/sUSD.
+
+[2023-06-08 02:44:00.131141] Backfilling pool Curve.fi ETH/frxETH.
+[2023-06-08 02:44:00.131149] Pools Curve.fi ETH/frxETH was created after the end date. Skipping...
+
+[2023-06-08 02:44:00.131158] Backfilling pool Curve.fi Factory USD Metapool: Liquity.
+[2023-06-08 02:44:00.131165] Start time: 2022-01-01 00:00:03
+[2023-06-08 02:44:00.131176] End time: 2022-01-15 00:00:01
+[2023-06-08 02:50:03.841985] Finished pool data...
+[2023-06-08 02:50:18.156076] Finished swap data...
+[2023-06-08 02:50:29.527310] Finished lp event data...
+[2023-06-08 02:50:29.656620] Finished snapshots data...
+
+[2023-06-08 02:50:29.656660] Finishes pool Curve.fi Factory USD Metapool: Liquity.
+
+[2023-06-08 02:50:29.656669] Backfilling pool Curve.fi Factory USD Metapool: Binance USD.
+[2023-06-08 02:50:29.656678] Start time: 2022-01-01 00:00:03
+[2023-06-08 02:50:29.656688] End time: 2022-01-15 00:00:01
+[2023-06-08 02:55:59.719127] Finished pool data...
+[2023-06-08 02:56:13.231442] Finished swap data...
+[2023-06-08 02:56:24.651960] Finished lp event data...
+[2023-06-08 02:56:24.777906] Finished snapshots data...
+
+[2023-06-08 02:56:24.777945] Finishes pool Curve.fi Factory USD Metapool: Binance USD.
+
+[2023-06-08 02:56:24.777955] Backfilling pool Curve.fi Factory Plain Pool: stETH concentrated.
+[2023-06-08 02:56:24.777963] Pools Curve.fi Factory Plain Pool: stETH concentrated was created after the end date. Skipping...
+
+[2023-06-08 02:56:24.777970] Backfilling pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+[2023-06-08 02:56:24.777977] Pools Curve.fi Factory Crypto Pool: cbETH/ETH was created after the end date. Skipping...
+
+[2023-06-08 02:56:24.777983] Backfilling pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+[2023-06-08 02:56:24.777990] Pools Curve.fi Factory Plain Pool: cvxCrv/Crv was created after the end date. Skipping...
+
+[2023-06-08 02:56:24.778000] Backfilling token LUSD OHLCV using chainlink.
+Found the closest round: 18446744073709551832, at 2021-12-31 15:57:12.
+Number of iterations: 14
+[2023-06-08 02:56:40.026297] Backfilling token FRAX OHLCV using chainlink.
 Found the closest round: 18446744073709551839, at 2021-12-31 05:20:40.
 Number of iterations: 14
-[2023-06-08 00:14:09.065538] Backfilling token USDC OHLCV using ccxt.
+[2023-06-08 02:56:55.167038] Backfilling token MIM OHLCV using ccxt.
+Using Bitfinex for MIM/USD.
+
+[2023-06-08 02:57:03.625876] Backfilling token USDC OHLCV using ccxt.
 Using Binance US for USDC/USD.
 
-[2023-06-08 00:14:11.542584] Backfilling token DAI OHLCV using ccxt.
+[2023-06-08 02:57:22.040637] Backfilling token stETH OHLCV using chainlink.
+Found the closest round: 18446744073709555213, at 2021-12-31 23:54:44.
+Number of iterations: 14
+[2023-06-08 02:57:48.190235] cbETH only indexed from 1661444040 (2022 12:14:00 PM GMT-04:00 DST). Skipping...
+[2023-06-08 02:57:48.190291] Backfilling token ETH OHLCV using ccxt.
+Using Binance US for ETH/USD.
+
+[2023-06-08 02:58:06.589617] Backfilling token DAI OHLCV using ccxt.
 Using Binance US for DAI/USD.
 
-[2023-06-08 00:14:13.860241] Backfilling token USDC OHLCV using ccxt.
-Using Binance US for USDC/USD.
+[2023-06-08 02:58:25.330872] Backfilling token BUSD OHLCV using chainlink.
+Found the closest round: 18446744073709551884, at 2021-12-31 06:32:13.
+Number of iterations: 10
+[2023-06-08 02:58:36.370134] Backfilling token sUSD OHLCV using chainlink.
+Found the closest round: 18446744073709552279, at 2021-12-31 21:40:45.
+Number of iterations: 11
+[2023-06-08 02:58:49.380822] WETH assumed to be = ETH. Skipping...
 
-[2023-06-08 00:14:16.176958] Backfilling token USDT OHLCV using ccxt.
+[2023-06-08 02:58:49.380866] Backfilling token cvxCRV OHLCV using curveswaps.
+[2023-06-08 02:58:49.389454] No price data for token cvxCRV at this time.
+
+[2023-06-08 02:58:49.389516] Backfilling token USDT OHLCV using ccxt.
 Using Binance US for USDT/USD.
 
-[2023-06-08 00:14:18.507245] Done :)
+[2023-06-08 02:59:07.778685] Backfilling token USDN OHLCV using chainlink.
+Found the closest round: 76, at 2021-12-31 04:12:27.
+Number of iterations: 9
+[2023-06-08 02:59:17.814644] Backfilling token frxETH OHLCV using curveswaps.
+[2023-06-08 02:59:17.819338] No price data for token frxETH at this time.
+
+[2023-06-08 02:59:17.819380] Backfilling token UST OHLCV using ccxt.
+Using Coinbase Pro for UST/USD.
+
+[2023-06-08 02:59:43.765676] 3Crv uses pool virtual price. Skipping...
+
+[2023-06-08 02:59:43.765729] Backfilling token CRV OHLCV using ccxt.
+Using Binance US for CRV/USD.
+
+[2023-06-08 03:00:02.259242] Done :)

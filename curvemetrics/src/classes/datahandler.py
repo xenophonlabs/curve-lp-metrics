@@ -194,10 +194,6 @@ class DataHandler():
         df = pd.DataFrame([x for y in data for x in y])
         if len(df) == 0:
             return df
-        # for col in ['amountBought', 'amountSold', 'isUnderlying']:
-        #     df[col] = df[col].astype(float)
-        # for col in ['timestamp', 'block', 'gasLimit', 'gasUsed']:
-        #     df[col] = df[col].astype(int)
         df = df[['id', 'timestamp', 'tx', 'pool_id', 'amountBought', 'amountSold', 'tokenBought', 'tokenSold', 'buyer', 'gasLimit', 'gasUsed', 'isUnderlying', 'block_gte', 'block_lt', 'block']]
         return df
     
@@ -206,10 +202,6 @@ class DataHandler():
         df = pd.DataFrame([x for y in data for x in y])
         if len(df) == 0:
             return df
-        # for col in ['timestamp', 'block', 'removal']:
-        #     df[col] = df[col].astype(int)
-        # df['totalSupply'] = df['totalSupply'].astype(float)
-        # df['tokenAmounts'] = df['tokenAmounts'].apply(lambda x: json.dumps(list(map(int, x))))
         df = df[['id', 'block', 'liquidityProvider', 'removal', 'timestamp', 'tokenAmounts', 'totalSupply', 'tx', 'pool_id', 'block_gte', 'block_lt']]
         return df
 
@@ -234,14 +226,6 @@ class DataHandler():
 
     def format_pool_snapshots(data):
         df = pd.DataFrame.from_dict([x for y in data for x in y])
-        # for col in ['A', 'offPegFeeMultiplier', 'timestamp', 'virtualPrice', 'lastPricesTimestamp', 'block_gte', 'block_lt']:
-        #     df[col] = df[col].astype(int)
-        # for col in ['adminFee', 'fee', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'lpFeesUSD']:
-        #     df[col] = df[col].astype(float)
-        # for col in ['normalizedReserves', 'reserves']:
-        #     df[col] = df[col].apply(lambda x: json.dumps(list(map(int, x))))
-        # for col in ['reservesUSD']:
-        #     df[col] = df[col].apply(lambda x: json.dumps(list(map(float, x))))
         df = df[['id', 'A', 'adminFee', 'fee', 'timestamp', 'normalizedReserves', 'offPegFeeMultiplier', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'reservesUSD', 'lpFeesUSD', 'lastPricesTimestamp', 'lastPrices', 'pool_id', 'block_gte', 'block_lt']]
         return df
 
@@ -287,7 +271,9 @@ class DataHandler():
         tokens = self.pool_metadata[pool_id]['inputTokens']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
 
-        df['inputTokenBalances'] = (np.array(df['inputTokenBalances'].to_list()) / 10**decimals).tolist()
+        df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: np.array(x, dtype=float))
+        df['inputTokenBalances'] = (df['inputTokenBalances'].tolist() / 10**decimals).tolist()
+        df['outputTokenSupply'] = df['outputTokenSupply'].astype(float)
 
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
@@ -329,7 +315,8 @@ class DataHandler():
         df = pd.DataFrame.from_dict([row.as_dict() for row in results])
         tokens = self.pool_metadata[pool_id]['coins']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
-        # df['tokenAmounts'] = (np.array(df['tokenAmounts'].map(json.loads).to_list()) / 10**decimals).tolist()
+        df['tokenAmounts'] = df['tokenAmounts'].apply(lambda x: np.array(x, dtype=float))
+        df['tokenAmounts'] = (df['tokenAmounts'].tolist() / 10**decimals).tolist()
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
 

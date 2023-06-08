@@ -125,3 +125,20 @@ class BOCD():
     @property
     def best_results(self):
         return self.results[self.best_params]
+
+
+        num_cpus = cpu_count()
+        pools = pool_metadata.values().tolist()
+        n = len(pools)
+        if n <= num_cpus:
+            num_cpus = n
+        chunk_size = n // num_cpus
+        chunks = [pools[i:i + chunk_size] for i in range(0, n, chunk_size)]
+
+        print(f'[{datetime.now()}]Processing {len(chunks)} chunks of length {len(chunks[0])}; {cpu_count()} cpus.\n')
+
+        with Pool(processes=num_cpus) as pool:
+            pool.map(lambda args: run(pool, start_ts, end_ts), [(chunk, start_ts, end_ts) for chunk in chunks])
+
+        def run(pool, start_ts, end_ts):
+            pass

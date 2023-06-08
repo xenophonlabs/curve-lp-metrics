@@ -5,18 +5,17 @@ from .entity import Entity
 class PoolData(Entity):
     __tablename__ = 'pool_data'
     
-    id = Column(Integer, primary_key=True)
-    pool_id = Column(String, ForeignKey('pools.id'))
+    pool_id = Column(String, ForeignKey('pools.id'), primary_key=True)
     block = Column(Integer)
     totalValueLockedUSD = Column(Float)
     inputTokenBalances = Column(ARRAY(Numeric))
     inputTokenWeights = Column(ARRAY(DECIMAL))
-    timestamp = Column(Integer)
+    timestamp = Column(Integer, primary_key=True)
     outputTokenSupply = Column(Numeric)
     
     idx = Index('idx_pool_data_pool_id_timestamp', 'pool_id', 'timestamp')
 
-    def __init__(self, id, pool_id, block, totalValueLockedUSD, inputTokenBalances, inputTokenWeights, timestamp, outputTokenSupply):
+    def __init__(self, pool_id, block, totalValueLockedUSD, inputTokenBalances, inputTokenWeights, timestamp, outputTokenSupply):
                 
         super().__init__()
         

@@ -68,7 +68,7 @@ class MetricsProcessor:
                 self.net_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol']),
                 # self.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'])
             ])
-        
+
         metrics_df = pd.concat(metrics, axis=1)
         metrics_df = metrics_df.fillna(0)
         
@@ -104,7 +104,7 @@ class MetricsProcessor:
         return coef
 
     def gini(self, df) -> pd.Series:
-        metric = df['inputTokenBalances'].apply(self._gini).resample(self.freq).last().fillna(method='ffill')
+        metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
         metric.name = 'giniCoefficient'
         return metric
 
@@ -128,7 +128,7 @@ class MetricsProcessor:
         return entropy
 
     def shannons_entropy(self, df) -> pd.Series:
-        metric = df['inputTokenBalances'].apply(self._shannons_entropy).resample(self.freq).last().fillna(method='ffill')
+        metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._shannons_entropy)
         metric.name = 'shannonsEntropy'
         return metric
     
@@ -434,7 +434,7 @@ class MetricsProcessor:
         Computes the LP Share Price for the given pool and the changepoints.
         """
 
-        df = pool_data[['inputTokenBalances', 'outputTokenSupply']].resample('1min').last().fillna(method='ffill').dropna()
+        df = pool_data[['inputTokenBalances', 'outputTokenSupply']].resample(self.freq).last().fillna(method='ffill').dropna()
 
         tokens = self.pool_metadata[pool]['inputTokens']
 
