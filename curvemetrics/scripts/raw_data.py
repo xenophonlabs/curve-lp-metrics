@@ -5,13 +5,9 @@ import asyncio
 import os
 import json
 import traceback
-import logging
-
-from logging.handlers import RotatingFileHandler
 from datetime import datetime
-
-from ..src.classes.datafetcher import DataFetcher
-from ..src.classes.datahandler import DataHandler
+from curvemetrics.src.classes.datafetcher import DataFetcher
+from curvemetrics.src.classes.datahandler import DataHandler
 
 STEP_SIZE = 10 # NOTE: increasing this risks losing txs, 10 is probably safe
 
@@ -22,13 +18,6 @@ def load_config():
     return config
 
 config = load_config()
-
-handler = RotatingFileHandler('../../logs/raw_data.log', maxBytes=10**6, backupCount=5) # 1MB file size, keep last 5 files
-formatter = logging.Formatter('%(asctime)s - %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger(__file__)
-logger.setLevel(logging.INFO)
-logger.addHandler(handler)
 
 async def pools(start:int, end:int, start_block:int, end_block:int):
 
@@ -160,7 +149,10 @@ async def tokens(start:int, end:int):
         datahandler.close()
         await datafetcher.close()
 
-def main(start: int, end: int):
+def main(start: int, end: int, l):
+
+    global logger 
+    logger = l
 
     logger.info(f"\nStarting frontfilling process.\n")
 

@@ -1,18 +1,14 @@
 """
 Train hyperparameters for BOCD models. Write them to hyperparameters.json.
 """
-import os
-import json
 from datetime import datetime, timedelta
-import numpy as np
 import warnings
 import pandas as pd
-
-from ...src.classes.model import BOCD
-from ...src.classes.datahandler import DataHandler
-from ...src.classes.metricsprocessor import MetricsProcessor
-from ...src.detection.scorer import f_measure, early_weight
-from ...src.plotting.plot import bocd_plot_comp
+from curvemetrics.src.classes.model import BOCD
+from curvemetrics.src.classes.datahandler import DataHandler
+from curvemetrics.src.classes.metricsprocessor import MetricsProcessor
+from curvemetrics.src.detection.scorer import f_measure, early_weight
+from curvemetrics.src.plotting.plot import bocd_plot_comp
 
 # Suppress all runtime warnings - they pertain to large integers and divisions by 0 in tuning.
 warnings.filterwarnings("ignore")

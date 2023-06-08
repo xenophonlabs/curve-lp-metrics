@@ -3,7 +3,8 @@ import logging
 import pandas as pd
 from datetime import datetime, timedelta
 from logging.handlers import RotatingFileHandler
-from ..takers import main
+from curvemetrics.scripts.takers import main
+from curvemetrics.src.classes.logger import Logger
 
 WINDOW = timedelta(days=1)
 SLIDING_WINDOW = timedelta(days=1)
@@ -16,6 +17,8 @@ logger.setLevel(logging.INFO)
 logger.addHandler(handler)
 
 if __name__ == "__main__":
+    logger = Logger('./logs/backfill/takers.log')
+
     parser = argparse.ArgumentParser(description='Backfill pool and token metrics in SQL tables.')
     parser.add_argument('start', type=str, help='Start date in format YYYY-MM-DD HH:MM:SS')
     parser.add_argument('end', type=str, help='end date in format YYYY-MM-DD HH:MM:SS')
@@ -25,5 +28,5 @@ if __name__ == "__main__":
     end = datetime.timestamp(datetime.fromisoformat(args.end))
     takers = pd.DataFrame()
     while curr + WINDOW.total_seconds() + SLIDING_WINDOW.total_seconds() <= end:
-        takers = main(curr, WINDOW, SLIDING_WINDOW, takers=takers)
+        takers = main(curr, WINDOW, SLIDING_WINDOW, logger, takers=takers)
         curr += SLIDING_WINDOW.total_seconds()

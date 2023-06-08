@@ -3,14 +3,10 @@ Populate metrics for given time period into SQL database.
 """
 import os
 import json
-import logging
 import traceback
-
-from logging.handlers import RotatingFileHandler
 from datetime import datetime
-
-from ..src.classes.metricsprocessor import MetricsProcessor
-from ..src.classes.datahandler import DataHandler
+from curvemetrics.src.classes.metricsprocessor import MetricsProcessor
+from curvemetrics.src.classes.datahandler import DataHandler
 
 def load_config():
     # Load the configuration
@@ -19,13 +15,6 @@ def load_config():
     return config
 
 config = load_config()
-
-handler = RotatingFileHandler('../../logs/metrics.log', maxBytes=10**6, backupCount=5) # 1MB file size, keep last 5 files
-formatter = logging.Formatter('%(asctime)s - %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger(__file__)
-logger.setLevel(logging.INFO)
-logger.addHandler(handler)
 
 def pools(start: int, end: int):
 
@@ -198,7 +187,10 @@ def tokens(start: int, end: int):
     finally:
         datahandler.close()
 
-def main(start: int, end: int):
+def main(start: int, end: int, l):
+    
+    global logger 
+    logger = l
 
     logger.info(f"\nProcessing metrics...\n")
 

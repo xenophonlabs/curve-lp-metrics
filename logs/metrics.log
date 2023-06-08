@@ -1,17 +1,60 @@
 nohup: ignoring input
-[2023-06-08 15:19:37] Running task for 2022-01-01 00:00:00 to 2022-01-31 00:00:00
-[2023-06-08 16:03:47] Task completed for 2022-01-01 00:00:00 to 2022-01-31 00:00:00
-[2023-06-08 16:03:47] Running task for 2022-01-30 23:55:00 to 2022-03-02 00:00:00
-[2023-06-08 16:49:57] Task completed for 2022-01-30 23:55:00 to 2022-03-02 00:00:00
-[2023-06-08 16:49:57] Running task for 2022-03-01 23:55:00 to 2022-04-01 00:00:00
-[2023-06-08 17:34:31] Task completed for 2022-03-01 23:55:00 to 2022-04-01 00:00:00
-[2023-06-08 17:34:31] Running task for 2022-03-31 23:55:00 to 2022-05-01 00:00:00
-[2023-06-08 18:19:36] Task completed for 2022-03-31 23:55:00 to 2022-05-01 00:00:00
-[2023-06-08 18:19:36] Running task for 2022-04-30 23:55:00 to 2022-05-31 00:00:00
-[2023-06-08 19:04:56] Task completed for 2022-04-30 23:55:00 to 2022-05-31 00:00:00
-[2023-06-08 19:04:56] Running task for 2022-05-30 23:55:00 to 2022-06-30 00:00:00
-[2023-06-08 19:48:35] Task completed for 2022-05-30 23:55:00 to 2022-06-30 00:00:00
-[2023-06-08 19:48:35] Running task for 2022-06-29 23:55:00 to 2022-07-30 00:00:00
-[2023-06-08 20:36:28] Task completed for 2022-06-29 23:55:00 to 2022-07-30 00:00:00
-[2023-06-08 20:36:28] Running task for 2022-07-29 23:55:00 to 2022-08-27 00:00:00
-[2023-06-08 21:21:32] Task completed for 2022-07-29 23:55:00 to 2022-08-27 00:00:00
+[2023-06-08 22:08:34] Running task for 2022-08-27 00:00:00 to 2022-09-26 00:00:00
+2023-06-08 22:08:35,167 - 
+Processing metrics...
+
+2023-06-08 22:08:35,269 - 
+Processing pool metrics.
+
+2023-06-08 22:08:35,269 - Processing pool Curve.fi ETH/stETH.
+2023-06-08 22:08:35,269 - Start time: 2022-08-27 00:00:00
+2023-06-08 22:08:35,269 - End time: 2022-09-26 00:00:00
+2023-06-08 22:08:41,232 - Inserting metrics.
+2023-06-08 22:12:17,580 - Finished processing pool Curve.fi ETH/stETH.
+
+2023-06-08 22:12:17,581 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-06-08 22:12:17,581 - Start time: 2022-08-27 00:00:00
+2023-06-08 22:12:17,581 - End time: 2022-09-26 00:00:00
+2023-06-08 22:12:24,863 - Inserting metrics.
+2023-06-08 22:17:03,930 - Finished processing pool Curve.fi DAI/USDC/USDT.
+
+2023-06-08 22:17:03,930 - Processing pool Curve.fi FRAX/USDC.
+2023-06-08 22:17:03,930 - Start time: 2022-08-27 00:00:00
+2023-06-08 22:17:03,930 - End time: 2022-09-26 00:00:00
+2023-06-08 22:17:10,274 - Inserting metrics.
+2023-06-08 22:20:40,183 - Finished processing pool Curve.fi FRAX/USDC.
+
+2023-06-08 22:20:40,184 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-06-08 22:20:40,184 - Pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool, UST no longer indexed after 1653667380. Skipping...
+
+2023-06-08 22:20:40,184 - Processing pool Curve.fi USDN/3Crv.
+2023-06-08 22:20:40,184 - Start time: 2022-08-27 00:00:00
+2023-06-08 22:20:40,184 - End time: 2022-09-26 00:00:00
+2023-06-08 22:20:46,845 - Inserting metrics.
+2023-06-08 22:25:51,157 - Finished processing pool Curve.fi USDN/3Crv.
+
+2023-06-08 22:25:51,157 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-06-08 22:25:51,157 - Start time: 2022-08-27 00:00:00
+2023-06-08 22:25:51,158 - End time: 2022-09-26 00:00:00
+2023-06-08 22:25:59,139 - Inserting metrics.
+2023-06-08 22:31:01,937 - Finished processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+2023-06-08 22:31:01,937 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-06-08 22:31:01,937 - Start time: 2022-08-27 00:00:00
+2023-06-08 22:31:01,937 - End time: 2022-09-26 00:00:00
+2023-06-08 22:31:09,115 - Inserting metrics.
+2023-06-08 22:36:42,436 - Finished processing pool Curve.fi DAI/USDC/USDT/sUSD.
+
+2023-06-08 22:36:42,436 - Processing pool Curve.fi ETH/frxETH.
+2023-06-08 22:36:42,436 - Pools Curve.fi ETH/frxETH was created after the end date. Skipping...
+
+2023-06-08 22:36:42,436 - Processing pool Curve.fi Factory USD Metapool: Liquity.
+2023-06-08 22:36:42,436 - Start time: 2022-08-27 00:00:00
+2023-06-08 22:36:42,436 - End time: 2022-09-26 00:00:00
+2023-06-08 22:36:49,546 - Inserting metrics.
+2023-06-08 22:41:54,056 - Finished processing pool Curve.fi Factory USD Metapool: Liquity.
+
+2023-06-08 22:41:54,056 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
+2023-06-08 22:41:54,056 - Start time: 2022-08-27 00:00:00
+2023-06-08 22:41:54,056 - End time: 2022-09-26 00:00:00
+2023-06-08 22:42:01,279 - Inserting metrics.

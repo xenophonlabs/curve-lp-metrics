@@ -1,24 +1,16 @@
 """
 Update takers and sharkflow metrics.
 """
-import logging
 import traceback
 import pandas as pd
-
-from logging.handlers import RotatingFileHandler
 from datetime import datetime, timedelta
-
 from curvemetrics.src.classes.datahandler import DataHandler
 from curvemetrics.src.classes.metricsprocessor import MetricsProcessor
 
-handler = RotatingFileHandler('../../logs/takers.log', maxBytes=10**6, backupCount=5) # 1MB file size, keep last 5 files
-formatter = logging.Formatter('%(asctime)s - %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger(__file__)
-logger.setLevel(logging.INFO)
-logger.addHandler(handler)
+def main(start: int, window: timedelta, sliding_window: timedelta, l, takers: pd.DataFrame=pd.DataFrame(), top: float=0.9) -> pd.DataFrame:
 
-def main(start: int, window: timedelta, sliding_window: timedelta, takers: pd.DataFrame=pd.DataFrame(), top: float=0.9) -> pd.DataFrame:
+    global logger 
+    logger = l
 
     datahandler = DataHandler()
     metricsprocessor = MetricsProcessor(datahandler.pool_metadata, datahandler.token_metadata)

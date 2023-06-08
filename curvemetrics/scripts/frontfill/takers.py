@@ -2,7 +2,8 @@ import math
 import time
 from datetime import timedelta
 
-from ..takers import main
+from curvemetrics.scripts.takers import main
+from curvemetrics.src.classes.logger import Logger
 from curvemetrics.src.classes.datahandler import DataHandler
 
 WINDOW = timedelta(days=1)
@@ -15,4 +16,6 @@ if __name__ == "__main__":
     takers = datahandler.get_takers()
     datahandler.close()
 
-    main(start, WINDOW, SLIDING_WINDOW, takers=takers)
+    logger = Logger('./logs/frontfill/takers.log')
+
+    main(start, WINDOW, SLIDING_WINDOW, logger, takers=takers)

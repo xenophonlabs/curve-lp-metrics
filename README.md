@@ -80,10 +80,13 @@ find ./logs -type f -exec grep -L "Done :)" {} \; | sort
 Which checks for our `Done :)` exit status.
 
 ## Indexing
-To ensure we can read timeseries data quickly for each token and pool, we create indexes on each pool. To create these indexes, run:
+Indexes are created at setup using the SQLALchemy classes.
+
+## Frontfilling
+The following hourly cron job is set up using `crontab -e` to fill data every hour (TODO: update to daily)
 
 ```
-nohup python3 -m curvemetrics.create_indexes > ./logs/index.log 2>&1 &
+0 * * * * /usr/bin/bash /root/curve-lp-metrics/curvemetrics/scripts/frontfill/frontfill.sh
 ```
 
 ## Resetting
