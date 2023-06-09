@@ -16,6 +16,6 @@ if __name__ == "__main__":
     takers = datahandler.get_takers()
     datahandler.close()
 
-    logger = Logger('./logs/frontfill/takers.log')
+    logger = Logger('./logs/frontfill/takers.log').logger
 
     main(start, WINDOW, SLIDING_WINDOW, logger, takers=takers)

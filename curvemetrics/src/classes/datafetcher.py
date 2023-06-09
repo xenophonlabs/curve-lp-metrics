@@ -58,7 +58,7 @@ class DataFetcher():
         self.logger.setLevel(logging.INFO)
         self.logger.addHandler(logging.StreamHandler())
 
-        self.exchanges = exchanges # TODO: probs better to have token -> exchange map in config.json
+        self.exchanges = exchanges
 
         self.session = aiohttp.ClientSession()
     

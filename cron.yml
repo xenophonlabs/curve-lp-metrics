@@ -1,6 +1,0 @@
-# Edit your crontab file
-crontab -e
-
-# Add a line to run your script.sh file every day at noon
-# This will look something like this:
-0 12 * * * /bin/bash /path/to/script.sh

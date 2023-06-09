@@ -40,6 +40,17 @@ def get_tokens():
     finally:
         datahandler.close()
 
+@app.route('/block_timestamps', methods=['GET'])
+def get_block_timestamps():
+    block = int(request.args.get('block'))
+    datahandler = DataHandler()
+    try:
+        return jsonify(datahandler.get_block_timestamp(block))
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    finally:
+        datahandler.close()
+
 @app.route('/pool_data', methods=['GET'])
 def get_pool_data():
     pool_id = request.args.get('pool_id')

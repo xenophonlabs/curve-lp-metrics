@@ -23,7 +23,7 @@ def pools(start: int, end: int):
     pool_metadata = datahandler.pool_metadata
     metricsprocessor = MetricsProcessor(pool_metadata, token_metadata)
 
-    logger.info(f"\nProcessing pool metrics.\n")
+    logger.info(f"Processing pool metrics.\n")
 
     try:
         for pool in pool_metadata.keys():
@@ -87,15 +87,17 @@ def pools(start: int, end: int):
                 logger.info(f"Finished processing pool {pool_metadata[pool]['name']}.\n")
 
             except Exception as e:
-                logger.error(f"\nFailed to compute metrics for pool {pool_metadata[pool]['name']}\n{traceback.format_exc()}\n", exc_info=True)
+                logger.error(f"Failed to compute metrics for pool {pool_metadata[pool]['name']}\n{traceback.format_exc()}\n", exc_info=True)
                 raise e
 
     except Exception as e: # Just to be safe, but probably never reached
-        logger.error(f"\nFailed to compute metrics for pools \n{traceback.format_exc()}\n", exc_info=True)
+        logger.error(f"Failed to compute metrics for pools \n{traceback.format_exc()}\n", exc_info=True)
         raise e
 
     finally:
         datahandler.close()
+
+    logger.info(f"Finished processing pool metrics.\n")
 
 def tokens(start: int, end: int):
 
@@ -104,7 +106,7 @@ def tokens(start: int, end: int):
     pool_metadata = datahandler.get_pool_metadata()
     metricsprocessor = MetricsProcessor(pool_metadata, token_metadata)
 
-    logger.info(f"\nProcessing pool metrics.\n")
+    logger.info(f"Processing token metrics.\n")
 
     try:
         for token in token_metadata.keys():
@@ -177,22 +179,24 @@ def tokens(start: int, end: int):
                 logger.info(f"Finished processing token {token_metadata[token]['symbol']}.\n")
     
             except Exception as e:
-                logger.error(f"\nFailed to compute metrics for token {token_metadata[token]['name']}\n{traceback.format_exc()}\n", exc_info=True)
+                logger.error(f"Failed to compute metrics for token {token_metadata[token]['name']}\n{traceback.format_exc()}\n", exc_info=True)
                 raise e
 
     except Exception as e: # Just to be safe, but probably never reached
-        logger.error(f"\nFailed to compute metrics for tokens \n{traceback.format_exc()}\n", exc_info=True)
+        logger.error(f"Failed to compute metrics for tokens \n{traceback.format_exc()}\n", exc_info=True)
         raise e
 
     finally:
         datahandler.close()
+
+    logger.info(f"Finished processing token metrics.\n")
 
 def main(start: int, end: int, l):
     
     global logger 
     logger = l
 
-    logger.info(f"\nProcessing metrics...\n")
+    logger.info(f"Processing metrics...\n")
 
     pools(start, end)
     tokens(start, end)

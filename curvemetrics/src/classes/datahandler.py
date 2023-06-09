@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.postgresql import insert
+from web3 import Web3
 
 import numpy as np
 import pandas as pd
@@ -18,6 +19,7 @@ from .entities import *
 from dotenv import load_dotenv
 load_dotenv()
 
+INFURA_KEY = os.getenv("INFURA_KEY")
 PSQL_USER = os.getenv("PSQL_USER")
 PSQL_PASSWORD = os.getenv("PSQL_PASSWORD")
 
@@ -480,6 +482,17 @@ class DataHandler():
         query = self.session.query(BlockTimestamps)
         query = query.filter(BlockTimestamps.block == block)
         result = query.first()
+        if not result:
+            client = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{INFURA_KEY}"))
+            result = client.eth.get_block(block)
+            try:
+                stmt = insert(BlockTimestamps.__table__).values(block=block, timestamp=result.timestamp)
+                stmt = stmt.on_conflict_do_nothing()
+                self.session.execute(stmt)
+            except Exception as e:
+                print(f'Failed to insert block timestamp: {e}')
+                self.session.rollback()
+            self.session.commit()
         return result.timestamp
 
     def get_pool_X(self, metric, pool, start_ts, end_ts, freq, normalize=False, standardize=False):

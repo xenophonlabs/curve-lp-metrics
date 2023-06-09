@@ -10,5 +10,5 @@ BUFFER = 60*10 # 10 minutes
 if __name__ == "__main__":
     start = math.floor(time.time()) # UTC timestamp
     end = start - PERIOD - BUFFER
-    logger = Logger('./logs/frontfill/raw_data.log')
+    logger = Logger('./logs/frontfill/raw_data.log').logger
     main(start, end, logger)

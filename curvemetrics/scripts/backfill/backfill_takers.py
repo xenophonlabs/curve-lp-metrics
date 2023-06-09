@@ -34,7 +34,7 @@ swaps_end_ts = start_ts + sliding_window.total_seconds()  + window.total_seconds
 sharkflow_start_ts = swaps_start_ts + sliding_window.total_seconds()  + window.total_seconds()
 sharkflow_end_ts = sharkflow_start_ts + sliding_window.total_seconds() 
 
-while swaps_end_ts <= end_ts: # TODO: Check
+while swaps_end_ts <= end_ts:
     print(f"[{datetime.now()}] Processing takers from {datetime.fromtimestamp(swaps_start_ts)} to {datetime.fromtimestamp(swaps_end_ts)}.")
 
     for pool in datahandler.pool_metadata:

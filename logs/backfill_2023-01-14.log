@@ -1,0 +1,112 @@
+
+[2023-06-09 00:37:40.757910] Starting backfilling process.
+
+[2023-06-09 00:37:41.518028] Backfilling pool Curve.fi ETH/stETH.
+[2023-06-09 00:37:41.518066] Start time: 2023-01-13 23:55:11
+[2023-06-09 00:37:41.518078] End time: 2023-01-21 00:00:11
+[2023-06-09 00:39:40.101457] Inserting pool data...
+[2023-06-09 00:40:46.375519] Finished pool data...
+[2023-06-09 00:40:54.450500] Inserting swap data...
+[2023-06-09 00:40:56.020858] Finished swap data...
+[2023-06-09 00:41:02.234472] Inserting lp event data...
+[2023-06-09 00:41:02.685368] Finished lp event data...
+[2023-06-09 00:41:02.802563] Inserting snapshots data...
+[2023-06-09 00:41:02.818407] Finished snapshots data...
+[2023-06-09 00:41:02.818634] Finished pool Curve.fi ETH/stETH.
+
+[2023-06-09 00:41:02.818792] Backfilling pool Curve.fi DAI/USDC/USDT.
+[2023-06-09 00:41:02.818952] Start time: 2023-01-13 23:55:11
+[2023-06-09 00:41:02.819128] End time: 2023-01-21 00:00:11
+[2023-06-09 00:42:04.154859] Inserting pool data...
+[2023-06-09 00:43:09.989256] Finished pool data...
+[2023-06-09 00:43:16.291043] Inserting swap data...
+[2023-06-09 00:43:18.734466] Finished swap data...
+[2023-06-09 00:43:25.274053] Inserting lp event data...
+[2023-06-09 00:43:27.032737] Finished lp event data...
+[2023-06-09 00:43:27.145249] Inserting snapshots data...
+[2023-06-09 00:43:27.158126] Finished snapshots data...
+[2023-06-09 00:43:27.158163] Finished pool Curve.fi DAI/USDC/USDT.
+
+[2023-06-09 00:43:27.158172] Backfilling pool Curve.fi FRAX/USDC.
+[2023-06-09 00:43:27.158180] Start time: 2023-01-13 23:55:11
+[2023-06-09 00:43:27.158191] End time: 2023-01-21 00:00:11
+[2023-06-09 00:44:28.211439] Inserting pool data...
+[2023-06-09 00:45:35.161083] Finished pool data...
+[2023-06-09 00:45:43.780239] Inserting swap data...
+[2023-06-09 00:45:44.112703] Finished swap data...
+[2023-06-09 00:45:52.884560] Inserting lp event data...
+[2023-06-09 00:45:54.003412] Finished lp event data...
+[2023-06-09 00:45:56.768020] Inserting snapshots data...
+[2023-06-09 00:45:56.783222] Finished snapshots data...
+[2023-06-09 00:45:56.783263] Finished pool Curve.fi FRAX/USDC.
+
+[2023-06-09 00:45:56.783273] Backfilling pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+[2023-06-09 00:45:56.783281] Start time: 2023-01-13 23:55:11
+[2023-06-09 00:45:56.783292] End time: 2023-01-21 00:00:11
+[2023-06-09 00:48:00.320623] Inserting pool data...
+[2023-06-09 00:49:08.851868] Finished pool data...
+[2023-06-09 00:49:15.733010] Inserting swap data...
+[2023-06-09 00:49:15.754141] Finished swap data...
+[2023-06-09 00:49:21.586327] Inserting lp event data...
+[2023-06-09 00:49:21.592468] Finished lp event data...
+[2023-06-09 00:49:21.714311] Inserting snapshots data...
+[2023-06-09 00:49:21.770488] Finished snapshots data...
+[2023-06-09 00:49:21.770525] Finished pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+
+[2023-06-09 00:49:21.770535] Backfilling pool Curve.fi USDN/3Crv.
+[2023-06-09 00:49:21.770544] Start time: 2023-01-13 23:55:11
+[2023-06-09 00:49:21.770555] End time: 2023-01-21 00:00:11
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/tenacity/__init__.py", line 382, in __call__
+    result = fn(*args, **kwargs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/datafetcher.py", line 236, in get_pool_data
+    return self.execute_queries(start_block, end_block, pool_id, 'messari', 'liquidityPool', step_size, False)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/datafetcher.py", line 221, in execute_queries
+    data = asyncio.run(self.execute_queries_async(start, end, query, key, url, step_size, full, pool_id=pool_id))
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/nest_asyncio.py", line 35, in run
+    return loop.run_until_complete(task)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/nest_asyncio.py", line 90, in run_until_complete
+    return f.result()
+  File "/usr/lib/python3.10/asyncio/futures.py", line 201, in result
+    raise self._exception.with_traceback(self._exception_tb)
+  File "/usr/lib/python3.10/asyncio/tasks.py", line 234, in __step
+    result = coro.throw(exc)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/datafetcher.py", line 193, in execute_queries_async
+    raw_data = await asyncio.gather(*tasks)
+  File "/usr/lib/python3.10/asyncio/tasks.py", line 304, in __wakeup
+    future.result()
+  File "/usr/lib/python3.10/asyncio/tasks.py", line 234, in __step
+    result = coro.throw(exc)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/datafetcher.py", line 136, in execute_query_async
+    async with self.session.post(url, json={'query': query}) as res:
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/aiohttp/client.py", line 1141, in __aenter__
+    self._resp = await self._coro
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/aiohttp/client.py", line 560, in _request
+    await resp.start(conn)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/aiohttp/client_reqrep.py", line 899, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/aiohttp/streams.py", line 616, in read
+    await self._waiter
+  File "/usr/lib/python3.10/asyncio/futures.py", line 285, in __await__
+    yield self  # This tells Task to wait for completion.
+  File "/usr/lib/python3.10/asyncio/tasks.py", line 304, in __wakeup
+    future.result()
+  File "/usr/lib/python3.10/asyncio/futures.py", line 201, in result
+    raise self._exception.with_traceback(self._exception_tb)
+aiohttp.client_exceptions.ServerDisconnectedError: Server disconnected
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/backfill/backfill_raw_data.py", line 56, in main
+    pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/tenacity/__init__.py", line 289, in wrapped_f
+    return self(f, *args, **kw)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/tenacity/__init__.py", line 379, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/tenacity/__init__.py", line 326, in iter
+    raise retry_exc from fut.exception()
+tenacity.RetryError: RetryError[<Future at 0x7fa3bf3cde10 state=finished raised ServerDisconnectedError>]
+
+[2023-06-09 00:52:03.158720] An error occurred during raw database backfilling: None
+
