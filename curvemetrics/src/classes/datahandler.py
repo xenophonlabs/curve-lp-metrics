@@ -20,21 +20,28 @@ from dotenv import load_dotenv
 load_dotenv()
 
 INFURA_KEY = os.getenv("INFURA_KEY")
+ALCHEMY_KEY = os.getenv("ALCHEMY_KEY")
 PSQL_USER = os.getenv("PSQL_USER")
 PSQL_PASSWORD = os.getenv("PSQL_PASSWORD")
+
+# WEB3_ENDPOINT = f"https://mainnet.infura.io/v3/{INFURA_KEY}"
+WEB3_ENDPOINT = f"https://eth-mainnet.g.alchemy.com/v2/{ALCHEMY_KEY}"
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
 class DataHandler():
 
-    def __init__(self, db=f'postgresql://{PSQL_USER}:{PSQL_PASSWORD}@localhost:5432/{PSQL_USER}'):
+    def __init__(self, db=f'postgresql://{PSQL_USER}:{PSQL_PASSWORD}@localhost:5432/{PSQL_USER}', logger=None):
         self.engine = create_engine(db)
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
 
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        self.logger.addHandler(logging.StreamHandler())
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = logging.getLogger(__name__)
+            self.logger.setLevel(logging.INFO)
+            self.logger.addHandler(logging.StreamHandler())
     
     def create_tables(self):
         Entity.metadata.create_all(self.engine)
@@ -72,7 +79,7 @@ class DataHandler():
         Used to backfill blocks with timestamps.
         """
         for i in range(5):
-            print(f'[{datetime.now()}] Inserting block_timestamps {i}...')
+            self.logger.info(f'[{datetime.now()}] Inserting block_timestamps {i}...')
             fn = PATH+f'../../../data/timestamps_{i}.csv'
             df = pd.read_csv(fn)
             df['timestamp'] = df['unixtime'].apply(lambda x: int(datetime.timestamp(datetime.fromisoformat(x.replace("Z", "+00:00")))))
@@ -209,6 +216,8 @@ class DataHandler():
     @staticmethod
     def format_changepoints(data, pool_id, model, metric):
         df = pd.DataFrame(data, columns=['timestamp'])
+        if len(df) == 0:
+            return df
         df['timestamp'] = df['timestamp'].apply(lambda x: int(datetime.timestamp(x)))
         df['pool_id'] = pool_id
         df['model'] = model
@@ -227,6 +236,8 @@ class DataHandler():
 
     def format_pool_snapshots(data):
         df = pd.DataFrame.from_dict([x for y in data for x in y])
+        if len(df) == 0:
+            return df
         df = df[['id', 'A', 'adminFee', 'fee', 'timestamp', 'normalizedReserves', 'offPegFeeMultiplier', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'reservesUSD', 'lpFeesUSD', 'lastPricesTimestamp', 'lastPrices', 'pool_id', 'block_gte', 'block_lt']]
         return df
 
@@ -237,6 +248,13 @@ class DataHandler():
         df['timestamp'] = df['timestamp'].apply(lambda x: int(datetime.timestamp(x)))
         df['token_id'] = token_id
         df = df[['timestamp', 'token_id', 'metric', 'value']]
+        return df
+    
+    @staticmethod
+    def process(df):
+        for col in df:
+            if type(df[col].iloc[0]).__name__ == 'Decimal':
+                df[col] = pd.to_numeric(df[col])
         return df
 
     def get_pool_metadata(self) -> Dict:
@@ -337,6 +355,7 @@ class DataHandler():
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.loc[~(df['virtualPrice']==0)].dropna() # Drop rows where virtualPrice is 0
+        df = DataHandler.process(df)
         return df
 
     def get_ohlcv_data(self, 
@@ -483,20 +502,32 @@ class DataHandler():
         query = query.filter(BlockTimestamps.block == block)
         result = query.first()
         if not result:
-            client = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{INFURA_KEY}"))
+            client = Web3(Web3.HTTPProvider(WEB3_ENDPOINT))
             result = client.eth.get_block(block)
             try:
                 stmt = insert(BlockTimestamps.__table__).values(block=block, timestamp=result.timestamp)
                 stmt = stmt.on_conflict_do_nothing()
                 self.session.execute(stmt)
             except Exception as e:
-                print(f'Failed to insert block timestamp: {e}')
+                self.logger.exception(f'Failed to insert block timestamp: {e}')
                 self.session.rollback()
             self.session.commit()
         return result.timestamp
 
-    def get_pool_X(self, metric, pool, start_ts, end_ts, freq, normalize=False, standardize=False):
+    def get_pool_X(self, 
+                   metric: str, 
+                   pool: str, 
+                   start_ts: int, 
+                   end_ts: int, 
+                   freq: timedelta, 
+                   normalize: bool=False, 
+                   standardize: bool=False
+        ) -> pd.Series:
+        
         data = self.get_pool_metric(pool, metric, start_ts, end_ts)
+
+        if data.empty:
+            return data
 
         if metric in ['giniCoefficient', 'shannonsEntropy']:
             X = np.log1p(data.resample(freq).last().pct_change()).dropna()
@@ -567,7 +598,11 @@ class DataHandler():
         fees = self.get_fees(pool)
         ohlcv = []
         for i, row in df.iterrows():
-            fee, admin_fee = fees[fees['timestamp'] >= row['timestamp']].iloc[0][['fee', 'adminFee']]
+            tmp = fees[fees['timestamp'] >= row['timestamp']]
+            if tmp.empty:
+                fee, admin_fee = fees.iloc[-1][['fee', 'adminFee']]
+            else:
+                fee, admin_fee = tmp.iloc[0][['fee', 'adminFee']]
             if row['amountBought'] == 0 or row['amountSold'] == 0:
                 continue
             price = row['amountSold'] / (row['amountBought'] * (1 + fee + admin_fee))

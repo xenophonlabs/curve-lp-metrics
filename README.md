@@ -123,7 +123,7 @@ Warning: if you have the free Infura plan with 100,000 requests, you might hit y
 Frontfilling was set up to run using an hourly cron job. The job is set up using `crontab -e` to fill data every hour:
 
 ```
-0 * * * * /usr/bin/bash /root/curve-lp-metrics/curvemetrics/scripts/frontfill/frontfill.sh
+0 * * * * /usr/bin/bash /root/curve-lp-metrics/curvemetrics/scripts/forever.py
 ```
 
 This job will perform the following operations in the following order:

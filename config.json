@@ -31,5 +31,28 @@
         "USDN" : ["chainlink", "0x099c9588D8C6F7579C89014e59002881CE0c46A1"],
         "frxETH" : ["curveswaps", "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577", "ETH"],
         "cvxCRV" : ["curveswaps", "0x971add32ea87f10bd192671630be3be8a11b8623", "CRV"]
+    },
+    "model_configs" : {
+        "metrics" : {
+            "shannonsEntropy" : {
+                "alpha" : 0,
+                "beta" : 0,
+                "kappa" : 0
+            },
+            "netSwapFlow" : {
+                "alpha" : 0,
+                "beta" : 0,
+                "kappa" : 0
+            },
+            "300.Markout" : {
+                "alpha" : 0,
+                "beta" : 0,
+                "kappa" : 0
+            }
+        },
+        "base" : {
+            "margin" : 86400,
+            "alpha" : 0.5
+        }
     }
 } 

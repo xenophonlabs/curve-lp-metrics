@@ -70,7 +70,6 @@ class MetricsProcessor:
             ])
 
         metrics_df = pd.concat(metrics, axis=1)
-        metrics_df = metrics_df.fillna(0)
         
         return metrics_df
 
@@ -79,7 +78,6 @@ class MetricsProcessor:
         metrics.append(self.log_returns(token_ohlcv, self.token_metadata[token_id]['symbol']))
     
         metrics_df = pd.concat(metrics, axis=1)
-        metrics_df = metrics_df.fillna(0)
 
         return metrics_df
     

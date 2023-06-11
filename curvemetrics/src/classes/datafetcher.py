@@ -27,8 +27,12 @@ CURVE_SUBGRAPH_URL_MESSARI = 'https://api.thegraph.com/subgraphs/name/messari/cu
 LLAMA_BLOCK_GETTER = 'https://coins.llama.fi/block/ethereum/'
 
 INFURA_KEY = os.getenv("INFURA_KEY")
+ALCHEMY_KEY = os.getenv("ALCHEMY_KEY")
 API_KEYS = json.loads(os.getenv("API_KEYS"))
 API_SECRETS = json.loads(os.getenv("API_SECRETS"))
+
+# WEB3_ENDPOINT = f"https://mainnet.infura.io/v3/{INFURA_KEY}"
+WEB3_ENDPOINT = f"https://eth-mainnet.g.alchemy.com/v2/{ALCHEMY_KEY}"
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
@@ -40,7 +44,8 @@ class DataFetcher():
     def __init__(
             self, 
             exchanges: List[str] = ['binanceus', 'coinbasepro', 'bitfinex2'], 
-            token_metadata: Dict={}
+            token_metadata: Dict={},
+            logger = None
         ) -> None:
         """
         Initialize the DataFetcher class.
@@ -54,9 +59,12 @@ class DataFetcher():
         """
         self.token_metadata = token_metadata
 
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        self.logger.addHandler(logging.StreamHandler())
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = logging.getLogger(__name__)
+            self.logger.setLevel(logging.INFO)
+            self.logger.addHandler(logging.StreamHandler())
 
         self.exchanges = exchanges
 
@@ -106,7 +114,7 @@ class DataFetcher():
     @staticmethod
     def get_tokens_metadata(pool_metadata):
         tokens = {coin for x in pool_metadata.values() for coin in x['coins']}
-        client = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{INFURA_KEY}"))
+        client = Web3(Web3.HTTPProvider(WEB3_ENDPOINT))
         erc20_abi = [{"constant":True,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":False,"stateMutability":"view","type":"function"},{"constant":True,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":False,"stateMutability":"view","type":"function"},{"constant":True,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":False,"stateMutability":"view","type":"function"}]
         data = {}
         for token in tokens:
@@ -135,6 +143,10 @@ class DataFetcher():
         query = query(**kwargs)
         async with self.session.post(url, json={'query': query}) as res:
             block_data_object = await res.json()
+            if "block" in kwargs and \
+                "errors" in block_data_object and \
+                f'data for block number {kwargs["block"]} is therefore not yet available' in block_data_object['errors'][0]['message']:
+                return [] # No data for this block yet
             block_data_object = block_data_object['data'][key]
 
             # Ensure all outputs are lists of dicts (some are just 1 dict)
@@ -229,10 +241,6 @@ class DataFetcher():
         pool_id: str,
         step_size: int = 1
     ) -> Any:
-        """
-        Get pool reserves data from Messari subgraph.
-        TODO: Add timestamp using Web3 INFURA fetch for blocks not in the csvs
-        """
         return self.execute_queries(start_block, end_block, pool_id, 'messari', 'liquidityPool', step_size, False)
     
     @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
@@ -312,9 +320,11 @@ class DataFetcher():
                 while since < end_timestamp * 1000:
                     ohlcv = await exchange.fetch_ohlcv(symbol, timeframe=timeframe, limit=limit, since=since)
                     data.extend(ohlcv)
+                    if len(ohlcv) == 0: # If no data is returned, then there is no more data.
+                        break
                     since = int(ohlcv[-1][0]) + 1
                     await asyncio.sleep(exchange.rateLimit / 1000)
-                self.logger.info(f'Using {exchange} for {symbol}.\n')
+                self.logger.info(f'Using {exchange} for {symbol}.')
                 return data
             except Exception as e:
                 self.logger.warning(f'Failed to fetch {symbol} using {exchange}: {e}.')
@@ -383,7 +393,7 @@ class DataFetcher():
                 else:
                     right = mid - 1
             except Exception as e:
-                print(e)
+                self.logger.exception(e)
                 right = mid - 1
 
         if closest_round != -1:
@@ -399,10 +409,16 @@ class DataFetcher():
     def get_chainlink_prices(self, token, chainlink_address, start_timestamp, end_timestamp):
         chainlink_address = Web3.to_checksum_address(chainlink_address)
         abi = abi = '[{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"description","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint80","name":"_roundId","type":"uint80"}],"name":"getRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"latestRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]'
-        client = Web3(Web3.HTTPProvider(f"https://mainnet.infura.io/v3/{INFURA_KEY}"))
+        client = Web3(Web3.HTTPProvider(WEB3_ENDPOINT))
         contract = client.eth.contract(address=chainlink_address, abi=abi)
         symbol = contract.functions.description().call().replace(" ", "")
         
+        latest_ts = contract.functions.latestRoundData().call()[3]
+        if latest_ts < start_timestamp:
+            self.logger.exception(f"Latest Chainlink timestamp {latest_ts} is before start timestamp {start_timestamp}.")
+            return []
+        end_timestamp = min(end_timestamp, latest_ts)
+
         roundnr = self.search_rounds(contract, start_timestamp)
 
         decimals = contract.functions.decimals().call()
@@ -413,7 +429,7 @@ class DataFetcher():
                 round_data = contract.functions.getRoundData(roundnr).call()
                 data.append([token, symbol, round_data[2]*1000, None, None, None, round_data[1]/10**decimals, None])
                 current_timestamp = round_data[3]
-                if current_timestamp > end_timestamp:
+                if current_timestamp >= end_timestamp:
                     break
                 roundnr += 1
             except Exception as e:

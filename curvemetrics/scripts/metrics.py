@@ -18,7 +18,7 @@ config = load_config()
 
 def pools(start: int, end: int):
 
-    datahandler = DataHandler()
+    datahandler = DataHandler(logger=logger)
     token_metadata = datahandler.token_metadata
     pool_metadata = datahandler.pool_metadata
     metricsprocessor = MetricsProcessor(pool_metadata, token_metadata)
@@ -101,7 +101,7 @@ def pools(start: int, end: int):
 
 def tokens(start: int, end: int):
 
-    datahandler = DataHandler()
+    datahandler = DataHandler(logger=logger)
     token_metadata = datahandler.get_token_metadata()
     pool_metadata = datahandler.get_pool_metadata()
     metricsprocessor = MetricsProcessor(pool_metadata, token_metadata)
@@ -168,9 +168,6 @@ def tokens(start: int, end: int):
                         logger.info(f"Token {token_metadata[token]['symbol']} has no pricing data before {end}. Skipping...\n")
                         continue
 
-                logger.info(f"Start time: {datetime.fromtimestamp(token_start)}")
-                logger.info(f"End time: {datetime.fromtimestamp(token_end)}")
-
                 token_ohlcv = datahandler.get_ohlcv_data(token, token_start, token_end)
                 token_metrics = metricsprocessor.process_metrics_for_token(token, token_ohlcv)
                 logger.info(f"Inserting metrics.")
@@ -196,9 +193,11 @@ def main(start: int, end: int, l):
     global logger 
     logger = l
 
-    logger.info(f"Processing metrics...\n")
+    logger.info(f"Processing metrics...")
+    logger.info(f"Start time: {datetime.fromtimestamp(start)}")
+    logger.info(f"End time: {datetime.fromtimestamp(end)}\n")
 
     pools(start, end)
     tokens(start, end)
 
-    logger.info(f"Done :)")
+    logger.info(f"Done :)\n")

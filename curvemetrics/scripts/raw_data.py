@@ -21,15 +21,15 @@ config = load_config()
 
 async def pools(start:int, end:int, start_block:int, end_block:int):
 
-    datahandler = DataHandler()
-    datafetcher = DataFetcher(token_metadata=datahandler.token_metadata)
+    datahandler = DataHandler(logger=logger)
+    datafetcher = DataFetcher(token_metadata=datahandler.token_metadata, logger=logger)
     pool_metadata = datahandler.pool_metadata
 
     try:
         for pool in pool_metadata.keys():
             try:
 
-                logger.info(f"Frontfilling pool {pool_metadata[pool]['name']}.")
+                logger.info(f"Processing pool {pool_metadata[pool]['name']}.")
 
                 if pool_metadata[pool]['creationDate'] < start:
                     pool_start, pool_start_block = start, start_block
@@ -38,9 +38,6 @@ async def pools(start:int, end:int, start_block:int, end_block:int):
                 else:
                     logger.info(f"Pools {pool_metadata[pool]['name']} was created after the end date. Skipping...\n")
                     continue
-
-                logger.info(f"Start time: {datetime.fromtimestamp(pool_start)}")
-                logger.info(f"End time: {datetime.fromtimestamp(end)}")
 
                 pool_data = datafetcher.get_pool_data(pool_start_block, end_block, pool, step_size=1)
                 logger.info(f"Inserting pool data...")
@@ -65,11 +62,11 @@ async def pools(start:int, end:int, start_block:int, end_block:int):
                 logger.info(f"Finished pool {pool_metadata[pool]['name']}.\n")
             
             except Exception as e:
-                logger.error(f"\nFailed to frontfill pool {pool}:\n{traceback.format_exc()}\n", exc_info=True)
+                logger.error(f"\nFailed to process pool {pool}:\n{traceback.format_exc()}\n", exc_info=True)
                 raise e
 
     except Exception as e:
-        logger.error(f"\nAn error occurred during raw database frontfilling:\n{traceback.format_exc()}\n", exc_info=True)
+        logger.error(f"\nAn error occurred during raw database processing:\n{traceback.format_exc()}\n", exc_info=True)
         raise e
     
     finally:
@@ -78,8 +75,8 @@ async def pools(start:int, end:int, start_block:int, end_block:int):
 
 async def tokens(start:int, end:int):
 
-    datahandler = DataHandler()
-    datafetcher = DataFetcher(token_metadata=datahandler.token_metadata)
+    datahandler = DataHandler(logger=logger)
+    datafetcher = DataFetcher(token_metadata=datahandler.token_metadata, logger=logger)
     token_metadata = datahandler.token_metadata
 
     try:
@@ -122,7 +119,7 @@ async def tokens(start:int, end:int):
                 else:
                     api, source, numeraire = token_config
 
-                logger.info(f"Frontfilling token {token_metadata[token]['symbol']} OHLCV using {api}.")
+                logger.info(f"Processing token {token_metadata[token]['symbol']} OHLCV using {api}.")
 
                 if api == "ccxt":
                     token_data = datafetcher.get_ohlcv(token_start, token_end, token, default_exchange=source)
@@ -131,18 +128,18 @@ async def tokens(start:int, end:int):
                 elif api == "curveswaps":
                     token_data = datahandler.get_curve_price(token, source, start, end, numeraire=datahandler.token_ids[numeraire])
 
-                logger.info(f"Inserting OHLCV.")
+                logger.info(f"Inserting OHLCV.\n")
                 if token_data:
                     datahandler.insert_token_data(token_data)
                 else:
                     logger.info(f'No price data for token {token_metadata[token]["symbol"]} at this time.\n')
 
             except Exception as e:
-                logger.error(f"\nFailed to frontfill token {token}:\n{traceback.format_exc()}\n", exc_info=True)
+                logger.error(f"\nFailed to process token {token}:\n{traceback.format_exc()}\n", exc_info=True)
                 raise e
             
     except Exception as e:
-        logger.error(f"\nAn error occurred during raw database frontfilling: {traceback.format_exc()}\n", exc_info=True)
+        logger.error(f"\nAn error occurred during raw database processing: {traceback.format_exc()}\n", exc_info=True)
         raise e
     
     finally:
@@ -154,7 +151,9 @@ def main(start: int, end: int, l):
     global logger 
     logger = l
 
-    logger.info(f"\nStarting frontfilling process.\n")
+    logger.info(f"Processing Raw Data...")
+    logger.info(f"Start time: {datetime.fromtimestamp(start)}")
+    logger.info(f"End time: {datetime.fromtimestamp(end)}\n")
 
     start, start_block = DataFetcher.get_block(start)
     end, end_block = DataFetcher.get_block(end)
@@ -162,4 +161,4 @@ def main(start: int, end: int, l):
     asyncio.run(pools(start, end, start_block, end_block))
     asyncio.run(tokens(start, end))
 
-    logger.info(f"Done :)")
+    logger.info(f"Done :)\n")

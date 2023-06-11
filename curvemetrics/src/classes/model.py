@@ -5,10 +5,10 @@ from multiprocessing import cpu_count
 import logging
 
 # Local imports
-from ..detection.bocd_stream.bocd.bocd import BayesianOnlineChangePointDetection
-from ..detection.bocd_stream.bocd.distribution import StudentT
-from ..detection.bocd_stream.bocd.hazard import ConstantHazard
-from ..detection.scorer import f_measure, early_weight
+from curvemetrics.src.detection.bocd_stream.bocd.bocd import BayesianOnlineChangePointDetection
+from curvemetrics.src.detection.bocd_stream.bocd.distribution import StudentT
+from curvemetrics.src.detection.bocd_stream.bocd.hazard import ConstantHazard
+from curvemetrics.src.detection.scorer import f_measure, early_weight
 
 class BOCD():
 
@@ -20,7 +20,7 @@ class BOCD():
         'mu': 0
     }
 
-    def __init__(self, margin=timedelta(hours=24), alpha=1/5, verbose=False, weight_func=None):
+    def __init__(self, margin=timedelta(hours=24), alpha=1/5, verbose=False, weight_func=None, logger=None):
         self.model = BayesianOnlineChangePointDetection(
             ConstantHazard(self.default_params['lambda']), 
             StudentT(mu=self.default_params['mu'], 
@@ -31,10 +31,13 @@ class BOCD():
         self.margin = margin
         self.alpha = alpha
 
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        if not self.logger.handlers:
-            self.logger.addHandler(logging.StreamHandler())
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = logging.getLogger(__name__)
+            self.logger.setLevel(logging.INFO)
+            if not self.logger.handlers:
+                self.logger.addHandler(logging.StreamHandler())
 
         self.results = {}
         self.params = self.default_params
@@ -42,6 +45,8 @@ class BOCD():
         self.y_ps = None
         self.verbose = verbose
         self.weight_func = weight_func
+
+        self.last_ts = None
     
     def update(self, params):
         new_params = {key: params.get(key) or self.default_params.get(key) for key in self.default_params.keys()}
@@ -125,20 +130,3 @@ class BOCD():
     @property
     def best_results(self):
         return self.results[self.best_params]
-
-
-        num_cpus = cpu_count()
-        pools = pool_metadata.values().tolist()
-        n = len(pools)
-        if n <= num_cpus:
-            num_cpus = n
-        chunk_size = n // num_cpus
-        chunks = [pools[i:i + chunk_size] for i in range(0, n, chunk_size)]
-
-        print(f'[{datetime.now()}]Processing {len(chunks)} chunks of length {len(chunks[0])}; {cpu_count()} cpus.\n')
-
-        with Pool(processes=num_cpus) as pool:
-            pool.map(lambda args: run(pool, start_ts, end_ts), [(chunk, start_ts, end_ts) for chunk in chunks])
-
-        def run(pool, start_ts, end_ts):
-            pass

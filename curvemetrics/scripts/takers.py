@@ -12,7 +12,7 @@ def main(start: int, window: timedelta, sliding_window: timedelta, l, takers: pd
     global logger 
     logger = l
 
-    datahandler = DataHandler()
+    datahandler = DataHandler(logger=logger)
     metricsprocessor = MetricsProcessor(datahandler.pool_metadata, datahandler.token_metadata)
 
     try:
