@@ -432,6 +432,7 @@ class DataHandler():
             series.groupby(series.index).sum()            
         elif metric == 'lpSharePrice':
             series = series.ffill()
+        series.fillna(0, inplace=True)
         return series
 
     def get_token_metric(self, 
@@ -456,6 +457,7 @@ class DataHandler():
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['value']
         series.name = metric
+        series.fillna(0, inplace=True)
         return series
 
     def get_changepoints(self, 

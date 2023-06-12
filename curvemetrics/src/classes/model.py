@@ -9,6 +9,7 @@ from curvemetrics.src.detection.bocd_stream.bocd.bocd import BayesianOnlineChang
 from curvemetrics.src.detection.bocd_stream.bocd.distribution import StudentT
 from curvemetrics.src.detection.bocd_stream.bocd.hazard import ConstantHazard
 from curvemetrics.src.detection.scorer import f_measure, early_weight
+from curvemetrics.src.classes.welford import Welford
 
 class BOCD():
 
@@ -42,12 +43,13 @@ class BOCD():
         self.results = {}
         self.params = self.default_params
         self.y_pred = None
-        self.y_ps = None
         self.verbose = verbose
         self.weight_func = weight_func
 
+        self.rt_mle = np.array([])
         self.last_ts = None
-    
+        self.welly = Welford()
+
     def update(self, params):
         new_params = {key: params.get(key) or self.default_params.get(key) for key in self.default_params.keys()}
         self.model.reset_params(
@@ -61,31 +63,34 @@ class BOCD():
         )
         self.params = new_params
 
-    def predict(self, X):
+    def predict(self, x):
+        x = self.welly.standardize(x)
+        self.model.update(x)
+        self.rt_mle = np.append(self.rt_mle, self.model.rt)
+        if len(self.rt_mle) > 1 and self.rt_mle[-1] != self.rt_mle[-2] + 1:
+            return True # Changepoint
+        return False
+
+    def predict_many(self, X):
         rt_mle = np.empty(X.shape)
-        p = np.empty(X.shape)
         for i, x in enumerate(X):
             self.model.update(x)
             rt_mle[i] = self.model.rt
-            p[i] = self.model.p
         cps = np.where(np.diff(rt_mle)!=1)[0]+1
-        ps = p[cps] # probabilities
-        return X.index[cps], ps
+        return X.index[cps], rt_mle
 
     def _tune(self, chunk, X, y_true):
         results = {}
         y_pred = []
-        y_ps = []
         score = -1
         for a, b, k in chunk:
             self.update({'alpha': a, 'beta': b, 'kappa': k})
-            pred, ps = self.predict(X)
+            pred, rt_mle = self.predict_many(X)
             results[(a, b, k)] = f_measure(y_true, pred, margin=self.margin, alpha=self.alpha, return_PR=True, weight_func=self.weight_func)
             if results[(a, b, k)][0] > score:
                 y_pred = pred
-                y_ps = ps
                 score = results[(a, b, k)][0]
-        return results, y_pred, score, y_ps
+        return results, y_pred, score, rt_mle
 
     def tune(self, grid, X, y_true):
         num_cpus = cpu_count()
@@ -103,7 +108,7 @@ class BOCD():
             self.results.update(result[0])
 
         self.y_pred = max(results, key=lambda x: x[2])[1]
-        self.y_ps = max(results, key=lambda x: x[2])[3]
+        self.rt_mle = max(results, key=lambda x: x[2])[3]
 
         if self.verbose:
             self.logger.info('\nFinished tuning hyperparameters\n')
@@ -112,7 +117,6 @@ class BOCD():
             self.logger.info(f'FPR: {self.best_results}')
             self.logger.info(f'True CPs: {y_true}')
             self.logger.info(f'Predicted CPs: {self.y_pred}')
-            self.logger.info(f'Predicted CPs Probabilities: {self.y_ps}\n')
 
     @property
     def best_params_dict(self):

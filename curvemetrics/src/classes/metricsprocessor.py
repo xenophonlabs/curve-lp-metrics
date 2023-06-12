@@ -171,7 +171,7 @@ class MetricsProcessor:
             flow['netSwapFlow'] : pd.Series
                 net swap flow of the token in the pool
         """
-        if len(df) == 0:
+        if df.empty == 0:
             return pd.Series([], name=f'{symbol}.netSwapFlow')
         swap_in = df[df['tokenBought']==token_id]['amountBought'].groupby(level=0).sum()
         swap_out = -1*df[df['tokenSold']==token_id]['amountSold'].groupby(level=0).sum()
@@ -396,6 +396,9 @@ class MetricsProcessor:
         """
         self.markout_window = window
 
+        if df.empty:
+            return pd.DataFrame()
+
         tmp = df.copy()
 
         tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
@@ -421,6 +424,8 @@ class MetricsProcessor:
         3. shift forward by window (so markout at time t is the markout of trades at time t-window with markout prices at t)
         """
         markouts = self.get_markout(df, ohlcvs, window, who)
+        if markouts.empty:
+            return pd.Series([], name=self.markout_col)
         markouts = markouts[self.markout_col]
         markouts = markouts.resample(self.freq).sum()
         markouts.index += pd.Timedelta(window)

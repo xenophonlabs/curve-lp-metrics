@@ -74,7 +74,7 @@ def pools(start: int, end: int):
                 lp_data = datahandler.get_lp_data(pool, pool_start, pool_end)
 
                 ohlcvs = {}
-                tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold'])).union(set(pool_metadata[pool]['inputTokens']))
+                tokens = config['pool_tokens_map'][pool]
                 for token in tokens:
                     ohlcv = datahandler.get_ohlcv_data(token, start=start, end=pool_end)
                     ohlcvs[token] = ohlcv

@@ -17,6 +17,7 @@ from curvemetrics.src.detection.scorer import early_weight
 from curvemetrics.src.classes.model import BOCD
 from curvemetrics.src.classes.logger import Logger
 from curvemetrics.src.classes.datahandler import DataHandler
+from curvemetrics.src.classes.welford import Welford
 
 PERIOD = 60*60 # 1 hour
 BUFFER = 60*10 # 10 minutes
@@ -121,19 +122,23 @@ def main():
             time.sleep(10)
     logger.info('Successfully frontfilled raw data.')
 
+    del logger
+
     ### Frontfill Metrics
-    # logger = Logger('./logs/frontfill/metrics.log').logger
-    # for attempts in range(RETRIES):
-    #     try:
-    #         metrics(start, end, logger)
-    #         break
-    #     except Exception as e:
-    #         logger.error(f'Failed to frontfill metrics: {e}')
-    #         if attempts == RETRIES - 1:
-    #             send_email_on_error(e)
-    #             raise e
-    #         time.sleep(10)
-    # logger.info('Successfully frontfilled metrics.')
+    logger = Logger('./logs/frontfill/metrics.log').logger
+    for attempts in range(RETRIES):
+        try:
+            metrics(start, end, logger)
+            break
+        except Exception as e:
+            logger.error(f'Failed to frontfill metrics: {e}')
+            if attempts == RETRIES - 1:
+                send_email_on_error(e)
+                raise e
+            time.sleep(10)
+    logger.info('Successfully frontfilled metrics.')
+
+    del logger
     
     # ### Frontfill Takers
     # start = math.floor(now) - SLIDING_WINDOW.total_seconds() - WINDOW.total_seconds()
@@ -155,12 +160,13 @@ def main():
 
     # ### Model Inference
     # # TODO: Need to add CP detection with baseline model, Tweets!
+    # Use Welford
     # for pool in MODELED_POOLS:
     #     for metric in POOL_METRICS:
     #         logger.info(f'Running inference for {pool} with {metric}.')
     #         model = models[pool][metric]
     #         old_rt = model.model.rt
-    #         model.model.update(x)
+    #         model.model.update(x) # DON'T STANDARDIZE
     #         new_rt = model.model.rt
     #         if new_rt != old_rt + 1:
     #             # Changepoint! 
@@ -174,6 +180,7 @@ if __name__ == "__main__":
 
     # Initialize models
     # margin = config['model_configs']['base']['margin']
+    # IMPORT PICLE OBJECT
     # alpha = config['model_configs']['base']['alpha']
     # models = {}
     # for pool in MODELED_POOLS:

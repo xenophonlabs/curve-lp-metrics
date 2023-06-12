@@ -3,6 +3,7 @@ Train hyperparameters for BOCD models. Write them to hyperparameters.json.
 """
 import warnings
 import pandas as pd
+import traceback
 from datetime import datetime
 from curvemetrics.src.classes.datahandler import DataHandler
 from curvemetrics.src.classes.modelsetup import ModelSetup
@@ -20,9 +21,9 @@ def main():
     Save corresponding results in hyperparameters.json and plots in ./figs directory.
     """
 
-    logger = Logger('./logs/backfill/tune.log').logger
+    logger = Logger('./logs/tune.log').logger
     datahandler = DataHandler(logger=logger)
-    tuner = ModelSetup(datahandler, logger=logger)
+    tuner = ModelSetup(datahandler, logger=logger, plotting=True)
 
     try:
 
@@ -41,7 +42,7 @@ def main():
 
         ### POOL METRICS TESTING
         
-        test_end = datetime.timestamp(2023, 5, 1)
+        test_end = datetime.timestamp(datetime(2023, 5, 1))
         pool_results = []
 
         for pool in datahandler.pool_metadata:
@@ -52,7 +53,7 @@ def main():
                 results = tuner.test(pool, POOL_METRICS, test_start, test_end, train_params, 'pool')
                 pool_results += results
             except Exception as e:
-                logger.error(f"Failed for {datahandler.pool_metadata[pool]['name']}: {e}\n")
+                logger.error(f"Failed for {datahandler.pool_metadata[pool]['name']}: {traceback.print_exc()}\n")
                 continue
         
         pd.DataFrame(pool_results, columns=['pool', 'metric', 'F', 'P', 'R', 'params']).to_csv('./results/pool_results.csv', index=False)
@@ -63,12 +64,12 @@ def main():
         train_start = datetime.timestamp(datetime(2022, 1, 1))
         train_end = datetime.timestamp(datetime(2022, 6, 1))
 
-        token_params = tuner.train(train_token, TOKEN_METRICS, train_start, train_end, 'token')
+        train_params = tuner.train(train_token, TOKEN_METRICS, train_start, train_end, 'token')
         
         ### TOKEN METRICS TESTING
 
-        test_start = datetime.timestamp(2022, 1, 1)
-        test_end = datetime.timestamp(2023, 5, 1)
+        test_start = datetime.timestamp(datetime(2022, 1, 1))
+        test_end = datetime.timestamp(datetime(2023, 5, 1))
         token_results = []
             
         for token in datahandler.token_metadata:
@@ -77,10 +78,10 @@ def main():
             if token == train_token:
                 continue
             try:
-                results = tuner.test(token, TOKEN_METRICS, test_start, test_end, token_params, 'token')
+                results = tuner.test(token, TOKEN_METRICS, test_start, test_end, train_params, 'token')
                 token_results += results
             except Exception as e:
-                logger.error(f"Failed for {datahandler.token_metadata[token]['symbol']}: {e}\n")
+                logger.error(f"Failed for {datahandler.token_metadata[token]['symbol']}: {traceback.print_exc()}\n")
                 continue
         
         pd.DataFrame(token_results, columns=['token', 'metric', 'F', 'P', 'R', 'params']).to_csv('./results/token_results.csv', index=False)

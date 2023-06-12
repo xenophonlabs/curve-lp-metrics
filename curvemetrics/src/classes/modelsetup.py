@@ -1,7 +1,11 @@
-from datetime import datetime, timedelta
+import pickle
 import logging
+import os
+from datetime import datetime, timedelta
+
 from curvemetrics.src.classes.model import BOCD
 from curvemetrics.src.classes.metricsprocessor import MetricsProcessor
+from curvemetrics.src.classes.welford import Welford
 from curvemetrics.src.detection.scorer import f_measure, early_weight
 from curvemetrics.src.plotting.plot import bocd_plot_comp
 
@@ -18,9 +22,12 @@ class ModelSetup():
         '0x971add32ea87f10bd192671630be3be8a11b8623'
     ]
 
-    ALPHA = [10**i for i in range(-5, 5)]
-    BETA = [10**i for i in range(-5, 5)]
-    KAPPA = [10**i for i in range(-5, 5)]
+    # ALPHA = [10**i for i in range(-5, 5)]
+    # BETA = [10**i for i in range(-5, 5)]
+    # KAPPA = [10**i for i in range(-5, 5)]
+    ALPHA = [0.1]
+    BETA = [1000]
+    KAPPA = [1]
 
     def __init__(self,
                  datahandler,
@@ -51,7 +58,8 @@ class ModelSetup():
         else:
             self.logger = logging.getLogger(__name__)
             self.logger.setLevel(logging.INFO)
-            self.logger.addHandler(logging.StreamHandler())
+            if not self.logger.handlers:
+                self.logger.addHandler(logging.StreamHandler())
 
         self.GRID = [(a, b, k) for a in self.ALPHA for b in self.BETA for k in self.KAPPA]
 
@@ -83,7 +91,7 @@ class ModelSetup():
         # datahandler.insert_changepoints(model.y_pred, address, 'bocd', metric)
         return y_true, lp_share_price.resample(self.freq).last(), virtual_price, name
 
-    def setup_token(self, token, metric, start, end):
+    def setup_token(self, token, start, end):
         """
         Retrieve the relevant data for modeling a token metric.
 
@@ -102,14 +110,12 @@ class ModelSetup():
             numeraire_price = self.datahandler.get_ohlcv_data(self.datahandler.token_ids[numeraire], start=start, end=end)['close']
             price /= numeraire_price # Get numeraire price, all ohlcv prices in dollars
         y_true = self.metricsprocessor.true_cps(price, peg, freq=self.freq, thresh=self.thresh)
-        if metric == 'logReturns':
-            metric = f'{self.datahandler.token_metadata[token]["symbol"]}.{metric}'
         # datahandler.insert_changepoints(model.y_pred, address, 'bocd', metric)
         return y_true, price.resample(self.freq).last(), peg, symbol
 
     def test(self, address, metrics, start, end, params, pool_token):    
         """
-        Run model.predict() with the trained hyperparameters for each metric.
+        Run model.predict_many() with the trained hyperparameters for each metric.
 
         :param pool: (str) The pool address
         :param metric: (list) The metrics to model
@@ -121,9 +127,9 @@ class ModelSetup():
         :returns results: (list) The best performing results for each metric
         """
         if pool_token == 'pool':
-            y_true, price, peg, name = self.setup_pool(address, metric, start, end)
+            y_true, price, peg, name = self.setup_pool(address, start, end)
         elif pool_token == 'token':
-            y_true, price, peg, name = self.setup_token(address, metric, start, end)
+            y_true, price, peg, name = self.setup_token(address, start, end)
 
         self.logger.info(f"Testing {name} from {datetime.fromtimestamp(start)} to {datetime.fromtimestamp(end)}.\n")
 
@@ -141,10 +147,9 @@ class ModelSetup():
             model = BOCD(margin=self.margin, alpha=self.alpha, verbose=True, weight_func=self.weight_func)
             model.update({'alpha':metric_params['alpha'], 'beta':metric_params['beta'], 'kappa':metric_params['kappa']})
 
-            y_pred, y_ps = model.predict(X)
+            y_pred, rt_mle = model.predict_many(X)
             self.logger.info(f'True CPs: {y_true}')
             self.logger.info(f'Predicted CPs: {y_pred}')
-            self.logger.info(f'Predicted CPs probabilities: {y_ps}')
             F, P, R = f_measure(y_true, y_pred, margin=self.margin, alpha=self.alpha, return_PR=True, weight_func=self.weight_func)
             self.logger.info(f'F-score: {F}, Precision: {P}, Recall: {R}')
 
@@ -156,6 +161,17 @@ class ModelSetup():
             results.append([address, metric, F, P, R, metric_params])
 
             self.logger.info(f"Finished testing {name}\n")
+
+            model.welly = Welford(X)
+            model.rt_mle = rt_mle
+            model.last_ts = datetime.timestamp(X.index[-1])
+
+            # Save model
+            directory = f'./model_configs/{metric}'
+            os.makedirs(directory, exist_ok=True)
+
+            with open(os.path.join(directory, f'{address}.pkl'), 'wb') as f:
+                pickle.dump(model, f)
 
         return results
 
@@ -192,6 +208,7 @@ class ModelSetup():
             if pool_token == 'pool':
                 X = self.datahandler.get_pool_X(metric, address, start, end, self.freq, normalize=self.normalize, standardize=self.standardize)
             elif pool_token == 'token':
+                if metric == 'logReturns': metric = f'{self.datahandler.token_metadata[address]["symbol"]}.{metric}'
                 X = self.datahandler.get_token_X(metric, address, start, end, self.freq, normalize=self.normalize, standardize=self.standardize)
 
             model = BOCD(margin=self.margin, alpha=self.alpha, verbose=True, weight_func=self.weight_func)
