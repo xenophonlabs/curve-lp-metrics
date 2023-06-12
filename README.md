@@ -2,16 +2,20 @@
 
 Welcome to Curvemetrics, a stablecoin and liquid staking derivative depeg detector for Curve's StableSwap pools. Curvemetrics consists of two primary components:
 
-1. Metrics - Our metrics are designed to capture *leading* indicators of potential depegs.
-2. Bayesian Online Changepoint Detection - Our *BOCD* models are trained on historical Curve data, and listen to changes in metrics data in *real-time* to detect potential changepoints (depegs).
+1. **Metrics** - Our metrics are designed to capture *leading* indicators of potential depegs.
+2. **Bayesian Online Changepoint Detection** - Our *BOCD* models are trained on historical Curve data, and listen to changes in metrics data in *real-time* to detect potential changepoints (depegs).
 
-We have exposed our metrics and corresponding raw data to an HTTP port for anyone to query (more details below). You may similarly listen to detected changepoints using our API, by following and turning notification on for our Twitter bot **link**. The theoretical underpinning of Curvemetrics is available in our corresponding research paper **link**.
+You may listen to detected depegs or query our metrics by using our API. You may also listen to potential depegs by following and turning notification on for our Twitter bot **link**. The theoretical underpinning of Curvemetrics is available in our corresponding research paper **link**.
 
 This codebase and research paper were developed by Xenophon Labs and sponsored by the Cuve Analytics team. If there are any questions, please reach out to thomas@xenophonlabs.com.
 
 ## Overview
 
-In our paper, we provided promising evidence for how quantitative metrics and detection algorithms can be constructed to keep liquidity providers (LPs) informed, in real-time, regarding potential stablecoin and liquid staking derivative depegs. The metrics and models we developed are available in this API. We will briefly over each metric, how Bayesian Online Changepoint Detectors work, and the results of our study very briefly in this `README`. For further information, refer to our paper. We will then describe how to query our API, and finally, how to reconstruct our API in your own machine.
+In our paper, we provided promising evidence for how quantitative metrics and detection algorithms can be constructed to keep liquidity providers (LPs) informed, in real-time, regarding potential stablecoin and liquid staking derivative depegs. The metrics and models we developed are available in this API. We will overview each metric, how Bayesian Online Changepoint Detectors work, and the results of our study very briefly in this `README`. For further information, refer to our paper. We will then describe how to query our API, and finally, how to reconstruct our API in your own machine.
+
+![Curvemetrics Architecture](./Architecture.png)
+
+*High-level Figma diagram of Curvemetrics Architecture*
 
 ## Metrics
 
@@ -125,7 +129,7 @@ To set up Curvemetrics on your own VM, follow the steps below.
 First, activate the venv and download the requirements (you need a recent Python3 version):
 
 ```
-source venv/bin/activate
+source venv/bin/activate <br>
 python3 -m pip install -r requirements.txt
 ```
 
@@ -133,8 +137,8 @@ python3 -m pip install -r requirements.txt
 
 We use a PostgreSQL database, which we interact with using SQLAlchemy. Setting up PostgreSQL (https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart):
 
-```sudo apt-get install postgresql```
-```sudo systemctl start postgresql.service```
+```sudo apt-get install postgresql```<br>
+```sudo systemctl start postgresql.service```<br>
 ```sudo -u postgres psql```
 
 We use a DataWarehouse design with a few ``star`` tables and two ``dimension`` tables. Our star tables correspond to numeric data that we track ("facts"). We track raw data and metrics data as our facts. Our dimension tables store metadata on our "facts"; we have a `pools` dimension table and a `tokens` dimension table. The `pools` table tells us the name, symbol, address, etc., of each pool, as well as which tokens it holds. Similarly, our `tokens` table tells us metadata about each token. Our ``star`` tables reference our ``dimensions`` tables.
@@ -152,17 +156,17 @@ We have the following ``star`` tables, which track relevant numeric data:
 - ``changepoints`` - This table holds the timestamps at which each model detected a changepoint for each pool.
 - ``takers`` - This table holds information on all addresses that have submitted swaps to the supported pools on Curve, the amount they bought and sold, and their cumulative/mean 1d markouts. 
 
-Each table is defined as a Python class (called an Entity), and created using the SQLAlchemy `declarative_base` class. See the Figma below for a better understanding of our database design.
+Each table is defined as a Python class (called an Entity), and created using the SQLAlchemy `declarative_base` class. See the image below for a better understanding of our database design.
 
-<Figma!>
+<embed src="./db.pdf" type="application/pdf" width="100%" height="600px" />
 
 ### Database and Table creation
 
 First create the database with its corresponding user:
 
-```CREATE USER <user> WITH PASSWORD '<pwd>';```
-```ALTER USER <user> CREATEDB;```
-```psql -U <user> -h localhost -d postgres```
+```CREATE USER <user> WITH PASSWORD '<pwd>';```<br>
+```ALTER USER <user> CREATEDB;```<br>
+```psql -U <user> -h localhost -d postgres```<br>
 ```CREATE DATABASE <user>;```
 
 <user> and <pwd> should be defined as 'PSQL_USER' and 'PSQL_PASSWORD' in your `.env`, since SQLAlchemy and Flask will need those to serve the data. Then run the below command from the root of the repository:
