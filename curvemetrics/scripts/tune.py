@@ -49,7 +49,7 @@ def main():
             if pool == train_pool:
                 continue
             try:
-                test_start = min(datetime.timestamp(datetime(2022, 1, 1)), datahandler.pool_metadata[pool]['creationDate'])
+                test_start = max(datetime.timestamp(datetime(2022, 1, 1)), datahandler.pool_metadata[pool]['creationDate'])
                 results = tuner.test(pool, POOL_METRICS, test_start, test_end, train_params, 'pool')
                 pool_results += results
             except Exception as e:

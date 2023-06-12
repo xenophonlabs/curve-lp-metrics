@@ -143,8 +143,8 @@ class DataHandler():
         df = DataHandler.format_token_metrics(data, token_id)
         self.insert(df, TokenMetrics)
 
-    def insert_changepoints(self, data, pool_id, model, metric):
-        df = DataHandler.format_changepoints(data, pool_id, model, metric)
+    def insert_changepoints(self, data, address, model, metric, freq):
+        df = DataHandler.format_changepoints(data, address, model, metric, freq)
         self.insert(df, Changepoints)
     
     def insert_takers(self, takers):
@@ -214,15 +214,16 @@ class DataHandler():
         return df
 
     @staticmethod
-    def format_changepoints(data, pool_id, model, metric):
+    def format_changepoints(data, address, model, metric, freq):
         df = pd.DataFrame(data, columns=['timestamp'])
         if len(df) == 0:
             return df
         df['timestamp'] = df['timestamp'].apply(lambda x: int(datetime.timestamp(x)))
-        df['pool_id'] = pool_id
+        df['address'] = address
         df['model'] = model
         df['metric'] = metric
-        df = df[['pool_id', 'model', 'metric', 'timestamp']]
+        df['freq'] = freq
+        df = df[['address', 'model', 'metric', 'freq', 'timestamp']]
         return df
     
     @staticmethod
@@ -357,7 +358,24 @@ class DataHandler():
         df = df.loc[~(df['virtualPrice']==0)].dropna() # Drop rows where virtualPrice is 0
         df = DataHandler.process(df)
         return df
-
+    
+    def get_pool_snapshots_last(self, 
+                                pool_id: str, 
+                                cols: List=['timestamp', 'normalizedReserves', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'reservesUSD']
+    ) -> pd.DataFrame:
+        query = self.session.query(*[getattr(Snapshots, col) for col in cols])
+        query = query.filter(
+            Snapshots.pool_id == pool_id,
+        )
+        query = query.order_by(Snapshots.timestamp.desc())
+        results = query.first()
+        if not len(results):
+            return pd.DataFrame()
+        df = pd.DataFrame.from_dict([results])
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        df = DataHandler.process(df)
+        return df
+    
     def get_ohlcv_data(self, 
                        token_id: str, 
                        start: int=None, 
@@ -399,7 +417,40 @@ class DataHandler():
         if 'lpPriceUSD' in df.columns:
             df = df.rename(columns={'lpPriceUSD': 'close'})
             df['symbol'] = f'{self.token_metadata[token_id]["symbol"]}/VP'
-        return df       
+        return df   
+
+    def get_ohlcv_data_last(self, 
+                            token_id: str, 
+        ) -> pd.DataFrame:
+        if self.token_metadata[token_id]['symbol'] == "3Crv":
+            threepool = "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"
+            query = self.session.query(*[getattr(Snapshots, col) for col in ['timestamp', 'lpPriceUSD']])
+            query = query.filter(
+                Snapshots.pool_id == threepool,
+            )
+            query = query.order_by(Snapshots.timestamp.desc())
+            results = query.first()
+
+        else:
+            if self.token_metadata[token_id]['symbol'] == "WETH":
+                token_id = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" # get ETH instead of WETH
+            query = self.session.query(*[getattr(TokenOHLCV, col) for col in ['timestamp', 'symbol', 'close']])
+            query = query.filter(
+                TokenOHLCV.token_id == token_id,
+            )
+            query = query.order_by(TokenOHLCV.timestamp.desc())
+            results = query.first()
+
+        if not len(results):
+            return pd.DataFrame()
+        
+        df = pd.DataFrame.from_dict([results])
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        df = df.resample('1min').ffill()
+        if 'lpPriceUSD' in df.columns:
+            df = df.rename(columns={'lpPriceUSD': 'close'})
+            df['symbol'] = f'{self.token_metadata[token_id]["symbol"]}/VP'
+        return df    
 
     def get_pool_metric(self, 
                         pool_id: str, 
@@ -435,6 +486,36 @@ class DataHandler():
         series.fillna(0, inplace=True)
         return series
 
+    def get_pool_metric_last(self, 
+                             pool_id: str, 
+                             metric: str, 
+                             cols: List=['timestamp', 'value']
+        ) -> pd.Series:
+        query = self.session.query(*[getattr(PoolMetrics, col) for col in cols])
+        query = query.filter(
+            PoolMetrics.pool_id == pool_id,
+        )
+        if metric in ['netSwapFlow', 'netLPFlow', 'sharkflow']:
+            query = query.filter(PoolMetrics.metric.like(f'%{metric}'))
+        else:
+            query = query.filter(PoolMetrics.metric == metric)
+        query = query.order_by(PoolMetrics.timestamp.desc())
+        results = query.first()
+        if not len(results):
+            return pd.Series()
+        df = pd.DataFrame.from_dict([results])
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        series = df['value']
+        series.name = metric
+        if metric in ['shannonsEntropy', 'giniCoefficient']:
+            series.replace(0, method='ffill', inplace=True)
+        elif metric in ['netSwapFlow', 'netLPFlow', 'sharkflow']:
+            series.groupby(series.index).sum()            
+        elif metric == 'lpSharePrice':
+            series = series.ffill()
+        series.fillna(0, inplace=True)
+        return series
+
     def get_token_metric(self, 
                          token_id: str, 
                          metric: str, 
@@ -445,10 +526,13 @@ class DataHandler():
         query = self.session.query(*[getattr(TokenMetrics, col) for col in cols])
         query = query.filter(
             TokenMetrics.token_id == token_id,
-            TokenMetrics.metric == metric,
             TokenMetrics.timestamp >= start,
             TokenMetrics.timestamp <= end
         )
+        if metric in ['logReturns']:
+            query = query.filter(TokenMetrics.metric.like(f'%{metric}'))
+        else:
+            query = query.filter(TokenMetrics.metric == metric)
         query = query.order_by(TokenMetrics.timestamp.asc())
         results = query.all()
         if not len(results):
@@ -461,26 +545,52 @@ class DataHandler():
         return series
 
     def get_changepoints(self, 
-                         pool_id: str, 
+                         address: str, 
                          model: str, 
                          metric: str, 
                          start: int=None, 
                          end: int=None,
+                         freq: str='1h',
                          cols: List=['timestamp']
         ) -> pd.Series:
         query = self.session.query(*[getattr(Changepoints, col) for col in cols])
         query = query.filter(
-            Changepoints.pool_id == pool_id,
+            Changepoints.address == address,
             Changepoints.model == model,
             Changepoints.metric == metric,
             Changepoints.timestamp >= start,
-            Changepoints.timestamp <= end
+            Changepoints.timestamp <= end,
+            Changepoints.freq == freq
         )
         query = query.order_by(Changepoints.timestamp.asc())
         results = query.all()
         if not len(results):
             return pd.Series()
         df = pd.DataFrame.from_dict(results)
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        series = df['timestamp']
+        series.name = 'changepoints'
+        return series
+
+    def get_changepoints_last(self, 
+                              address: str, 
+                              model: str, 
+                              metric: str,
+                              freq: str='1h',
+                              cols: List=['timestamp']
+        ) -> pd.Series:
+        query = self.session.query(*[getattr(Changepoints, col) for col in cols])
+        query = query.filter(
+            Changepoints.address == address,
+            Changepoints.model == model,
+            Changepoints.metric == metric,
+            Changepoints.freq == freq
+        )
+        query = query.order_by(Changepoints.timestamp.desc())
+        results = query.first()
+        if not len(results):
+            return pd.Series()
+        df = pd.DataFrame.from_dict([results])
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['timestamp']
         series.name = 'changepoints'
@@ -561,9 +671,11 @@ class DataHandler():
         if normalize:
             scaler = MinMaxScaler(feature_range=(-1, 1))
             X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
+
         elif standardize:
             scaler = StandardScaler()
             X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
+
         return X
 
     def get_fees(self, 
@@ -595,7 +707,7 @@ class DataHandler():
         df = (df.groupby(['timestamp', 'tokenBought', 'tokenSold'], as_index=False)
                         .agg({'amountBought': 'sum', 'amountSold': 'sum'}))
         
-        assert df['tokenBought'].nunique() == 2 and df['tokenSold'].nunique() == 2, 'Too many tokens in pool'
+        assert df['tokenBought'].nunique() <= 2 and df['tokenSold'].nunique() <= 2, 'Too many tokens in pool'
         
         fees = self.get_fees(pool)
         ohlcv = []
@@ -605,6 +717,9 @@ class DataHandler():
                 fee, admin_fee = fees.iloc[-1][['fee', 'adminFee']]
             else:
                 fee, admin_fee = tmp.iloc[0][['fee', 'adminFee']]
+            if admin_fee == 0.5:
+                # HACK!!!!!!!!!!!!!, why is this happening?
+                admin_fee = 0
             if row['amountBought'] == 0 or row['amountSold'] == 0:
                 continue
             price = row['amountSold'] / (row['amountBought'] * (1 + fee + admin_fee))

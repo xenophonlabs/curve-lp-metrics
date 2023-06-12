@@ -17,6 +17,19 @@ In our paper, we provided promising evidence for how quantitative metrics and de
 
 *High-level Figma diagram of Curvemetrics Architecture*
 
+The BOCD models are currently deployed for the following metrics and pools:
+
+```python
+POOL_METRICS = {"shannonsEntropy", "netSwapFlow", "300.Markout"}
+MODELED_POOLS = [
+    "0xdc24316b9ae028f1497c275eb9192a3ea0f67022", # ETH/stETH
+    "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", # 3pool
+    "0xdcef968d416a41cdac0ed8702fac8128a64241a2", # FRAX/USDC
+    "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577", # ETH/frxETH
+    "0x828b154032950c8ff7cf8085d841723db2696056", # stETH Concentrated
+]
+```
+
 
 # API Usage
 
@@ -44,7 +57,7 @@ Below is a summary of available API endpoints and their descriptions. Each endpo
 | `/ohlcv` | Get OHLCV data for a specific token | `token_id`, `start`, `end` |
 | `/pool_metrics` | Get specific pool metrics | `pool_id`, `metric`, `start`, `end`, `cols` (optional, default: `['timestamp', 'value']`) |
 | `/token_metrics` | Get specific token metrics | `token_id`, `metric`, `start`, `end`, `cols` (optional, default: `['timestamp', 'value']`) |
-| `/changepoints` | Get changepoints for a specific pool and model | `pool_id`, `model`, `metric`, `start`, `end`, `cols` (optional, default: `['timestamp']`) |
+| `/changepoints` | Get changepoints for a specific pool or token and model | `address`, `model`, `metric`, `start`, `end`, `cols` (optional, default: `['timestamp']`) |
 | `/takers` | Get information about takers | None |
 | `/sharks` | Get information about sharks | `top` (optional, default: `0.9`) |
 | `/pool_X` | Get pool data with specific conditions | `pool_id`, `metric`, `start`, `end`, `freq` (optional, default: `timedelta(hours=1)`)|

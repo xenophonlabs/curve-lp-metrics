@@ -15,3 +15,4 @@ class Logger():
             logger.addHandler(handler)
 
         self.logger = logger
+        self.fn = fn

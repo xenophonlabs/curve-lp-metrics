@@ -1,924 +1,233 @@
-2023-06-11 22:20:02,965 - Processing Raw Data...
-2023-06-11 22:20:02,965 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:20:02,965 - End time: 2023-06-11 22:20:02
+2023-06-12 23:50:02,911 - Processing Raw Data...
+2023-06-12 23:50:02,911 - Start time: 2023-06-12 22:40:02
+2023-06-12 23:50:02,911 - End time: 2023-06-12 23:50:02
 
-2023-06-11 22:20:04,713 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:20:05,407 - Inserting pool data...
-2023-06-11 22:20:09,667 - Finished pool data...
-2023-06-11 22:20:09,819 - Inserting swap data...
-2023-06-11 22:20:09,820 - Finished swap data...
-2023-06-11 22:20:09,949 - Inserting lp event data...
-2023-06-11 22:20:09,949 - Finished lp event data...
-2023-06-11 22:20:10,049 - Inserting snapshots data...
-2023-06-11 22:20:10,050 - Finished snapshots data...
-2023-06-11 22:20:10,050 - Finished pool Curve.fi ETH/stETH.
+2023-06-12 23:50:04,731 - Processing pool Curve.fi ETH/stETH.
+2023-06-12 23:50:05,567 - Inserting pool data...
+2023-06-12 23:50:20,248 - Finished pool data...
+2023-06-12 23:50:20,364 - Inserting swap data...
+2023-06-12 23:50:20,371 - Finished swap data...
+2023-06-12 23:50:20,565 - Inserting lp event data...
+2023-06-12 23:50:20,571 - Finished lp event data...
+2023-06-12 23:50:20,665 - Inserting snapshots data...
+2023-06-12 23:50:20,666 - Finished snapshots data...
+2023-06-12 23:50:20,666 - Finished pool Curve.fi ETH/stETH.
 
-2023-06-11 22:20:10,050 - Processing pool Curve.fi DAI/USDC/USDT.
-2023-06-11 22:20:10,620 - Inserting pool data...
-2023-06-11 22:20:11,050 - Finished pool data...
-2023-06-11 22:20:11,185 - Inserting swap data...
-2023-06-11 22:20:11,185 - Finished swap data...
-2023-06-11 22:20:11,312 - Inserting lp event data...
-2023-06-11 22:20:11,313 - Finished lp event data...
-2023-06-11 22:20:11,416 - Inserting snapshots data...
-2023-06-11 22:20:11,417 - Finished snapshots data...
-2023-06-11 22:20:11,417 - Finished pool Curve.fi DAI/USDC/USDT.
+2023-06-12 23:50:20,666 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-06-12 23:50:21,216 - Inserting pool data...
+2023-06-12 23:50:21,639 - Finished pool data...
+2023-06-12 23:50:21,761 - Inserting swap data...
+2023-06-12 23:50:21,769 - Finished swap data...
+2023-06-12 23:50:21,952 - Inserting lp event data...
+2023-06-12 23:50:21,960 - Finished lp event data...
+2023-06-12 23:50:22,054 - Inserting snapshots data...
+2023-06-12 23:50:22,054 - Finished snapshots data...
+2023-06-12 23:50:22,054 - Finished pool Curve.fi DAI/USDC/USDT.
 
-2023-06-11 22:20:11,417 - Processing pool Curve.fi FRAX/USDC.
-2023-06-11 22:20:11,881 - Inserting pool data...
-2023-06-11 22:20:12,359 - Finished pool data...
-2023-06-11 22:20:12,544 - Inserting swap data...
-2023-06-11 22:20:12,544 - Finished swap data...
-2023-06-11 22:20:12,661 - Inserting lp event data...
-2023-06-11 22:20:12,662 - Finished lp event data...
-2023-06-11 22:20:12,755 - Inserting snapshots data...
-2023-06-11 22:20:12,756 - Finished snapshots data...
-2023-06-11 22:20:12,756 - Finished pool Curve.fi FRAX/USDC.
+2023-06-12 23:50:22,055 - Processing pool Curve.fi FRAX/USDC.
+2023-06-12 23:50:22,646 - Inserting pool data...
+2023-06-12 23:50:23,060 - Finished pool data...
+2023-06-12 23:50:23,219 - Inserting swap data...
+2023-06-12 23:50:23,223 - Finished swap data...
+2023-06-12 23:50:23,362 - Inserting lp event data...
+2023-06-12 23:50:23,366 - Finished lp event data...
+2023-06-12 23:50:23,457 - Inserting snapshots data...
+2023-06-12 23:50:23,458 - Finished snapshots data...
+2023-06-12 23:50:23,458 - Finished pool Curve.fi FRAX/USDC.
 
-2023-06-11 22:20:12,756 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
-2023-06-11 22:20:13,229 - Inserting pool data...
-2023-06-11 22:20:13,725 - Finished pool data...
-2023-06-11 22:20:13,846 - Inserting swap data...
-2023-06-11 22:20:13,846 - Finished swap data...
-2023-06-11 22:20:13,960 - Inserting lp event data...
-2023-06-11 22:20:13,961 - Finished lp event data...
-2023-06-11 22:20:14,054 - Inserting snapshots data...
-2023-06-11 22:20:14,054 - Finished snapshots data...
-2023-06-11 22:20:14,055 - Finished pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-06-12 23:50:23,458 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-06-12 23:50:23,911 - Inserting pool data...
+2023-06-12 23:50:24,325 - Finished pool data...
+2023-06-12 23:50:24,442 - Inserting swap data...
+2023-06-12 23:50:24,443 - Finished swap data...
+2023-06-12 23:50:24,568 - Inserting lp event data...
+2023-06-12 23:50:24,568 - Finished lp event data...
+2023-06-12 23:50:24,662 - Inserting snapshots data...
+2023-06-12 23:50:24,662 - Finished snapshots data...
+2023-06-12 23:50:24,662 - Finished pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
 
-2023-06-11 22:20:14,055 - Processing pool Curve.fi USDN/3Crv.
-2023-06-11 22:20:14,525 - Inserting pool data...
-2023-06-11 22:20:14,951 - Finished pool data...
-2023-06-11 22:20:15,154 - Inserting swap data...
-2023-06-11 22:20:15,155 - Finished swap data...
-2023-06-11 22:20:15,262 - Inserting lp event data...
-2023-06-11 22:20:15,263 - Finished lp event data...
-2023-06-11 22:20:15,350 - Inserting snapshots data...
-2023-06-11 22:20:15,351 - Finished snapshots data...
-2023-06-11 22:20:15,351 - Finished pool Curve.fi USDN/3Crv.
+2023-06-12 23:50:24,662 - Processing pool Curve.fi USDN/3Crv.
+2023-06-12 23:50:25,118 - Inserting pool data...
+2023-06-12 23:50:25,542 - Finished pool data...
+2023-06-12 23:50:25,663 - Inserting swap data...
+2023-06-12 23:50:25,664 - Finished swap data...
+2023-06-12 23:50:25,840 - Inserting lp event data...
+2023-06-12 23:50:25,841 - Finished lp event data...
+2023-06-12 23:50:25,940 - Inserting snapshots data...
+2023-06-12 23:50:25,941 - Finished snapshots data...
+2023-06-12 23:50:25,941 - Finished pool Curve.fi USDN/3Crv.
 
-2023-06-11 22:20:15,351 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
-2023-06-11 22:20:16,131 - Inserting pool data...
-2023-06-11 22:20:16,559 - Finished pool data...
-2023-06-11 22:20:16,682 - Inserting swap data...
-2023-06-11 22:20:16,683 - Finished swap data...
-2023-06-11 22:20:16,797 - Inserting lp event data...
-2023-06-11 22:20:16,797 - Finished lp event data...
-2023-06-11 22:20:16,907 - Inserting snapshots data...
-2023-06-11 22:20:16,907 - Finished snapshots data...
-2023-06-11 22:20:16,907 - Finished pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-06-12 23:50:25,941 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-06-12 23:50:26,385 - Inserting pool data...
+2023-06-12 23:50:26,794 - Finished pool data...
+2023-06-12 23:50:26,929 - Inserting swap data...
+2023-06-12 23:50:26,930 - Finished swap data...
+2023-06-12 23:50:27,070 - Inserting lp event data...
+2023-06-12 23:50:27,071 - Finished lp event data...
+2023-06-12 23:50:27,167 - Inserting snapshots data...
+2023-06-12 23:50:27,168 - Finished snapshots data...
+2023-06-12 23:50:27,168 - Finished pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
 
-2023-06-11 22:20:16,907 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
-2023-06-11 22:20:17,380 - Inserting pool data...
-2023-06-11 22:20:17,915 - Finished pool data...
-2023-06-11 22:20:18,035 - Inserting swap data...
-2023-06-11 22:20:18,036 - Finished swap data...
-2023-06-11 22:20:18,151 - Inserting lp event data...
-2023-06-11 22:20:18,152 - Finished lp event data...
-2023-06-11 22:20:18,252 - Inserting snapshots data...
-2023-06-11 22:20:18,253 - Finished snapshots data...
-2023-06-11 22:20:18,253 - Finished pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-06-12 23:50:27,168 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-06-12 23:50:27,714 - Inserting pool data...
+2023-06-12 23:50:28,132 - Finished pool data...
+2023-06-12 23:50:28,257 - Inserting swap data...
+2023-06-12 23:50:28,258 - Finished swap data...
+2023-06-12 23:50:28,365 - Inserting lp event data...
+2023-06-12 23:50:28,366 - Finished lp event data...
+2023-06-12 23:50:28,458 - Inserting snapshots data...
+2023-06-12 23:50:28,459 - Finished snapshots data...
+2023-06-12 23:50:28,459 - Finished pool Curve.fi DAI/USDC/USDT/sUSD.
 
-2023-06-11 22:20:18,253 - Processing pool Curve.fi ETH/frxETH.
-2023-06-11 22:20:19,770 - Inserting pool data...
-2023-06-11 22:20:20,245 - Finished pool data...
-2023-06-11 22:20:20,385 - Inserting swap data...
-2023-06-11 22:20:20,386 - Finished swap data...
-2023-06-11 22:20:20,506 - Inserting lp event data...
-2023-06-11 22:20:20,507 - Finished lp event data...
-2023-06-11 22:20:20,605 - Inserting snapshots data...
-2023-06-11 22:20:20,606 - Finished snapshots data...
-2023-06-11 22:20:20,606 - Finished pool Curve.fi ETH/frxETH.
+2023-06-12 23:50:28,459 - Processing pool Curve.fi ETH/frxETH.
+2023-06-12 23:50:28,920 - Inserting pool data...
+2023-06-12 23:50:29,332 - Finished pool data...
+2023-06-12 23:50:29,441 - Inserting swap data...
+2023-06-12 23:50:29,454 - Finished swap data...
+2023-06-12 23:50:29,566 - Inserting lp event data...
+2023-06-12 23:50:29,567 - Finished lp event data...
+2023-06-12 23:50:29,660 - Inserting snapshots data...
+2023-06-12 23:50:29,661 - Finished snapshots data...
+2023-06-12 23:50:29,661 - Finished pool Curve.fi ETH/frxETH.
 
-2023-06-11 22:20:20,606 - Processing pool Curve.fi Factory USD Metapool: Liquity.
-2023-06-11 22:20:21,149 - Inserting pool data...
-2023-06-11 22:20:21,722 - Finished pool data...
-2023-06-11 22:20:21,862 - Inserting swap data...
-2023-06-11 22:20:21,863 - Finished swap data...
-2023-06-11 22:20:21,982 - Inserting lp event data...
-2023-06-11 22:20:21,983 - Finished lp event data...
-2023-06-11 22:20:22,077 - Inserting snapshots data...
-2023-06-11 22:20:22,078 - Finished snapshots data...
-2023-06-11 22:20:22,078 - Finished pool Curve.fi Factory USD Metapool: Liquity.
+2023-06-12 23:50:29,661 - Processing pool Curve.fi Factory USD Metapool: Liquity.
+2023-06-12 23:50:30,178 - Inserting pool data...
+2023-06-12 23:50:30,607 - Finished pool data...
+2023-06-12 23:50:30,729 - Inserting swap data...
+2023-06-12 23:50:30,730 - Finished swap data...
+2023-06-12 23:50:30,847 - Inserting lp event data...
+2023-06-12 23:50:30,848 - Finished lp event data...
+2023-06-12 23:50:30,967 - Inserting snapshots data...
+2023-06-12 23:50:30,968 - Finished snapshots data...
+2023-06-12 23:50:30,968 - Finished pool Curve.fi Factory USD Metapool: Liquity.
 
-2023-06-11 22:20:22,078 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
-2023-06-11 22:20:22,562 - Inserting pool data...
-2023-06-11 22:20:23,091 - Finished pool data...
-2023-06-11 22:20:23,224 - Inserting swap data...
-2023-06-11 22:20:23,224 - Finished swap data...
-2023-06-11 22:20:23,345 - Inserting lp event data...
-2023-06-11 22:20:23,345 - Finished lp event data...
-2023-06-11 22:20:23,443 - Inserting snapshots data...
-2023-06-11 22:20:23,444 - Finished snapshots data...
-2023-06-11 22:20:23,444 - Finished pool Curve.fi Factory USD Metapool: Binance USD.
+2023-06-12 23:50:30,968 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
+2023-06-12 23:50:31,418 - Inserting pool data...
+2023-06-12 23:50:31,850 - Finished pool data...
+2023-06-12 23:50:32,031 - Inserting swap data...
+2023-06-12 23:50:32,032 - Finished swap data...
+2023-06-12 23:50:32,146 - Inserting lp event data...
+2023-06-12 23:50:32,147 - Finished lp event data...
+2023-06-12 23:50:32,247 - Inserting snapshots data...
+2023-06-12 23:50:32,247 - Finished snapshots data...
+2023-06-12 23:50:32,248 - Finished pool Curve.fi Factory USD Metapool: Binance USD.
 
-2023-06-11 22:20:23,444 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
-2023-06-11 22:20:23,913 - Inserting pool data...
-2023-06-11 22:20:24,422 - Finished pool data...
-2023-06-11 22:20:24,539 - Inserting swap data...
-2023-06-11 22:20:24,540 - Finished swap data...
-2023-06-11 22:20:24,650 - Inserting lp event data...
-2023-06-11 22:20:24,651 - Finished lp event data...
-2023-06-11 22:20:24,740 - Inserting snapshots data...
-2023-06-11 22:20:24,741 - Finished snapshots data...
-2023-06-11 22:20:24,741 - Finished pool Curve.fi Factory Plain Pool: stETH concentrated.
+2023-06-12 23:50:32,248 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+2023-06-12 23:50:32,877 - Inserting pool data...
+2023-06-12 23:50:33,316 - Finished pool data...
+2023-06-12 23:50:33,433 - Inserting swap data...
+2023-06-12 23:50:33,449 - Finished swap data...
+2023-06-12 23:50:33,567 - Inserting lp event data...
+2023-06-12 23:50:33,567 - Finished lp event data...
+2023-06-12 23:50:33,674 - Inserting snapshots data...
+2023-06-12 23:50:33,674 - Finished snapshots data...
+2023-06-12 23:50:33,674 - Finished pool Curve.fi Factory Plain Pool: stETH concentrated.
 
-2023-06-11 22:20:24,741 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
-2023-06-11 22:20:25,300 - Inserting pool data...
-2023-06-11 22:20:25,756 - Finished pool data...
-2023-06-11 22:20:25,969 - Inserting swap data...
-2023-06-11 22:20:25,970 - Finished swap data...
-2023-06-11 22:20:26,357 - Inserting lp event data...
-2023-06-11 22:20:26,358 - Finished lp event data...
-2023-06-11 22:20:26,453 - Inserting snapshots data...
-2023-06-11 22:20:26,454 - Finished snapshots data...
-2023-06-11 22:20:26,454 - Finished pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+2023-06-12 23:50:33,675 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+2023-06-12 23:50:34,179 - Inserting pool data...
+2023-06-12 23:50:34,597 - Finished pool data...
+2023-06-12 23:50:34,721 - Inserting swap data...
+2023-06-12 23:50:34,722 - Finished swap data...
+2023-06-12 23:50:34,843 - Inserting lp event data...
+2023-06-12 23:50:34,844 - Finished lp event data...
+2023-06-12 23:50:34,940 - Inserting snapshots data...
+2023-06-12 23:50:34,941 - Finished snapshots data...
+2023-06-12 23:50:34,941 - Finished pool Curve.fi Factory Crypto Pool: cbETH/ETH.
 
-2023-06-11 22:20:26,454 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
-2023-06-11 22:20:26,970 - Inserting pool data...
-2023-06-11 22:20:27,438 - Finished pool data...
-2023-06-11 22:20:27,555 - Inserting swap data...
-2023-06-11 22:20:27,556 - Finished swap data...
-2023-06-11 22:20:27,685 - Inserting lp event data...
-2023-06-11 22:20:27,686 - Finished lp event data...
-2023-06-11 22:20:27,778 - Inserting snapshots data...
-2023-06-11 22:20:27,779 - Finished snapshots data...
-2023-06-11 22:20:27,779 - Finished pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+2023-06-12 23:50:34,941 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+2023-06-12 23:50:35,397 - Inserting pool data...
+2023-06-12 23:50:35,825 - Finished pool data...
+2023-06-12 23:50:36,005 - Inserting swap data...
+2023-06-12 23:50:36,015 - Finished swap data...
+2023-06-12 23:50:36,138 - Inserting lp event data...
+2023-06-12 23:50:36,138 - Finished lp event data...
+2023-06-12 23:50:36,231 - Inserting snapshots data...
+2023-06-12 23:50:36,231 - Finished snapshots data...
+2023-06-12 23:50:36,231 - Finished pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
 
-2023-06-11 22:20:27,815 - Processing token LUSD OHLCV using chainlink.
-2023-06-11 22:20:43,228 - Found the closest round: 18446744073709563521, at 2023-06-11 20:28:47.
-2023-06-11 22:20:43,228 - Number of iterations: 14
-2023-06-11 22:20:43,441 - Inserting OHLCV.
+2023-06-12 23:50:36,268 - Processing token LUSD OHLCV using chainlink.
+2023-06-12 23:50:50,395 - Found the closest round: 18446744073709563546, at 2023-06-12 21:40:35.
+2023-06-12 23:50:50,395 - Number of iterations: 13
+2023-06-12 23:50:50,643 - Inserting OHLCV.
 
-2023-06-11 22:20:43,450 - Processing token FRAX OHLCV using chainlink.
-2023-06-11 22:20:58,915 - Found the closest round: 18446744073709563426, at 2023-06-11 20:41:23.
-2023-06-11 22:20:58,915 - Number of iterations: 14
-2023-06-11 22:20:59,104 - Inserting OHLCV.
+2023-06-12 23:50:50,654 - Processing token FRAX OHLCV using chainlink.
+2023-06-12 23:51:05,818 - Found the closest round: 18446744073709563451, at 2023-06-12 21:53:11.
+2023-06-12 23:51:05,818 - Number of iterations: 14
+2023-06-12 23:51:05,986 - Inserting OHLCV.
 
-2023-06-11 22:20:59,113 - Processing token MIM OHLCV using ccxt.
-2023-06-11 22:21:02,256 - Using Bitfinex for MIM/USD.
-2023-06-11 22:21:02,258 - Inserting OHLCV.
+2023-06-12 23:51:06,000 - Processing token MIM OHLCV using ccxt.
+2023-06-12 23:51:09,195 - Using Bitfinex for MIM/USD.
+2023-06-12 23:51:09,197 - Inserting OHLCV.
 
-2023-06-11 22:21:02,258 - No price data for token MIM at this time.
+2023-06-12 23:51:09,197 - No price data for token MIM at this time.
 
-2023-06-11 22:21:02,258 - Processing token USDC OHLCV using ccxt.
-2023-06-11 22:21:03,048 - Using Binance US for USDC/USD.
-2023-06-11 22:21:03,051 - Inserting OHLCV.
+2023-06-12 23:51:09,197 - Processing token USDC OHLCV using ccxt.
+2023-06-12 23:51:09,953 - Using Binance US for USDC/USD.
+2023-06-12 23:51:09,956 - Inserting OHLCV.
 
-2023-06-11 22:21:03,113 - Processing token stETH OHLCV using chainlink.
-2023-06-11 22:21:19,557 - Found the closest round: 18446744073709569534, at 2023-06-11 20:39:35.
-2023-06-11 22:21:19,557 - Number of iterations: 15
-2023-06-11 22:21:19,758 - Inserting OHLCV.
+2023-06-12 23:51:10,013 - Processing token stETH OHLCV using chainlink.
+2023-06-12 23:51:26,370 - Found the closest round: 18446744073709569561, at 2023-06-12 22:35:11.
+2023-06-12 23:51:26,370 - Number of iterations: 15
+2023-06-12 23:51:26,737 - Inserting OHLCV.
 
-2023-06-11 22:21:19,766 - Processing token cbETH OHLCV using ccxt.
-2023-06-11 22:21:20,479 - Using Coinbase Pro for CBETH/USD.
-2023-06-11 22:21:20,482 - Inserting OHLCV.
+2023-06-12 23:51:26,745 - Processing token cbETH OHLCV using ccxt.
+2023-06-12 23:51:27,315 - Using Coinbase Pro for CBETH/USD.
+2023-06-12 23:51:27,318 - Inserting OHLCV.
 
-2023-06-11 22:21:20,508 - Processing token ETH OHLCV using ccxt.
-2023-06-11 22:21:21,279 - Using Binance US for ETH/USD.
-2023-06-11 22:21:21,283 - Inserting OHLCV.
+2023-06-12 23:51:27,342 - Processing token ETH OHLCV using ccxt.
+2023-06-12 23:51:28,087 - Using Binance US for ETH/USD.
+2023-06-12 23:51:28,091 - Inserting OHLCV.
 
-2023-06-11 22:21:21,344 - Processing token DAI OHLCV using ccxt.
-2023-06-11 22:21:22,097 - Using Binance US for DAI/USD.
-2023-06-11 22:21:22,101 - Inserting OHLCV.
+2023-06-12 23:51:28,147 - Processing token DAI OHLCV using ccxt.
+2023-06-12 23:51:29,054 - Using Binance US for DAI/USD.
+2023-06-12 23:51:29,058 - Inserting OHLCV.
 
-2023-06-11 22:21:22,165 - Processing token BUSD OHLCV using chainlink.
-2023-06-11 22:21:22,324 - Latest Chainlink timestamp 1686495539 is before start timestamp 1686517811.
+2023-06-12 23:51:29,115 - Processing token BUSD OHLCV using chainlink.
+2023-06-12 23:51:29,240 - Latest Chainlink timestamp 1686581963 is before start timestamp 1686609611.
 NoneType: None
-2023-06-11 22:21:22,324 - Inserting OHLCV.
+2023-06-12 23:51:29,240 - Inserting OHLCV.
 
-2023-06-11 22:21:22,324 - No price data for token BUSD at this time.
+2023-06-12 23:51:29,241 - No price data for token BUSD at this time.
 
-2023-06-11 22:21:22,324 - Processing token sUSD OHLCV using chainlink.
-2023-06-11 22:21:22,459 - Latest Chainlink timestamp 1686483191 is before start timestamp 1686517811.
+2023-06-12 23:51:29,241 - Processing token sUSD OHLCV using chainlink.
+2023-06-12 23:51:29,379 - Latest Chainlink timestamp 1686569615 is before start timestamp 1686609611.
 NoneType: None
-2023-06-11 22:21:22,459 - Inserting OHLCV.
+2023-06-12 23:51:29,379 - Inserting OHLCV.
 
-2023-06-11 22:21:22,459 - No price data for token sUSD at this time.
+2023-06-12 23:51:29,379 - No price data for token sUSD at this time.
 
-2023-06-11 22:21:22,459 - WETH assumed to be = ETH. Skipping...
+2023-06-12 23:51:29,379 - WETH assumed to be = ETH. Skipping...
 
-2023-06-11 22:21:22,459 - Processing token cvxCRV OHLCV using curveswaps.
-2023-06-11 22:21:22,515 - Inserting OHLCV.
+2023-06-12 23:51:29,379 - Processing token cvxCRV OHLCV using curveswaps.
+2023-06-12 23:51:29,802 - Inserting OHLCV.
 
-2023-06-11 22:21:22,515 - No price data for token cvxCRV at this time.
+2023-06-12 23:51:29,813 - Processing token USDT OHLCV using ccxt.
+2023-06-12 23:51:30,559 - Using Binance US for USDT/USD.
+2023-06-12 23:51:30,563 - Inserting OHLCV.
 
-2023-06-11 22:21:22,515 - Processing token USDT OHLCV using ccxt.
-2023-06-11 22:21:23,256 - Using Binance US for USDT/USD.
-2023-06-11 22:21:23,261 - Inserting OHLCV.
-
-2023-06-11 22:21:23,324 - Processing token USDN OHLCV using chainlink.
-2023-06-11 22:21:23,495 - Latest Chainlink timestamp 1675776755 is before start timestamp 1686517811.
+2023-06-12 23:51:30,622 - Processing token USDN OHLCV using chainlink.
+2023-06-12 23:51:30,745 - Latest Chainlink timestamp 1675776755 is before start timestamp 1686609611.
 NoneType: None
-2023-06-11 22:21:23,495 - Inserting OHLCV.
+2023-06-12 23:51:30,745 - Inserting OHLCV.
 
-2023-06-11 22:21:23,495 - No price data for token USDN at this time.
+2023-06-12 23:51:30,745 - No price data for token USDN at this time.
 
-2023-06-11 22:21:23,495 - Processing token frxETH OHLCV using curveswaps.
-2023-06-11 22:21:23,531 - Inserting OHLCV.
+2023-06-12 23:51:30,745 - Processing token frxETH OHLCV using curveswaps.
+2023-06-12 23:51:30,794 - Inserting OHLCV.
 
-2023-06-11 22:21:23,531 - No price data for token frxETH at this time.
+2023-06-12 23:51:30,806 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to 2023-06-12 23:49:35.
+2023-06-12 23:51:30,806 - Processing token UST OHLCV using ccxt.
+2023-06-12 23:51:30,808 - Using Coinbase Pro for UST/USD.
+2023-06-12 23:51:30,809 - Inserting OHLCV.
 
-2023-06-11 22:21:23,532 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to 2023-06-11 22:19:47.
-2023-06-11 22:21:23,532 - Processing token UST OHLCV using ccxt.
-2023-06-11 22:21:23,534 - Using Coinbase Pro for UST/USD.
-2023-06-11 22:21:23,534 - Inserting OHLCV.
+2023-06-12 23:51:30,809 - No price data for token UST at this time.
 
-2023-06-11 22:21:23,534 - No price data for token UST at this time.
+2023-06-12 23:51:30,809 - 3Crv uses pool virtual price. Skipping...
 
-2023-06-11 22:21:23,534 - 3Crv uses pool virtual price. Skipping...
+2023-06-12 23:51:30,809 - Processing token CRV OHLCV using ccxt.
+2023-06-12 23:51:31,557 - Using Binance US for CRV/USD.
+2023-06-12 23:51:31,561 - Inserting OHLCV.
 
-2023-06-11 22:21:23,534 - Processing token CRV OHLCV using ccxt.
-2023-06-11 22:21:24,290 - Using Binance US for CRV/USD.
-2023-06-11 22:21:24,293 - Inserting OHLCV.
+2023-06-12 23:51:31,620 - Done :)
 
-2023-06-11 22:21:24,363 - Done :)
-
-2023-06-11 22:21:24,363 - Successfully frontfilled raw data.
-2023-06-11 22:21:24,363 - Processing metrics...
-2023-06-11 22:21:24,363 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:24,363 - End time: 2023-06-11 22:20:02
-
-2023-06-11 22:21:24,376 - Processing pool metrics.
-
-2023-06-11 22:21:24,376 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:21:24,376 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:24,377 - End time: 2023-06-11 22:20:02
-2023-06-11 22:21:24,751 - Inserting metrics.
-2023-06-11 22:21:24,758 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:24,758 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:24,759 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:21:34,770 - Processing metrics...
-2023-06-11 22:21:34,770 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:34,770 - End time: 2023-06-11 22:20:02
-
-2023-06-11 22:21:34,785 - Processing pool metrics.
-
-2023-06-11 22:21:34,785 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:21:34,785 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:34,785 - End time: 2023-06-11 22:20:02
-2023-06-11 22:21:34,918 - Inserting metrics.
-2023-06-11 22:21:34,923 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:34,923 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:34,924 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:21:44,935 - Processing metrics...
-2023-06-11 22:21:44,935 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:44,935 - End time: 2023-06-11 22:20:02
-
-2023-06-11 22:21:44,952 - Processing pool metrics.
-
-2023-06-11 22:21:44,952 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:21:44,952 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:44,952 - End time: 2023-06-11 22:20:02
-2023-06-11 22:21:45,213 - Inserting metrics.
-2023-06-11 22:21:45,220 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:45,220 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:45,221 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:25:03,242 - Processing Raw Data...
-2023-06-11 22:25:03,242 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:25:03,242 - End time: 2023-06-11 22:25:03
-
-2023-06-11 22:25:05,111 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:25:05,906 - Inserting pool data...
-2023-06-11 22:25:07,770 - Finished pool data...
-2023-06-11 22:25:07,958 - Inserting swap data...
-2023-06-11 22:25:07,959 - Finished swap data...
-2023-06-11 22:25:08,077 - Inserting lp event data...
-2023-06-11 22:25:08,077 - Finished lp event data...
-2023-06-11 22:25:08,201 - Inserting snapshots data...
-2023-06-11 22:25:08,202 - Finished snapshots data...
-2023-06-11 22:25:08,202 - Finished pool Curve.fi ETH/stETH.
-
-2023-06-11 22:25:08,202 - Processing pool Curve.fi DAI/USDC/USDT.
-2023-06-11 22:25:08,809 - Inserting pool data...
-2023-06-11 22:25:09,238 - Finished pool data...
-2023-06-11 22:25:09,363 - Inserting swap data...
-2023-06-11 22:25:09,364 - Finished swap data...
-2023-06-11 22:25:09,542 - Inserting lp event data...
-2023-06-11 22:25:09,543 - Finished lp event data...
-2023-06-11 22:25:09,629 - Inserting snapshots data...
-2023-06-11 22:25:09,630 - Finished snapshots data...
-2023-06-11 22:25:09,630 - Finished pool Curve.fi DAI/USDC/USDT.
-
-2023-06-11 22:25:09,630 - Processing pool Curve.fi FRAX/USDC.
-2023-06-11 22:25:10,122 - Inserting pool data...
-2023-06-11 22:25:10,564 - Finished pool data...
-2023-06-11 22:25:10,716 - Inserting swap data...
-2023-06-11 22:25:10,717 - Finished swap data...
-2023-06-11 22:25:10,841 - Inserting lp event data...
-2023-06-11 22:25:10,842 - Finished lp event data...
-2023-06-11 22:25:10,934 - Inserting snapshots data...
-2023-06-11 22:25:10,935 - Finished snapshots data...
-2023-06-11 22:25:10,935 - Finished pool Curve.fi FRAX/USDC.
-
-2023-06-11 22:25:10,935 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
-2023-06-11 22:25:11,443 - Inserting pool data...
-2023-06-11 22:25:11,871 - Finished pool data...
-2023-06-11 22:25:12,034 - Inserting swap data...
-2023-06-11 22:25:12,034 - Finished swap data...
-2023-06-11 22:25:12,147 - Inserting lp event data...
-2023-06-11 22:25:12,148 - Finished lp event data...
-2023-06-11 22:25:12,243 - Inserting snapshots data...
-2023-06-11 22:25:12,244 - Finished snapshots data...
-2023-06-11 22:25:12,244 - Finished pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
-
-2023-06-11 22:25:12,244 - Processing pool Curve.fi USDN/3Crv.
-2023-06-11 22:25:13,061 - Inserting pool data...
-2023-06-11 22:25:13,481 - Finished pool data...
-2023-06-11 22:25:13,671 - Inserting swap data...
-2023-06-11 22:25:13,672 - Finished swap data...
-2023-06-11 22:25:13,784 - Inserting lp event data...
-2023-06-11 22:25:13,785 - Finished lp event data...
-2023-06-11 22:25:13,883 - Inserting snapshots data...
-2023-06-11 22:25:13,884 - Finished snapshots data...
-2023-06-11 22:25:13,884 - Finished pool Curve.fi USDN/3Crv.
-
-2023-06-11 22:25:13,884 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
-2023-06-11 22:25:14,399 - Inserting pool data...
-2023-06-11 22:25:14,824 - Finished pool data...
-2023-06-11 22:25:14,932 - Inserting swap data...
-2023-06-11 22:25:14,933 - Finished swap data...
-2023-06-11 22:25:15,049 - Inserting lp event data...
-2023-06-11 22:25:15,050 - Finished lp event data...
-2023-06-11 22:25:15,150 - Inserting snapshots data...
-2023-06-11 22:25:15,151 - Finished snapshots data...
-2023-06-11 22:25:15,151 - Finished pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
-
-2023-06-11 22:25:15,151 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
-2023-06-11 22:25:15,619 - Inserting pool data...
-2023-06-11 22:25:16,054 - Finished pool data...
-2023-06-11 22:25:16,170 - Inserting swap data...
-2023-06-11 22:25:16,171 - Finished swap data...
-2023-06-11 22:25:16,310 - Inserting lp event data...
-2023-06-11 22:25:16,311 - Finished lp event data...
-2023-06-11 22:25:16,402 - Inserting snapshots data...
-2023-06-11 22:25:16,403 - Finished snapshots data...
-2023-06-11 22:25:16,403 - Finished pool Curve.fi DAI/USDC/USDT/sUSD.
-
-2023-06-11 22:25:16,403 - Processing pool Curve.fi ETH/frxETH.
-2023-06-11 22:25:16,912 - Inserting pool data...
-2023-06-11 22:25:17,332 - Finished pool data...
-2023-06-11 22:25:17,460 - Inserting swap data...
-2023-06-11 22:25:17,461 - Finished swap data...
-2023-06-11 22:25:17,642 - Inserting lp event data...
-2023-06-11 22:25:17,642 - Finished lp event data...
-2023-06-11 22:25:17,730 - Inserting snapshots data...
-2023-06-11 22:25:17,731 - Finished snapshots data...
-2023-06-11 22:25:17,731 - Finished pool Curve.fi ETH/frxETH.
-
-2023-06-11 22:25:17,731 - Processing pool Curve.fi Factory USD Metapool: Liquity.
-2023-06-11 22:25:18,315 - Inserting pool data...
-2023-06-11 22:25:18,757 - Finished pool data...
-2023-06-11 22:25:18,943 - Inserting swap data...
-2023-06-11 22:25:18,944 - Finished swap data...
-2023-06-11 22:25:19,053 - Inserting lp event data...
-2023-06-11 22:25:19,053 - Finished lp event data...
-2023-06-11 22:25:19,143 - Inserting snapshots data...
-2023-06-11 22:25:19,143 - Finished snapshots data...
-2023-06-11 22:25:19,144 - Finished pool Curve.fi Factory USD Metapool: Liquity.
-
-2023-06-11 22:25:19,144 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
-2023-06-11 22:25:20,286 - Inserting pool data...
-2023-06-11 22:25:20,717 - Finished pool data...
-2023-06-11 22:25:20,895 - Inserting swap data...
-2023-06-11 22:25:20,896 - Finished swap data...
-2023-06-11 22:25:21,077 - Inserting lp event data...
-2023-06-11 22:25:21,078 - Finished lp event data...
-2023-06-11 22:25:21,178 - Inserting snapshots data...
-2023-06-11 22:25:21,179 - Finished snapshots data...
-2023-06-11 22:25:21,179 - Finished pool Curve.fi Factory USD Metapool: Binance USD.
-
-2023-06-11 22:25:21,179 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
-2023-06-11 22:25:21,658 - Inserting pool data...
-2023-06-11 22:25:22,074 - Finished pool data...
-2023-06-11 22:25:22,209 - Inserting swap data...
-2023-06-11 22:25:22,209 - Finished swap data...
-2023-06-11 22:25:22,322 - Inserting lp event data...
-2023-06-11 22:25:22,322 - Finished lp event data...
-2023-06-11 22:25:22,419 - Inserting snapshots data...
-2023-06-11 22:25:22,420 - Finished snapshots data...
-2023-06-11 22:25:22,420 - Finished pool Curve.fi Factory Plain Pool: stETH concentrated.
-
-2023-06-11 22:25:22,420 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
-2023-06-11 22:25:22,972 - Inserting pool data...
-2023-06-11 22:25:23,425 - Finished pool data...
-2023-06-11 22:25:24,390 - Inserting swap data...
-2023-06-11 22:25:24,391 - Finished swap data...
-2023-06-11 22:25:24,506 - Inserting lp event data...
-2023-06-11 22:25:24,506 - Finished lp event data...
-2023-06-11 22:25:24,598 - Inserting snapshots data...
-2023-06-11 22:25:24,599 - Finished snapshots data...
-2023-06-11 22:25:24,599 - Finished pool Curve.fi Factory Crypto Pool: cbETH/ETH.
-
-2023-06-11 22:25:24,599 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
-2023-06-11 22:25:25,056 - Inserting pool data...
-2023-06-11 22:25:25,512 - Finished pool data...
-2023-06-11 22:25:25,623 - Inserting swap data...
-2023-06-11 22:25:25,624 - Finished swap data...
-2023-06-11 22:25:25,798 - Inserting lp event data...
-2023-06-11 22:25:25,799 - Finished lp event data...
-2023-06-11 22:25:25,896 - Inserting snapshots data...
-2023-06-11 22:25:25,896 - Finished snapshots data...
-2023-06-11 22:25:25,896 - Finished pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
-
-2023-06-11 22:25:25,923 - Processing token LUSD OHLCV using chainlink.
-2023-06-11 22:25:41,578 - Found the closest round: 18446744073709563521, at 2023-06-11 20:28:47.
-2023-06-11 22:25:41,578 - Number of iterations: 14
-2023-06-11 22:25:41,797 - Inserting OHLCV.
-
-2023-06-11 22:25:41,807 - Processing token FRAX OHLCV using chainlink.
-2023-06-11 22:25:57,172 - Found the closest round: 18446744073709563426, at 2023-06-11 20:41:23.
-2023-06-11 22:25:57,172 - Number of iterations: 14
-2023-06-11 22:25:57,432 - Inserting OHLCV.
-
-2023-06-11 22:25:57,440 - Processing token MIM OHLCV using ccxt.
-2023-06-11 22:26:00,984 - Using Bitfinex for MIM/USD.
-2023-06-11 22:26:00,987 - Inserting OHLCV.
-
-2023-06-11 22:26:00,987 - No price data for token MIM at this time.
-
-2023-06-11 22:26:00,987 - Processing token USDC OHLCV using ccxt.
-2023-06-11 22:26:01,805 - Using Binance US for USDC/USD.
-2023-06-11 22:26:01,808 - Inserting OHLCV.
-
-2023-06-11 22:26:01,885 - Processing token stETH OHLCV using chainlink.
-2023-06-11 22:26:18,351 - Found the closest round: 18446744073709569534, at 2023-06-11 20:39:35.
-2023-06-11 22:26:18,351 - Number of iterations: 15
-2023-06-11 22:26:18,546 - Inserting OHLCV.
-
-2023-06-11 22:26:18,555 - Processing token cbETH OHLCV using ccxt.
-2023-06-11 22:26:19,355 - Using Coinbase Pro for CBETH/USD.
-2023-06-11 22:26:19,358 - Inserting OHLCV.
-
-2023-06-11 22:26:19,378 - Processing token ETH OHLCV using ccxt.
-2023-06-11 22:26:20,140 - Using Binance US for ETH/USD.
-2023-06-11 22:26:20,143 - Inserting OHLCV.
-
-2023-06-11 22:26:20,205 - Processing token DAI OHLCV using ccxt.
-2023-06-11 22:26:20,953 - Using Binance US for DAI/USD.
-2023-06-11 22:26:20,956 - Inserting OHLCV.
-
-2023-06-11 22:26:21,015 - Processing token BUSD OHLCV using chainlink.
-2023-06-11 22:26:21,185 - Latest Chainlink timestamp 1686495539 is before start timestamp 1686518111.
-NoneType: None
-2023-06-11 22:26:21,186 - Inserting OHLCV.
-
-2023-06-11 22:26:21,186 - No price data for token BUSD at this time.
-
-2023-06-11 22:26:21,186 - Processing token sUSD OHLCV using chainlink.
-2023-06-11 22:26:21,345 - Latest Chainlink timestamp 1686483191 is before start timestamp 1686518111.
-NoneType: None
-2023-06-11 22:26:21,345 - Inserting OHLCV.
-
-2023-06-11 22:26:21,345 - No price data for token sUSD at this time.
-
-2023-06-11 22:26:21,345 - WETH assumed to be = ETH. Skipping...
-
-2023-06-11 22:26:21,346 - Processing token cvxCRV OHLCV using curveswaps.
-2023-06-11 22:26:21,396 - Inserting OHLCV.
-
-2023-06-11 22:26:21,396 - No price data for token cvxCRV at this time.
-
-2023-06-11 22:26:21,396 - Processing token USDT OHLCV using ccxt.
-2023-06-11 22:26:22,142 - Using Binance US for USDT/USD.
-2023-06-11 22:26:22,146 - Inserting OHLCV.
-
-2023-06-11 22:26:22,213 - Processing token USDN OHLCV using chainlink.
-2023-06-11 22:26:22,358 - Latest Chainlink timestamp 1675776755 is before start timestamp 1686518111.
-NoneType: None
-2023-06-11 22:26:22,358 - Inserting OHLCV.
-
-2023-06-11 22:26:22,358 - No price data for token USDN at this time.
-
-2023-06-11 22:26:22,358 - Processing token frxETH OHLCV using curveswaps.
-2023-06-11 22:26:22,391 - Inserting OHLCV.
-
-2023-06-11 22:26:22,391 - No price data for token frxETH at this time.
-
-2023-06-11 22:26:22,391 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to 2023-06-11 22:24:47.
-2023-06-11 22:26:22,391 - Processing token UST OHLCV using ccxt.
-2023-06-11 22:26:22,393 - Using Coinbase Pro for UST/USD.
-2023-06-11 22:26:22,393 - Inserting OHLCV.
-
-2023-06-11 22:26:22,394 - No price data for token UST at this time.
-
-2023-06-11 22:26:22,394 - 3Crv uses pool virtual price. Skipping...
-
-2023-06-11 22:26:22,394 - Processing token CRV OHLCV using ccxt.
-2023-06-11 22:26:23,139 - Using Binance US for CRV/USD.
-2023-06-11 22:26:23,142 - Inserting OHLCV.
-
-2023-06-11 22:26:23,198 - Done :)
-
-2023-06-11 22:26:23,198 - Successfully frontfilled raw data.
-2023-06-11 22:26:23,198 - Processing metrics...
-2023-06-11 22:26:23,198 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:23,198 - End time: 2023-06-11 22:25:03
-
-2023-06-11 22:26:23,212 - Processing pool metrics.
-
-2023-06-11 22:26:23,212 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:26:23,212 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:23,213 - End time: 2023-06-11 22:25:03
-2023-06-11 22:26:23,375 - Inserting metrics.
-2023-06-11 22:26:23,382 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:23,382 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:23,384 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:26:33,394 - Processing metrics...
-2023-06-11 22:26:33,394 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:33,394 - End time: 2023-06-11 22:25:03
-
-2023-06-11 22:26:33,409 - Processing pool metrics.
-
-2023-06-11 22:26:33,409 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:26:33,409 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:33,409 - End time: 2023-06-11 22:25:03
-2023-06-11 22:26:33,551 - Inserting metrics.
-2023-06-11 22:26:33,556 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:33,557 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:33,557 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:26:43,568 - Processing metrics...
-2023-06-11 22:26:43,568 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:43,568 - End time: 2023-06-11 22:25:03
-
-2023-06-11 22:26:43,585 - Processing pool metrics.
-
-2023-06-11 22:26:43,585 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:26:43,585 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:43,585 - End time: 2023-06-11 22:25:03
-2023-06-11 22:26:43,808 - Inserting metrics.
-2023-06-11 22:26:43,813 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:43,813 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:43,815 - Failed to frontfill metrics: 'timestamp'
+2023-06-12 23:51:31,620 - Successfully frontfilled raw data.

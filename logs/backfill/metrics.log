@@ -1212,3 +1212,616 @@
 
 2023-06-11 21:49:48,493 - Done :)
 
+2023-06-12 16:37:57,602 - Processing metrics...
+2023-06-12 16:37:57,603 - Start time: 2023-03-23 23:50:00
+2023-06-12 16:37:57,603 - End time: 2023-04-23 00:00:00
+
+2023-06-12 16:37:57,644 - Processing pool metrics.
+
+2023-06-12 16:37:57,644 - Processing pool Curve.fi ETH/stETH.
+2023-06-12 16:37:57,644 - Start time: 2023-03-23 23:50:00
+2023-06-12 16:37:57,644 - End time: 2023-04-23 00:00:00
+2023-06-12 16:38:18,032 - Inserting metrics.
+2023-06-12 16:41:51,573 - Finished processing pool Curve.fi ETH/stETH.
+
+2023-06-12 16:41:51,573 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-06-12 16:41:51,573 - Start time: 2023-03-23 23:50:00
+2023-06-12 16:41:51,573 - End time: 2023-04-23 00:00:00
+2023-06-12 16:42:01,982 - Inserting metrics.
+2023-06-12 16:46:33,416 - Finished processing pool Curve.fi DAI/USDC/USDT.
+
+2023-06-12 16:46:33,416 - Processing pool Curve.fi FRAX/USDC.
+2023-06-12 16:46:33,416 - Start time: 2023-03-23 23:50:00
+2023-06-12 16:46:33,416 - End time: 2023-04-23 00:00:00
+2023-06-12 16:46:40,585 - Inserting metrics.
+2023-06-12 16:50:16,966 - Finished processing pool Curve.fi FRAX/USDC.
+
+2023-06-12 16:50:16,966 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-06-12 16:50:16,966 - Pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool, UST no longer indexed after 1653667380. Skipping...
+
+2023-06-12 16:50:16,966 - Processing pool Curve.fi USDN/3Crv.
+2023-06-12 16:50:16,966 - Pool Curve.fi USDN/3Crv, USDN no longer indexed after 1675776755. Skipping...
+
+2023-06-12 16:50:16,966 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-06-12 16:50:16,966 - Start time: 2023-03-23 23:50:00
+2023-06-12 16:50:16,967 - End time: 2023-04-23 00:00:00
+2023-06-12 16:50:25,301 - Inserting metrics.
+2023-06-12 16:55:24,447 - Finished processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+2023-06-12 16:55:24,447 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-06-12 16:55:24,447 - Start time: 2023-03-23 23:50:00
+2023-06-12 16:55:24,447 - End time: 2023-04-23 00:00:00
+2023-06-12 16:55:33,619 - Inserting metrics.
+2023-06-12 17:00:55,705 - Finished processing pool Curve.fi DAI/USDC/USDT/sUSD.
+
+2023-06-12 17:00:55,705 - Processing pool Curve.fi ETH/frxETH.
+2023-06-12 17:00:55,705 - Start time: 2023-03-23 23:50:00
+2023-06-12 17:00:55,705 - End time: 2023-04-23 00:00:00
+2023-06-12 17:01:07,647 - Inserting metrics.
+2023-06-12 17:04:53,457 - Finished processing pool Curve.fi ETH/frxETH.
+
+2023-06-12 17:04:53,459 - Processing pool Curve.fi Factory USD Metapool: Liquity.
+2023-06-12 17:04:53,459 - Start time: 2023-03-23 23:50:00
+2023-06-12 17:04:53,459 - End time: 2023-04-23 00:00:00
+2023-06-12 17:05:23,360 - Inserting metrics.
+2023-06-12 17:10:31,765 - Finished processing pool Curve.fi Factory USD Metapool: Liquity.
+
+2023-06-12 17:10:31,765 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
+2023-06-12 17:10:31,766 - Start time: 2023-03-23 23:50:00
+2023-06-12 17:10:31,766 - End time: 2023-04-23 00:00:00
+2023-06-12 17:10:50,980 - Inserting metrics.
+2023-06-12 17:15:49,934 - Finished processing pool Curve.fi Factory USD Metapool: Binance USD.
+
+2023-06-12 17:15:49,935 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+2023-06-12 17:15:49,935 - Start time: 2023-03-23 23:50:00
+2023-06-12 17:15:49,935 - End time: 2023-04-23 00:00:00
+2023-06-12 17:16:08,867 - Inserting metrics.
+2023-06-12 17:19:51,266 - Finished processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+
+2023-06-12 17:19:51,266 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+2023-06-12 17:19:51,266 - Start time: 2023-03-23 23:50:00
+2023-06-12 17:19:51,266 - End time: 2023-04-23 00:00:00
+2023-06-12 17:19:59,663 - Inserting metrics.
+2023-06-12 17:23:40,755 - Finished processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+
+2023-06-12 17:23:40,755 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+2023-06-12 17:23:40,755 - Start time: 2023-03-23 23:50:00
+2023-06-12 17:23:40,756 - End time: 2023-04-23 00:00:00
+2023-06-12 17:23:46,765 - Inserting metrics.
+2023-06-12 17:27:25,957 - Finished processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+
+2023-06-12 17:27:25,957 - Finished processing pool metrics.
+
+2023-06-12 17:27:26,031 - Processing token metrics.
+
+2023-06-12 17:27:26,031 - Processing token LUSD.
+2023-06-12 17:27:26,064 - Inserting metrics.
+2023-06-12 17:27:52,183 - Finished processing token LUSD.
+
+2023-06-12 17:27:52,183 - Processing token FRAX.
+2023-06-12 17:27:52,207 - Inserting metrics.
+2023-06-12 17:28:18,567 - Finished processing token FRAX.
+
+2023-06-12 17:28:18,567 - Processing token MIM.
+2023-06-12 17:28:18,702 - Inserting metrics.
+2023-06-12 17:28:46,191 - Finished processing token MIM.
+
+2023-06-12 17:28:46,192 - Processing token USDC.
+2023-06-12 17:28:46,681 - Inserting metrics.
+2023-06-12 17:29:13,258 - Finished processing token USDC.
+
+2023-06-12 17:29:13,258 - Processing token stETH.
+2023-06-12 17:29:13,278 - Inserting metrics.
+2023-06-12 17:29:39,697 - Finished processing token stETH.
+
+2023-06-12 17:29:39,697 - Processing token cbETH.
+2023-06-12 17:29:40,146 - Inserting metrics.
+2023-06-12 17:30:06,800 - Finished processing token cbETH.
+
+2023-06-12 17:30:06,800 - Processing token ETH.
+2023-06-12 17:30:07,302 - Inserting metrics.
+2023-06-12 17:30:33,281 - Finished processing token ETH.
+
+2023-06-12 17:30:33,281 - Processing token DAI.
+2023-06-12 17:30:33,849 - Inserting metrics.
+2023-06-12 17:31:01,535 - Finished processing token DAI.
+
+2023-06-12 17:31:01,535 - Processing token BUSD.
+2023-06-12 17:31:01,551 - Inserting metrics.
+2023-06-12 17:31:29,366 - Finished processing token BUSD.
+
+2023-06-12 17:31:29,366 - Processing token sUSD.
+2023-06-12 17:31:29,378 - Inserting metrics.
+2023-06-12 17:31:55,298 - Finished processing token sUSD.
+
+2023-06-12 17:31:55,298 - Processing token WETH.
+2023-06-12 17:31:55,298 - WETH assumed to be = ETH. Skipping...
+
+2023-06-12 17:31:55,299 - Processing token cvxCRV.
+2023-06-12 17:31:55,314 - Inserting metrics.
+2023-06-12 17:32:22,280 - Finished processing token cvxCRV.
+
+2023-06-12 17:32:22,281 - Processing token USDT.
+2023-06-12 17:32:22,820 - Inserting metrics.
+2023-06-12 17:32:49,897 - Finished processing token USDT.
+
+2023-06-12 17:32:49,897 - Processing token USDN.
+2023-06-12 17:32:49,897 - USDN no longer indexed after 1675776755. Skipping...
+
+2023-06-12 17:32:49,897 - Processing token frxETH.
+2023-06-12 17:32:49,939 - Inserting metrics.
+2023-06-12 17:33:16,156 - Finished processing token frxETH.
+
+2023-06-12 17:33:16,156 - Processing token UST.
+2023-06-12 17:33:16,156 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Skipping...
+2023-06-12 17:33:16,156 - Processing token 3Crv.
+2023-06-12 17:33:16,156 - We use virtual prices for 3Crv. Skipping...
+
+2023-06-12 17:33:16,156 - Processing token CRV.
+2023-06-12 17:33:16,615 - Inserting metrics.
+2023-06-12 17:33:42,914 - Finished processing token CRV.
+
+2023-06-12 17:33:42,915 - Finished processing token metrics.
+
+2023-06-12 17:33:42,916 - Done :)
+
+2023-06-12 17:33:46,013 - Processing metrics...
+2023-06-12 17:33:46,013 - Start time: 2023-04-22 23:45:00
+2023-06-12 17:33:46,014 - End time: 2023-05-23 00:00:00
+
+2023-06-12 17:33:46,074 - Processing pool metrics.
+
+2023-06-12 17:33:46,074 - Processing pool Curve.fi ETH/stETH.
+2023-06-12 17:33:46,074 - Start time: 2023-04-22 23:45:00
+2023-06-12 17:33:46,074 - End time: 2023-05-23 00:00:00
+2023-06-12 17:33:58,240 - Inserting metrics.
+2023-06-12 17:37:37,150 - Finished processing pool Curve.fi ETH/stETH.
+
+2023-06-12 17:37:37,150 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-06-12 17:37:37,150 - Start time: 2023-04-22 23:45:00
+2023-06-12 17:37:37,150 - End time: 2023-05-23 00:00:00
+2023-06-12 17:37:46,118 - Inserting metrics.
+2023-06-12 17:42:18,783 - Finished processing pool Curve.fi DAI/USDC/USDT.
+
+2023-06-12 17:42:18,784 - Processing pool Curve.fi FRAX/USDC.
+2023-06-12 17:42:18,784 - Start time: 2023-04-22 23:45:00
+2023-06-12 17:42:18,784 - End time: 2023-05-23 00:00:00
+2023-06-12 17:42:26,571 - Inserting metrics.
+2023-06-12 17:46:04,153 - Finished processing pool Curve.fi FRAX/USDC.
+
+2023-06-12 17:46:04,154 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-06-12 17:46:04,154 - Pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool, UST no longer indexed after 1653667380. Skipping...
+
+2023-06-12 17:46:04,154 - Processing pool Curve.fi USDN/3Crv.
+2023-06-12 17:46:04,154 - Pool Curve.fi USDN/3Crv, USDN no longer indexed after 1675776755. Skipping...
+
+2023-06-12 17:46:04,154 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-06-12 17:46:04,154 - Start time: 2023-04-22 23:45:00
+2023-06-12 17:46:04,154 - End time: 2023-05-23 00:00:00
+2023-06-12 17:46:12,556 - Inserting metrics.
+2023-06-12 17:51:11,356 - Finished processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+2023-06-12 17:51:11,357 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-06-12 17:51:11,357 - Start time: 2023-04-22 23:45:00
+2023-06-12 17:51:11,357 - End time: 2023-05-23 00:00:00
+2023-06-12 17:51:20,798 - Inserting metrics.
+2023-06-12 17:56:46,886 - Finished processing pool Curve.fi DAI/USDC/USDT/sUSD.
+
+2023-06-12 17:56:46,886 - Processing pool Curve.fi ETH/frxETH.
+2023-06-12 17:56:46,887 - Start time: 2023-04-22 23:45:00
+2023-06-12 17:56:46,887 - End time: 2023-05-23 00:00:00
+2023-06-12 17:57:00,823 - Inserting metrics.
+2023-06-12 18:00:38,171 - Finished processing pool Curve.fi ETH/frxETH.
+
+2023-06-12 18:00:38,172 - Processing pool Curve.fi Factory USD Metapool: Liquity.
+2023-06-12 18:00:38,172 - Start time: 2023-04-22 23:45:00
+2023-06-12 18:00:38,172 - End time: 2023-05-23 00:00:00
+2023-06-12 18:00:47,318 - Inserting metrics.
+2023-06-12 18:05:55,028 - Finished processing pool Curve.fi Factory USD Metapool: Liquity.
+
+2023-06-12 18:05:55,028 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
+2023-06-12 18:05:55,028 - Start time: 2023-04-22 23:45:00
+2023-06-12 18:05:55,028 - End time: 2023-05-23 00:00:00
+2023-06-12 18:06:04,572 - Inserting metrics.
+2023-06-12 18:11:12,918 - Finished processing pool Curve.fi Factory USD Metapool: Binance USD.
+
+2023-06-12 18:11:12,918 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+2023-06-12 18:11:12,918 - Start time: 2023-04-22 23:45:00
+2023-06-12 18:11:12,918 - End time: 2023-05-23 00:00:00
+2023-06-12 18:11:24,407 - Inserting metrics.
+2023-06-12 18:15:03,695 - Finished processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+
+2023-06-12 18:15:03,696 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+2023-06-12 18:15:03,696 - Start time: 2023-04-22 23:45:00
+2023-06-12 18:15:03,696 - End time: 2023-05-23 00:00:00
+2023-06-12 18:15:16,078 - Inserting metrics.
+2023-06-12 18:18:59,315 - Finished processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+
+2023-06-12 18:18:59,316 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+2023-06-12 18:18:59,316 - Start time: 2023-04-22 23:45:00
+2023-06-12 18:18:59,316 - End time: 2023-05-23 00:00:00
+2023-06-12 18:19:05,606 - Inserting metrics.
+2023-06-12 18:22:46,552 - Finished processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+
+2023-06-12 18:22:46,553 - Finished processing pool metrics.
+
+2023-06-12 18:22:46,610 - Processing token metrics.
+
+2023-06-12 18:22:46,610 - Processing token LUSD.
+2023-06-12 18:22:46,633 - Inserting metrics.
+2023-06-12 18:23:13,268 - Finished processing token LUSD.
+
+2023-06-12 18:23:13,269 - Processing token FRAX.
+2023-06-12 18:23:13,288 - Inserting metrics.
+2023-06-12 18:23:39,874 - Finished processing token FRAX.
+
+2023-06-12 18:23:39,874 - Processing token MIM.
+2023-06-12 18:23:39,984 - Inserting metrics.
+2023-06-12 18:24:06,927 - Finished processing token MIM.
+
+2023-06-12 18:24:06,928 - Processing token USDC.
+2023-06-12 18:24:07,429 - Inserting metrics.
+2023-06-12 18:24:34,827 - Finished processing token USDC.
+
+2023-06-12 18:24:34,827 - Processing token stETH.
+2023-06-12 18:24:34,846 - Inserting metrics.
+2023-06-12 18:25:01,463 - Finished processing token stETH.
+
+2023-06-12 18:25:01,463 - Processing token cbETH.
+2023-06-12 18:25:01,852 - Inserting metrics.
+2023-06-12 18:25:28,832 - Finished processing token cbETH.
+
+2023-06-12 18:25:28,832 - Processing token ETH.
+2023-06-12 18:25:29,353 - Inserting metrics.
+2023-06-12 18:25:56,235 - Finished processing token ETH.
+
+2023-06-12 18:25:56,236 - Processing token DAI.
+2023-06-12 18:25:56,800 - Inserting metrics.
+2023-06-12 18:26:24,910 - Finished processing token DAI.
+
+2023-06-12 18:26:24,910 - Processing token BUSD.
+2023-06-12 18:26:24,922 - Inserting metrics.
+2023-06-12 18:26:53,142 - Finished processing token BUSD.
+
+2023-06-12 18:26:53,143 - Processing token sUSD.
+2023-06-12 18:26:53,155 - Inserting metrics.
+2023-06-12 18:27:20,591 - Finished processing token sUSD.
+
+2023-06-12 18:27:20,591 - Processing token WETH.
+2023-06-12 18:27:20,591 - WETH assumed to be = ETH. Skipping...
+
+2023-06-12 18:27:20,591 - Processing token cvxCRV.
+2023-06-12 18:27:20,605 - Inserting metrics.
+2023-06-12 18:27:47,300 - Finished processing token cvxCRV.
+
+2023-06-12 18:27:47,300 - Processing token USDT.
+2023-06-12 18:27:47,900 - Inserting metrics.
+2023-06-12 18:28:15,004 - Finished processing token USDT.
+
+2023-06-12 18:28:15,004 - Processing token USDN.
+2023-06-12 18:28:15,004 - USDN no longer indexed after 1675776755. Skipping...
+
+2023-06-12 18:28:15,004 - Processing token frxETH.
+2023-06-12 18:28:15,022 - Inserting metrics.
+2023-06-12 18:28:41,486 - Finished processing token frxETH.
+
+2023-06-12 18:28:41,486 - Processing token UST.
+2023-06-12 18:28:41,486 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Skipping...
+2023-06-12 18:28:41,486 - Processing token 3Crv.
+2023-06-12 18:28:41,486 - We use virtual prices for 3Crv. Skipping...
+
+2023-06-12 18:28:41,486 - Processing token CRV.
+2023-06-12 18:28:42,008 - Inserting metrics.
+2023-06-12 18:29:08,330 - Finished processing token CRV.
+
+2023-06-12 18:29:08,330 - Finished processing token metrics.
+
+2023-06-12 18:29:08,332 - Done :)
+
+2023-06-12 18:29:11,188 - Processing metrics...
+2023-06-12 18:29:11,188 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:29:11,189 - End time: 2023-06-08 00:00:00
+
+2023-06-12 18:29:11,244 - Processing pool metrics.
+
+2023-06-12 18:29:11,244 - Processing pool Curve.fi ETH/stETH.
+2023-06-12 18:29:11,244 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:29:11,244 - End time: 2023-06-08 00:00:00
+2023-06-12 18:29:18,157 - Inserting metrics.
+2023-06-12 18:31:13,774 - Finished processing pool Curve.fi ETH/stETH.
+
+2023-06-12 18:31:13,774 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-06-12 18:31:13,774 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:31:13,774 - End time: 2023-06-08 00:00:00
+2023-06-12 18:31:19,990 - Inserting metrics.
+2023-06-12 18:33:41,569 - Finished processing pool Curve.fi DAI/USDC/USDT.
+
+2023-06-12 18:33:41,569 - Processing pool Curve.fi FRAX/USDC.
+2023-06-12 18:33:41,569 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:33:41,569 - End time: 2023-06-08 00:00:00
+2023-06-12 18:33:50,592 - Inserting metrics.
+2023-06-12 18:35:43,683 - Finished processing pool Curve.fi FRAX/USDC.
+
+2023-06-12 18:35:43,683 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-06-12 18:35:43,683 - Pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool, UST no longer indexed after 1653667380. Skipping...
+
+2023-06-12 18:35:43,683 - Processing pool Curve.fi USDN/3Crv.
+2023-06-12 18:35:43,683 - Pool Curve.fi USDN/3Crv, USDN no longer indexed after 1675776755. Skipping...
+
+2023-06-12 18:35:43,683 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-06-12 18:35:43,684 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:35:43,684 - End time: 2023-06-08 00:00:00
+2023-06-12 18:35:50,141 - Inserting metrics.
+2023-06-12 18:38:26,477 - Finished processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+2023-06-12 18:38:26,478 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-06-12 18:38:26,478 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:38:26,478 - End time: 2023-06-08 00:00:00
+2023-06-12 18:38:36,219 - Inserting metrics.
+2023-06-12 18:41:30,094 - Finished processing pool Curve.fi DAI/USDC/USDT/sUSD.
+
+2023-06-12 18:41:30,095 - Processing pool Curve.fi ETH/frxETH.
+2023-06-12 18:41:30,095 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:41:30,095 - End time: 2023-06-08 00:00:00
+2023-06-12 18:41:35,957 - Inserting metrics.
+2023-06-12 18:43:34,463 - Finished processing pool Curve.fi ETH/frxETH.
+
+2023-06-12 18:43:34,464 - Processing pool Curve.fi Factory USD Metapool: Liquity.
+2023-06-12 18:43:34,464 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:43:34,464 - End time: 2023-06-08 00:00:00
+2023-06-12 18:43:40,830 - Inserting metrics.
+2023-06-12 18:46:25,467 - Finished processing pool Curve.fi Factory USD Metapool: Liquity.
+
+2023-06-12 18:46:25,467 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
+2023-06-12 18:46:25,467 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:46:25,467 - End time: 2023-06-08 00:00:00
+2023-06-12 18:46:31,663 - Inserting metrics.
+2023-06-12 18:49:18,551 - Finished processing pool Curve.fi Factory USD Metapool: Binance USD.
+
+2023-06-12 18:49:18,552 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+2023-06-12 18:49:18,552 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:49:18,552 - End time: 2023-06-08 00:00:00
+2023-06-12 18:49:25,434 - Inserting metrics.
+2023-06-12 18:51:26,430 - Finished processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+
+2023-06-12 18:51:26,430 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+2023-06-12 18:51:26,430 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:51:26,430 - End time: 2023-06-08 00:00:00
+2023-06-12 18:51:32,273 - Inserting metrics.
+2023-06-12 18:53:34,183 - Finished processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+
+2023-06-12 18:53:34,183 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+2023-06-12 18:53:34,183 - Start time: 2023-05-22 23:45:00
+2023-06-12 18:53:34,183 - End time: 2023-06-08 00:00:00
+2023-06-12 18:53:38,371 - Inserting metrics.
+2023-06-12 18:55:36,417 - Finished processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+
+2023-06-12 18:55:36,417 - Finished processing pool metrics.
+
+2023-06-12 18:55:36,453 - Processing token metrics.
+
+2023-06-12 18:55:36,453 - Processing token LUSD.
+2023-06-12 18:55:36,475 - Inserting metrics.
+2023-06-12 18:55:50,568 - Finished processing token LUSD.
+
+2023-06-12 18:55:50,568 - Processing token FRAX.
+2023-06-12 18:55:50,584 - Inserting metrics.
+2023-06-12 18:56:04,633 - Finished processing token FRAX.
+
+2023-06-12 18:56:04,633 - Processing token MIM.
+2023-06-12 18:56:04,737 - Inserting metrics.
+2023-06-12 18:56:18,349 - Finished processing token MIM.
+
+2023-06-12 18:56:18,349 - Processing token USDC.
+2023-06-12 18:56:18,647 - Inserting metrics.
+2023-06-12 18:56:32,743 - Finished processing token USDC.
+
+2023-06-12 18:56:32,743 - Processing token stETH.
+2023-06-12 18:56:32,764 - Inserting metrics.
+2023-06-12 18:56:46,464 - Finished processing token stETH.
+
+2023-06-12 18:56:46,464 - Processing token cbETH.
+2023-06-12 18:56:46,750 - Inserting metrics.
+2023-06-12 18:57:01,162 - Finished processing token cbETH.
+
+2023-06-12 18:57:01,162 - Processing token ETH.
+2023-06-12 18:57:01,545 - Inserting metrics.
+2023-06-12 18:57:16,028 - Finished processing token ETH.
+
+2023-06-12 18:57:16,029 - Processing token DAI.
+2023-06-12 18:57:16,447 - Inserting metrics.
+2023-06-12 18:57:30,515 - Finished processing token DAI.
+
+2023-06-12 18:57:30,516 - Processing token BUSD.
+2023-06-12 18:57:30,526 - Inserting metrics.
+2023-06-12 18:57:45,050 - Finished processing token BUSD.
+
+2023-06-12 18:57:45,051 - Processing token sUSD.
+2023-06-12 18:57:45,059 - Inserting metrics.
+2023-06-12 18:57:58,970 - Finished processing token sUSD.
+
+2023-06-12 18:57:58,970 - Processing token WETH.
+2023-06-12 18:57:58,970 - WETH assumed to be = ETH. Skipping...
+
+2023-06-12 18:57:58,971 - Processing token cvxCRV.
+2023-06-12 18:57:58,987 - Inserting metrics.
+2023-06-12 18:58:12,673 - Finished processing token cvxCRV.
+
+2023-06-12 18:58:12,674 - Processing token USDT.
+2023-06-12 18:58:13,128 - Inserting metrics.
+2023-06-12 18:58:27,535 - Finished processing token USDT.
+
+2023-06-12 18:58:27,535 - Processing token USDN.
+2023-06-12 18:58:27,535 - USDN no longer indexed after 1675776755. Skipping...
+
+2023-06-12 18:58:27,535 - Processing token frxETH.
+2023-06-12 18:58:27,554 - Inserting metrics.
+2023-06-12 18:58:41,908 - Finished processing token frxETH.
+
+2023-06-12 18:58:41,909 - Processing token UST.
+2023-06-12 18:58:41,909 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Skipping...
+2023-06-12 18:58:41,909 - Processing token 3Crv.
+2023-06-12 18:58:41,909 - We use virtual prices for 3Crv. Skipping...
+
+2023-06-12 18:58:41,909 - Processing token CRV.
+2023-06-12 18:58:42,292 - Inserting metrics.
+2023-06-12 18:58:56,454 - Finished processing token CRV.
+
+2023-06-12 18:58:56,455 - Finished processing token metrics.
+
+2023-06-12 18:58:56,457 - Done :)
+
+nohup: ignoring input
+2023-06-12 23:06:37,604 - Processing metrics...
+2023-06-12 23:06:37,604 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:06:37,604 - End time: 2023-06-12 00:00:00
+
+2023-06-12 23:06:37,640 - Processing pool metrics.
+
+2023-06-12 23:06:37,640 - Processing pool Curve.fi ETH/stETH.
+2023-06-12 23:06:37,640 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:06:37,640 - End time: 2023-06-12 00:00:00
+2023-06-12 23:06:51,614 - Inserting metrics.
+2023-06-12 23:07:20,655 - Finished processing pool Curve.fi ETH/stETH.
+
+2023-06-12 23:07:20,655 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-06-12 23:07:20,655 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:07:20,655 - End time: 2023-06-12 00:00:00
+2023-06-12 23:07:36,880 - Inserting metrics.
+2023-06-12 23:08:11,788 - Finished processing pool Curve.fi DAI/USDC/USDT.
+
+2023-06-12 23:08:11,788 - Processing pool Curve.fi FRAX/USDC.
+2023-06-12 23:08:11,788 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:08:11,788 - End time: 2023-06-12 00:00:00
+2023-06-12 23:08:26,471 - Inserting metrics.
+2023-06-12 23:08:53,276 - Finished processing pool Curve.fi FRAX/USDC.
+
+2023-06-12 23:08:53,277 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-06-12 23:08:53,277 - Pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool, UST no longer indexed after 1653667380. Skipping...
+
+2023-06-12 23:08:53,277 - Processing pool Curve.fi USDN/3Crv.
+2023-06-12 23:08:53,277 - Pool Curve.fi USDN/3Crv, USDN no longer indexed after 1675776755. Skipping...
+
+2023-06-12 23:08:53,277 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-06-12 23:08:53,277 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:08:53,277 - End time: 2023-06-12 00:00:00
+2023-06-12 23:09:09,193 - Inserting metrics.
+2023-06-12 23:09:46,753 - Finished processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+2023-06-12 23:09:46,753 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-06-12 23:09:46,753 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:09:46,753 - End time: 2023-06-12 00:00:00
+2023-06-12 23:10:04,973 - Inserting metrics.
+2023-06-12 23:10:44,538 - Finished processing pool Curve.fi DAI/USDC/USDT/sUSD.
+
+2023-06-12 23:10:44,538 - Processing pool Curve.fi ETH/frxETH.
+2023-06-12 23:10:44,538 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:10:44,538 - End time: 2023-06-12 00:00:00
+2023-06-12 23:10:59,990 - Inserting metrics.
+2023-06-12 23:11:27,870 - Finished processing pool Curve.fi ETH/frxETH.
+
+2023-06-12 23:11:27,870 - Processing pool Curve.fi Factory USD Metapool: Liquity.
+2023-06-12 23:11:27,871 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:11:27,871 - End time: 2023-06-12 00:00:00
+2023-06-12 23:11:42,374 - Inserting metrics.
+2023-06-12 23:12:20,349 - Finished processing pool Curve.fi Factory USD Metapool: Liquity.
+
+2023-06-12 23:12:20,349 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
+2023-06-12 23:12:20,349 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:12:20,349 - End time: 2023-06-12 00:00:00
+2023-06-12 23:12:37,357 - Inserting metrics.
+2023-06-12 23:13:13,981 - Finished processing pool Curve.fi Factory USD Metapool: Binance USD.
+
+2023-06-12 23:13:13,981 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+2023-06-12 23:13:13,981 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:13:13,981 - End time: 2023-06-12 00:00:00
+2023-06-12 23:13:31,131 - Inserting metrics.
+2023-06-12 23:13:59,319 - Finished processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+
+2023-06-12 23:13:59,319 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+2023-06-12 23:13:59,320 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:13:59,320 - End time: 2023-06-12 00:00:00
+2023-06-12 23:14:16,099 - Inserting metrics.
+2023-06-12 23:14:42,564 - Finished processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+
+2023-06-12 23:14:42,564 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+2023-06-12 23:14:42,564 - Start time: 2023-06-07 23:50:00
+2023-06-12 23:14:42,564 - End time: 2023-06-12 00:00:00
+2023-06-12 23:14:44,666 - Inserting metrics.
+2023-06-12 23:15:11,876 - Finished processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+
+2023-06-12 23:15:11,876 - Finished processing pool metrics.
+
+2023-06-12 23:15:11,949 - Processing token metrics.
+
+2023-06-12 23:15:11,949 - Processing token LUSD.
+2023-06-12 23:15:12,017 - Inserting metrics.
+2023-06-12 23:15:15,437 - Finished processing token LUSD.
+
+2023-06-12 23:15:15,437 - Processing token FRAX.
+2023-06-12 23:15:15,469 - Inserting metrics.
+2023-06-12 23:15:19,114 - Finished processing token FRAX.
+
+2023-06-12 23:15:19,114 - Processing token MIM.
+2023-06-12 23:15:19,291 - Inserting metrics.
+2023-06-12 23:15:22,045 - Finished processing token MIM.
+
+2023-06-12 23:15:22,045 - Processing token USDC.
+2023-06-12 23:15:22,379 - Inserting metrics.
+2023-06-12 23:15:25,736 - Finished processing token USDC.
+
+2023-06-12 23:15:25,736 - Processing token stETH.
+2023-06-12 23:15:25,817 - Inserting metrics.
+2023-06-12 23:15:29,221 - Finished processing token stETH.
+
+2023-06-12 23:15:29,221 - Processing token cbETH.
+2023-06-12 23:15:29,485 - Inserting metrics.
+2023-06-12 23:15:32,834 - Finished processing token cbETH.
+
+2023-06-12 23:15:32,834 - Processing token ETH.
+2023-06-12 23:15:33,173 - Inserting metrics.
+2023-06-12 23:15:37,057 - Finished processing token ETH.
+
+2023-06-12 23:15:37,058 - Processing token DAI.
+2023-06-12 23:15:37,369 - Inserting metrics.
+2023-06-12 23:15:41,136 - Finished processing token DAI.
+
+2023-06-12 23:15:41,137 - Processing token BUSD.
+2023-06-12 23:15:41,148 - Inserting metrics.
+2023-06-12 23:15:44,566 - Finished processing token BUSD.
+
+2023-06-12 23:15:44,566 - Processing token sUSD.
+2023-06-12 23:15:44,581 - Inserting metrics.
+2023-06-12 23:15:48,141 - Finished processing token sUSD.
+
+2023-06-12 23:15:48,141 - Processing token WETH.
+2023-06-12 23:15:48,141 - WETH assumed to be = ETH. Skipping...
+
+2023-06-12 23:15:48,141 - Processing token cvxCRV.
+2023-06-12 23:15:48,149 - Inserting metrics.
+2023-06-12 23:15:51,773 - Finished processing token cvxCRV.
+
+2023-06-12 23:15:51,773 - Processing token USDT.
+2023-06-12 23:15:52,142 - Inserting metrics.
+2023-06-12 23:15:55,593 - Finished processing token USDT.
+
+2023-06-12 23:15:55,593 - Processing token USDN.
+2023-06-12 23:15:55,593 - USDN no longer indexed after 1675776755. Skipping...
+
+2023-06-12 23:15:55,593 - Processing token frxETH.
+2023-06-12 23:15:55,632 - Inserting metrics.
+2023-06-12 23:15:59,860 - Finished processing token frxETH.
+
+2023-06-12 23:15:59,860 - Processing token UST.
+2023-06-12 23:15:59,860 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Skipping...
+2023-06-12 23:15:59,860 - Processing token 3Crv.
+2023-06-12 23:15:59,860 - We use virtual prices for 3Crv. Skipping...
+
+2023-06-12 23:15:59,860 - Processing token CRV.
+2023-06-12 23:16:00,108 - Inserting metrics.
+2023-06-12 23:16:03,698 - Finished processing token CRV.
+
+2023-06-12 23:16:03,698 - Finished processing token metrics.
+
+2023-06-12 23:16:03,699 - Done :)
+

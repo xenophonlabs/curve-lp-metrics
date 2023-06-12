@@ -154,15 +154,16 @@ def get_token_metrics():
 
 @app.route('/changepoints', methods=['GET'])
 def get_changepoints():
-    pool_id = request.args.get('pool_id')
+    address = request.args.get('address')
     model = request.args.get('model')
     metric = request.args.get('metric')
     start = int(request.args.get('start'))
     end = int(request.args.get('end'))
     cols = request.args.get('cols', ['timestamp'])
+    freq = request.args.get('freq', '1h')
     datahandler = DataHandler()
     try:
-        df = datahandler.get_changepoints(pool_id, model, metric, start, end, cols=cols)
+        df = datahandler.get_changepoints(address, model, metric, start, end, freq=freq, cols=cols)
         df.index = [int(datetime.timestamp(x)) for x in df.index]
         return jsonify(df.to_dict())
     except Exception as e:

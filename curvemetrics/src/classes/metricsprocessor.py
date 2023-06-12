@@ -171,7 +171,7 @@ class MetricsProcessor:
             flow['netSwapFlow'] : pd.Series
                 net swap flow of the token in the pool
         """
-        if df.empty == 0:
+        if df.empty:
             return pd.Series([], name=f'{symbol}.netSwapFlow')
         swap_in = df[df['tokenBought']==token_id]['amountBought'].groupby(level=0).sum()
         swap_out = -1*df[df['tokenSold']==token_id]['amountSold'].groupby(level=0).sum()
@@ -183,7 +183,7 @@ class MetricsProcessor:
         return metric
 
     def net_lp_flow(self, df, token_idx, symbol) -> pd.Series:
-        if len(df) == 0:
+        if df.empty:
             return pd.Series([], name=f'{symbol}.netLPFlow')
         deposits = df[df['removal']==False]
         deposits = deposits['tokenAmounts'].apply(lambda x: x[token_idx]).groupby(level=0).sum().groupby(level=0).sum()
@@ -228,7 +228,7 @@ class MetricsProcessor:
             flow['netSwapFlow'] : pd.Series
                 net swap flow of the token in the pool
         """
-        if len(df) == 0:
+        if df.empty:
             return pd.Series([], name=f'{symbol}.netSwapFlow')
         swap_in = df[df['tokenBought']==token_id]['amountBought'].groupby(level=0).sum()
         swap_out = df[df['tokenSold']==token_id]['amountSold'].groupby(level=0).sum()
@@ -238,7 +238,7 @@ class MetricsProcessor:
         return metric
 
     def abs_lp_flow(self, df, token_idx, symbol) -> pd.Series:
-        if len(df) == 0:
+        if df.empty:
             return pd.Series([], name=f'{symbol}.netLPFlow')
         deposits = df[df['removal']==False]
         deposits = deposits['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx]).groupby(level=0).sum()

@@ -111,7 +111,6 @@ def bocd_plot_comp(X, lp_share_price, virtual_price, true, pred, show=False, sav
 
     for ax in axs:
         bottom, top = ax.get_ylim()
-        print(bottom, top)
         ax.fill_betweenx([bottom, top], datetime(2022, 5, 7), datetime(2022, 5, 15), color='slategrey', alpha=0.2)
         ax.fill_betweenx([bottom, top], datetime(2022, 11, 1), datetime(2022, 11, 15), color='slategrey', alpha=0.2)
         ax.fill_betweenx([bottom, top], datetime(2023, 3, 9), datetime(2023, 3, 15), color='slategrey', alpha=0.2)
@@ -134,3 +133,28 @@ def bocd_plot_comp(X, lp_share_price, virtual_price, true, pred, show=False, sav
 
     if save:
         f.savefig(file)
+
+def run_length_plot(y, pool_name, fn='../figs/ethsteth_run_length_shannons.png', show=False, save=True,):
+
+    cps = y.diff()[y.diff() != 1].dropna()
+
+    f, ax = plt.subplots()
+
+    ax.scatter(y.index, y, s=0.5, color='darkblue', label='Run Length')
+    if len(cps):
+        for cp in cps.index:
+            ax.axvline(x=cp, color='darkred', linestyle='--', linewidth=0.5)
+        ax.plot([], color='darkred', linestyle='--', label='Change Point')
+    ax.set_title(f'Run Length for {pool_name}')
+    ax.set_ylabel('Run Length')
+    ax.tick_params(axis='x', rotation=45)
+    ax.legend()
+    f.tight_layout()
+
+    if save:
+        f.savefig(fn)
+    
+    if show:
+        plt.show()
+    else:
+        plt.close()

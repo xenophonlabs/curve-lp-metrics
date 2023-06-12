@@ -1,450 +1,75 @@
-2023-06-11 22:21:24,363 - Processing metrics...
-2023-06-11 22:21:24,363 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:24,363 - End time: 2023-06-11 22:20:02
+2023-06-12 23:51:31,621 - Processing metrics...
+2023-06-12 23:51:31,621 - Start time: 2023-06-12 22:40:02
+2023-06-12 23:51:31,621 - End time: 2023-06-12 23:50:02
 
-2023-06-11 22:21:24,376 - Processing pool metrics.
+2023-06-12 23:51:31,634 - Processing pool metrics.
 
-2023-06-11 22:21:24,376 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:21:24,376 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:24,377 - End time: 2023-06-11 22:20:02
-2023-06-11 22:21:24,751 - Inserting metrics.
-2023-06-11 22:21:24,758 - Failed to compute metrics for pool Curve.fi ETH/stETH
+2023-06-12 23:51:31,634 - Processing pool Curve.fi ETH/stETH.
+2023-06-12 23:51:31,634 - Start time: 2023-06-12 22:40:02
+2023-06-12 23:51:31,635 - End time: 2023-06-12 23:50:02
+2023-06-12 23:51:32,251 - Inserting metrics.
+2023-06-12 23:51:32,583 - Finished processing pool Curve.fi ETH/stETH.
+
+2023-06-12 23:51:32,583 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-06-12 23:51:32,583 - Start time: 2023-06-12 22:40:02
+2023-06-12 23:51:32,583 - End time: 2023-06-12 23:50:02
+2023-06-12 23:51:33,593 - Inserting metrics.
+2023-06-12 23:51:34,026 - Finished processing pool Curve.fi DAI/USDC/USDT.
+
+2023-06-12 23:51:34,027 - Processing pool Curve.fi FRAX/USDC.
+2023-06-12 23:51:34,027 - Start time: 2023-06-12 22:40:02
+2023-06-12 23:51:34,027 - End time: 2023-06-12 23:50:02
+2023-06-12 23:51:34,193 - Inserting metrics.
+2023-06-12 23:51:34,537 - Finished processing pool Curve.fi FRAX/USDC.
+
+2023-06-12 23:51:34,537 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-06-12 23:51:34,537 - Pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool, UST no longer indexed after 1653667380. Skipping...
+
+2023-06-12 23:51:34,537 - Processing pool Curve.fi USDN/3Crv.
+2023-06-12 23:51:34,537 - Pool Curve.fi USDN/3Crv, USDN no longer indexed after 1675776755. Skipping...
+
+2023-06-12 23:51:34,537 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-06-12 23:51:34,537 - Start time: 2023-06-12 22:40:02
+2023-06-12 23:51:34,537 - End time: 2023-06-12 23:50:02
+2023-06-12 23:51:34,881 - Inserting metrics.
+2023-06-12 23:51:34,889 - Failed to compute metrics for pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool
 Traceback (most recent call last):
   File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
     pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 54, in process_metrics_for_pool
+    self.lp_share_price(pool_id, pool_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 447, in lp_share_price
+    numeraire = ohlcvs[token]['symbol'].dropna().unique()[0].split('/')[1]
+IndexError: index 0 is out of bounds for axis 0 with size 0
 
 Traceback (most recent call last):
   File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
     pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:24,758 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 54, in process_metrics_for_pool
+    self.lp_share_price(pool_id, pool_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 447, in lp_share_price
+    numeraire = ohlcvs[token]['symbol'].dropna().unique()[0].split('/')[1]
+IndexError: index 0 is out of bounds for axis 0 with size 0
+2023-06-12 23:51:34,889 - Failed to compute metrics for pools 
 Traceback (most recent call last):
   File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
     raise e
   File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
     pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:24,759 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:21:34,770 - Processing metrics...
-2023-06-11 22:21:34,770 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:34,770 - End time: 2023-06-11 22:20:02
-
-2023-06-11 22:21:34,785 - Processing pool metrics.
-
-2023-06-11 22:21:34,785 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:21:34,785 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:34,785 - End time: 2023-06-11 22:20:02
-2023-06-11 22:21:34,918 - Inserting metrics.
-2023-06-11 22:21:34,923 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:34,923 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 54, in process_metrics_for_pool
+    self.lp_share_price(pool_id, pool_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 447, in lp_share_price
+    numeraire = ohlcvs[token]['symbol'].dropna().unique()[0].split('/')[1]
+IndexError: index 0 is out of bounds for axis 0 with size 0
 
 Traceback (most recent call last):
   File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
     raise e
   File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
     pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:34,924 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:21:44,935 - Processing metrics...
-2023-06-11 22:21:44,935 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:44,935 - End time: 2023-06-11 22:20:02
-
-2023-06-11 22:21:44,952 - Processing pool metrics.
-
-2023-06-11 22:21:44,952 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:21:44,952 - Start time: 2023-06-11 21:10:02
-2023-06-11 22:21:44,952 - End time: 2023-06-11 22:20:02
-2023-06-11 22:21:45,213 - Inserting metrics.
-2023-06-11 22:21:45,220 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:45,220 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:21:45,221 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:26:23,198 - Processing metrics...
-2023-06-11 22:26:23,198 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:23,198 - End time: 2023-06-11 22:25:03
-
-2023-06-11 22:26:23,212 - Processing pool metrics.
-
-2023-06-11 22:26:23,212 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:26:23,212 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:23,213 - End time: 2023-06-11 22:25:03
-2023-06-11 22:26:23,375 - Inserting metrics.
-2023-06-11 22:26:23,382 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:23,382 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:23,384 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:26:33,394 - Processing metrics...
-2023-06-11 22:26:33,394 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:33,394 - End time: 2023-06-11 22:25:03
-
-2023-06-11 22:26:33,409 - Processing pool metrics.
-
-2023-06-11 22:26:33,409 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:26:33,409 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:33,409 - End time: 2023-06-11 22:25:03
-2023-06-11 22:26:33,551 - Inserting metrics.
-2023-06-11 22:26:33,556 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:33,557 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:33,557 - Failed to frontfill metrics: 'timestamp'
-2023-06-11 22:26:43,568 - Processing metrics...
-2023-06-11 22:26:43,568 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:43,568 - End time: 2023-06-11 22:25:03
-
-2023-06-11 22:26:43,585 - Processing pool metrics.
-
-2023-06-11 22:26:43,585 - Processing pool Curve.fi ETH/stETH.
-2023-06-11 22:26:43,585 - Start time: 2023-06-11 21:15:03
-2023-06-11 22:26:43,585 - End time: 2023-06-11 22:25:03
-2023-06-11 22:26:43,808 - Inserting metrics.
-2023-06-11 22:26:43,813 - Failed to compute metrics for pool Curve.fi ETH/stETH
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:43,813 - Failed to compute metrics for pools 
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-
-Traceback (most recent call last):
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 91, in pools
-    raise e
-  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 84, in pools
-    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 53, in process_metrics_for_pool
-    self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 423, in markout
-    markouts = self.get_markout(df, ohlcvs, window, who)
-  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 401, in get_markout
-    tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
-    indexer = self.columns.get_loc(key)
-  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
-    raise KeyError(key)
-KeyError: 'timestamp'
-2023-06-11 22:26:43,815 - Failed to frontfill metrics: 'timestamp'
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 54, in process_metrics_for_pool
+    self.lp_share_price(pool_id, pool_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 447, in lp_share_price
+    numeraire = ohlcvs[token]['symbol'].dropna().unique()[0].split('/')[1]
+IndexError: index 0 is out of bounds for axis 0 with size 0
+2023-06-12 23:51:34,890 - Failed to frontfill metrics: index 0 is out of bounds for axis 0 with size 0

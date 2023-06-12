@@ -3,14 +3,22 @@ Update takers and sharkflow metrics.
 """
 import traceback
 import pandas as pd
+import os
+import json
 from datetime import datetime, timedelta
 from curvemetrics.src.classes.datahandler import DataHandler
+from curvemetrics.src.classes.logger import Logger
 from curvemetrics.src.classes.metricsprocessor import MetricsProcessor
 
-def main(start: int, window: timedelta, sliding_window: timedelta, l, takers: pd.DataFrame=pd.DataFrame(), top: float=0.9) -> pd.DataFrame:
+def load_config():
+    # Load the configuration
+    with open(os.path.join(os.path.abspath('config.json')), "r") as config_file:
+        config = json.load(config_file)
+    return config
 
-    global logger 
-    logger = l
+config = load_config()
+
+def main(start: int, window: timedelta, sliding_window: timedelta, logger: Logger, takers: pd.DataFrame=pd.DataFrame(), top: float=0.9) -> pd.DataFrame:
 
     datahandler = DataHandler(logger=logger)
     metricsprocessor = MetricsProcessor(datahandler.pool_metadata, datahandler.token_metadata)
@@ -66,15 +74,11 @@ def main(start: int, window: timedelta, sliding_window: timedelta, l, takers: pd
 
         for pool in datahandler.pool_metadata:
             
-            mask = pd.DataFrame(index=pd.date_range(start=datetime.fromtimestamp(sharkflow_start), end=datetime.fromtimestamp(sharkflow_end), freq='T'))
-
             swaps_data = datahandler.get_swaps_data(pool, sharkflow_start, sharkflow_end)
             if swaps_data.empty:
                 continue
-            tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))
-            for token in tokens:
+            for token in config['pool_tokens_map'][pool]:
                 sharkflow = metricsprocessor.sharkflow(swaps_data, takers, token, datahandler.token_metadata[token]['symbol'], top=top)
-                sharkflow = mask.merge(sharkflow, left_index=True, right_index=True, how='left').fillna(0) # Ensure it includes all minutes
                 datahandler.insert_pool_metrics(pd.DataFrame(sharkflow), pool)
             
         takers['windowSize'] = window.total_seconds()

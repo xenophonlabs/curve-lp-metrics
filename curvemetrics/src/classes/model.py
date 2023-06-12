@@ -3,6 +3,7 @@ from datetime import timedelta
 from pathos.multiprocessing import ProcessingPool as Pool
 from multiprocessing import cpu_count
 import logging
+from datetime import datetime
 
 # Local imports
 from curvemetrics.src.detection.bocd_stream.bocd.bocd import BayesianOnlineChangePointDetection
@@ -63,10 +64,21 @@ class BOCD():
         )
         self.params = new_params
 
-    def predict(self, x):
+    def predict(self, x, last_ts):
+        """
+        Predict 1 datum with standardization. Standardization is done online
+        with Welford's method in the `self.welly` object. Update internal
+        state.
+
+        :param x: datum to predict
+        :param last_ts: timestamp of datum
+
+        :return: True if changepoint, False otherwise
+        """
         x = self.welly.standardize(x)
         self.model.update(x)
         self.rt_mle = np.append(self.rt_mle, self.model.rt)
+        self.last_ts = last_ts
         if len(self.rt_mle) > 1 and self.rt_mle[-1] != self.rt_mle[-2] + 1:
             return True # Changepoint
         return False
@@ -134,3 +146,40 @@ class BOCD():
     @property
     def best_results(self):
         return self.results[self.best_params]
+
+class Baseline():
+
+    def __init__(self, 
+                 last_cp: int=None,
+                 depegged: bool=False,
+                 thresh: float=0.05
+        ):
+        self.last_cp = last_cp
+        self.depegged = depegged
+        self.thresh = thresh
+    
+    def update(self, 
+               vp: float, 
+               rp: float, 
+               ts: int
+        ) -> bool:
+        """
+        Update for baseline model.
+
+        :param rp: price (lp_share_price or token_price)
+        :param vp: peg (virtual price or 1)
+
+        :return: True if new changepoint, False if no changepoint or if already depegged
+        """
+        error = abs((vp - rp) / vp)
+        if error >= self.thresh:
+            # Depegging
+            if self.depegged == True:
+                self.last_cp = ts
+                return False
+            else:
+                self.depegged = True
+                self.last_cp = ts
+                return True
+        self.depegged = False
+        return False 
