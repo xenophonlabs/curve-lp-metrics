@@ -197,12 +197,10 @@ def get_pool_X():
     metric = request.args.get('metric')
     start = int(request.args.get('start'))
     end = int(request.args.get('end'))
-    freq = request.args.get('freq', timedelta(hours=1))
-    normalize = request.args.get('normalize', 'false').lower() == 'true'
-    standardize = request.args.get('standardize', 'true').lower() == 'true'
+    freq = request.args.get('freq', timedelta(minutes=1))
     datahandler = DataHandler()
     try:
-        df = datahandler.get_pool_X(metric, pool_id, start, end, freq, normalize=normalize, standardize=standardize)
+        df = datahandler.get_pool_X(metric, pool_id, start, end, freq)
         df.index = [int(datetime.timestamp(x)) for x in df.index]
         return jsonify(df.to_dict())
     except Exception as e:
@@ -216,12 +214,10 @@ def get_token_X():
     metric = request.args.get('metric')
     start = int(request.args.get('start'))
     end = int(request.args.get('end'))
-    freq = request.args.get('freq', timedelta(hours=1))
-    normalize = request.args.get('normalize', 'false').lower() == 'true'    
-    standardize = request.args.get('standardize', 'true').lower() == 'true'
+    freq = request.args.get('freq', timedelta(minutes=1))
     datahandler = DataHandler()
     try:
-        df = datahandler.get_token_X(metric, token_id, start, end, freq, normalize=normalize, standardize=standardize)
+        df = datahandler.get_token_X(metric, token_id, start, end, freq)
         df.index = [int(datetime.timestamp(x)) for x in df.index]
         return jsonify(df.to_dict())
     except Exception as e:

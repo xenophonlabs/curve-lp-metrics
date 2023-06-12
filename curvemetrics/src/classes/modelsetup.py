@@ -208,8 +208,9 @@ class ModelSetup():
             if pool_token == 'pool':
                 X = self.datahandler.get_pool_X(metric, address, start, end, self.freq, normalize=self.normalize, standardize=self.standardize)
             elif pool_token == 'token':
-                if metric == 'logReturns': metric = f'{self.datahandler.token_metadata[address]["symbol"]}.{metric}'
-                X = self.datahandler.get_token_X(metric, address, start, end, self.freq, normalize=self.normalize, standardize=self.standardize)
+                _metric = metric
+                if metric == 'logReturns': _metric = f'{self.datahandler.token_metadata[address]["symbol"]}.{metric}'
+                X = self.datahandler.get_token_X(_metric, address, start, end, self.freq, normalize=self.normalize, standardize=self.standardize)
 
             model = BOCD(margin=self.margin, alpha=self.alpha, verbose=True, weight_func=self.weight_func)
             model.tune(self.GRID, X, y_true)

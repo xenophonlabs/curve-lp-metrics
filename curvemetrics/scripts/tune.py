@@ -12,7 +12,7 @@ from curvemetrics.src.classes.logger import Logger
 # Suppress all runtime warnings - they pertain to large integers and divisions by 0 in tuning.
 warnings.filterwarnings("ignore")
 
-POOL_METRICS = {'shannonsEntropy', 'giniCoefficient', 'netSwapFlow', 'netLPFlow', '300.Markout', 'sharkFlow'}
+POOL_METRICS = {'shannonsEntropy', 'giniCoefficient', 'netSwapFlow', 'netLPFlow', '300.Markout', 'sharkflow'}
 TOKEN_METRICS = {'logReturns'}
 
 def main():

@@ -11,62 +11,12 @@ This codebase and research paper were developed by Xenophon Labs and sponsored b
 
 ## Overview
 
-In our paper, we provided promising evidence for how quantitative metrics and detection algorithms can be constructed to keep liquidity providers (LPs) informed, in real-time, regarding potential stablecoin and liquid staking derivative depegs. The metrics and models we developed are available in this API. We will overview each metric, how Bayesian Online Changepoint Detectors work, and the results of our study very briefly in this `README`. For further information, refer to our paper. We will then describe how to query our API, and finally, how to reconstruct our API in your own machine.
+In our paper, we provided promising evidence for how quantitative metrics and detection algorithms can be constructed to keep liquidity providers (LPs) informed, in real-time, regarding potential stablecoin and liquid staking derivative depegs. The metrics and models we developed are available in this API. We first describe the API usage, then we overview each metric, how Bayesian Online Changepoint Detectors works, and the results of our study very briefly in this `README`. For further information, refer to our paper. Finally, we describe how to reconstruct our database and API in your own machine.
 
 ![Curvemetrics Architecture](./Architecture.png)
 
 *High-level Figma diagram of Curvemetrics Architecture*
 
-## Metrics
-
-We have developed several metrics for detecting depegs for Curve's StableSwap pool. The metrics are summarized in the table below. With each metric we describe the intuition for why this metric might be a useful indicator of potential depegs. We look to identify changes in market behavior that precede changes in token prices.
-
-| Metric                      | Description                                                             |
-|-----------------------------|-------------------------------------------------------------------------|
-| Gini Coefficient and Shannon's Entropy | A measurement of the relative balances of a pool's tokens. |
-| Net Swap Flows              | The net amount swapped into or out of a pool for a particular token.     |
-| Net LP Flows                | The net amount deposited into or withdrawn from a pool for a particular token. |
-| Price Volatility            | The rolling log returns for a token's price.                             |
-| PIN                         | The probability of informed trading developed by Easley et al.           |
-| Markouts                    | A short-term measurement of a trade's profits.                           |
-| Shark Trades                | A classification of traders/LPs as "sharks" based on their past performance. |
-
-Table: Summary of Studied Metrics.
-
-## BOCD
-
-Changepoints are abrupt changes in the generative parameters of some sequence. Formally, denote a sequence of observations as $\vec{x}=\{x_i\}, i \in [1, T]$ where observations are i.i.d. from some probability distribution $P$ with parameters $\eta$: 
-    
-$$X \sim P(x_t | \eta)$$
-
-Suppose our sequence $\vec{x}$ exhibits changes in its underlying distribution, meaning $\eta$ is not constant over time. Suppose there are $n$ changepoints occurring randomly within $[1, T]$. We may then partition our sequence into non-overlapping partitions $\rho = 1, 2, \ldots n$, each with parameters $\eta_{\rho}$. We further denote the contiguous set of observations between $a, b$ as $\vec{x}_{a:b}$.
-
-In Bayesian online changepoint detection, our goal is to estimate when some observed datum $x_t$ is very unlikely to have been sampled from the current assumed parameters $\eta$. As proposed by Adams and MacKay in their original BOCD work, we do so by tracking a ``run length'' at each data point, denoted as $r_t$. The run length can be understood as the number of time steps since the last change point: with every new datum, $r_t$ either increases by 1, or it drops to $0$.
-
-Our models emit a signal (i.e. a depeg detection) when a run length $r_t \neq r_{t-1}$. This signals are saved to the `changepoints` table (keyed by pool, model, and metric), and tweeted our by our Twitter alerting bot. 
-
-## Results
-
-We trained a BOCD model on each metric using the UST Wormhole pool as our training set (from January to June of 2022). We then tested in on 13 major StableSwap pools from January 2022 to May 2023. Below are some of the results.
-
-At a high level, our model performs particularly well using our entropy and markout metrics, especially for larger and more established pools such as the 3pool and ETH/stETH that don't exhibit as much noise. We find that our BOCD model predicts the USDC depeg as early as 9pm UTC on March 10th, approximately five hours before USDC dips below $99$ cents according to Chainlink oracles. That is, our models quickly captures structural changes in trading volume, pnl, and AMM composition before the overall market prices in a potential depeg. 
-
-- **Entropy model** using the hourly logarithmic differences on Shannon's entropy for each pool.
-- **Markout model** using the hourly cumulative 5-minute markouts for each pool.
-- **Swaps model** using the hourly cumulative swap flows for each pool.
-
-**TODO: frxETH pool results**
-
-<!-- ![Shannon's Entropy Results on the 3pool](./figs/testing/pool/shannonsEntropy/.png) -->
-*BOCD results using hourly log differences in Shannon's Entropy for the 3pool. Our entropy model detects changepoints during the UST depeg, the FTX collapse, and the SVB bank run. The changepoint corresponding to the SVB collapse and the momentary depeg of USDC is detected at 9pm UTC on March 10th, hours before USDC dips below $99$ cents. Notice how increased variance in entropy closely correlates with all three high-information events, illustrated with the gray bars. Since 3pool LP share prices did not meaningfully deteriorate during the UST and FTX events, the corresponding changepoints are flagged as false positives by our scoring rule, although they are not necessarily ``false alarms'' in the pragmatic sense. We observe two additional false positives throughout late 2022 and early 2023.*
-
-However, for smaller pools such as USDN, sUSD, and stETH concentrated we obtain a lower precision score due to noisy metrics. Furthermore, we find that the Gini Coefficient, net LP flow, and Log Returns metrics are too noisy, and lead to the lowest precision and $lF$-scores. 
-
-### 3pool
-
-The results for the 3pool were the most promising in our study, particularly using the Entropy model (Fig. \ref{fig:3pool_entropy}) and the Markout model. This is likely due to the 3pool being the largest pool on Curve, meaning individual swaps, deposits, and withdrawals have a relatively smaller effect on our observed metrics, leading to less noisy predictions. As hypothesized, most of our metrics are highly correlated with high information events, where the market is uncertain about the peg of tokens within the pool. For example, the collapse of UST led to market turmoil regarding USDT, one of the tokens in the 3pool, such that it traded as low as $95$ cents on May 12th \cite{bitscreener2022}. Accordingly, all our models detected changepoints on the 3pool between May 9th and May 11th, 2022.
-
-Conversely, the Gini Coefficient and Net LP Flow metrics are extremely noisy, with hundreds of false alarms throughout 2022 and 2023. Results for the 3pool are generally representative of results for the FRAX/USDC pool, also one of the largest pools on Curve, allowing us to attain higher precision in our models. Both markout and entropy have few false alarms, and detect a depeg during the SVB collapse at 10pm UTC on March 10th, 2023.
 
 # API Usage
 
@@ -97,8 +47,8 @@ Below is a summary of available API endpoints and their descriptions. Each endpo
 | `/changepoints` | Get changepoints for a specific pool and model | `pool_id`, `model`, `metric`, `start`, `end`, `cols` (optional, default: `['timestamp']`) |
 | `/takers` | Get information about takers | None |
 | `/sharks` | Get information about sharks | `top` (optional, default: `0.9`) |
-| `/pool_X` | Get pool data with specific conditions | `pool_id`, `metric`, `start`, `end`, `freq` (optional, default: `timedelta(hours=1)`), `normalize` (optional, default: `false`), `standardize` (optional, default: `true`) |
-| `/token_X` | Get token data with specific conditions | `token_id`, `metric`, `start`, `end`, `freq` (optional, default: `timedelta(hours=1)`) |
+| `/pool_X` | Get pool data with specific conditions | `pool_id`, `metric`, `start`, `end`, `freq` (optional, default: `timedelta(hours=1)`)|
+| `/token_X` | Get token data with specific conditions | `token_id`, `metric`, `start`, `end`, `freq` (optional, default: `timedelta(hours=1)`)|
 
 `start` and `end` are always UNIX timestamps, `cols` are always the strings of table columns (you can find them in `curvemetrics/src/classes/entities/)`, `model` is either the `baseline` model or a `bocd` model (more info on `baseline` in our paper), and `metric` is one of:
 
@@ -119,6 +69,57 @@ curl "http://172.104.8.91/changepoints?pool_id=0xbebc44782c7db0a1a60cb6fe97d0b48
 ```
 
 to check if any changepoints occured on the 3pool according to our Entropy BOCD model between `<start>` and `<end>`.
+
+## Metrics
+
+We have developed several metrics for detecting depegs for Curve's StableSwap pool. The metrics are summarized in the table below. We look to identify changes in market behavior that precede changes in token prices.
+
+| Metric                      | Description                                                             |
+|-----------------------------|-------------------------------------------------------------------------|
+| Gini Coefficient and Shannon's Entropy | A measurement of the relative balances of a pool's tokens. |
+| Net Swap Flows              | The net amount swapped into or out of a pool for a particular token.     |
+| Net LP Flows                | The net amount deposited into or withdrawn from a pool for a particular token. |
+| Price Volatility            | The rolling log returns for a token's price.                             |
+| PIN                         | The probability of informed trading developed by Easley et al.           |
+| Markouts                    | A short-term measurement of a trade's profits.                           |
+| Shark Trades                | A classification of traders/LPs as "sharks" based on their past performance. |
+
+*Table: Summary of Studied Metrics.*
+
+## BOCD
+
+Changepoints are abrupt changes in the generative parameters of some sequence. Formally, denote a sequence of observations as $\vec{x}=\{x_i\}, i \in [1, T]$ where observations are i.i.d. from some probability distribution $P$ with parameters $\eta$: 
+    
+$$X \sim P(x_t | \eta)$$
+
+Suppose our sequence $\vec{x}$ exhibits changes in its underlying distribution, meaning $\eta$ is not constant over time. Suppose there are $n$ changepoints occurring randomly within $[1, T]$. We may then partition our sequence into non-overlapping partitions $\rho = 1, 2, \ldots n$, each with parameters $\eta_{\rho}$. We further denote the contiguous set of observations between $a, b$ as $\vec{x}_{a:b}$.
+
+In Bayesian online changepoint detection, our goal is to estimate when some observed datum $x_t$ is very unlikely to have been sampled from the current assumed parameters $\eta$. As proposed by Adams and MacKay in their original BOCD work, we do so by tracking a "run length" at each data point, denoted as $r_t$. The run length can be understood as the number of time steps since the last change point: with every new datum, $r_t$ either increases by 1, or it drops to $0$.
+
+Our models emit a signal (i.e. a depeg detection) when a run length $r_t \neq r_{t-1}$. These signals are saved to the `changepoints` table (keyed by pool, model, and metric), and tweeted out by our Twitter alerting bot. 
+
+## Results
+
+We trained a BOCD model on each metric using the UST Wormhole pool as our training set (from January to June of 2022). We then tested it on 13 major StableSwap pools from January 2022 to May 2023.
+
+At a high level, our model performs particularly well using our entropy and markout metrics, especially for larger and more established pools such as the 3pool and ETH/stETH that don't exhibit as much noise. We find that our BOCD model predicts the USDC depeg as early as 9pm UTC on March 10th, approximately five hours before USDC dips below $99$ cents according to Chainlink oracles. That is, our models quickly captures structural changes in trading volume, pnl, and AMM composition before the overall market prices in a potential depeg. 
+
+- **Entropy model** using the hourly logarithmic differences on Shannon's entropy for each pool.
+- **Markout model** using the hourly cumulative 5-minute markouts for each pool.
+- **Swaps model** using the hourly cumulative swap flows for each pool.
+
+**TODO: frxETH pool results**
+
+<!-- ![Shannon's Entropy Results on the 3pool](./figs/testing/pool/shannonsEntropy/.png) -->
+*BOCD results using hourly log differences in Shannon's Entropy for the 3pool. Our entropy model detects changepoints during the UST depeg, the FTX collapse, and the SVB bank run. The changepoint corresponding to the SVB collapse and the momentary depeg of USDC is detected at 9pm UTC on March 10th, hours before USDC dips below $99$ cents. Notice how increased variance in entropy closely correlates with all three high-information events, illustrated with the gray bars. Since 3pool LP share prices did not meaningfully deteriorate during the UST and FTX events, the corresponding changepoints are flagged as false positives by our scoring rule, although they are not necessarily false alarms in the pragmatic sense. We observe two additional false positives throughout late 2022 and early 2023.*
+
+However, for smaller pools such as USDN, sUSD, and stETH concentrated we obtain a lower precision score due to noisy metrics. Furthermore, we find that the Gini Coefficient, net LP flow, and Log Returns metrics are too noisy, and lead to the lowest precision and $lF$-scores. 
+
+### 3pool
+
+The results for the 3pool were the most promising in our study, particularly using the Entropy model and the Markout model. This is likely due to the 3pool being the largest pool on Curve, meaning individual swaps, deposits, and withdrawals have a relatively smaller effect on our observed metrics, leading to less noisy predictions. As hypothesized, most of our metrics are highly correlated with high information events, where the market is uncertain about the peg of tokens within the pool. For example, the collapse of UST led to market turmoil regarding USDT, one of the tokens in the 3pool, such that it traded as low as $95$ cents on May 12th. Accordingly, all our models detected changepoints on the 3pool between May 9th and May 11th, 2022.
+
+Conversely, the Gini Coefficient and Net LP Flow metrics are extremely noisy, with hundreds of false alarms throughout 2022 and 2023. Results for the 3pool are generally representative of results for the FRAX/USDC pool, also one of the largest pools on Curve, allowing us to attain higher precision in our models. Both markout and entropy have few false alarms, and detect a depeg during the SVB collapse at 10pm UTC on March 10th, 2023.
 
 # Setup
 

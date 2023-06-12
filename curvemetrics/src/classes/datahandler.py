@@ -414,7 +414,7 @@ class DataHandler():
             PoolMetrics.timestamp >= start,
             PoolMetrics.timestamp <= end
         )
-        if metric in ['netSwapFlow', 'netLPFlow', 'sharkFlow']:
+        if metric in ['netSwapFlow', 'netLPFlow', 'sharkflow']:
             query = query.filter(PoolMetrics.metric.like(f'%{metric}'))
         else:
             query = query.filter(PoolMetrics.metric == metric)
@@ -428,7 +428,7 @@ class DataHandler():
         series.name = metric
         if metric in ['shannonsEntropy', 'giniCoefficient']:
             series.replace(0, method='ffill', inplace=True)
-        elif metric in ['netSwapFlow', 'netLPFlow', 'sharkFlow']:
+        elif metric in ['netSwapFlow', 'netLPFlow', 'sharkflow']:
             series.groupby(series.index).sum()            
         elif metric == 'lpSharePrice':
             series = series.ffill()
@@ -535,7 +535,7 @@ class DataHandler():
             X = np.log1p(data.resample(freq).last().pct_change()).dropna()
         elif 'netSwapFlow' in metric \
             or 'netLPFlow' in metric \
-            or 'sharkFlow' in metric \
+            or 'sharkflow' in metric \
             or 'Markout' in metric:
             X = data.resample(freq).sum()
         else:
