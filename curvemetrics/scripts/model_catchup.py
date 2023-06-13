@@ -35,19 +35,13 @@ SMTP_PORT = 587  # for starttls
 STMP_LOGIN = "thomas@xenophonlabs.com"
 SMTP_APP_PWD = os.getenv('SMTP_APP_PWD')
 
-TWEEPY_API_KEY = os.getenv('TWEEPY_API_KEY')
-TWEEPY_API_SECRET = os.getenv('TWEEPY_API_SECRET')
-TWEEPY_API_BEARER_TOKEN = os.getenv('TWEEPY_API_BEARER_TOKEN')
-TWEEPY_API_ACCESS_TOKEN = os.getenv('TWEEPY_API_ACCESS_TOKEN')
-TWEEPY_API_ACCESS_TOKEN_SECRET = os.getenv('TWEEPY_API_ACCESS_TOKEN_SECRET')
-
 POOL_METRICS = {"shannonsEntropy", "netSwapFlow", "300.Markout"}
 MODELED_POOLS = [
     "0xdc24316b9ae028f1497c275eb9192a3ea0f67022", # ETH/stETH
     "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", # 3pool
     "0xdcef968d416a41cdac0ed8702fac8128a64241a2", # FRAX/USDC
     "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577", # ETH/frxETH
-    "0x828b154032950c8ff7cf8085d841723db2696056", # stETH Concentrated
+    # "0x828b154032950c8ff7cf8085d841723db2696056", # stETH Concentrated
 ]
 
 def load_config():
@@ -70,35 +64,16 @@ def send_email(msg):
     server.quit()
 
 def send_email_on_error(exc, start, end):
-    subject = f'Curvemetrics Frontfilling Failure {datetime.fromtimestamp(start)} : {datetime.fromtimestamp(end)}'
-    body = f"An exception was raised during frontfilling {exc}:\n\n{traceback.print_exc()}\n\nThe Cron job has been removed. Re-add it as:\n\n* * * * * cd /root/curve-lp-metrics/ && /root/curve-lp-metrics/venv/bin/python3 -m curvemetrics.scripts.forever >> /root/curve-lp-metrics/logs/cron.log 2>&1 #curvemetrics_forever"
+    subject = f'Curvemetrics Model Catchup Failure {datetime.fromtimestamp(start)} : {datetime.fromtimestamp(end)}'
+    body = f"An exception was raised during model catchup {exc}:\n\n{traceback.print_exc()}"
     msg = f'Subject: {subject}\n\n{body}'
     send_email(msg)
 
 def send_email_on_changepoint(pool_name, metric, cp):
     subject = f'Curvemetrics Changepoint Detected'
-    body = f"A changepoint was detected.\nPool: {pool_name}\nMetric: {metric}\Time: {cp}"
+    body = f"A changepoint was detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)}"
     msg = f'Subject: {subject}\n\n{body}'
     send_email(msg)
-
-def tweet(pool_name, metric, cp, lp_share_price, virtual_price):
-    client = tweepy.Client(bearer_token=TWEEPY_API_BEARER_TOKEN, 
-                           consumer_key=TWEEPY_API_KEY, 
-                           consumer_secret=TWEEPY_API_SECRET, 
-                           access_token=TWEEPY_API_ACCESS_TOKEN, 
-                           access_token_secret=TWEEPY_API_ACCESS_TOKEN_SECRET, 
-                           wait_on_rate_limit=True
-    )
-    text = f'A potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {cp}\nThe current LP token price is: {lp_share_price}\nCompared to the virtual price: {virtual_price}.'
-    response = client.update_status(text)
-    return response
-
-def delete_cronjob():
-    cron = CronTab(user=True)
-    for job in cron:
-        if job.comment == "curvemetrics_forever":
-            cron.remove_all(comment="curvemetrics_forever")
-            cron.write()
 
 def get_model_start(dt):
     return int(datetime.timestamp(datetime(dt.year, dt.month, dt.day, dt.hour) - timedelta(hours=2)))
@@ -161,13 +136,10 @@ def main(models, now):
             if is_true_cp:
                 true_cp = baseline.last_cp
                 # datahandler.insert_changepoints([baseline.last_ts], pool, 'baseline', baseline)
-                print(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
-
-            # with open(f'./model_configs/baseline/{pool}.pkl', 'wb') as f:
-            #     pickle.dump(baseline, f)
+                logger.info(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
 
             for metric in POOL_METRICS:
-                print(f'Running inference for {pool} with {metric} at {datetime.fromtimestamp(now)}.')
+                logger.info(f'Running inference for {pool} with {metric} at {datetime.fromtimestamp(now)}.')
                 model = models[pool][metric]
                 X = datahandler.get_pool_X(metric, pool, model_start, model_end, '1h')
                 x, ts = X[-1], datetime.timestamp(X.index[-1])
@@ -177,13 +149,12 @@ def main(models, now):
                 if is_cp:
                     cp = now
                     # datahandler.insert_changepoints([cp], pool, 'bocd', metric)
-                    print(f'Changepoint detected for {name} with {metric} at {datetime.fromtimestamp(cp)}.')
-
-                # with open(f'./model_configs/{metric}/{pool}.pkl', 'wb') as f:
-                #     pickle.dump(model, f)
+                    logger.info(f'Changepoint detected for {name} with {metric} at {datetime.fromtimestamp(cp)}.')
+                    send_email_on_changepoint(name, metric, cp)
 
     except Exception as e:
-        print(f'Failed to run inference: {e}')
+        logger.error(f'Failed to run inference: {e}')
+        send_email_on_error(e, model_start, model_end)
         raise e
 
     finally:
@@ -193,15 +164,11 @@ def main(models, now):
 
 # Run FOREVER!
 if __name__ == "__main__":
-    global now
     # Start as if we are getting May 5th, 2023, 1am UTC data
     now = datetime.timestamp(datetime(2023, 5, 1, 2, 0, 0, 1))
-    end = datetime.timestamp(datetime(2023, 6, 13, 15, 0, 0, 1))
-    raise ValueError("Fix these ts")
+    end = datetime.timestamp(datetime.now())
 
-    # Initialize models
-    margin = config['model_configs']['base']['margin']
-    alpha = config['model_configs']['base']['alpha']
+    # Read models
     models = {}
     for pool in MODELED_POOLS:
         with open(f'./model_configs/baseline/{pool}.pkl', 'rb') as f:
@@ -214,6 +181,15 @@ if __name__ == "__main__":
             model.logger = Logger(f'./logs/frontfill/inference_{pool}_{metric}.log').logger
             models[pool][metric] = model
 
-    while now <= end:
+    while now + PERIOD <= end:
         models = main(models, now)
         now += PERIOD
+
+    # for pool in MODELED_POOLS:
+        # baseline = models[pool]['baseline']
+        # with open(f'./model_configs/baseline/{pool}.pkl', 'wb') as f:
+        #     pickle.dump(baseline, f)
+        # for metric in POOL_METRICS:
+            # model = models[pool][metric]
+            # with open(f'./model_configs/{metric}/{pool}.pkl', 'wb') as f:
+            #     pickle.dump(model, f)

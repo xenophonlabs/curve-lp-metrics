@@ -80,6 +80,7 @@ class BOCD():
         self.rt_mle = np.append(self.rt_mle, self.model.rt)
         self.last_ts = last_ts
         if len(self.rt_mle) > 1 and self.rt_mle[-1] != self.rt_mle[-2] + 1:
+            self.logger.info(f'Changepoint detected at {datetime.fromtimestamp(last_ts)}.')
             return True # Changepoint
         return False
 

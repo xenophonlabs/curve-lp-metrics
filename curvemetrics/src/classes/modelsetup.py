@@ -183,7 +183,7 @@ class ModelSetup():
 
             model.welly = welly
             model.rt_mle = rt_mle
-            # model.last_ts = datetime.timestamp(X.index[-1])
+            model.last_ts = datetime.timestamp(X.index[-1])
 
             # Save model
             directory = f'./model_configs/{metric}'
