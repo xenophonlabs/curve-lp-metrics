@@ -89,7 +89,7 @@ def tweet(pool_name, metric, cp, lp_share_price, virtual_price):
                            access_token_secret=TWEEPY_API_ACCESS_TOKEN_SECRET, 
                            wait_on_rate_limit=True
     )
-    text = f'This is an example!\n\nA potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)}\nThe current LP token price is: {round(lp_share_price, 3)}\nCompared to the virtual price: {round(virtual_price, 3)}.'
+    text = f'!!!TESTING!!!\n\nA potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)}\nThe current LP token price is: {round(lp_share_price, 3)}\nCompared to the virtual price: {round(virtual_price, 3)}.'
     response = client.create_tweet(text=text)
     return response
 
