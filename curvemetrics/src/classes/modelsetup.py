@@ -132,7 +132,11 @@ class ModelSetup():
         elif pool_token == 'token':
             y_true, price, peg, name = self.setup_token(address, start, end)
 
-        baseline = Baseline(last_cp=int(datetime.timestamp(y_true[-1])), thresh=self.thresh)
+        if len(y_true):
+            last_cp = int(datetime.timestamp(y_true[-1]))
+        else:
+            last_cp = None
+        baseline = Baseline(last_cp=last_cp, thresh=self.thresh)
         baseline.update(peg[-1], price[-1], price.index[-1])
 
         # Save model
@@ -179,7 +183,7 @@ class ModelSetup():
 
             model.welly = welly
             model.rt_mle = rt_mle
-            model.last_ts = datetime.timestamp(X.index[-1])
+            # model.last_ts = datetime.timestamp(X.index[-1])
 
             # Save model
             directory = f'./model_configs/{metric}'

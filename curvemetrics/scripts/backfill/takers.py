@@ -7,7 +7,8 @@ from curvemetrics.scripts.takers import main
 from curvemetrics.src.classes.logger import Logger
 
 WINDOW = timedelta(days=1)
-SLIDING_WINDOW = timedelta(days=1)
+# SLIDING_WINDOW = timedelta(days=1) # NOTE: use this for most backfilling
+SLIDING_WINDOW = timedelta(hours=1) # NOTE: use this for last few hours
 
 if __name__ == "__main__":
     logger = Logger('./logs/backfill/takers.log').logger

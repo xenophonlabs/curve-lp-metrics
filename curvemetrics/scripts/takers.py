@@ -35,11 +35,11 @@ def main(start: int, window: timedelta, sliding_window: timedelta, logger: Logge
         # E.g.: start = Monday 00:00:00, end = Wednesday 00:00:00
         # -> 1 day markouts means Monday swaps are marked out and takers table is updated
         swaps_start = start
-        swaps_end = start + window.total_seconds() + sliding_window.total_seconds()
+        swaps_end = start + sliding_window.total_seconds()
 
         # E.g.: sharflow_start = Wednesday 00:00:00, sharkflow_end = Thursday 00:00:00
         # -> Using takers table (updated with Monday markouts) we calculate Wednesday sharkflow
-        sharkflow_start = swaps_end
+        sharkflow_start = start + window.total_seconds()
         sharkflow_end = sharkflow_start + sliding_window.total_seconds() 
 
         # -> Every day, sharkflow is computed using 1d-Markout Sharks as of two days ago
@@ -53,7 +53,7 @@ def main(start: int, window: timedelta, sliding_window: timedelta, logger: Logge
                 continue
             ohlcvs = {}
             for token in set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold'])):
-                ohlcvs[token] = datahandler.get_ohlcv_data(token, swaps_start, swaps_end)
+                ohlcvs[token] = datahandler.get_ohlcv_data(token, swaps_start, sharkflow_end)
             if any([x.empty for x in ohlcvs.values()]):
                 continue
             pool_takers = metricsprocessor.takers(swaps_data, ohlcvs, window)

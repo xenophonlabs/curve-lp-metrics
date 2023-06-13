@@ -134,7 +134,7 @@ def bocd_plot_comp(X, lp_share_price, virtual_price, true, pred, show=False, sav
     if save:
         f.savefig(file)
 
-def run_length_plot(y, pool_name, fn='../figs/ethsteth_run_length_shannons.png', show=False, save=True,):
+def run_length_plot(y, pool_name, fn='../figs/ethsteth_run_length_shannons.png', show=False, save=False):
 
     cps = y.diff()[y.diff() != 1].dropna()
 

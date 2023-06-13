@@ -164,24 +164,24 @@ def main():
     logger.info('Successfully frontfilled metrics.')
 
     ### Frontfill Takers
-    # start = math.floor(now) - SLIDING_WINDOW.total_seconds() - WINDOW.total_seconds()
-    # logger = Logger('./logs/frontfill/takers.log').logger
-    # for attempts in range(RETRIES):
-    #     try:
-    #         datahandler = DataHandler()
-    #         t = datahandler.get_takers()
-    #         takers(start, WINDOW, SLIDING_WINDOW, logger, takers=t)
-    #         break
-    #     except Exception as e:
-    #         logger.error(f'Failed to frontfill takers: {e}')
-    #         if attempts == RETRIES - 1:
-    #             send_email_on_error(e)
-    #             delete_cronjob()
-    #             raise e
-    #         time.sleep(10)
-    #     finally:
-    #         datahandler.close()
-    # logger.info('Successfully frontfilled takers.')
+    start = math.floor(now) - SLIDING_WINDOW.total_seconds() - WINDOW.total_seconds()
+    logger = Logger('./logs/frontfill/takers.log').logger
+    for attempts in range(RETRIES):
+        try:
+            datahandler = DataHandler()
+            t = datahandler.get_takers()
+            takers(start, WINDOW, SLIDING_WINDOW, logger, takers=t)
+            break
+        except Exception as e:
+            logger.error(f'Failed to frontfill takers: {e}')
+            if attempts == RETRIES - 1:
+                send_email_on_error(e, start, end)
+                delete_cronjob()
+                raise e
+            time.sleep(10)
+        finally:
+            datahandler.close()
+    logger.info('Successfully frontfilled takers.')
 
     # try:
     #     dt = datetime.fromtimestamp(now)
@@ -232,7 +232,7 @@ def main():
 
     # except Exception as e:
     #     logger.error(f'Failed to run inference: {e}')
-    #     send_email_on_error(e)
+    #     send_email_on_error(e, start, end)
     #     delete_cronjob()
     #     raise e
 
@@ -249,7 +249,7 @@ if __name__ == "__main__":
     # alpha = config['model_configs']['base']['alpha']
     # models = {}
     # for pool in MODELED_POOLS:
-    #     with open(f'../model_configs/baseline/{pool}.pkl', 'rb') as f:
+    #     with open(f'./model_configs/baseline/{pool}.pkl', 'rb') as f:
     #         baseline = pickle.load(f)
     #     models[pool] = {}
     #     models[pool]['baseline'] = baseline

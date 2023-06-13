@@ -382,7 +382,9 @@ class DataHandler():
                        end: int=None
         ) -> pd.DataFrame:
 
-        delta = int(timedelta(days=2).total_seconds()) # Hack to avoid missing data
+        mask = pd.date_range(start=datetime.fromtimestamp(start), end=datetime.fromtimestamp(end), freq='1min').round('1min')
+
+        delta = int(timedelta(days=7).total_seconds()) # Hack to avoid missing data: get latest available price
 
         if self.token_metadata[token_id]['symbol'] == "3Crv":
             threepool = "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"
@@ -413,6 +415,7 @@ class DataHandler():
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.resample('1min').ffill()
+        df = df.reindex(mask, method='ffill')
         df = df.loc[datetime.fromtimestamp(start):datetime.fromtimestamp(end)]
         if 'lpPriceUSD' in df.columns:
             df = df.rename(columns={'lpPriceUSD': 'close'})
@@ -479,6 +482,7 @@ class DataHandler():
         series.name = metric
         if metric in ['shannonsEntropy', 'giniCoefficient']:
             series.replace(0, method='ffill', inplace=True)
+            series.fillna(method='ffill', inplace=True)
         elif metric in ['netSwapFlow', 'netLPFlow', 'sharkflow']:
             series.groupby(series.index).sum()            
         elif metric == 'lpSharePrice':
@@ -499,6 +503,9 @@ class DataHandler():
             query = query.filter(PoolMetrics.metric.like(f'%{metric}'))
         else:
             query = query.filter(PoolMetrics.metric == metric)
+        if metric in ['lpSharePrice']:
+            query = query.filter(PoolMetrics.value != 0)
+            query = query.filter(PoolMetrics.value.isnot(None))
         query = query.order_by(PoolMetrics.timestamp.desc())
         results = query.first()
         if not len(results):
@@ -643,6 +650,7 @@ class DataHandler():
 
         if metric in ['giniCoefficient', 'shannonsEntropy']:
             X = np.log1p(data.resample(freq).last().pct_change()).dropna()
+            X = X[~np.isinf(X)] # if balances were 0, they increase by inf
         elif 'netSwapFlow' in metric \
             or 'netLPFlow' in metric \
             or 'sharkflow' in metric \

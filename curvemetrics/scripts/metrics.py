@@ -33,7 +33,7 @@ def pools(start: int, end: int):
                 if pool_metadata[pool]['creationDate'] < start:
                     pool_start = start
                     pool_end = end
-                elif start < pool_metadata[pool]['creationDate'] < start:
+                elif start < pool_metadata[pool]['creationDate'] < end:
                     pool_start = pool_metadata[pool]['creationDate']
                     pool_end = end
                 else:
@@ -79,9 +79,8 @@ def pools(start: int, end: int):
                     ohlcv = datahandler.get_ohlcv_data(token, start=start, end=pool_end)
                     ohlcvs[token] = ohlcv
 
-                logger.info(f"Inserting metrics.")
-
                 pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+                logger.info(f"Inserting metrics.")
                 datahandler.insert_pool_metrics(pool_metrics, pool)
 
                 logger.info(f"Finished processing pool {pool_metadata[pool]['name']}.\n")
@@ -114,8 +113,6 @@ def tokens(start: int, end: int):
                 logger.info(f"Processing token {token_metadata[token]['symbol']}.")
 
                 token_start, token_end = start, end 
-
-                # TODO: refactor these if statements for all scripts
 
                 if token_metadata[token]['symbol'] == "WETH":
                     logger.info(f"{token_metadata[token]['symbol']} assumed to be = ETH. Skipping...\n")
@@ -161,7 +158,7 @@ def tokens(start: int, end: int):
                     if pool_metadata[pool]['creationDate'] < start:
                         token_start = start
                         token_end = end
-                    elif start < pool_metadata[pool]['creationDate'] < start:
+                    elif start < pool_metadata[pool]['creationDate'] < end:
                         token_start = pool_metadata[pool]['creationDate']
                         token_end = end
                     else:
