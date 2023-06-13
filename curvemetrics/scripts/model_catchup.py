@@ -114,7 +114,7 @@ def main(models, now):
         model_end = get_model_end(dt) - 0.00001
 
         datahandler = DataHandler()
-        tuner = ModelSetup(datahandler, logger=logger)
+        tuner = ModelSetup(datahandler, logger=logger, freq=timedelta(seconds=PERIOD))
 
         ### Model Inference
         for pool in MODELED_POOLS:
@@ -135,20 +135,20 @@ def main(models, now):
             is_true_cp = baseline.update(virtual_price, lp_share_price, model_start)
             if is_true_cp:
                 true_cp = baseline.last_cp
-                # datahandler.insert_changepoints([baseline.last_ts], pool, 'baseline', baseline)
+                datahandler.insert_changepoints([datetime.fromtimestamp(true_cp)], pool, 'baseline', 'baseline', tuner.freq_str)
                 logger.info(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
 
             for metric in POOL_METRICS:
-                logger.info(f'Running inference for {pool} with {metric} at {datetime.fromtimestamp(now)}.')
                 model = models[pool][metric]
                 X = datahandler.get_pool_X(metric, pool, model_start, model_end, '1h')
                 x, ts = X[-1], datetime.timestamp(X.index[-1])
+                logger.info(f'Running inference for {pool} with {metric} at {datetime.fromtimestamp(ts)}.')
                 # Ensure we are getting complete, non-overlapping data
                 assert ts == model.last_ts + PERIOD 
                 is_cp = model.predict(x, ts)
                 if is_cp:
-                    cp = now
-                    # datahandler.insert_changepoints([cp], pool, 'bocd', metric)
+                    cp = ts
+                    datahandler.insert_changepoints([datetime.fromtimestamp(cp)], pool, 'bocd', metric, tuner.freq_str)
                     logger.info(f'Changepoint detected for {name} with {metric} at {datetime.fromtimestamp(cp)}.')
                     send_email_on_changepoint(name, metric, cp)
 
@@ -164,8 +164,8 @@ def main(models, now):
 
 # Run FOREVER!
 if __name__ == "__main__":
-    # Start as if we are getting May 5th, 2023, 1am UTC data
-    now = datetime.timestamp(datetime(2023, 5, 1, 2, 0, 0, 1))
+    # NOTE: Edit these
+    now = datetime.timestamp(datetime(2023, 6, 13, 20, 0, 0, 1))
     end = datetime.timestamp(datetime.now())
 
     # Read models
@@ -181,15 +181,16 @@ if __name__ == "__main__":
             model.logger = Logger(f'./logs/frontfill/inference_{pool}_{metric}.log').logger
             models[pool][metric] = model
 
-    while now + PERIOD <= end:
+    while now <= end:
         models = main(models, now)
         now += PERIOD
+        end = datetime.timestamp(datetime.now())
 
-    # for pool in MODELED_POOLS:
-        # baseline = models[pool]['baseline']
-        # with open(f'./model_configs/baseline/{pool}.pkl', 'wb') as f:
-        #     pickle.dump(baseline, f)
-        # for metric in POOL_METRICS:
-            # model = models[pool][metric]
-            # with open(f'./model_configs/{metric}/{pool}.pkl', 'wb') as f:
-            #     pickle.dump(model, f)
+    for pool in MODELED_POOLS:
+        baseline = models[pool]['baseline']
+        with open(f'./model_configs/baseline/{pool}.pkl', 'wb') as f:
+            pickle.dump(baseline, f)
+        for metric in POOL_METRICS:
+            model = models[pool][metric]
+            with open(f'./model_configs/{metric}/{pool}.pkl', 'wb') as f:
+                pickle.dump(model, f)

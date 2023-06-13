@@ -158,6 +158,7 @@ class Baseline():
         self.last_cp = last_cp
         self.depegged = depegged
         self.thresh = thresh
+        self.last_ts = None
     
     def update(self, 
                vp: float, 
@@ -172,6 +173,7 @@ class Baseline():
 
         :return: True if new changepoint, False if no changepoint or if already depegged
         """
+        self.last_ts = ts
         error = abs((vp - rp) / vp)
         if error >= self.thresh:
             # Depegging

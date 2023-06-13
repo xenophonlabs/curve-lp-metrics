@@ -60,10 +60,6 @@ class DataHandler():
         
         self.logger.warning(f"Dropped all tables.")
 
-    @staticmethod
-    def pg_array_to_list(arr):
-        return re.findall(r'{(.+)}', ''.join(arr))[0].split(',')
-
     def insert_pool_metadata(self, data):
         df = DataHandler.format_pool_metadata(data)
         self.insert(df, Pools, replace=True, index_elements=[Pools.id])
@@ -506,6 +502,7 @@ class DataHandler():
         if metric in ['lpSharePrice']:
             query = query.filter(PoolMetrics.value != 0)
             query = query.filter(PoolMetrics.value.isnot(None))
+            query = query.filter(PoolMetrics.value != 'NaN')
         query = query.order_by(PoolMetrics.timestamp.desc())
         results = query.first()
         if not len(results):

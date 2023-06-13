@@ -106,32 +106,28 @@ def get_model_start(dt):
 def get_model_end(dt):
     return int(datetime.timestamp(datetime(dt.year, dt.month, dt.day, dt.hour)))
 
-# def main(models: Dict[BOCD]):
-def main():
+def main(models, now):
     """
     This script does the following, in order, every hour, forever:
 
     1. Frontfill raw data
     2. Computes and frontfills metrics
     3. Computes and frontfills new takers stats and sharkflow metric
-    4. Runs one inference step on all models and frontfills the results
+    4. Runs one inference step on all models
 
     Fault tolerance:
 
-    If steps (1-3) fail, the script will retry them 3 times, with a 10 second delay between each retry.
+    If steps (1-3) fail, the script will retry them 3 times, with a 30 second delay between each retry.
     If they still fail, the script will:
     1. Log the error
     2. Send an email to the Xenophon Labs team
-    3. Tweet about the error
-    4. Exit
+    3. Exit
 
     If step (4) fails for any model, the script will retry that model 3 times.
     If it still fails, the script will:
     1. Log the error
     2. Send an email to the Xenophon Labs team
-    3. Tweet about the error
-    4. Retire the failing model
-    5. Continue to the next model
+    3. NOTE: Do not exit. We continue to frontfill data even if models are failing.
     """
     end = math.floor(now) # UTC timestamp
     start = end - PERIOD - BUFFER
@@ -148,7 +144,7 @@ def main():
                 send_email_on_error(e, start, end)
                 delete_cronjob()
                 raise e
-            time.sleep(10)
+            time.sleep(30)
     logger.info('Successfully frontfilled raw data.')
 
     ### Frontfill Metrics
@@ -163,7 +159,7 @@ def main():
                 send_email_on_error(e, start, end)
                 delete_cronjob()
                 raise e
-            time.sleep(10)
+            time.sleep(30)
     logger.info('Successfully frontfilled metrics.')
 
     ### Frontfill Takers
@@ -181,86 +177,94 @@ def main():
                 send_email_on_error(e, start, end)
                 delete_cronjob()
                 raise e
-            time.sleep(10)
+            time.sleep(30)
         finally:
             datahandler.close()
     logger.info('Successfully frontfilled takers.')
 
-    # try:
-    #     dt = datetime.fromtimestamp(now)
-    #     model_start = get_model_start(dt)
-    #     model_end = get_model_end(dt)
+    ### Run Inference
+    logger = Logger('./logs/frontfill/inference.log').logger
+    try:
+        dt = datetime.fromtimestamp(now)
+        model_start = get_model_start(dt)
+        model_end = get_model_end(dt) - 0.00001
 
-    #     datahandler = DataHandler()
-    #     tuner = ModelSetup(datahandler, logger=logger)
+        datahandler = DataHandler()
+        tuner = ModelSetup(datahandler, logger=logger, freq=timedelta(seconds=PERIOD))
 
-    #     ### Model Inference
-    #     for pool in MODELED_POOLS:
+        ### Model Inference
+        for pool in MODELED_POOLS:
 
-    #         name = datahandler.pool_metadata[pool]['name']
+            name = datahandler.pool_metadata[pool]['name']
             
-    #         baseline = model[pool]['baseline']
+            baseline = models[pool]['baseline']
 
-    #         lp_share_price = datahandler.get_pool_metric_last(pool, 'lpSharePrice')[0]
-    #         if pool in tuner.ETH_POOLS:
-    #             eth_price = datahandler.get_ohlcv_data_last(datahandler.token_ids['ETH'])['close'][0]
-    #             lp_share_price /= eth_price
-    #         elif pool in tuner.CRV_POOLS:
-    #             crv_price = datahandler.get_ohlcv_data_last(datahandler.token_ids['CRV'])['close'][0]
-    #             lp_share_price /= crv_price
-    #         virtual_price = datahandler.get_pool_snapshots_last(pool)['virtualPrice'][0] / 10**18
+            lp_share_price = datahandler.get_pool_metric_last(pool, 'lpSharePrice')[0]
+            if pool in tuner.ETH_POOLS:
+                eth_price = datahandler.get_ohlcv_data_last(datahandler.token_ids['ETH'])['close'][0]
+                lp_share_price /= eth_price
+            elif pool in tuner.CRV_POOLS:
+                crv_price = datahandler.get_ohlcv_data_last(datahandler.token_ids['CRV'])['close'][0]
+                lp_share_price /= crv_price
+            virtual_price = datahandler.get_pool_snapshots_last(pool)['virtualPrice'][0] / 10**18
 
-    #         is_true_cp = baseline.update(virtual_price, lp_share_price, model_start)
-    #         if is_true_cp:
-    #             true_cp = baseline.last_cp
-    #             # datahandler.insert_changepoints([baseline.last_ts], pool, 'baseline', baseline)
-    #             logger.info(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
-    #             tweet(name, 'baseline', true_cp, lp_share_price, virtual_price)
-    #             send_email_on_changepoint(name, 'baseline', true_cp)
+            is_true_cp = baseline.update(virtual_price, lp_share_price, model_start)
+            if is_true_cp:
+                true_cp = baseline.last_cp
+                datahandler.insert_changepoints([datetime.fromtimestamp(true_cp)], pool, 'baseline', 'baseline', tuner.freq_str)
+                logger.info(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
+                tweet(name, 'baseline', true_cp, lp_share_price, virtual_price)
 
-    #         for metric in POOL_METRICS:
-    #             logger.info(f'Running inference for {pool} with {metric}.')
-    #             model = models[pool][metric]
-    #             X = datahandler.get_pool_X(metric, pool, model_start, model_end, '1h')
-    #             x, ts = X[0], datetime.timestamp(X.index[0])
-    #             # Ensure we are getting complete, non-overlapping data
-    #             assert ts == model.last_ts + PERIOD 
-    #             is_cp = model.predict(x, ts)
-    #             if is_cp:
-    #                 cp = now
-    #                 # datahandler.insert_changepoints([cp], pool, 'bocd', metric)
-    #                 logger.info(f'Changepoint detected for {name} with {metric} at {cp}.')
-    #                 tweet(name, metric, cp, lp_share_price, virtual_price)
-    #                 send_email_on_changepoint(name, metric, cp)
+            for metric in POOL_METRICS:
+                model = models[pool][metric]
+                X = datahandler.get_pool_X(metric, pool, model_start, model_end, '1h')
+                x, ts = X[-1], datetime.timestamp(X.index[-1])
+                logger.info(f'Running inference for {pool} with {metric} at {datetime.fromtimestamp(ts)}.')
+                # NOTE: Ensure we are getting complete, non-overlapping data
+                assert ts == model.last_ts + PERIOD 
+                is_cp = model.predict(x, ts)
+                if is_cp:
+                    cp = ts 
+                    datahandler.insert_changepoints([datetime.fromtimestamp(cp)], pool, 'bocd', metric, tuner.freq_str)
+                    logger.info(f'Changepoint detected for {name} with {metric} at {datetime.fromtimestamp(cp)}.')
+                    send_email_on_changepoint(name, metric, cp)
+                    tweet(name, metric, cp, lp_share_price, virtual_price)
 
-    # except Exception as e:
-    #     logger.error(f'Failed to run inference: {e}')
-    #     send_email_on_error(e, start, end)
-    #     delete_cronjob()
-    #     raise e
+    except Exception as e:
+        logger.error(f'Failed to run inference: {e}')
+        send_email_on_error(e, model_start, model_end)
+        raise e
 
-    # finally:
-    #     datahandler.close()
+    finally:
+        datahandler.close()
+
+    return models
 
 # Run FOREVER!
 if __name__ == "__main__":
-    global now
     now = time.time()
 
-    # Initialize models
-    # margin = config['model_configs']['base']['margin']
-    # alpha = config['model_configs']['base']['alpha']
-    # models = {}
-    # for pool in MODELED_POOLS:
-    #     with open(f'./model_configs/baseline/{pool}.pkl', 'rb') as f:
-    #         baseline = pickle.load(f)
-    #     models[pool] = {}
-    #     models[pool]['baseline'] = baseline
-    #     for metric in POOL_METRICS:
-    #         with open(f'../model_configs/{metric}/{pool}.pkl', 'rb') as f:
-    #             model = pickle.load(f)
-    #         model.logger = Logger(f'./logs/frontfill/inference_{pool}_{metric}.log').logger
-    #         models[pool][metric] = model
+    # Read models
+    models = {}
+    for pool in MODELED_POOLS:
+        with open(f'./model_configs/baseline/{pool}.pkl', 'rb') as f:
+            baseline = pickle.load(f)
+        models[pool] = {}
+        models[pool]['baseline'] = baseline
+        for metric in POOL_METRICS:
+            with open(f'./model_configs/{metric}/{pool}.pkl', 'rb') as f:
+                model = pickle.load(f)
+            model.logger = Logger(f'./logs/frontfill/inference_{pool}_{metric}.log').logger
+            models[pool][metric] = model
 
-    # main(models)
-    main()
+    models = main(models, now)
+
+    # Dump models
+    for pool in MODELED_POOLS:
+        baseline = models[pool]['baseline']
+        with open(f'./model_configs/baseline/{pool}.pkl', 'wb') as f:
+            pickle.dump(baseline, f)
+        for metric in POOL_METRICS:
+            model = models[pool][metric]
+            with open(f'./model_configs/{metric}/{pool}.pkl', 'wb') as f:
+                pickle.dump(model, f)

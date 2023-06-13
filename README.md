@@ -31,10 +31,10 @@ MODELED_POOLS = [
 
 # API Usage
 
-Our Flask API can be accessed with simple HTTP GET requests. For example, we may query the `pool_data` for the 3pool, between January 1st 2022, and January 12th 2022 as follows:
+Our Flask API can be accessed with simple HTTP GET requests. For example, we may query the `pool_metrics` table for the 3pool, between January 1st 2023, and June 13th 2023 as follows:
 
 ```
-curl "http://172.104.8.91/pool_data?pool_id=0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7&start=1640995203&end=1641995203" > example.json
+curl "http://172.104.8.91/pool_metrics?&pool_id=0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7&metric=shannonsEntropy&start=1672531200&end=1686689907" > example.json
 ```
 
 We first obtain the pool id, then convert the dates to UNIX timestamps, and query the `pool_data` endpoint. By default, this returns the token balances and output LP token supply for the pool at each block. As it stands, our API frontfills data, computes metrics, and runs inference on our BOCD models **every hour on the hour**. 
