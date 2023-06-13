@@ -7,6 +7,7 @@ from typing import List
 
 import pandas as pd
 import numpy as np
+import os
 
 class MetricsProcessor:
 
@@ -50,10 +51,11 @@ class MetricsProcessor:
         metrics.extend([
             self.gini(pool_data),
             self.shannons_entropy(pool_data),
-            self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp')
+            self.markout(swaps_data, ohlcvs, window=timedelta(minutes=5), who='lp'),
+            self.lp_share_price(pool_id, pool_data, ohlcvs)
         ])
 
-        tokens = set(swaps_data['tokenBought']).union(set(swaps_data['tokenSold']))
+        tokens = POOL_TOKENS_MAP[pool_id]
 
         for token_id in tokens:
             metrics.extend([
@@ -67,9 +69,8 @@ class MetricsProcessor:
                 self.net_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol']),
                 # self.abs_lp_flow(lp_data, token_idx, self.token_metadata[token_id]['symbol'])
             ])
-        
+
         metrics_df = pd.concat(metrics, axis=1)
-        metrics_df = metrics_df.fillna(0)
         
         return metrics_df
 
@@ -78,7 +79,6 @@ class MetricsProcessor:
         metrics.append(self.log_returns(token_ohlcv, self.token_metadata[token_id]['symbol']))
     
         metrics_df = pd.concat(metrics, axis=1)
-        metrics_df = metrics_df.fillna(0)
 
         return metrics_df
     
@@ -103,7 +103,7 @@ class MetricsProcessor:
         return coef
 
     def gini(self, df) -> pd.Series:
-        metric = df['inputTokenBalances'].apply(self._gini).resample(self.freq).last().fillna(method='ffill')
+        metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
         metric.name = 'giniCoefficient'
         return metric
 
@@ -127,7 +127,7 @@ class MetricsProcessor:
         return entropy
 
     def shannons_entropy(self, df) -> pd.Series:
-        metric = df['inputTokenBalances'].apply(self._shannons_entropy).resample(self.freq).last().fillna(method='ffill')
+        metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._shannons_entropy)
         metric.name = 'shannonsEntropy'
         return metric
     
@@ -147,9 +147,9 @@ class MetricsProcessor:
     # submitted the 1Inch transaction). This is okay when looking at sharks: we can assume
     # sharks are less likely to be going through 1Inch.
 
-    def sharks(self, takers, top) -> np.array:
+    def sharks(self, takers, top) -> List[str]:
         sharks = takers[takers['cumulativeMarkout'] > takers['cumulativeMarkout'].quantile(top)]
-        return np.array(sharks.index)
+        return list(sharks.index)
     
     def sharkflow(self, swaps, takers, token_id, symbol, top=0.9):
         sharks = self.sharks(takers, top)
@@ -172,7 +172,7 @@ class MetricsProcessor:
             flow['netSwapFlow'] : pd.Series
                 net swap flow of the token in the pool
         """
-        if len(df) == 0:
+        if df.empty:
             return pd.Series([], name=f'{symbol}.netSwapFlow')
         swap_in = df[df['tokenBought']==token_id]['amountBought'].groupby(level=0).sum()
         swap_out = -1*df[df['tokenSold']==token_id]['amountSold'].groupby(level=0).sum()
@@ -184,7 +184,7 @@ class MetricsProcessor:
         return metric
 
     def net_lp_flow(self, df, token_idx, symbol) -> pd.Series:
-        if len(df) == 0:
+        if df.empty:
             return pd.Series([], name=f'{symbol}.netLPFlow')
         deposits = df[df['removal']==False]
         deposits = deposits['tokenAmounts'].apply(lambda x: x[token_idx]).groupby(level=0).sum().groupby(level=0).sum()
@@ -229,7 +229,7 @@ class MetricsProcessor:
             flow['netSwapFlow'] : pd.Series
                 net swap flow of the token in the pool
         """
-        if len(df) == 0:
+        if df.empty:
             return pd.Series([], name=f'{symbol}.netSwapFlow')
         swap_in = df[df['tokenBought']==token_id]['amountBought'].groupby(level=0).sum()
         swap_out = df[df['tokenSold']==token_id]['amountSold'].groupby(level=0).sum()
@@ -239,7 +239,7 @@ class MetricsProcessor:
         return metric
 
     def abs_lp_flow(self, df, token_idx, symbol) -> pd.Series:
-        if len(df) == 0:
+        if df.empty:
             return pd.Series([], name=f'{symbol}.netLPFlow')
         deposits = df[df['removal']==False]
         deposits = deposits['tokenAmounts'].apply(lambda x: json.loads(x)[token_idx]).groupby(level=0).sum()
@@ -397,6 +397,9 @@ class MetricsProcessor:
         """
         self.markout_window = window
 
+        if df.empty:
+            return pd.DataFrame()
+
         tmp = df.copy()
 
         tmp['roundedDate'] = tmp['timestamp'].apply(MetricsProcessor.round_date)
@@ -422,6 +425,8 @@ class MetricsProcessor:
         3. shift forward by window (so markout at time t is the markout of trades at time t-window with markout prices at t)
         """
         markouts = self.get_markout(df, ohlcvs, window, who)
+        if markouts.empty:
+            return pd.Series([], name=self.markout_col)
         markouts = markouts[self.markout_col]
         markouts = markouts.resample(self.freq).sum()
         markouts.index += pd.Timedelta(window)
@@ -433,7 +438,7 @@ class MetricsProcessor:
         Computes the LP Share Price for the given pool and the changepoints.
         """
 
-        df = pool_data[['inputTokenBalances', 'outputTokenSupply']].resample('1min').last().fillna(method='ffill').dropna()
+        df = pool_data[['inputTokenBalances', 'outputTokenSupply']].resample(self.freq).last().fillna(method='ffill').dropna()
 
         tokens = self.pool_metadata[pool]['inputTokens']
 
@@ -441,7 +446,7 @@ class MetricsProcessor:
         for token in tokens:
             close = ohlcvs[token]['close']
             numeraire = ohlcvs[token]['symbol'].dropna().unique()[0].split('/')[1]
-            if numeraire != 'USD':
+            if numeraire not in ['USD', 'VP']: # VP stands for Virtual Price, no need to convert
                 symbols = {v['symbol']:k for k, v in self.token_metadata.items()}
                 if symbols[numeraire] in ohlcvs.keys():
                     close = close * ohlcvs[symbols[numeraire]]['close'] # e.g. frxETH/ETH * ETH/USD = frxETH/USD
@@ -474,3 +479,50 @@ class MetricsProcessor:
         cps = np.array([cp for i, cp in enumerate(cps) if cp != cps[i-1] + freq])
         
         return cps
+
+POOL_TOKENS_MAP = {
+        "0xdc24316b9ae028f1497c275eb9192a3ea0f67022" : ["0xae7ab96520de3a18e5e111b5eaab095312d7fe84", 
+        "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"],
+       "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7": ["0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "0x6b175474e89094c44da98b954eedeac495271d0f"],
+       "0xdcef968d416a41cdac0ed8702fac8128a64241a2": ["0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "0x853d955acef822db058eb8505911ed77f175b99e"],
+       "0xceaf7747579696a2f0bb206a14210e3c9e6fb269": ["0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490",
+        "0xa693b19d2931d498c5b318df961919bb4aee87a5"],
+       "0x0f9cb53ebe405d49a0bbdbd291a65ff571bc83e1": ["0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "0x674c6ad92fd080e4004b2312b45f796a192d27a0",
+        "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490"],
+       "0x5a6a4d54456819380173272a5e8e9b9904bdf41b": ["0x99d8a9c45b2eca8864373a26d1459e3dff1e17f3",
+        "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490"],
+       "0xa5407eae9ba41422680e2e00537571bcc53efbfd": ["0x57ab1ec28d129707052df4df418d58a2d46d5f51",
+        "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"],
+       "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577": ["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "0x5e8422345238f34275888049021821e8e08caa1f"],
+       "0xed279fdd11ca84beef15af5d39bb4d4bee23f0ca": ["0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "0x5f98805a4e8be255a32880fdec7f6728c6568ba0",
+        "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490"],
+       "0x4807862aa8b2bf68830e4c8dc86d0e9a998e085a": ["0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "0x4fabb145d64652a948d72533023f6e7a623c7c53",
+        "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "0x6c3f90f043a72fa612cbac8115ee7e52bde6e490"],
+       "0x828b154032950c8ff7cf8085d841723db2696056": ["0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "0xae7ab96520de3a18e5e111b5eaab095312d7fe84"],
+       "0x5fae7e604fc3e24fd43a72867cebac94c65b404a": ["0xbe9895146f7af43049ca1c1ae358b0541ea49704",
+        "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
+       "0x971add32ea87f10bd192671630be3be8a11b8623": ["0xd533a949740bb3306d119cc777fa900ba034cd52",
+        "0x62b9c7356a2dc64a1969e19c23e4f579f9810aa7"]
+}

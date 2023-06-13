@@ -3,12 +3,14 @@ from datetime import timedelta
 from pathos.multiprocessing import ProcessingPool as Pool
 from multiprocessing import cpu_count
 import logging
+from datetime import datetime
 
 # Local imports
-from ..detection.bocd_stream.bocd.bocd import BayesianOnlineChangePointDetection
-from ..detection.bocd_stream.bocd.distribution import StudentT
-from ..detection.bocd_stream.bocd.hazard import ConstantHazard
-from ..detection.scorer import f_measure, early_weight
+from curvemetrics.src.detection.bocd_stream.bocd.bocd import BayesianOnlineChangePointDetection
+from curvemetrics.src.detection.bocd_stream.bocd.distribution import StudentT
+from curvemetrics.src.detection.bocd_stream.bocd.hazard import ConstantHazard
+from curvemetrics.src.detection.scorer import f_measure, early_weight
+from curvemetrics.src.classes.welford import Welford
 
 class BOCD():
 
@@ -20,7 +22,7 @@ class BOCD():
         'mu': 0
     }
 
-    def __init__(self, margin=timedelta(hours=24), alpha=1/5, verbose=False, weight_func=None):
+    def __init__(self, margin=timedelta(hours=24), alpha=1/5, verbose=False, weight_func=None, logger=None):
         self.model = BayesianOnlineChangePointDetection(
             ConstantHazard(self.default_params['lambda']), 
             StudentT(mu=self.default_params['mu'], 
@@ -31,18 +33,24 @@ class BOCD():
         self.margin = margin
         self.alpha = alpha
 
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        if not self.logger.handlers:
-            self.logger.addHandler(logging.StreamHandler())
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = logging.getLogger(__name__)
+            self.logger.setLevel(logging.INFO)
+            if not self.logger.handlers:
+                self.logger.addHandler(logging.StreamHandler())
 
         self.results = {}
         self.params = self.default_params
         self.y_pred = None
-        self.y_ps = None
         self.verbose = verbose
         self.weight_func = weight_func
-    
+
+        self.rt_mle = np.array([])
+        self.last_ts = None
+        self.welly = Welford()
+
     def update(self, params):
         new_params = {key: params.get(key) or self.default_params.get(key) for key in self.default_params.keys()}
         self.model.reset_params(
@@ -56,31 +64,46 @@ class BOCD():
         )
         self.params = new_params
 
-    def predict(self, X):
+    def predict(self, x, last_ts):
+        """
+        Predict 1 datum with standardization. Standardization is done online
+        with Welford's method in the `self.welly` object. Update internal
+        state.
+
+        :param x: datum to predict
+        :param last_ts: timestamp of datum
+
+        :return: True if changepoint, False otherwise
+        """
+        x = self.welly.standardize(x)
+        self.model.update(x)
+        self.rt_mle = np.append(self.rt_mle, self.model.rt)
+        self.last_ts = last_ts
+        if len(self.rt_mle) > 1 and self.rt_mle[-1] != self.rt_mle[-2] + 1:
+            self.logger.info(f'Changepoint detected at {datetime.fromtimestamp(last_ts)}.')
+            return True # Changepoint
+        return False
+
+    def predict_many(self, X):
         rt_mle = np.empty(X.shape)
-        p = np.empty(X.shape)
         for i, x in enumerate(X):
             self.model.update(x)
             rt_mle[i] = self.model.rt
-            p[i] = self.model.p
         cps = np.where(np.diff(rt_mle)!=1)[0]+1
-        ps = p[cps] # probabilities
-        return X.index[cps], ps
+        return X.index[cps], rt_mle
 
     def _tune(self, chunk, X, y_true):
         results = {}
         y_pred = []
-        y_ps = []
         score = -1
         for a, b, k in chunk:
             self.update({'alpha': a, 'beta': b, 'kappa': k})
-            pred, ps = self.predict(X)
+            pred, rt_mle = self.predict_many(X)
             results[(a, b, k)] = f_measure(y_true, pred, margin=self.margin, alpha=self.alpha, return_PR=True, weight_func=self.weight_func)
             if results[(a, b, k)][0] > score:
                 y_pred = pred
-                y_ps = ps
                 score = results[(a, b, k)][0]
-        return results, y_pred, score, y_ps
+        return results, y_pred, score, rt_mle
 
     def tune(self, grid, X, y_true):
         num_cpus = cpu_count()
@@ -98,7 +121,7 @@ class BOCD():
             self.results.update(result[0])
 
         self.y_pred = max(results, key=lambda x: x[2])[1]
-        self.y_ps = max(results, key=lambda x: x[2])[3]
+        self.rt_mle = max(results, key=lambda x: x[2])[3]
 
         if self.verbose:
             self.logger.info('\nFinished tuning hyperparameters\n')
@@ -107,7 +130,6 @@ class BOCD():
             self.logger.info(f'FPR: {self.best_results}')
             self.logger.info(f'True CPs: {y_true}')
             self.logger.info(f'Predicted CPs: {self.y_pred}')
-            self.logger.info(f'Predicted CPs Probabilities: {self.y_ps}\n')
 
     @property
     def best_params_dict(self):
@@ -125,3 +147,42 @@ class BOCD():
     @property
     def best_results(self):
         return self.results[self.best_params]
+
+class Baseline():
+
+    def __init__(self, 
+                 last_cp: int=None,
+                 depegged: bool=False,
+                 thresh: float=0.05
+        ):
+        self.last_cp = last_cp
+        self.depegged = depegged
+        self.thresh = thresh
+        self.last_ts = None
+    
+    def update(self, 
+               vp: float, 
+               rp: float, 
+               ts: int
+        ) -> bool:
+        """
+        Update for baseline model.
+
+        :param rp: price (lp_share_price or token_price)
+        :param vp: peg (virtual price or 1)
+
+        :return: True if new changepoint, False if no changepoint or if already depegged
+        """
+        self.last_ts = ts
+        error = abs((vp - rp) / vp)
+        if error >= self.thresh:
+            # Depegging
+            if self.depegged == True:
+                self.last_cp = ts
+                return False
+            else:
+                self.depegged = True
+                self.last_cp = ts
+                return True
+        self.depegged = False
+        return False 

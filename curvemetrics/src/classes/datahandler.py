@@ -1,385 +1,152 @@
-import sqlite3
-import json
 import os
 import logging
+import re
+from typing import Dict, List
+from datetime import datetime, timedelta
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.dialects.postgresql import insert
+from web3 import Web3
 
 import numpy as np
 import pandas as pd
 
-from typing import Dict, List
-from datetime import datetime, timedelta
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+
+from .entities import *
+
+from dotenv import load_dotenv
+load_dotenv()
+
+INFURA_KEY = os.getenv("INFURA_KEY")
+ALCHEMY_KEY = os.getenv("ALCHEMY_KEY")
+PSQL_USER = os.getenv("PSQL_USER")
+PSQL_PASSWORD = os.getenv("PSQL_PASSWORD")
+
+# WEB3_ENDPOINT = f"https://mainnet.infura.io/v3/{INFURA_KEY}"
+WEB3_ENDPOINT = f"https://eth-mainnet.g.alchemy.com/v2/{ALCHEMY_KEY}"
 
 PATH = os.path.abspath(__file__).replace(os.path.basename(__file__), '')
 
 class DataHandler():
 
-    """
-    Formats raw data and inserts it into the rawadata.db database.
-    """
+    def __init__(self, db=f'postgresql://{PSQL_USER}:{PSQL_PASSWORD}@localhost:5432/{PSQL_USER}', logger=None):
+        self.engine = create_engine(db)
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()
 
-    def __init__(self, db_name=PATH+'../../../database/database.db'):
-        self.conn = sqlite3.connect(db_name)
-        self.conn.row_factory = self.dict_factory
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        self.logger.addHandler(logging.StreamHandler())
-
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = logging.getLogger(__name__)
+            self.logger.setLevel(logging.INFO)
+            self.logger.addHandler(logging.StreamHandler())
+    
     def create_tables(self):
-        cursor = self.conn.cursor()
-        cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table';")
-        existing_tables = cursor.fetchall()
-        if len(existing_tables) != 0:
-            self.logger.info("Tables already exist in the database: {}".format(existing_tables))
-
-        with open(PATH+'../../../config/schemas/schema.sql', 'r') as f:
-            create_tables_sql = f.read()
-        
-        self.conn.executescript(create_tables_sql)
+        Entity.metadata.create_all(self.engine)
         self.logger.info("Tables created in the database.")
     
-    def create_indexes(self):
-        cursor = self.conn.cursor()
-        cursor.execute(f"SELECT name FROM sqlite_master WHERE type='index';")
-        existing_indexes = cursor.fetchall()
-        if len(existing_indexes) != 0:
-            self.logger.info("Indexes already exist in the database: {}".format(existing_indexes))
-
-        with open(PATH+'../../../config/schemas/indexes.sql', 'r') as f:
-            create_indexes_sql = f.read()
-        
-        self.conn.executescript(create_indexes_sql)
-        self.logger.info("Indexes created in the database.")
-
-    @staticmethod
-    def dict_factory(cursor, row):
-        return {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
-
     def close(self):
-        self.conn.close()
+        self.session.close()
     
     def reset(self):
         self.logger.warning(f"WARNING: DROPPING ALL TABLES...")
-        cursor = self.conn.cursor()
 
-        # get the list of all tables
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-        tables = cursor.fetchall()
-
-        # delete each table
-        for table in tables:
-            table_name = table['name']
-            try:
-                cursor.execute(f"DROP TABLE IF EXISTS {table_name};")
-                self.logger.warning(f"Dropped table {table_name}")
-            except sqlite3.Error as e:
-                self.logger.warning(f"An error occurred: {e.args}")
-
-        cursor.execute("VACUUM;")
-
-        # commit the transaction and close the cursor
-        self.conn.commit()
-        cursor.close()
+        try:
+            Entity.metadata.drop_all(self.engine)
+        except Exception as e:
+            self.logger.warning(f"An error occurred: {e.args}")
+        
+        self.logger.warning(f"Dropped all tables.")
 
     def insert_pool_metadata(self, data):
         df = DataHandler.format_pool_metadata(data)
-        df.to_sql("pools", self.conn, if_exists="replace", index=False)
-        self.conn.commit()
+        self.insert(df, Pools, replace=True, index_elements=[Pools.id])
+        self.logger.info(f"Pool Metadata has been inserted.")
+
+    def insert_token_metadata(self, data):
+        df = DataHandler.format_token_metadata(data)
+        self.insert(df, Tokens, replace=True, index_elements=[Tokens.id])
+        self.logger.info(f"Token Metadata has been inserted.")
     
     def insert_block_timestamps(self):
         """
         Used to backfill blocks with timestamps.
         """
         for i in range(5):
+            self.logger.info(f'[{datetime.now()}] Inserting block_timestamps {i}...')
             fn = PATH+f'../../../data/timestamps_{i}.csv'
             df = pd.read_csv(fn)
-            df['block'] = df['block'].astype(int)
             df['timestamp'] = df['unixtime'].apply(lambda x: int(datetime.timestamp(datetime.fromisoformat(x.replace("Z", "+00:00")))))
             df = df[['block', 'timestamp']]
-            df.to_sql("block_timestamps", self.conn, if_exists="append", index=False)
-            self.conn.commit()
+            df['timestamp'] = df['timestamp'].astype(object)
+            df['block'] = df['block'].astype(object)
+            self.insert(df, BlockTimestamps, replace=True, index_elements=[BlockTimestamps.block])
 
-    def insert_token_metadata(self, data):
-        df = DataHandler.format_token_metadata(data)
-        df.to_sql("tokens", self.conn, if_exists="replace", index=False)
-        self.conn.commit()
-    
-    def insert_pool_tokens_metadata(self, data):
-        df = DataHandler.format_pool_tokens_metadata(data)
-        df.to_sql("pool_tokens", self.conn, if_exists="replace", index=False)
-        self.conn.commit()
+        self.logger.info(f"Old blocktimestamps have been inserted.")
 
-    def insert_pool_tokens_messari_metadata(self, data):
-        df = DataHandler.format_pool_tokens_messari_metadata(data)
-        df.to_sql("pool_tokens", self.conn, if_exists="replace", index=False)
-        self.conn.commit()
-
-    def insert_pool_data(self, data, start_timestamp, end_timestamp):
-        df = DataHandler.format_pool_data(data, start_timestamp, end_timestamp)
-
+    def insert(self, 
+               df: pd.DataFrame, 
+               entity: object,
+               replace: bool=False,
+               index_elements: List[str]=[],):
+        """
+        Helper method to insert df into the database.
+        """
         if len(df) == 0:
             return
-
-        # Insert the DataFrame into the `pool_data` table
-        def insert_pool_row(row):
-            # Create an SQL INSERT OR IGNORE statement
-            sql = """
-            INSERT OR IGNORE INTO pool_data (
-                pool_id,
-                block,
-                totalValueLockedUSD,
-                inputTokenBalances,
-                inputTokenWeights,
-                timestamp,
-                outputTokenSupply
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)
-            """
-            self.conn.execute(sql, row)
         
-        df.apply(insert_pool_row, axis=1)
-        self.conn.commit()
+        for _, row in df.iterrows():
+            stmt = insert(entity.__table__).values(**row)
+            if replace:
+                stmt = stmt.on_conflict_do_update(index_elements=index_elements, set_=dict(row))
+            else:
+                stmt = stmt.on_conflict_do_nothing()
+            try:
+                self.session.execute(stmt)
+            except Exception as e:
+                self.session.rollback()
+                raise e
+
+        self.session.commit()
+
+    def insert_pool_data(self, data):
+        df = DataHandler.format_pool_data(data)
+        self.insert(df, PoolData)
 
     def insert_token_data(self, data):
         df = DataHandler.format_token_data(data)
-
-        if len(df) == 0:
-            return
-
-        # Insert the DataFrame into the `pool_data` table
-        def insert_token_row(row):
-            # Create an SQL INSERT OR IGNORE statement
-            sql = """
-            INSERT OR IGNORE INTO token_ohlcv (
-                token_id,
-                symbol,
-                timestamp,
-                open,
-                high,
-                low,
-                close,
-                volume
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """
-            self.conn.execute(sql, row)
-        
-        df.apply(insert_token_row, axis=1)
-        self.conn.commit()
+        self.insert(df, TokenOHLCV)
 
     def insert_swaps_data(self, data):
         df = DataHandler.format_swaps_data(data)
-
-        if len(df) == 0:
-            return
-
-        # Insert the DataFrame into the `swaps` table
-        def insert_swap_row(row):
-            # Create an SQL INSERT OR IGNORE statement
-            sql = """
-            INSERT OR IGNORE INTO swaps (
-                id,
-                timestamp,
-                tx,
-                pool_id,
-                amountBought,
-                amountSold,
-                tokenBought,
-                tokenSold,
-                buyer,
-                gasLimit,
-                gasUsed,
-                isUnderlying,
-                block_gte,
-                block_lt,
-                block
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
-            # Insert the row into the `swaps` table
-            self.conn.execute(sql, row)
-
-        df.apply(insert_swap_row, axis=1)
-        self.conn.commit()
+        self.insert(df, Swaps)
     
     def insert_lp_data(self, data):
-        # Convert JSON data to a pandas DataFrame
         df = DataHandler.format_lp_data(data)
-
-        if len(df) == 0:
-            return
-
-        # Insert the DataFrame into the `lp_events` table
-        def insert_lp_row(row):
-            # Create an SQL INSERT OR IGNORE statement
-            sql = """
-            INSERT OR IGNORE INTO lp_events (
-                id,
-                block,
-                liquidityProvider,
-                removal,
-                timestamp,
-                tokenAmounts,
-                totalSupply,
-                tx,
-                pool_id,
-                block_gte,
-                block_lt
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
-            # Insert the row into the `lp_events` table
-            self.conn.execute(sql, row)
-
-        # Apply the custom function to each row in the DataFrame
-        df.apply(insert_lp_row, axis=1)
-        # Commit the changes
-        self.conn.commit()
+        self.insert(df, LPEvents)
 
     def insert_pool_snapshots(self, data):
-        # Convert JSON data to a pandas DataFrame
         df = DataHandler.format_pool_snapshots(data)
-
-        if len(df) == 0:
-            return
-
-        # Insert the DataFrame into the `lp_events` table
-        def insert_snapshots_row(row):
-            # Create an SQL INSERT OR IGNORE statement
-            sql = """
-            INSERT OR IGNORE INTO snapshots (
-                id,
-                A,
-                adminFee,
-                fee,
-                timestamp,
-                normalizedReserves,
-                offPegFeeMultiplier,
-                reserves,
-                virtualPrice,
-                lpPriceUSD,
-                tvl,
-                totalDailyFeesUSD,
-                reservesUSD,
-                lpFeesUSD,
-                lastPricesTimestamp,
-                lastPrices,
-                pool_id,
-                block_gte,
-                block_lt
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
-            # Insert the row into the `lp_events` table
-            self.conn.execute(sql, row)
-
-        # Apply the custom function to each row in the DataFrame
-        df.apply(insert_snapshots_row, axis=1)
-        # Commit the changes
-        self.conn.commit()
+        self.insert(df, Snapshots)
     
     def insert_pool_metrics(self, data, pool_id):
-        # Convert JSON data to a pandas DataFrame
         df = DataHandler.format_pool_metrics(data, pool_id)
-
-        if len(df) == 0:
-            return
-
-        # Insert the DataFrame into the `pool_metrics` table
-        def insert_metrics_row(row):
-            # Create an SQL INSERT OR IGNORE statement
-            sql = """
-            INSERT OR IGNORE INTO pool_metrics (
-                timestamp,
-                pool_id,
-                metric,
-                value
-            ) VALUES (?, ?, ?, ?)
-            """
-            # Insert the row into the `pool_metrics` table
-            self.conn.execute(sql, row)
-
-        # Apply the custom function to each row in the DataFrame
-        df.apply(insert_metrics_row, axis=1)
-        # Commit the changes
-        self.conn.commit()
+        self.insert(df, PoolMetrics)
 
     def insert_token_metrics(self, data, token_id):
-        # Convert JSON data to a pandas DataFrame
         df = DataHandler.format_token_metrics(data, token_id)
+        self.insert(df, TokenMetrics)
 
-        if len(df) == 0:
-            return
-
-        # Insert the DataFrame into the `lp_events` table
-        def insert_metrics_row(row):
-            # Create an SQL INSERT OR IGNORE statement
-            sql = """
-            INSERT OR IGNORE INTO token_metrics (
-                timestamp,
-                token_id,
-                metric,
-                value
-            ) VALUES (?, ?, ?, ?)
-            """
-            # Insert the row into the `lp_events` table
-            self.conn.execute(sql, row)
-
-        # Apply the custom function to each row in the DataFrame
-        df.apply(insert_metrics_row, axis=1)
-        # Commit the changes
-        self.conn.commit()
-
-    def insert_changepoints(self, data, pool_id, model, metric):
-        # Convert JSON data to a pandas DataFrame
-        df = DataHandler.format_changepoints(data, pool_id, model, metric)
-
-        if len(df) == 0:
-            return
-
-        # Insert the DataFrame into the `lp_events` table
-        def insert_changepoints_row(row):
-            # Create an SQL INSERT OR IGNORE statement
-            sql = """
-            INSERT OR IGNORE INTO changepoints (
-                pool_id,
-                model,
-                metric,
-                timestamp
-            ) VALUES (?, ?, ?, ?)
-            """
-            # Insert the row into the `lp_events` table
-            self.conn.execute(sql, row)
-
-        # Apply the custom function to each row in the DataFrame
-        df.apply(insert_changepoints_row, axis=1)
-        # Commit the changes
-        self.conn.commit()
+    def insert_changepoints(self, data, address, model, metric, freq):
+        df = DataHandler.format_changepoints(data, address, model, metric, freq)
+        self.insert(df, Changepoints)
     
     def insert_takers(self, takers):
-        # Convert JSON data to a pandas DataFrame
         df = DataHandler.format_takers(takers)
+        self.insert(df, Takers, replace=True, index_elements=[Takers.buyer, Takers.windowSize])
 
-        if len(df) == 0:
-            return
-
-        # Insert the DataFrame into the `lp_events` table
-        def insert_takers_row(row):
-            # Create an SQL INSERT OR IGNORE statement
-            sql = """
-            INSERT OR REPLACE INTO takers (
-                buyer,
-                amountBought,
-                amountSold,
-                cumulativeMarkout,
-                meanMarkout,
-                count,
-                windowSize
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)
-            """
-            # Insert the row into the `lp_events` table
-            self.conn.execute(sql, row)
-
-        # Apply the custom function to each row in the DataFrame
-        df.apply(insert_takers_row, axis=1)
-        # Commit the changes
-        self.conn.commit()
-    
     @staticmethod
     def format_takers(data):
         df = data.reset_index()
@@ -389,46 +156,24 @@ class DataHandler():
     @staticmethod
     def format_pool_metadata(data):
         df = pd.DataFrame.from_dict(data).T.reset_index(drop=True)
-        for col in ['assetType', 'creationBlock', 'creationDate', 'c128', 'isRebasing', 'isV2', 'virtualPrice']:
-            df[col] = df[col].astype(int)
-        for col in ['baseApr']:
-            df[col] = df[col].astype(float)
-        df['coins'] = df['coins'].apply(lambda x: json.dumps(x))
-        df['inputTokens'] = df['inputTokens'].apply(lambda x: json.dumps(x))
         return df
 
     @staticmethod
     def format_token_metadata(data):
         df = pd.DataFrame.from_dict(data).T.reset_index(drop=True)
-        for col in ['decimals']:
-            df[col] = df[col].astype(int)
         return df
-    
-    @staticmethod
-    def format_pool_tokens_metadata(data):
-        df = pd.DataFrame([[k, coin] for k,v in data.items() for coin in v['coins']], columns=['pool_id', 'token_id'])
-        return df
-    
-    @staticmethod
-    def format_pool_tokens_messari_metadata(data):
-        df = pd.DataFrame([[k, coin] for k,v in data.items() for coin in v['coins']], columns=['pool_id', 'token_id'])
-        return df
-    
+
     @staticmethod
     def format_pool_data(data):
-        hack = DataHandler()
         df = pd.DataFrame([x for y in data for x in y])
+
         if len(df) == 0:
             return df
-        for col in ['totalValueLockedUSD']:
-            df[col] = df[col].astype(float)
-        for col in ['block']:
-            df[col] = df[col].astype(int)
-        df['inputTokenWeights'] = df['inputTokenWeights'].apply(lambda x: json.dumps(list(map(float, x))))
-        df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: json.dumps(list(map(int, x))))
-        if 'timestamp' not in df.columns:
-            df['timestamp'] = df['block'].apply(lambda x: hack.get_block_timestamp(x)[0]['timestamp'])
-        # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
+
+        hack = DataHandler()        
+        df['timestamp'] = df['block'].apply(lambda x: hack.get_block_timestamp(x))
+        hack.close()
+
         df = df[['pool_id', 'block', 'totalValueLockedUSD', 'inputTokenBalances', 'inputTokenWeights', 'timestamp', 'outputTokenSupply']]
         return df
 
@@ -453,11 +198,6 @@ class DataHandler():
         df = pd.DataFrame([x for y in data for x in y])
         if len(df) == 0:
             return df
-        for col in ['amountBought', 'amountSold']:
-            df[col] = df[col].astype(float)
-        for col in ['timestamp', 'block', 'gasLimit', 'gasUsed', 'isUnderlying']:
-            df[col] = df[col].astype(int)
-        # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
         df = df[['id', 'timestamp', 'tx', 'pool_id', 'amountBought', 'amountSold', 'tokenBought', 'tokenSold', 'buyer', 'gasLimit', 'gasUsed', 'isUnderlying', 'block_gte', 'block_lt', 'block']]
         return df
     
@@ -466,43 +206,35 @@ class DataHandler():
         df = pd.DataFrame([x for y in data for x in y])
         if len(df) == 0:
             return df
-        for col in ['timestamp', 'block', 'removal']:
-            df[col] = df[col].astype(int)
-        df['totalSupply'] = df['totalSupply'].astype(float)
-        df['tokenAmounts'] = df['tokenAmounts'].apply(lambda x: json.dumps(list(map(int, x))))
-        # NOTE: order must match the order in the INSERT statement. For convenience, ensure everything matches the schema.
         df = df[['id', 'block', 'liquidityProvider', 'removal', 'timestamp', 'tokenAmounts', 'totalSupply', 'tx', 'pool_id', 'block_gte', 'block_lt']]
         return df
 
     @staticmethod
-    def format_changepoints(data, pool_id, model, metric):
+    def format_changepoints(data, address, model, metric, freq):
         df = pd.DataFrame(data, columns=['timestamp'])
+        if len(df) == 0:
+            return df
         df['timestamp'] = df['timestamp'].apply(lambda x: int(datetime.timestamp(x)))
-        df['pool_id'] = pool_id
+        df['address'] = address
         df['model'] = model
         df['metric'] = metric
-        df = df[['pool_id', 'model', 'metric', 'timestamp']]
+        df['freq'] = freq
+        df = df[['address', 'model', 'metric', 'freq', 'timestamp']]
         return df
     
     @staticmethod
     def format_pool_metrics(df, pool_id):
         df = df.melt(var_name='metric', value_name='value', ignore_index=False)
         df = df.reset_index(names='timestamp')
-        df['timestamp'] = df['timestamp'].apply(lambda x: int(datetime.timestamp(x)))
+        df['timestamp'] = df['timestamp'].apply(datetime.timestamp)
         df['pool_id'] = pool_id
         df = df[['timestamp', 'pool_id', 'metric', 'value']]
         return df
 
     def format_pool_snapshots(data):
         df = pd.DataFrame.from_dict([x for y in data for x in y])
-        for col in ['A', 'offPegFeeMultiplier', 'timestamp', 'virtualPrice', 'lastPricesTimestamp', 'block_gte', 'block_lt']:
-            df[col] = df[col].astype(int)
-        for col in ['adminFee', 'fee', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'lpFeesUSD']:
-            df[col] = df[col].astype(float)
-        for col in ['normalizedReserves', 'reserves']:
-            df[col] = df[col].apply(lambda x: json.dumps(list(map(int, x))))
-        for col in ['reservesUSD']:
-            df[col] = df[col].apply(lambda x: json.dumps(list(map(float, x))))
+        if len(df) == 0:
+            return df
         df = df[['id', 'A', 'adminFee', 'fee', 'timestamp', 'normalizedReserves', 'offPegFeeMultiplier', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'totalDailyFeesUSD', 'reservesUSD', 'lpFeesUSD', 'lastPricesTimestamp', 'lastPrices', 'pool_id', 'block_gte', 'block_lt']]
         return df
 
@@ -514,205 +246,411 @@ class DataHandler():
         df['token_id'] = token_id
         df = df[['timestamp', 'token_id', 'metric', 'value']]
         return df
-
+    
     @staticmethod
-    def format_token_aggregate_metrics(data):
-        pass
+    def process(df):
+        for col in df:
+            if type(df[col].iloc[0]).__name__ == 'Decimal':
+                df[col] = pd.to_numeric(df[col])
+        return df
 
-    def _execute_query(
-            self, 
-            query: str,
-            params: List=[],
-        ) -> Dict:
-        cursor = self.conn.cursor()
-        try:
-            cursor.execute(query, params)
-            results = cursor.fetchall()
-        except sqlite3.Error as e:
-            raise sqlite3.Error(f'Error executing query: {e}')
-        finally:
-            cursor.close()
+    def get_pool_metadata(self) -> Dict:
+        query = self.session.query(Pools)
+        results = query.all()
+        results = {d['id']:d for d in [row.as_dict() for row in results]}
         return results
     
     def get_token_metadata(self) -> Dict:
-        query = f'SELECT * FROM tokens'
-        results = self._execute_query(query)
-        metadata = {row["id"]: row for row in results}
-        return metadata
+        query = self.session.query(Tokens)
+        results = query.all()
+        results = {d['id']:d for d in [row.as_dict() for row in results]}
+        return results
 
-    @property
-    def token_metadata(self):
-        return self.get_token_metadata()
-
-    @property
-    def token_ids(self):
-        return {v['symbol']:k for k, v in self.token_metadata.items()}
-    
-    def get_pool_metadata(self) -> Dict:
-        query = f'SELECT * FROM pools'
-        results = self._execute_query(query)
-        metadata = {row["id"]: row for row in results}
-        for data in metadata.values():
-            data['coins'] = json.loads(data['coins'])
-            data['inputTokens'] = json.loads(data['inputTokens'])
-        return metadata
-
-    @property
-    def pool_metadata(self):
-        return self.get_pool_metadata()
-
-    def get_pool_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        query = f'SELECT inputTokenBalances, timestamp, outputTokenSupply FROM pool_data WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, start, end])
+    def get_pool_data(self, 
+                      pool_id: str, 
+                      start: int, 
+                      end: int, 
+                      cols: List=['inputTokenBalances', 'timestamp', 'outputTokenSupply']
+        ) -> pd.DataFrame:
+        query = self.session.query(*[getattr(PoolData, col) for col in cols])
+        query = query.filter(
+            PoolData.pool_id == pool_id,
+            PoolData.timestamp >= start,
+            PoolData.timestamp <= end
+        )
+        query = query.order_by(PoolData.timestamp.asc())
+        results = query.all()
         if not len(results):
             return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
-
         tokens = self.pool_metadata[pool_id]['inputTokens']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
-
-        # convert JSON strings to lists and then to numpy arrays, then normalize balances
-        # df['inputTokenWeights'] = np.array(df['inputTokenWeights'].map(json.loads).to_list())
-        df['inputTokenBalances'] = (np.array(df['inputTokenBalances'].map(json.loads).to_list()) / 10**decimals).tolist()
-
+        df['inputTokenBalances'] = df['inputTokenBalances'].apply(lambda x: np.array(x, dtype=float))
+        df['inputTokenBalances'] = (df['inputTokenBalances'].tolist() / 10**decimals).tolist()
+        df['outputTokenSupply'] = df['outputTokenSupply'].astype(float)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
     
-    def get_swaps_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        query = f'SELECT * FROM swaps WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, start, end])
+    def get_swaps_data(self, 
+                       pool_id: str, 
+                       start: int=None, 
+                       end: int=None
+        ) -> pd.DataFrame:
+        query = self.session.query(Swaps)
+        query = query.filter(
+            Swaps.pool_id == pool_id,
+            Swaps.timestamp >= start,
+            Swaps.timestamp <= end
+        )
+        query = query.order_by(Swaps.timestamp.asc())
+        results = query.all()
         if not len(results):
             return pd.DataFrame()
-        df = pd.DataFrame.from_dict(results)
+        df = pd.DataFrame.from_dict([row.as_dict() for row in results])
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
     
-    def get_lp_data(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        query = f'SELECT * FROM lp_events WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, start, end])
+    def get_lp_data(self, 
+                    pool_id: str, 
+                    start: int=None, 
+                    end: int=None
+        ) -> pd.DataFrame:
+        query = self.session.query(LPEvents)
+        query = query.filter(
+            LPEvents.pool_id == pool_id,
+            LPEvents.timestamp >= start,
+            LPEvents.timestamp <= end
+        )
+        query = query.order_by(LPEvents.timestamp.asc())
+        results = query.all()
         if not len(results):
             return pd.DataFrame()
-        df = pd.DataFrame.from_dict(results)
-
+        df = pd.DataFrame.from_dict([row.as_dict() for row in results])
         tokens = self.pool_metadata[pool_id]['coins']
         decimals = np.array([self.token_metadata[token]['decimals'] for token in tokens])
-
-        df['tokenAmounts'] = (np.array(df['tokenAmounts'].map(json.loads).to_list()) / 10**decimals).tolist()
+        df['tokenAmounts'] = df['tokenAmounts'].apply(lambda x: np.array(x, dtype=float))
+        df['tokenAmounts'] = (df['tokenAmounts'].tolist() / 10**decimals).tolist()
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         return df
 
-    def get_pool_snapshots(self, pool_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        query = f'SELECT timestamp, normalizedReserves, reserves, virtualPrice, lpPriceUSD, tvl, reservesUSD FROM snapshots WHERE pool_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, start, end])
+    def get_pool_snapshots(self, 
+                           pool_id: str, 
+                           start: int=None, 
+                           end: int=None,
+                           cols: List=['timestamp', 'normalizedReserves', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'reservesUSD']
+        ) -> pd.DataFrame:
+        query = self.session.query(*[getattr(Snapshots, col) for col in cols])
+        query = query.filter(
+            Snapshots.pool_id == pool_id,
+            Snapshots.timestamp >= start,
+            Snapshots.timestamp <= end
+        )
+        query = query.order_by(Snapshots.timestamp.asc())
+        results = query.all()
         if not len(results):
             return pd.DataFrame()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
-        df = df.sort_index()
         df = df.loc[~(df['virtualPrice']==0)].dropna() # Drop rows where virtualPrice is 0
+        df = DataHandler.process(df)
         return df
+    
+    def get_pool_snapshots_last(self, 
+                                pool_id: str, 
+                                cols: List=['timestamp', 'normalizedReserves', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'reservesUSD']
+    ) -> pd.DataFrame:
+        query = self.session.query(*[getattr(Snapshots, col) for col in cols])
+        query = query.filter(
+            Snapshots.pool_id == pool_id,
+        )
+        query = query.order_by(Snapshots.timestamp.desc())
+        results = query.first()
+        if not len(results):
+            return pd.DataFrame()
+        df = pd.DataFrame.from_dict([results])
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        df = DataHandler.process(df)
+        return df
+    
+    def get_ohlcv_data(self, 
+                       token_id: str, 
+                       start: int=None, 
+                       end: int=None
+        ) -> pd.DataFrame:
 
-    def get_ohlcv_data(self, token_id: str, start: int=None, end: int=None) -> pd.DataFrame:
-        delta = int(timedelta(days=2).total_seconds()) # Hack to avoid missing data for chainlink
+        mask = pd.date_range(start=datetime.fromtimestamp(start), end=datetime.fromtimestamp(end), freq='1min').round('1min')
+
+        delta = int(timedelta(days=7).total_seconds()) # Hack to avoid missing data: get latest available price
+
         if self.token_metadata[token_id]['symbol'] == "3Crv":
-            query = "SELECT timestamp, lpPriceUSD FROM snapshots WHERE pool_id == ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC"
-            params = ["0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", start - delta, end + delta] # 3Crv pool LP token price
+            threepool = "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"
+            query = self.session.query(*[getattr(Snapshots, col) for col in ['timestamp', 'lpPriceUSD']])
+            query = query.filter(
+                Snapshots.pool_id == threepool,
+                Snapshots.timestamp >= start - delta,
+                Snapshots.timestamp <= end + delta
+            )
+            query = query.order_by(Snapshots.timestamp.asc())
+            results = query.all()
+
         else:
             if self.token_metadata[token_id]['symbol'] == "WETH":
                 token_id = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" # get ETH instead of WETH
-            query = f'SELECT timestamp, symbol, close FROM token_ohlcv WHERE token_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-            params = [token_id, start - delta, end + delta]
-        results = self._execute_query(query, params=params)
+            query = self.session.query(*[getattr(TokenOHLCV, col) for col in ['timestamp', 'symbol', 'close']])
+            query = query.filter(
+                TokenOHLCV.token_id == token_id,
+                TokenOHLCV.timestamp >= start - delta,
+                TokenOHLCV.timestamp <= end + delta
+            )
+            query = query.order_by(TokenOHLCV.timestamp.asc())
+            results = query.all()
+
         if not len(results):
             return pd.DataFrame()
+        
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         df = df.resample('1min').ffill()
+        df = df.reindex(mask, method='ffill')
         df = df.loc[datetime.fromtimestamp(start):datetime.fromtimestamp(end)]
         if 'lpPriceUSD' in df.columns:
             df = df.rename(columns={'lpPriceUSD': 'close'})
             df['symbol'] = f'{self.token_metadata[token_id]["symbol"]}/VP'
-        return df
-    
-    def get_pool_metric(self, pool_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
-        if metric in ['netSwapFlow', 'netLPFlow', 'sharkFlow']:
-            query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric LIKE ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-            results = self._execute_query(query, params=[pool_id, '%'+metric, start, end])
+        return df   
+
+    def get_ohlcv_data_last(self, 
+                            token_id: str, 
+        ) -> pd.DataFrame:
+        if self.token_metadata[token_id]['symbol'] == "3Crv":
+            threepool = "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7"
+            query = self.session.query(*[getattr(Snapshots, col) for col in ['timestamp', 'lpPriceUSD']])
+            query = query.filter(
+                Snapshots.pool_id == threepool,
+            )
+            query = query.order_by(Snapshots.timestamp.desc())
+            results = query.first()
+
         else:
-            query = f'SELECT timestamp, value FROM pool_metrics WHERE pool_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-            results = self._execute_query(query, params=[pool_id, metric, start, end])
+            if self.token_metadata[token_id]['symbol'] == "WETH":
+                token_id = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" # get ETH instead of WETH
+            query = self.session.query(*[getattr(TokenOHLCV, col) for col in ['timestamp', 'symbol', 'close']])
+            query = query.filter(
+                TokenOHLCV.token_id == token_id,
+            )
+            query = query.order_by(TokenOHLCV.timestamp.desc())
+            results = query.first()
+
         if not len(results):
             return pd.DataFrame()
+        
+        df = pd.DataFrame.from_dict([results])
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        df = df.resample('1min').ffill()
+        if 'lpPriceUSD' in df.columns:
+            df = df.rename(columns={'lpPriceUSD': 'close'})
+            df['symbol'] = f'{self.token_metadata[token_id]["symbol"]}/VP'
+        return df    
+
+    def get_pool_metric(self, 
+                        pool_id: str, 
+                        metric: str, 
+                        start: int=None, 
+                        end: int=None,
+                        cols: List=['timestamp', 'value']
+        ) -> pd.Series:
+        query = self.session.query(*[getattr(PoolMetrics, col) for col in cols])
+        query = query.filter(
+            PoolMetrics.pool_id == pool_id,
+            PoolMetrics.timestamp >= start,
+            PoolMetrics.timestamp <= end
+        )
+        if metric in ['netSwapFlow', 'netLPFlow', 'sharkflow']:
+            query = query.filter(PoolMetrics.metric.like(f'%{metric}'))
+        else:
+            query = query.filter(PoolMetrics.metric == metric)
+        query = query.order_by(PoolMetrics.timestamp.asc())
+        results = query.all()
+        if not len(results):
+            return pd.Series()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['value']
         series.name = metric
         if metric in ['shannonsEntropy', 'giniCoefficient']:
             series.replace(0, method='ffill', inplace=True)
-        elif metric in ['netSwapFlow', 'netLPFlow', 'sharkFlow']:
+            series.fillna(method='ffill', inplace=True)
+        elif metric in ['netSwapFlow', 'netLPFlow', 'sharkflow']:
             series.groupby(series.index).sum()            
-        if metric == 'lpSharePrice':
+        elif metric == 'lpSharePrice':
             series = series.ffill()
+        series.fillna(0, inplace=True)
         return series
 
-    def get_token_metric(self, token_id: str, metric: str, start: int=None, end: int=None) -> pd.Series:
-        query = f'SELECT timestamp, value FROM token_metrics WHERE token_id = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[token_id, metric, start, end])
+    def get_pool_metric_last(self, 
+                             pool_id: str, 
+                             metric: str, 
+                             cols: List=['timestamp', 'value']
+        ) -> pd.Series:
+        query = self.session.query(*[getattr(PoolMetrics, col) for col in cols])
+        query = query.filter(
+            PoolMetrics.pool_id == pool_id,
+        )
+        if metric in ['netSwapFlow', 'netLPFlow', 'sharkflow']:
+            query = query.filter(PoolMetrics.metric.like(f'%{metric}'))
+        else:
+            query = query.filter(PoolMetrics.metric == metric)
+        if metric in ['lpSharePrice']:
+            query = query.filter(PoolMetrics.value != 0)
+            query = query.filter(PoolMetrics.value.isnot(None))
+            query = query.filter(PoolMetrics.value != 'NaN')
+        query = query.order_by(PoolMetrics.timestamp.desc())
+        results = query.first()
         if not len(results):
-            return pd.DataFrame()
+            return pd.Series()
+        df = pd.DataFrame.from_dict([results])
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        series = df['value']
+        series.name = metric
+        if metric in ['shannonsEntropy', 'giniCoefficient']:
+            series.replace(0, method='ffill', inplace=True)
+        elif metric in ['netSwapFlow', 'netLPFlow', 'sharkflow']:
+            series.groupby(series.index).sum()            
+        elif metric == 'lpSharePrice':
+            series = series.ffill()
+        series.fillna(0, inplace=True)
+        return series
+
+    def get_token_metric(self, 
+                         token_id: str, 
+                         metric: str, 
+                         start: int=None, 
+                         end: int=None,
+                         cols: List=['timestamp', 'value']
+        ) -> pd.Series:
+        query = self.session.query(*[getattr(TokenMetrics, col) for col in cols])
+        query = query.filter(
+            TokenMetrics.token_id == token_id,
+            TokenMetrics.timestamp >= start,
+            TokenMetrics.timestamp <= end
+        )
+        if metric in ['logReturns']:
+            query = query.filter(TokenMetrics.metric.like(f'%{metric}'))
+        else:
+            query = query.filter(TokenMetrics.metric == metric)
+        query = query.order_by(TokenMetrics.timestamp.asc())
+        results = query.all()
+        if not len(results):
+            return pd.Series()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['value']
         series.name = metric
+        series.fillna(0, inplace=True)
         return series
 
-    def get_changepoints(self, pool_id, model, metric, start: int=None, end: int=None) -> pd.Series:
-        query = f'SELECT timestamp FROM changepoints WHERE pool_id = ? AND model = ? AND metric = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp ASC'
-        results = self._execute_query(query, params=[pool_id, model, metric, start, end])
+    def get_changepoints(self, 
+                         address: str, 
+                         model: str, 
+                         metric: str, 
+                         start: int=None, 
+                         end: int=None,
+                         freq: str='1h',
+                         cols: List=['timestamp']
+        ) -> pd.Series:
+        query = self.session.query(*[getattr(Changepoints, col) for col in cols])
+        query = query.filter(
+            Changepoints.address == address,
+            Changepoints.model == model,
+            Changepoints.metric == metric,
+            Changepoints.timestamp >= start,
+            Changepoints.timestamp <= end,
+            Changepoints.freq == freq
+        )
+        query = query.order_by(Changepoints.timestamp.asc())
+        results = query.all()
         if not len(results):
-            return pd.DataFrame()
+            return pd.Series()
         df = pd.DataFrame.from_dict(results)
         df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
         series = df['timestamp']
         series.name = 'changepoints'
         return series
 
+    def get_changepoints_last(self, 
+                              address: str, 
+                              model: str, 
+                              metric: str,
+                              freq: str='1h',
+                              cols: List=['timestamp']
+        ) -> pd.Series:
+        query = self.session.query(*[getattr(Changepoints, col) for col in cols])
+        query = query.filter(
+            Changepoints.address == address,
+            Changepoints.model == model,
+            Changepoints.metric == metric,
+            Changepoints.freq == freq
+        )
+        query = query.order_by(Changepoints.timestamp.desc())
+        results = query.first()
+        if not len(results):
+            return pd.Series()
+        df = pd.DataFrame.from_dict([results])
+        df = df.set_index(pd.to_datetime(df['timestamp'], unit='s'))
+        series = df['timestamp']
+        series.name = 'changepoints'
+        return series
+
     def get_takers(self) -> pd.DataFrame:
-        query = f'SELECT * FROM takers ORDER BY cumulativeMarkout DESC'
-        results = self._execute_query(query)
-        df = pd.DataFrame.from_dict(results)
+        query = self.session.query(Takers)
+        query = query.order_by(Takers.cumulativeMarkout.desc())
+        results = query.all()
+        df = pd.DataFrame.from_dict([row.as_dict() for row in results])
         df.set_index('buyer', inplace=True)
         return df
 
-    def get_sharks(self, top=0.9) -> np.array:
+    def get_sharks(self, top: float=0.9) -> List[str]:
         takers = self.get_takers()
         sharks = takers[takers['cumulativeMarkout'] > takers['cumulativeMarkout'].quantile(top)]
-        return np.array(sharks.index)
+        return list(sharks.index)
 
     def get_block_timestamp(self, block: int):
-        cursor = self.conn.cursor()
-        
-        to_execute = f'SELECT * FROM block_timestamps WHERE block == ?'
-        params = [block]
-        
-        try:
-            cursor.execute(to_execute, params)
-            results = cursor.fetchall()
-        except sqlite3.Error as e:
-            raise sqlite3.Error(f'Error executing query: {e}')
-        finally:
-            cursor.close()
+        query = self.session.query(BlockTimestamps)
+        query = query.filter(BlockTimestamps.block == block)
+        result = query.first()
+        if not result:
+            client = Web3(Web3.HTTPProvider(WEB3_ENDPOINT))
+            result = client.eth.get_block(block)
+            try:
+                stmt = insert(BlockTimestamps.__table__).values(block=block, timestamp=result.timestamp)
+                stmt = stmt.on_conflict_do_nothing()
+                self.session.execute(stmt)
+            except Exception as e:
+                self.logger.exception(f'Failed to insert block timestamp: {e}')
+                self.session.rollback()
+            self.session.commit()
+        return result.timestamp
 
-        return results
-
-    def get_pool_X(self, metric, pool, start_ts, end_ts, freq, normalize=False, standardize=False):
+    def get_pool_X(self, 
+                   metric: str, 
+                   pool: str, 
+                   start_ts: int, 
+                   end_ts: int, 
+                   freq: timedelta, 
+                   normalize: bool=False, 
+                   standardize: bool=False
+        ) -> pd.Series:
+        
         data = self.get_pool_metric(pool, metric, start_ts, end_ts)
+
+        if data.empty:
+            return data
 
         if metric in ['giniCoefficient', 'shannonsEntropy']:
             X = np.log1p(data.resample(freq).last().pct_change()).dropna()
+            X = X[~np.isinf(X)] # if balances were 0, they increase by inf
         elif 'netSwapFlow' in metric \
             or 'netLPFlow' in metric \
-            or 'sharkFlow' in metric \
+            or 'sharkflow' in metric \
             or 'Markout' in metric:
             X = data.resample(freq).sum()
         else:
@@ -738,16 +676,25 @@ class DataHandler():
         if normalize:
             scaler = MinMaxScaler(feature_range=(-1, 1))
             X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
+
         elif standardize:
             scaler = StandardScaler()
             X = pd.Series(scaler.fit_transform(X.values.reshape(-1, 1)).flatten(), index=X.index)
+
         return X
 
-    def get_fees(self, pool):
-        fees = self._execute_query('SELECT timestamp, fee, adminFee FROM snapshots WHERE pool_id = ?', params=[pool])
-        fees = pd.DataFrame(fees)
-        fees.sort_values('timestamp', inplace=True, ascending=True)
-        return fees
+    def get_fees(self, 
+                 pool_id: str,
+                 cols: List=['timestamp', 'fee', 'adminFee'],
+        ) -> pd.DataFrame:
+        query = self.session.query(*[getattr(Snapshots, col) for col in cols])
+        query = query.filter(
+            Snapshots.pool_id == pool_id,
+        )
+        query = query.order_by(Snapshots.timestamp.asc())
+        results = query.all()
+        df = pd.DataFrame.from_dict(results)
+        return df
 
     def get_curve_price(self, token, pool, start_ts, end_ts, numeraire) -> List:
         """
@@ -765,12 +712,19 @@ class DataHandler():
         df = (df.groupby(['timestamp', 'tokenBought', 'tokenSold'], as_index=False)
                         .agg({'amountBought': 'sum', 'amountSold': 'sum'}))
         
-        assert df['tokenBought'].nunique() == 2 and df['tokenSold'].nunique() == 2, 'Too many tokens in pool'
+        assert df['tokenBought'].nunique() <= 2 and df['tokenSold'].nunique() <= 2, 'Too many tokens in pool'
         
         fees = self.get_fees(pool)
         ohlcv = []
         for i, row in df.iterrows():
-            fee, admin_fee = fees[fees['timestamp'] >= row['timestamp']].iloc[0][['fee', 'adminFee']]
+            tmp = fees[fees['timestamp'] >= row['timestamp']]
+            if tmp.empty:
+                fee, admin_fee = fees.iloc[-1][['fee', 'adminFee']]
+            else:
+                fee, admin_fee = tmp.iloc[0][['fee', 'adminFee']]
+            if admin_fee == 0.5:
+                # HACK!!!!!!!!!!!!!, why is this happening?
+                admin_fee = 0
             if row['amountBought'] == 0 or row['amountSold'] == 0:
                 continue
             price = row['amountSold'] / (row['amountBought'] * (1 + fee + admin_fee))
@@ -779,3 +733,15 @@ class DataHandler():
             ohlcv.append([token, symbol, row['timestamp']*1000, None, None, None, price, None])
 
         return ohlcv
+    
+    @property
+    def pool_metadata(self):
+        return self.get_pool_metadata()
+
+    @property
+    def token_metadata(self):
+        return self.get_token_metadata()
+
+    @property
+    def token_ids(self):
+        return {v['symbol']:k for k, v in self.token_metadata.items()}

@@ -13,7 +13,8 @@ start_sec=$(date -d "$start_date" +%s)
 end_sec=$(date -d "$end_date" +%s)
 
 # Calculate the number of seconds per day and 5 minutes
-period_sec=$((30 * 24 * 60 * 60))
+# We hit an OOM error if periods are too large, but its slow if they are too small
+period_sec=$((7 * 24 * 60 * 60))
 overlap_sec=$((5 * 60))
 
 # Loop through daily batches
@@ -36,9 +37,7 @@ while [ $current_sec -lt $finish_sec ]; do
   log_sec=$(date -d "$(date -d "@$log_sec" "+%Y-%m-%d") 00:00:00" +%s)
 
   # Execute the Python script for the current batch
-  echo "[`date "+%Y-%m-%d %H:%M:%S"`] Running task for $current_date to $next_date"
-  python3 -u -m curvemetrics.scripts.backfill.backfill_raw_data "$current_date" "$next_date" > "./logs/backfill_$(date -d "@$log_sec" "+%Y-%m-%d").log" 2>&1
-  echo "[`date "+%Y-%m-%d %H:%M:%S"`] Task completed for $current_date to $next_date"
+  python3 -u -m curvemetrics.scripts.backfill.raw_data "$current_date" "$next_date" >> "./logs/master.log" 2>&1
 
   # Move to the next batch, subtracting the 5-minute overlap
   current_sec=$((next_sec - overlap_sec))
