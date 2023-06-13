@@ -4,6 +4,7 @@ Update takers and sharkflow metrics.
 import traceback
 import pandas as pd
 import os
+import re
 import json
 from datetime import datetime, timedelta
 from curvemetrics.src.classes.datahandler import DataHandler
@@ -12,7 +13,9 @@ from curvemetrics.src.classes.metricsprocessor import MetricsProcessor
 
 def load_config():
     # Load the configuration
-    with open(os.path.join(os.path.abspath('config.json')), "r") as config_file:
+    s = os.path.join(os.path.abspath('config.json'))
+    s = re.sub(r'(/root/curve-lp-metrics/).*', r'\1', s) + 'config.json'
+    with open(s, "r") as config_file:
         config = json.load(config_file)
     return config
 

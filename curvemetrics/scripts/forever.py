@@ -10,6 +10,7 @@ import tweepy
 from crontab import CronTab
 import pickle
 import traceback
+import re
 
 from curvemetrics.scripts.raw_data import main as raw
 from curvemetrics.scripts.metrics import main as metrics
@@ -51,7 +52,9 @@ MODELED_POOLS = [
 
 def load_config():
     # Load the configuration
-    with open(os.path.join(os.path.abspath('config.json')), "r") as config_file:
+    s = os.path.join(os.path.abspath('config.json'))
+    s = re.sub(r'(/root/curve-lp-metrics/).*', r'\1', s) + 'config.json'
+    with open(s, "r") as config_file:
         config = json.load(config_file)
     return config
 
@@ -86,8 +89,8 @@ def tweet(pool_name, metric, cp, lp_share_price, virtual_price):
                            access_token_secret=TWEEPY_API_ACCESS_TOKEN_SECRET, 
                            wait_on_rate_limit=True
     )
-    text = f'A potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {cp}\nThe current LP token price is: {lp_share_price}\nCompared to the virtual price: {virtual_price}.'
-    response = client.update_status(text)
+    text = f'This is an example!\n\nA potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)}\nThe current LP token price is: {round(lp_share_price, 3)}\nCompared to the virtual price: {round(virtual_price, 3)}.'
+    response = client.create_tweet(text=text)
     return response
 
 def delete_cronjob():

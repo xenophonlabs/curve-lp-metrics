@@ -3,6 +3,7 @@ Create the SQL database tables.
 """
 import os
 import json
+import re
 from datetime import datetime
 
 from ...src.classes.datafetcher import DataFetcher
@@ -10,7 +11,9 @@ from ...src.classes.datahandler import DataHandler
 
 def load_config():
     # Load the configuration
-    with open(os.path.join(os.path.abspath('config.json')), "r") as config_file:
+    s = os.path.join(os.path.abspath('config.json'))
+    s = re.sub(r'(/root/curve-lp-metrics/).*', r'\1', s) + 'config.json'
+    with open(s, "r") as config_file:
         config = json.load(config_file)
     return config
 

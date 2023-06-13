@@ -2,6 +2,7 @@ import math
 import time
 from datetime import datetime, timedelta
 import smtplib
+import re
 import os
 from dotenv import load_dotenv
 import json
@@ -51,7 +52,9 @@ MODELED_POOLS = [
 
 def load_config():
     # Load the configuration
-    with open(os.path.join(os.path.abspath('config.json')), "r") as config_file:
+    s = os.path.join(os.path.abspath('config.json'))
+    s = re.sub(r'(/root/curve-lp-metrics/).*', r'\1', s) + 'config.json'
+    with open(s, "r") as config_file:
         config = json.load(config_file)
     return config
 
@@ -103,7 +106,7 @@ def get_model_start(dt):
 def get_model_end(dt):
     return int(datetime.timestamp(datetime(dt.year, dt.month, dt.day, dt.hour)))
 
-def main(models):
+def main(models, now):
     """
     This script does the following, in order, every hour, forever:
 
@@ -158,15 +161,13 @@ def main(models):
             if is_true_cp:
                 true_cp = baseline.last_cp
                 # datahandler.insert_changepoints([baseline.last_ts], pool, 'baseline', baseline)
-                logger.info(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
-                tweet(name, 'baseline', true_cp, lp_share_price, virtual_price)
-                send_email_on_changepoint(name, 'baseline', true_cp)
+                print(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
 
-            with open(f'./model_configs/baseline/{pool}.pkl', 'wb') as f:
-                pickle.dump(baseline, f)
+            # with open(f'./model_configs/baseline/{pool}.pkl', 'wb') as f:
+            #     pickle.dump(baseline, f)
 
             for metric in POOL_METRICS:
-                logger.info(f'Running inference for {pool} with {metric}.')
+                print(f'Running inference for {pool} with {metric} at {datetime.fromtimestamp(now)}.')
                 model = models[pool][metric]
                 X = datahandler.get_pool_X(metric, pool, model_start, model_end, '1h')
                 x, ts = X[-1], datetime.timestamp(X.index[-1])
@@ -176,27 +177,27 @@ def main(models):
                 if is_cp:
                     cp = now
                     # datahandler.insert_changepoints([cp], pool, 'bocd', metric)
-                    logger.info(f'Changepoint detected for {name} with {metric} at {cp}.')
-                    tweet(name, metric, cp, lp_share_price, virtual_price)
-                    send_email_on_changepoint(name, metric, cp)
+                    print(f'Changepoint detected for {name} with {metric} at {datetime.fromtimestamp(cp)}.')
 
-                with open(f'./model_configs/{metric}/{pool}.pkl', 'wb') as f:
-                    pickle.dump(model, f)
+                # with open(f'./model_configs/{metric}/{pool}.pkl', 'wb') as f:
+                #     pickle.dump(model, f)
 
     except Exception as e:
-        logger.error(f'Failed to run inference: {e}')
-        send_email_on_error(e)
-        delete_cronjob()
+        print(f'Failed to run inference: {e}')
         raise e
 
     finally:
         datahandler.close()
 
+    return models
+
 # Run FOREVER!
 if __name__ == "__main__":
     global now
     # Start as if we are getting May 5th, 2023, 1am UTC data
-    now = datetime.timestamp(datetime(2023, 5, 1, 2, 0, 1))
+    now = datetime.timestamp(datetime(2023, 5, 1, 2, 0, 0, 1))
+    end = datetime.timestamp(datetime(2023, 6, 13, 15, 0, 0, 1))
+    raise ValueError("Fix these ts")
 
     # Initialize models
     margin = config['model_configs']['base']['margin']
@@ -213,4 +214,6 @@ if __name__ == "__main__":
             model.logger = Logger(f'./logs/frontfill/inference_{pool}_{metric}.log').logger
             models[pool][metric] = model
 
-    main(models)
+    while now <= end:
+        models = main(models, now)
+        now += PERIOD

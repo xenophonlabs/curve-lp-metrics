@@ -50,18 +50,18 @@ Below is a summary of available API endpoints and their descriptions. Each endpo
 | `/pools` | Get metadata for all pools | None |
 | `/tokens` | Get metadata for all tokens | None |
 | `/block_timestamps` | Get the timestamp for a specific block | `block` |
-| `/pool_data` | Get specific pool data | `pool_id`, `start`, `end`, `cols` (optional, default: `['inputTokenBalances', 'timestamp', 'outputTokenSupply']`) |
+| `/pool_data` | Get pool token balances, LP token supply, etc.. | `pool_id`, `start`, `end`, `cols` (optional, default: `['inputTokenBalances', 'timestamp', 'outputTokenSupply']`) |
 | `/swaps_data` | Get swap data for a specific pool | `pool_id`, `start`, `end` |
-| `/lp_data` | Get LP data for a specific pool | `pool_id`, `start`, `end` |
-| `/snapshots` | Get snapshot data for a specific pool | `pool_id`, `start`, `end`, `cols` (optional, default: `['timestamp', 'normalizedReserves', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'reservesUSD']`) |
+| `/lp_data` | Get deposit & withdrawal data for a specific pool | `pool_id`, `start`, `end` |
+| `/snapshots` | Get daily snapshot data for a specific pool | `pool_id`, `start`, `end`, `cols` (optional, default: `['timestamp', 'normalizedReserves', 'reserves', 'virtualPrice', 'lpPriceUSD', 'tvl', 'reservesUSD']`) |
 | `/ohlcv` | Get OHLCV data for a specific token | `token_id`, `start`, `end` |
 | `/pool_metrics` | Get specific pool metrics | `pool_id`, `metric`, `start`, `end`, `cols` (optional, default: `['timestamp', 'value']`) |
 | `/token_metrics` | Get specific token metrics | `token_id`, `metric`, `start`, `end`, `cols` (optional, default: `['timestamp', 'value']`) |
 | `/changepoints` | Get changepoints for a specific pool or token and model | `address`, `model`, `metric`, `start`, `end`, `cols` (optional, default: `['timestamp']`) |
 | `/takers` | Get information about takers | None |
-| `/sharks` | Get information about sharks | `top` (optional, default: `0.9`) |
-| `/pool_X` | Get pool data with specific conditions | `pool_id`, `metric`, `start`, `end`, `freq` (optional, default: `timedelta(hours=1)`)|
-| `/token_X` | Get token data with specific conditions | `token_id`, `metric`, `start`, `end`, `freq` (optional, default: `timedelta(hours=1)`)|
+| `/sharks` | Get list of sharks | `top` (optional, default: `0.9`) |
+| `/pool_X` | Get the underlying signal for a specific pool metric (e.g. log diffs of Shannon's Entropy) at a specific frequency | `pool_id`, `metric`, `start`, `end`, `freq` (optional, default: `timedelta(hours=1)`)|
+| `/token_X` | Get the underlying signal for a specific token metric | `token_id`, `metric`, `start`, `end`, `freq` (optional, default: `timedelta(hours=1)`)|
 
 `start` and `end` are always UNIX timestamps, `cols` are always the strings of table columns (you can find them in `curvemetrics/src/classes/entities/)`, `model` is either the `baseline` model or a `bocd` model (more info on `baseline` in our paper), and `metric` is one of:
 
