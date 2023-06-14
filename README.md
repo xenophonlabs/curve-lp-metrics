@@ -251,6 +251,14 @@ If there was an issue with the database, you can drop all the tables and vacuum 
 ```
 python3 -m curvemetrics.scripts.reset
 ```
+    
+## Modeling
+    
+The models are tuned using `tune.py`. Once you have backfilled data from January 2022 to May 2023, you may run `tune.py`. This will tune the hyperparameters specified in the `GRID` attribute of the `ModelSetup` class. The best performing hyperparameters tuned against the UST wormhole pool will be used for each metric, and tested for each pool. Resulting tested models are pickled into `model_configs/`, f-scores are saved to `results/`, figures are saved in `figs/`, and changepoints are logged into the `changepoints` table. You can audit the logs for `tune.py` in `logs/tune.log`. 
+    
+### Online Inference
+
+The models will be tuned until May 2023. To run them online with `frontfill.py` you will need them to "catch up" to the current date. To do this, run `model_catchup.py` (make sure to edit the `start` date). This will run online inference from the specified date until `datetime.now()`, at which point frontfilling may now begin!
 
 ## Flask App
 
