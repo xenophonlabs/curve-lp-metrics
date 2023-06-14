@@ -138,8 +138,8 @@ def update_latest_run(block, ts):
 
 def get_latest_inference_ts(models):
     last_ts = math.inf
-    for pool in models.keys():
-        for metric in models[pool].keys():
+    for pool in MODELED_POOLS:
+        for metric in POOL_METRICS:
             model = models[pool][metric]
             last_ts = min(last_ts, model.last_ts)
     return last_ts
@@ -271,9 +271,9 @@ def main(models):
                 for idx, x in X.items(): 
                     ts = datetime.timestamp(idx)
                     if ts < model.last_ts + INFERENCE_PERIOD:
-                        logger.info(f'Inference already performed for {pool} with {metric} at {idx}.')
+                        logger.info(f'Inference already performed for {name} with {metric} at {idx}.')
                         continue
-                    logger.info(f'Running inference for {pool} with {metric} at {idx}.')
+                    logger.info(f'Running inference for {name} with {metric} at {idx}.')
                     is_cp = model.predict(x, ts)
                     if is_cp:
                         cp = ts 
