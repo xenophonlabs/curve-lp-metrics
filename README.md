@@ -5,7 +5,7 @@ Welcome to Curvemetrics, a stablecoin and liquid staking derivative depeg detect
 1. **Metrics** - Our metrics are designed to capture *leading* indicators of potential depegs.
 2. **Bayesian Online Changepoint Detection** - Our *BOCD* models are trained on historical Curve data, and listen to changes in metrics data in *real-time* to detect potential changepoints (depegs).
 
-You may listen to detected depegs or query our metrics by using our API. You may also listen to potential depegs by following and turning notification on for our Twitter bot [Twitter bot](https://twitter.com/curvelpmetrics). The theoretical underpinning of Curvemetrics is available in our corresponding research paper **link**.
+You may listen to detected depegs or query our metrics by using our API. You may also listen to potential depegs by following and turning notification on for our [Twitter bot](https://twitter.com/curvelpmetrics). The theoretical underpinning of Curvemetrics is available in our corresponding research paper **link**.
 
 This codebase and research paper were developed by Xenophon Labs and sponsored by the Cuve Analytics team. If there are any questions, please reach out to thomas@xenophonlabs.com.
 
@@ -37,7 +37,7 @@ Our Flask API can be accessed with simple HTTP GET requests. For example, we may
 curl "http://172.104.8.91/pool_metrics?&pool_id=0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7&metric=shannonsEntropy&start=1672531200&end=1686689907" > example.json
 ```
 
-We first obtain the pool id, then convert the dates to UNIX timestamps, and query the `pool_data` endpoint. By default, this returns the token balances and output LP token supply for the pool at each block. As it stands, our API frontfills data, computes metrics, and runs inference on our BOCD models **every hour on the hour**. 
+We first obtain the pool id, then convert the dates to UNIX timestamps, and query the `pool_data` endpoint. By default, this returns the token balances and output LP token supply for the pool at each block. As it stands, our API frontfills data, computes metrics, and runs inference on our BOCD models **every hour on the hour**. For an example using Python, refer to `README.ipynb`!
 
 ## API Endpoints
 
@@ -251,6 +251,14 @@ If there was an issue with the database, you can drop all the tables and vacuum 
 ```
 python3 -m curvemetrics.scripts.reset
 ```
+    
+## Modeling
+    
+The models are tuned using `tune.py`. Once you have backfilled data from January 2022 to May 2023, you may run `tune.py`. This will tune the hyperparameters specified in the `GRID` attribute of the `ModelSetup` class. The best performing hyperparameters tuned against the UST wormhole pool will be used for each metric, and tested for each pool. Resulting tested models are pickled into `model_configs/`, f-scores are saved to `results/`, figures are saved in `figs/`, and changepoints are logged into the `changepoints` table. You can audit the logs for `tune.py` in `logs/tune.log`. 
+    
+### Online Inference
+
+The models will be tuned until May 2023. To run them online with `frontfill.py` you will need them to "catch up" to the current date. To do this, run `model_catchup.py` (make sure to edit the `start` date). This will run online inference from the specified date until `datetime.now()`, at which point frontfilling may now begin!
 
 ## Flask App
 
