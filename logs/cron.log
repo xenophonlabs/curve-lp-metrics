@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/crontab.py", line 1184, in parse_value
+    out = get_cronvalue(val, self.enum)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/crontab.py", line 1207, in get_cronvalue
+    raise KeyError("No enumeration allowed")
+KeyError: 'No enumeration allowed'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/root/curve-lp-metrics/curvemetrics/scripts/forever.py", line 323, in <module>
+    insert_cronjob()
+  File "/root/curve-lp-metrics/curvemetrics/scripts/forever.py", line 105, in insert_cronjob
+    job.setall('0 * * * * ')
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/crontab.py", line 748, in setall
+    return self.slices.setall(*args)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/crontab.py", line 962, in setall
+    set_a.parse(set_b)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/crontab.py", line 1099, in parse
+    self.parts.append(self.parse_value(part, sunday=0))
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/crontab.py", line 1188, in parse_value
+    raise KeyError("No enumeration for %s: '%s'" % (self.name, val))
+KeyError: "No enumeration for Minutes: '0 * * * * '"

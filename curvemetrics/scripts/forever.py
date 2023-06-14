@@ -1,30 +1,28 @@
-import math
 import time
+import math
 from datetime import datetime, timedelta
 import smtplib
 import os
 from dotenv import load_dotenv
 import json
-from typing import Dict
 import tweepy
 from crontab import CronTab
 import pickle
 import traceback
 import re
+import asyncio
 
 from curvemetrics.scripts.raw_data import main as raw
 from curvemetrics.scripts.metrics import main as metrics
 from curvemetrics.scripts.takers import main as takers
 
-from curvemetrics.src.classes.model import BOCD
 from curvemetrics.src.classes.logger import Logger
 from curvemetrics.src.classes.datahandler import DataHandler
+from curvemetrics.src.classes.datafetcher import DataFetcher
 from curvemetrics.src.classes.modelsetup import ModelSetup
 
-PERIOD = 60*60 # 1 hour
-BUFFER = 60*10 # 10 minutes
+INFERENCE_PERIOD = 60*60 # 1 hour
 WINDOW = timedelta(days=1) # Markout window for Sharks (5 minutes for markout metric)
-SLIDING_WINDOW = timedelta(seconds=PERIOD)
 RETRIES = 3
 
 load_dotenv()
@@ -41,7 +39,7 @@ TWEEPY_API_BEARER_TOKEN = os.getenv('TWEEPY_API_BEARER_TOKEN')
 TWEEPY_API_ACCESS_TOKEN = os.getenv('TWEEPY_API_ACCESS_TOKEN')
 TWEEPY_API_ACCESS_TOKEN_SECRET = os.getenv('TWEEPY_API_ACCESS_TOKEN_SECRET')
 
-POOL_METRICS = {"shannonsEntropy", "netSwapFlow", "300.Markout"}
+POOL_METRICS = ["shannonsEntropy", "netSwapFlow", "300.Markout"]
 MODELED_POOLS = [
     "0xdc24316b9ae028f1497c275eb9192a3ea0f67022", # ETH/stETH
     "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", # 3pool
@@ -100,37 +98,85 @@ def delete_cronjob():
             cron.remove_all(comment="curvemetrics_forever")
             cron.write()
 
-def get_model_start(dt):
-    return int(datetime.timestamp(datetime(dt.year, dt.month, dt.day, dt.hour) - timedelta(hours=2)))
+def insert_cronjob():
+    cron = CronTab(user=True)
+    job = cron.new(command='cd /root/curve-lp-metrics/ && /root/curve-lp-metrics/venv/bin/python3 -m curvemetrics.scripts.forever >> /root/curve-lp-metrics/logs/cron.log 2>&1')
+    job.set_comment("curvemetrics_forever")
+    job.setall('0 * * * *')
+    cron.write()
 
-def get_model_end(dt):
-    return int(datetime.timestamp(datetime(dt.year, dt.month, dt.day, dt.hour)))
+def get_model_start(ts):
+    dt = datetime.fromtimestamp(ts)
+    return int(datetime.timestamp(datetime(dt.year, dt.month, dt.day, dt.hour) - timedelta(seconds=INFERENCE_PERIOD)))
 
-def main(models, now):
+def get_model_end(ts):
+    dt = datetime.fromtimestamp(ts)
+    return int(datetime.timestamp(datetime(dt.year, dt.month, dt.day, dt.hour))) - 0.00001
+
+async def check_availability():
+    datafetcher = DataFetcher()
+    block, ts = datafetcher.get_latest_availability()
+    await datafetcher.close()
+    return block, ts
+
+def latest_run():
+    # Load the configuration
+    s = os.path.join(os.path.abspath('subgraphs.json'))
+    s = re.sub(r'(/root/curve-lp-metrics/).*', r'\1', s) + 'subgraphs.json'
+    with open(s, "r") as f:
+        config = json.load(f)
+    latest_block, latest_ts = config['latest_block'], config['latest_ts']
+    return latest_block, latest_ts
+
+def update_latest_run(block, ts):
+    # Load the configuration
+    s = os.path.join(os.path.abspath('subgraphs.json'))
+    s = re.sub(r'(/root/curve-lp-metrics/).*', r'\1', s) + 'subgraphs.json'
+    config = {'latest_block': block, 'latest_ts': ts}
+    with open(s, "w") as f:
+        json.dump(config, f)
+
+def get_latest_inference_ts(models):
+    last_ts = math.inf
+    for pool in models.keys():
+        for metric in models[pool].keys():
+            model = models[pool][metric]
+            last_ts = min(last_ts, model.last_ts)
+    return last_ts
+
+def main(models):
     """
     This script does the following, in order, every hour, forever:
 
-    1. Frontfill raw data
-    2. Computes and frontfills metrics
-    3. Computes and frontfills new takers stats and sharkflow metric
-    4. Runs one inference step on all models
+    IF THERE IS NEW SUBGRAPH DATA PROCEED, ELSE EXIT
+
+    1. Frontfill new raw data
+    2. Compute and frontfill new metrics
+    3. Compute and frontfill new takers stats and sharkflow metric
+    4. Runs new inference step[s] on all models
 
     Fault tolerance:
 
-    If steps (1-3) fail, the script will retry them 3 times, with a 30 second delay between each retry.
+    If any step fails, the script will retry them 3 times, with a 60 second delay between each retry.
     If they still fail, the script will:
     1. Log the error
-    2. Send an email to the Xenophon Labs team
-    3. Exit
-
-    If step (4) fails for any model, the script will retry that model 3 times.
-    If it still fails, the script will:
-    1. Log the error
-    2. Send an email to the Xenophon Labs team
-    3. NOTE: Do not exit. We continue to frontfill data even if models are failing.
+    2. Delete the cron job
+    3. Send an email to the Xenophon Labs team
     """
-    end = math.floor(now) # UTC timestamp
-    start = end - PERIOD - BUFFER
+
+    ### Check data availability
+    logger = Logger('./logs/frontfill/master.log').logger
+    new_block, new_ts = asyncio.run(check_availability())
+    latest_block, latest_ts = latest_run()
+    if new_block <= latest_block:
+        logger.info(f'[NO NEW DATA AVAILABLE] Available block: {new_block}, latest block filled: {latest_block}. Skipping...')
+        ### No new data available
+        return models
+    else:
+        logger.info(f'[NEW DATA AVAILABLE] Available block: {new_block}, latest block filled: {latest_block}. Filling...')
+
+    start = latest_ts + 1 # Non-overlapping
+    end = new_ts
 
     ### Frontfill Raw Data
     logger = Logger('./logs/frontfill/raw_data.log').logger
@@ -142,9 +188,8 @@ def main(models, now):
             logger.error(f'Failed to frontfill raw data: {e}')
             if attempts == RETRIES - 1:
                 send_email_on_error(e, start, end)
-                delete_cronjob()
                 raise e
-            time.sleep(30)
+            time.sleep(60)
     logger.info('Successfully frontfilled raw data.')
 
     ### Frontfill Metrics
@@ -157,40 +202,39 @@ def main(models, now):
             logger.error(f'Failed to frontfill metrics: {e}')
             if attempts == RETRIES - 1:
                 send_email_on_error(e, start, end)
-                delete_cronjob()
                 raise e
-            time.sleep(30)
+            time.sleep(60)
     logger.info('Successfully frontfilled metrics.')
 
     ### Frontfill Takers
-    start = math.floor(now) - SLIDING_WINDOW.total_seconds() - WINDOW.total_seconds()
+    sliding_window = timedelta(seconds=int(end-start))
     logger = Logger('./logs/frontfill/takers.log').logger
     for attempts in range(RETRIES):
         try:
             datahandler = DataHandler()
             t = datahandler.get_takers()
-            takers(start, WINDOW, SLIDING_WINDOW, logger, takers=t)
+            takers(end - sliding_window.total_seconds() - WINDOW.total_seconds(), WINDOW, sliding_window, logger, takers=t)
             break
         except Exception as e:
             logger.error(f'Failed to frontfill takers: {e}')
             if attempts == RETRIES - 1:
                 send_email_on_error(e, start, end)
-                delete_cronjob()
                 raise e
-            time.sleep(30)
+            time.sleep(60)
         finally:
             datahandler.close()
     logger.info('Successfully frontfilled takers.')
 
+    update_latest_run(new_block, new_ts)
+
     ### Run Inference
     logger = Logger('./logs/frontfill/inference.log').logger
     try:
-        dt = datetime.fromtimestamp(now)
-        model_start = get_model_start(dt)
-        model_end = get_model_end(dt) - 0.00001
+        model_start = get_model_start(get_latest_inference_ts(models))
+        model_end = get_model_end(end) - 0.00001
 
         datahandler = DataHandler()
-        tuner = ModelSetup(datahandler, logger=logger, freq=timedelta(seconds=PERIOD))
+        tuner = ModelSetup(datahandler, logger=logger, freq=timedelta(seconds=INFERENCE_PERIOD))
 
         ### Model Inference
         for pool in MODELED_POOLS:
@@ -208,27 +252,35 @@ def main(models, now):
                 lp_share_price /= crv_price
             virtual_price = datahandler.get_pool_snapshots_last(pool)['virtualPrice'][0] / 10**18
 
+            # Check if lp token price < vp (if it was already true, returns false)
             is_true_cp = baseline.update(virtual_price, lp_share_price, model_start)
             if is_true_cp:
                 true_cp = baseline.last_cp
                 datahandler.insert_changepoints([datetime.fromtimestamp(true_cp)], pool, 'baseline', 'baseline', tuner.freq_str)
                 logger.info(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
+                send_email_on_changepoint(name, 'baseline', cp)
                 tweet(name, 'baseline', true_cp, lp_share_price, virtual_price)
 
             for metric in POOL_METRICS:
                 model = models[pool][metric]
                 X = datahandler.get_pool_X(metric, pool, model_start, model_end, '1h')
-                x, ts = X[-1], datetime.timestamp(X.index[-1])
-                logger.info(f'Running inference for {pool} with {metric} at {datetime.fromtimestamp(ts)}.')
-                # NOTE: Ensure we are getting complete, non-overlapping data
-                assert ts == model.last_ts + PERIOD 
-                is_cp = model.predict(x, ts)
-                if is_cp:
-                    cp = ts 
-                    datahandler.insert_changepoints([datetime.fromtimestamp(cp)], pool, 'bocd', metric, tuner.freq_str)
-                    logger.info(f'Changepoint detected for {name} with {metric} at {datetime.fromtimestamp(cp)}.')
-                    send_email_on_changepoint(name, metric, cp)
-                    tweet(name, metric, cp, lp_share_price, virtual_price)
+                # Check that there is enough new data for 1 hour of inference
+                if X.empty:
+                    logger.info(f'No new data available for inference for {name}, {metric}. Last model inference: {datetime.fromtimestamp(model.last_ts)}')
+                    continue
+                for idx, x in X.items(): 
+                    ts = datetime.timestamp(idx)
+                    if ts < model.last_ts + INFERENCE_PERIOD:
+                        logger.info(f'Inference already performed for {pool} with {metric} at {idx}.')
+                        continue
+                    logger.info(f'Running inference for {pool} with {metric} at {idx}.')
+                    is_cp = model.predict(x, ts)
+                    if is_cp:
+                        cp = ts 
+                        datahandler.insert_changepoints([datetime.fromtimestamp(cp)], pool, 'bocd', metric, tuner.freq_str)
+                        logger.info(f'Changepoint detected for {name} with {metric} at {datetime.fromtimestamp(cp)}.')
+                        send_email_on_changepoint(name, metric, cp)
+                        tweet(name, metric, cp, lp_share_price, virtual_price)
 
     except Exception as e:
         logger.error(f'Failed to run inference: {e}')
@@ -242,7 +294,8 @@ def main(models, now):
 
 # Run FOREVER!
 if __name__ == "__main__":
-    now = time.time()
+    # NOTE: delete cron job to prevent multiple instances running at once
+    delete_cronjob()
 
     # Read models
     models = {}
@@ -257,7 +310,7 @@ if __name__ == "__main__":
             model.logger = Logger(f'./logs/frontfill/inference_{pool}_{metric}.log').logger
             models[pool][metric] = model
 
-    models = main(models, now)
+    models = main(models)
 
     # Dump models
     for pool in MODELED_POOLS:
@@ -268,3 +321,6 @@ if __name__ == "__main__":
             model = models[pool][metric]
             with open(f'./model_configs/{metric}/{pool}.pkl', 'wb') as f:
                 pickle.dump(model, f)
+
+    # NOTE: re-add cron job
+    insert_cronjob()

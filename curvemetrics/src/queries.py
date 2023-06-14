@@ -132,6 +132,22 @@ snapshots_query = (
     }}"""
 )
 
+# Meta Query
+meta_query = (
+    lambda : f"""
+    {{
+    _meta {{
+        deployment
+        hasIndexingErrors
+        block {{
+        hash
+        timestamp
+        number
+        }}
+    }}
+    }}"""
+)
+
 queries = {
     'swapEvents' : swaps_query,
     'liquidityEvents' : liquidity_query,
@@ -139,4 +155,5 @@ queries = {
     'pool' : pool_query,
     'dailyPoolSnapshots' : snapshots_query,
     'messari_pool_tokens' : messari_pool_tokens,
+    '_meta' : meta_query,
 }

@@ -5592,3 +5592,267 @@
 2023-06-14 01:02:10,026 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 00:00:00.
 2023-06-14 01:02:10,031 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 00:00:00.
 2023-06-14 01:02:10,034 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 00:00:00.
+2023-06-14 02:02:09,557 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,562 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,569 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,581 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,586 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,592 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,604 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,608 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,614 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,828 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,833 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 01:00:00.
+2023-06-14 02:02:09,838 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 01:00:00.
+2023-06-14 03:02:09,794 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 02:00:00.
+2023-06-14 03:02:09,801 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 02:00:00.
+2023-06-14 03:02:09,807 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 02:00:00.
+2023-06-14 03:02:09,818 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 02:00:00.
+2023-06-14 03:02:09,824 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 02:00:00.
+2023-06-14 03:02:09,829 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 02:00:00.
+2023-06-14 03:02:09,840 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 02:00:00.
+2023-06-14 03:02:09,845 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 02:00:00.
+2023-06-14 03:02:09,850 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 02:00:00.
+2023-06-14 03:02:10,067 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 02:00:00.
+2023-06-14 03:02:10,072 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 02:00:00.
+2023-06-14 03:02:10,077 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 02:00:00.
+2023-06-14 04:02:05,732 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 03:00:00.
+2023-06-14 04:02:05,738 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 03:00:00.
+2023-06-14 04:02:05,745 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 03:00:00.
+2023-06-14 04:02:05,757 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 03:00:00.
+2023-06-14 04:02:05,762 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 03:00:00.
+2023-06-14 04:02:05,768 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 03:00:00.
+2023-06-14 04:02:05,779 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 03:00:00.
+2023-06-14 04:02:05,784 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 03:00:00.
+2023-06-14 04:02:05,790 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 03:00:00.
+2023-06-14 04:02:06,005 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 03:00:00.
+2023-06-14 04:02:06,011 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 03:00:00.
+2023-06-14 04:02:06,017 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 03:00:00.
+2023-06-14 05:02:09,253 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,258 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,264 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,276 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,281 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,287 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,298 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,303 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,308 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,530 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,535 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 04:00:00.
+2023-06-14 05:02:09,541 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 04:00:00.
+2023-06-14 20:34:22,830 - Failed to run inference: 'Timestamp' object cannot be interpreted as an integer
+2023-06-14 20:42:03,365 - Failed to run inference: local variable 'ts' referenced before assignment
+2023-06-14 20:55:18,217 - Inference already performed for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,218 - Inference already performed for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,218 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,220 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,221 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,222 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,223 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,224 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,225 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,226 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,227 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,227 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,228 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,229 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,230 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,231 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,232 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with shannonsEntropy at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,255 - Inference already performed for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 02:00:00.
+2023-06-14 20:55:18,255 - Inference already performed for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,255 - Inference already performed for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,255 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,256 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,257 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,258 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,259 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,260 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,261 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,262 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,263 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,264 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,265 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,266 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,266 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,267 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,268 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with netSwapFlow at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,283 - Inference already performed for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 02:00:00.
+2023-06-14 20:55:18,283 - Inference already performed for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,283 - Inference already performed for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,283 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,283 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,284 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,284 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,285 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,285 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,286 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,286 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,287 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,287 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,287 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,288 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,288 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,289 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,289 - Running inference for 0xdc24316b9ae028f1497c275eb9192a3ea0f67022 with 300.Markout at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,311 - Inference already performed for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,311 - Inference already performed for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,312 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,312 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,313 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,314 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,314 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,315 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,316 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,317 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,317 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,318 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,319 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,319 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,320 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,321 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,321 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with shannonsEntropy at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,435 - Inference already performed for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 02:00:00.
+2023-06-14 20:55:18,435 - Inference already performed for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,435 - Inference already performed for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,435 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,436 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,437 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,437 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,438 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,439 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,439 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,440 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,441 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,441 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,442 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,443 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,444 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,444 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,445 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with netSwapFlow at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,459 - Inference already performed for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 02:00:00.
+2023-06-14 20:55:18,459 - Inference already performed for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,459 - Inference already performed for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,459 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,460 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,460 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,461 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,461 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,462 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,462 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,463 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,463 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,464 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,464 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,464 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,465 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,465 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,466 - Running inference for 0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7 with 300.Markout at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,488 - Inference already performed for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,488 - Inference already performed for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,488 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,489 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,490 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,491 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,492 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,493 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,494 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,495 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,496 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,496 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,497 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,498 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,499 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,500 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,501 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with shannonsEntropy at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,523 - Inference already performed for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 02:00:00.
+2023-06-14 20:55:18,523 - Inference already performed for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,523 - Inference already performed for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,523 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,524 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,525 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,526 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,527 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,528 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,528 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,529 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,530 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,531 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,532 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,533 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,534 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,535 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,536 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with netSwapFlow at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,550 - Inference already performed for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 02:00:00.
+2023-06-14 20:55:18,550 - Inference already performed for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,550 - Inference already performed for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,550 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,551 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,551 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,552 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,552 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,552 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,553 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,553 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,554 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,554 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,555 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,555 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,556 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,556 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,556 - Running inference for 0xdcef968d416a41cdac0ed8702fac8128a64241a2 with 300.Markout at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,786 - Inference already performed for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,786 - Inference already performed for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,786 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,787 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,787 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,787 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,788 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,788 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,789 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,789 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,789 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,790 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,790 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,791 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,791 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,792 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,792 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with shannonsEntropy at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,813 - Inference already performed for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 02:00:00.
+2023-06-14 20:55:18,813 - Inference already performed for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,814 - Inference already performed for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,814 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,814 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,814 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 07:00:00.
+2023-06-14 20:55:18,815 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 08:00:00.
+2023-06-14 20:55:18,815 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 09:00:00.
+2023-06-14 20:55:18,816 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 10:00:00.
+2023-06-14 20:55:18,816 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 11:00:00.
+2023-06-14 20:55:18,816 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 12:00:00.
+2023-06-14 20:55:18,817 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 13:00:00.
+2023-06-14 20:55:18,817 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 14:00:00.
+2023-06-14 20:55:18,818 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 15:00:00.
+2023-06-14 20:55:18,818 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 16:00:00.
+2023-06-14 20:55:18,818 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 17:00:00.
+2023-06-14 20:55:18,819 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 18:00:00.
+2023-06-14 20:55:18,819 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with netSwapFlow at 2023-06-14 19:00:00.
+2023-06-14 20:55:18,833 - Inference already performed for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 02:00:00.
+2023-06-14 20:55:18,833 - Inference already performed for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 03:00:00.
+2023-06-14 20:55:18,833 - Inference already performed for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 04:00:00.
+2023-06-14 20:55:18,833 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 05:00:00.
+2023-06-14 20:55:18,833 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 06:00:00.
+2023-06-14 20:55:18,839 - Changepoint detected for Curve.fi ETH/frxETH with 300.Markout at 2023-06-14 06:00:00.
+2023-06-14 20:55:20,065 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 07:00:00.
+2023-06-14 20:55:20,066 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 08:00:00.
+2023-06-14 20:55:20,067 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 09:00:00.
+2023-06-14 20:55:20,067 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 10:00:00.
+2023-06-14 20:55:20,067 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 11:00:00.
+2023-06-14 20:55:20,068 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 12:00:00.
+2023-06-14 20:55:20,068 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 13:00:00.
+2023-06-14 20:55:20,069 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 14:00:00.
+2023-06-14 20:55:20,069 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 15:00:00.
+2023-06-14 20:55:20,069 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 16:00:00.
+2023-06-14 20:55:20,070 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 17:00:00.
+2023-06-14 20:55:20,070 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 18:00:00.
+2023-06-14 20:55:20,075 - Changepoint detected for Curve.fi ETH/frxETH with 300.Markout at 2023-06-14 18:00:00.
+2023-06-14 20:55:21,123 - Running inference for 0xa1f8a6807c402e4a15ef4eba36528a3fed24e577 with 300.Markout at 2023-06-14 19:00:00.

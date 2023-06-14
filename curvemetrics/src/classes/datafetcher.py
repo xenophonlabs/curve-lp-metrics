@@ -13,14 +13,15 @@ from datetime import datetime, timedelta
 from typing import Any, List, Tuple, Callable, Dict, Union
 from web3 import Web3
 from dotenv import load_dotenv
-from tenacity import retry, stop_after_attempt, after_log
+from tenacity import retry, stop_after_attempt, after_log, wait_exponential
+import math
 
 from ..queries import queries
 
 load_dotenv()
 nest_asyncio.apply()
 
-RETRY_AMOUNTS = 3
+RETRY_AMOUNTS = 5
 CURVE_SUBGRAPH_URL_CVX = 'https://api.thegraph.com/subgraphs/name/convex-community/curve-mainnet'
 CURVE_SUBGRAPH_URL_VOLUME_CVX = "https://api.thegraph.com/subgraphs/name/convex-community/volume-mainnet"
 CURVE_SUBGRAPH_URL_MESSARI = 'https://api.thegraph.com/subgraphs/name/messari/curve-finance-ethereum'
@@ -77,7 +78,7 @@ class DataFetcher():
         await self.session.close()
 
     @staticmethod
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
     def get_pool_metadata(pool_id, datetime_):
         cvx_url = DataFetcher.get_url('cvx')
         messari_url = DataFetcher.get_url('messari')
@@ -87,6 +88,28 @@ class DataFetcher():
         messari_query = queries['messari_pool_tokens'](pool_id=pool_id, block=block)
         data = cvx_res.json()['data']['pool']
         data['inputTokens'] = [x['id'] for x in req.post(messari_url, json={'query': messari_query}).json()['data']['liquidityPool']['inputTokens']]
+        return data
+
+    @staticmethod
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
+    def get_latest_availability():
+        latest_ts = math.inf
+        result = {}
+        for src in ["cvx", "cvx-volume", "messari"]:
+            data = DataFetcher.get_meta(src)
+            ts = data['block']['timestamp']
+            if ts < latest_ts:
+                result = data['block']
+                latest_ts = ts
+        return result['number'], result['timestamp']
+
+    @staticmethod
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
+    def get_meta(source: str):
+        url = DataFetcher.get_url(source)
+        query = queries['_meta']()
+        res = req.post(url, json={'query': query})
+        data = res.json()['data']['_meta']
         return data
     
     @staticmethod
@@ -99,7 +122,7 @@ class DataFetcher():
         return data
 
     @staticmethod
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
     def get_token_metadata(token, client, erc20_abi):
         if token == '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee':
             # Dummy for ETH since not erc20
@@ -233,7 +256,7 @@ class DataFetcher():
         data = asyncio.run(self.execute_queries_async(start, end, query, key, url, step_size, full, pool_id=pool_id))
         return data
 
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
     def get_pool_data(
         self,
         start_block,
@@ -243,7 +266,7 @@ class DataFetcher():
     ) -> Any:
         return self.execute_queries(start_block, end_block, pool_id, 'messari', 'liquidityPool', step_size, False)
     
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
     def get_swaps_data(
         self,
         start_block,
@@ -256,7 +279,7 @@ class DataFetcher():
         """
         return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'swapEvents', step_size, True)
     
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
     def get_lp_data(
         self,
         start_block,
@@ -269,7 +292,7 @@ class DataFetcher():
         """
         return self.execute_queries(start_block, end_block, pool_id, 'cvx', 'liquidityEvents', step_size, True)
     
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
     def get_snapshots(
         self,
         start_ts: int,
@@ -333,7 +356,7 @@ class DataFetcher():
 
         raise Exception(f"Couldn't fetch OHLCV for {symbol} from any of {self.exchanges}.")
 
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
     def get_ohlcv(
         self,
         start_timestamp: int,
@@ -405,7 +428,7 @@ class DataFetcher():
 
         return closest_round
     
-    # @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    # @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
     def get_chainlink_prices(self, token, chainlink_address, start_timestamp, end_timestamp):
         chainlink_address = Web3.to_checksum_address(chainlink_address)
         abi = abi = '[{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"description","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint80","name":"_roundId","type":"uint80"}],"name":"getRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"latestRoundData","outputs":[{"internalType":"uint80","name":"roundId","type":"uint80"},{"internalType":"int256","name":"answer","type":"int256"},{"internalType":"uint256","name":"startedAt","type":"uint256"},{"internalType":"uint256","name":"updatedAt","type":"uint256"},{"internalType":"uint80","name":"answeredInRound","type":"uint80"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]'
@@ -438,7 +461,7 @@ class DataFetcher():
         return data
 
     @staticmethod
-    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG))
+    @retry(stop=stop_after_attempt(RETRY_AMOUNTS), after=after_log(logging.getLogger(__name__), logging.DEBUG), wait=wait_exponential(multiplier=2, min=1, max=60))
     def get_block(datetime_: Union[int, datetime]) -> Tuple[int, int]:
         """
         Get the block number corresponding to a given timestamp.
