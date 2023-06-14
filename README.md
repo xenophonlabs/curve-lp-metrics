@@ -5,7 +5,7 @@ Welcome to Curvemetrics, a stablecoin and liquid staking derivative depeg detect
 1. **Metrics** - Our metrics are designed to capture *leading* indicators of potential depegs.
 2. **Bayesian Online Changepoint Detection** - Our *BOCD* models are trained on historical Curve data, and listen to changes in metrics data in *real-time* to detect potential changepoints (depegs).
 
-You may listen to detected depegs or query our metrics by using our API. You may also listen to potential depegs by following and turning notification on for our Twitter bot **link**. The theoretical underpinning of Curvemetrics is available in our corresponding research paper **link**.
+You may listen to detected depegs or query our metrics by using our API. You may also listen to potential depegs by following and turning notification on for our Twitter bot [Twitter bot](https://twitter.com/curvelpmetrics). The theoretical underpinning of Curvemetrics is available in our corresponding research paper **link**.
 
 This codebase and research paper were developed by Xenophon Labs and sponsored by the Cuve Analytics team. If there are any questions, please reach out to thomas@xenophonlabs.com.
 
@@ -73,10 +73,10 @@ Notice that `pools` and `tokens` are meta tables: they provide basic information
 
 ## Listening to Changepoints
 
-The easy way to listen to changepoints is by following our Twitter bot **link**. To listen to changepoints programatically, you may query for the latest changepoint for your desired pool and metric. For example, you may query:
+The easy way to listen to changepoints is by following our [Twitter bot](https://twitter.com/curvelpmetrics). To listen to changepoints programatically, you may query for the latest changepoint for your desired pool and metric. For example, you may query:
 
 ```
-curl "http://172.104.8.91/changepoints?pool_id=0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7&model=bocd&metric=shannonsEntropy&start=<start>&end=<end>" > example.json
+curl "http://172.104.8.91/changepoints?address=0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7&model=bocd&metric=shannonsEntropy&start=<start>&end=<end>" > example.json
 ```
 
 to check if any changepoints occured on the 3pool according to our Entropy BOCD model between `<start>` and `<end>`.
