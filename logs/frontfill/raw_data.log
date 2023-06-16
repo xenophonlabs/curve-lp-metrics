@@ -10892,3 +10892,9 @@ NoneType: None
 2023-06-16 15:05:04,132 - Done :)
 
 2023-06-16 15:05:04,133 - Successfully frontfilled raw data.
+2023-06-16 16:00:16,606 - Processing Raw Data...
+2023-06-16 16:00:16,606 - Start time: 2023-06-15 07:00:48
+2023-06-16 16:00:16,606 - End time: 2023-06-16 15:59:59
+
+2023-06-16 16:00:17,360 - Processing pool Curve.fi ETH/stETH.
+2023-06-16 16:00:29,369 - Inserting pool data...

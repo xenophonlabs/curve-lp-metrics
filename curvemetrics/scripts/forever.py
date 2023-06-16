@@ -39,7 +39,12 @@ TWEEPY_API_BEARER_TOKEN = os.getenv('TWEEPY_API_BEARER_TOKEN')
 TWEEPY_API_ACCESS_TOKEN = os.getenv('TWEEPY_API_ACCESS_TOKEN')
 TWEEPY_API_ACCESS_TOKEN_SECRET = os.getenv('TWEEPY_API_ACCESS_TOKEN_SECRET')
 
-POOL_METRICS = ["shannonsEntropy", "netSwapFlow", "300.Markout"]
+POOL_METRICS = [
+    "shannonsEntropy", 
+    "netSwapFlow", 
+    # "300.Markout"
+]
+
 MODELED_POOLS = [
     "0xdc24316b9ae028f1497c275eb9192a3ea0f67022", # ETH/stETH
     "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", # 3pool
