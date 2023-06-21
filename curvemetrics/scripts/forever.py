@@ -49,7 +49,7 @@ MODELED_POOLS = [
     "0xdc24316b9ae028f1497c275eb9192a3ea0f67022", # ETH/stETH
     "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", # 3pool
     "0xdcef968d416a41cdac0ed8702fac8128a64241a2", # FRAX/USDC
-    "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577", # ETH/frxETH
+    # "0xa1f8a6807c402e4a15ef4eba36528a3fed24e577", # ETH/frxETH
     # "0x828b154032950c8ff7cf8085d841723db2696056", # stETH Concentrated
 ]
 
