@@ -5,7 +5,7 @@ Welcome to Curvemetrics, a stablecoin and liquid staking derivative depeg detect
 1. **Metrics** - Our metrics are designed to capture *leading* indicators of potential depegs.
 2. **Bayesian Online Changepoint Detection** - Our *BOCD* models are trained on historical Curve data, and listen to changes in metrics data in *real-time* to detect potential changepoints (depegs).
 
-You may listen to detected depegs or query our metrics by using our API. You may also listen to potential depegs by following and turning notification on for our [Twitter bot](https://twitter.com/curvelpmetrics). The theoretical underpinning of Curvemetrics is available in our corresponding [research paper](https://xenophonlabs.com/papers/curve_lp_metrics.pdf).
+You may listen to detected depegs or query our metrics by using our API. You may also listen to potential depegs by following and turning notification on for our [Twitter bot](https://twitter.com/curvelpmetrics). The theoretical underpinning of Curvemetrics is available in our corresponding [research paper](https://arxiv.org/abs/2306.10612).
 
 This codebase and research paper were developed by Xenophon Labs and sponsored by the Cuve Analytics team. If there are any questions, please reach out to thomas@xenophonlabs.com.
 

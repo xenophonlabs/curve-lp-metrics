@@ -80,7 +80,7 @@ def send_email_on_error(exc, start, end):
 
 def send_email_on_changepoint(pool_name, metric, cp):
     subject = f'Curvemetrics Changepoint Detected'
-    body = f"A changepoint was detected.\nPool: {pool_name}\nMetric: {metric}\Time: {cp}"
+    body = f"A changepoint was detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)}"
     msg = f'Subject: {subject}\n\n{body}'
     send_email(msg)
 
