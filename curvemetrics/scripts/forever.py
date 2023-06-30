@@ -45,6 +45,12 @@ POOL_METRICS = [
     # "300.Markout"
 ]
 
+LINKS = {
+    "Curve.fi DAI/USDC/USDT":"https://curve.fi/#/ethereum/pools/3pool/deposit",
+    "Curve.fi ETH/stETH":"https://curve.fi/#/ethereum/pools/steth/deposit",
+    "Curve.fi FRAX/USDC":"https://curve.fi/#/ethereum/pools/fraxusdc/deposit",
+}
+
 MODELED_POOLS = [
     "0xdc24316b9ae028f1497c275eb9192a3ea0f67022", # ETH/stETH
     "0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7", # 3pool
@@ -92,7 +98,7 @@ def tweet(pool_name, metric, cp, lp_share_price, virtual_price):
                            access_token_secret=TWEEPY_API_ACCESS_TOKEN_SECRET, 
                            wait_on_rate_limit=True
     )
-    text = f'A potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)} UTC\nThe current virtual price is: {round(virtual_price, 3)}.'
+    text = f'A potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)} UTC\nPool Link: {LINKS[pool_name]}.'
     response = client.create_tweet(text=text)
     return response
 
@@ -263,7 +269,7 @@ def main(models):
                 true_cp = baseline.last_cp
                 datahandler.insert_changepoints([datetime.fromtimestamp(true_cp)], pool, 'baseline', 'baseline', tuner.freq_str)
                 logger.info(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
-                send_email_on_changepoint(name, 'baseline', cp)
+                send_email_on_changepoint(name, 'baseline', true_cp)
                 tweet(name, 'baseline', true_cp, lp_share_price, virtual_price)
 
             for metric in POOL_METRICS:
