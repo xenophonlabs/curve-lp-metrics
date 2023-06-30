@@ -98,7 +98,7 @@ def tweet(pool_name, metric, cp, lp_share_price, virtual_price):
                            access_token_secret=TWEEPY_API_ACCESS_TOKEN_SECRET, 
                            wait_on_rate_limit=True
     )
-    text = f'A potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)} UTC\nPool Link: {LINKS[pool_name]}.'
+    text = f'A potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)} UTC\nPool Link: {LINKS[pool_name]}.\n\nDISCLAIMER: CurveMetrics is prone to reporting false positives; NFA.'
     response = client.create_tweet(text=text)
     return response
 
