@@ -33,11 +33,11 @@ SMTP_PORT = 587  # for starttls
 STMP_LOGIN = "thomas@xenophonlabs.com"
 SMTP_APP_PWD = os.getenv('SMTP_APP_PWD')
 
-TWEEPY_API_KEY = os.getenv('TWEEPY_API_KEY')
-TWEEPY_API_SECRET = os.getenv('TWEEPY_API_SECRET')
-TWEEPY_API_BEARER_TOKEN = os.getenv('TWEEPY_API_BEARER_TOKEN')
-TWEEPY_API_ACCESS_TOKEN = os.getenv('TWEEPY_API_ACCESS_TOKEN')
-TWEEPY_API_ACCESS_TOKEN_SECRET = os.getenv('TWEEPY_API_ACCESS_TOKEN_SECRET')
+TWITTER_API_KEY = os.getenv('TWITTER_API_KEY')
+TWITTER_API_SECRET = os.getenv('TWITTER_API_SECRET')
+TWITTER_API_BEARER_TOKEN = os.getenv('TWITTER_API_BEARER_TOKEN')
+TWITTER_API_ACCESS_TOKEN = os.getenv('TWITTER_API_ACCESS_TOKEN')
+TWITTER_API_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_API_ACCESS_TOKEN_SECRET')
 
 POOL_METRICS = [
     "shannonsEntropy", 
@@ -90,12 +90,12 @@ def send_email_on_changepoint(pool_name, metric, cp):
     msg = f'Subject: {subject}\n\n{body}'
     send_email(msg)
 
-def tweet(pool_name, metric, cp, lp_share_price, virtual_price):
-    client = tweepy.Client(bearer_token=TWEEPY_API_BEARER_TOKEN, 
-                           consumer_key=TWEEPY_API_KEY, 
-                           consumer_secret=TWEEPY_API_SECRET, 
-                           access_token=TWEEPY_API_ACCESS_TOKEN, 
-                           access_token_secret=TWEEPY_API_ACCESS_TOKEN_SECRET, 
+def tweet(pool_name, metric, cp):
+    client = tweepy.Client(bearer_token=TWITTER_API_BEARER_TOKEN, 
+                           consumer_key=TWITTER_API_KEY, 
+                           consumer_secret=TWITTER_API_SECRET, 
+                           access_token=TWITTER_API_ACCESS_TOKEN, 
+                           access_token_secret=TWITTER_API_ACCESS_TOKEN_SECRET, 
                            wait_on_rate_limit=True
     )
     text = f'A potential depeg has been detected.\nPool: {pool_name}\nMetric: {metric}\nTime: {datetime.fromtimestamp(cp)} UTC\nPool Link: {LINKS[pool_name]}.\n\nDISCLAIMER: CurveMetrics is prone to reporting false positives; NFA.'
@@ -270,7 +270,7 @@ def main(models):
                 datahandler.insert_changepoints([datetime.fromtimestamp(true_cp)], pool, 'baseline', 'baseline', tuner.freq_str)
                 logger.info(f'Changepoint detected for {name} with baseline model at {datetime.fromtimestamp(true_cp)}.')
                 send_email_on_changepoint(name, 'baseline', true_cp)
-                tweet(name, 'baseline', true_cp, lp_share_price, virtual_price)
+                # tweet(name, 'baseline', true_cp)
 
             for metric in POOL_METRICS:
                 model = models[pool][metric]
@@ -291,7 +291,7 @@ def main(models):
                         datahandler.insert_changepoints([datetime.fromtimestamp(cp)], pool, 'bocd', metric, tuner.freq_str)
                         logger.info(f'Changepoint detected for {name} with {metric} at {datetime.fromtimestamp(cp)}.')
                         send_email_on_changepoint(name, metric, cp)
-                        tweet(name, metric, cp, lp_share_price, virtual_price)
+                        tweet(name, metric, cp)
 
     except Exception as e:
         logger.error(f'Failed to run inference: {e}')

@@ -204,13 +204,13 @@ nohup bash curvemetrics/scripts/backfill/batch_backfill_raw_data.sh <start> <end
 The logger object will log specific outputs to a `./logs/backfill/raw_data.log` file that you may audit. Similarly, once raw data has finished backfilling, run:
 
 ```
-nohup bash curvemetrics/scripts/backfill/batch_backfill_metrics.sh <start> <end> > ./logs/master.log 2>&1 &
+nohup bash curvemetrics/scripts/backfill/batch_backfill_metrics.sh <start> <end> >> ./logs/master.log 2>&1 &
 ```
 
 And finally: 
 
 ```
-nohup python3 -m curvemetrics.scripts.backfill.takers.py <start> <end> > ./logs/takers.log 2>&1 &
+nohup python3 -m curvemetrics.scripts.backfill.takers.py <start> <end> >> ./logs/takers.log 2>&1 &
 ```
 
 will backfill the `takers` table and the `sharkflow` metric. Verify that no errors occured in the logs to ensure the metrics and raw data are clean. We split the backfilling jobs up into weekly/monthly jobs in the `.sh` scripts to prevent OOM errors. You can confirm that tables have been backfilled by using Postgres' interactive CLI:

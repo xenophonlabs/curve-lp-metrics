@@ -5596,3 +5596,27 @@ NoneType: None
 
 2023-06-13 13:30:26,760 - Done :)
 
+2023-07-05 18:13:21,941 - Processing Raw Data...
+2023-07-05 18:13:21,942 - Start time: 2023-06-30 23:50:00
+2023-07-05 18:13:21,942 - End time: 2023-07-05 00:00:00
+
+2023-07-05 18:13:22,807 - Processing token LUSD OHLCV using chainlink.
+2023-07-05 18:13:37,478 - Found the closest round: 18446744073709563980, at 2023-06-30 23:19:47.
+2023-07-05 18:13:37,478 - Number of iterations: 13
+2023-07-05 18:13:45,017 - Inserting OHLCV.
+
+2023-07-05 18:13:45,128 - Processing token FRAX OHLCV using chainlink.
+2023-07-05 18:14:00,429 - Found the closest round: 18446744073709563881, at 2023-06-30 23:32:59.
+2023-07-05 18:14:00,429 - Number of iterations: 14
+2023-07-05 18:14:07,039 - Inserting OHLCV.
+
+2023-07-05 18:14:07,158 - Processing token MIM OHLCV using ccxt.
+2023-07-05 18:14:10,884 - Using Bitfinex for MIM/USD.
+2023-07-05 18:14:10,886 - Inserting OHLCV.
+
+2023-07-05 18:14:11,317 - Processing token USDC OHLCV using chainlink.
+2023-07-05 18:14:22,309 - Found the closest round: 36893488147419104550, at 2023-06-30 08:00:23.
+2023-07-05 18:14:22,309 - Number of iterations: 10
+2023-07-05 18:14:22,760 - Inserting OHLCV.
+
+2023-07-05 18:14:22,773 - Processing token stETH OHLCV using chainlink.

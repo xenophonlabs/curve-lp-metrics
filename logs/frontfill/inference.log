@@ -4075,3 +4075,1167 @@
 2023-06-30 17:03:22,689 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 13:00:00.
 2023-06-30 17:03:22,689 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 14:00:00.
 2023-06-30 17:03:22,689 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 15:00:00.
+2023-06-30 18:03:08,850 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 15:00:00.
+2023-06-30 18:03:08,850 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 16:00:00.
+2023-06-30 18:03:08,859 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 14:00:00.
+2023-06-30 18:03:08,859 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 15:00:00.
+2023-06-30 18:03:08,859 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 16:00:00.
+2023-06-30 18:03:08,872 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 15:00:00.
+2023-06-30 18:03:08,872 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 16:00:00.
+2023-06-30 18:03:08,881 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 14:00:00.
+2023-06-30 18:03:08,881 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 15:00:00.
+2023-06-30 18:03:08,882 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 16:00:00.
+2023-06-30 18:03:08,894 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 15:00:00.
+2023-06-30 18:03:08,894 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 16:00:00.
+2023-06-30 18:03:08,901 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 14:00:00.
+2023-06-30 18:03:08,901 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 15:00:00.
+2023-06-30 18:03:08,901 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 16:00:00.
+2023-06-30 19:02:28,255 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 16:00:00.
+2023-06-30 19:02:28,255 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 17:00:00.
+2023-06-30 19:02:28,264 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 15:00:00.
+2023-06-30 19:02:28,264 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 16:00:00.
+2023-06-30 19:02:28,264 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 17:00:00.
+2023-06-30 19:02:28,278 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 16:00:00.
+2023-06-30 19:02:28,278 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 17:00:00.
+2023-06-30 19:02:28,285 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 15:00:00.
+2023-06-30 19:02:28,286 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 16:00:00.
+2023-06-30 19:02:28,286 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 17:00:00.
+2023-06-30 19:02:28,298 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 16:00:00.
+2023-06-30 19:02:28,298 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 17:00:00.
+2023-06-30 19:02:28,305 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 15:00:00.
+2023-06-30 19:02:28,305 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 16:00:00.
+2023-06-30 19:02:28,305 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 17:00:00.
+2023-06-30 20:02:11,501 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 17:00:00.
+2023-06-30 20:02:11,502 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 18:00:00.
+2023-06-30 20:02:11,510 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 16:00:00.
+2023-06-30 20:02:11,510 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 17:00:00.
+2023-06-30 20:02:11,510 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 18:00:00.
+2023-06-30 20:02:11,523 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 17:00:00.
+2023-06-30 20:02:11,523 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 18:00:00.
+2023-06-30 20:02:11,531 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 16:00:00.
+2023-06-30 20:02:11,531 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 17:00:00.
+2023-06-30 20:02:11,531 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 18:00:00.
+2023-06-30 20:02:11,543 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 17:00:00.
+2023-06-30 20:02:11,543 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 18:00:00.
+2023-06-30 20:02:11,550 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 16:00:00.
+2023-06-30 20:02:11,550 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 17:00:00.
+2023-06-30 20:02:11,550 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 18:00:00.
+2023-06-30 21:02:07,987 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 18:00:00.
+2023-06-30 21:02:07,988 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 19:00:00.
+2023-06-30 21:02:07,996 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 17:00:00.
+2023-06-30 21:02:07,996 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 18:00:00.
+2023-06-30 21:02:07,996 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 19:00:00.
+2023-06-30 21:02:08,009 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 18:00:00.
+2023-06-30 21:02:08,009 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 19:00:00.
+2023-06-30 21:02:08,017 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 17:00:00.
+2023-06-30 21:02:08,017 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 18:00:00.
+2023-06-30 21:02:08,017 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 19:00:00.
+2023-06-30 21:02:08,029 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 18:00:00.
+2023-06-30 21:02:08,029 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 19:00:00.
+2023-06-30 21:02:08,036 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 17:00:00.
+2023-06-30 21:02:08,036 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 18:00:00.
+2023-06-30 21:02:08,036 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 19:00:00.
+2023-06-30 22:02:37,418 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 19:00:00.
+2023-06-30 22:02:37,418 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 20:00:00.
+2023-06-30 22:02:37,426 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 18:00:00.
+2023-06-30 22:02:37,427 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 19:00:00.
+2023-06-30 22:02:37,427 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 20:00:00.
+2023-06-30 22:02:37,442 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 19:00:00.
+2023-06-30 22:02:37,442 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 20:00:00.
+2023-06-30 22:02:37,449 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 18:00:00.
+2023-06-30 22:02:37,449 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 19:00:00.
+2023-06-30 22:02:37,449 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 20:00:00.
+2023-06-30 22:02:37,463 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 19:00:00.
+2023-06-30 22:02:37,463 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 20:00:00.
+2023-06-30 22:02:37,469 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 18:00:00.
+2023-06-30 22:02:37,469 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 19:00:00.
+2023-06-30 22:02:37,469 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 20:00:00.
+2023-06-30 23:02:55,243 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 20:00:00.
+2023-06-30 23:02:55,243 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 21:00:00.
+2023-06-30 23:02:55,252 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 19:00:00.
+2023-06-30 23:02:55,252 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 20:00:00.
+2023-06-30 23:02:55,252 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 21:00:00.
+2023-06-30 23:02:55,265 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 20:00:00.
+2023-06-30 23:02:55,265 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 21:00:00.
+2023-06-30 23:02:55,273 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 19:00:00.
+2023-06-30 23:02:55,273 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 20:00:00.
+2023-06-30 23:02:55,273 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 21:00:00.
+2023-06-30 23:02:55,285 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 20:00:00.
+2023-06-30 23:02:55,286 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 21:00:00.
+2023-06-30 23:02:55,292 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 19:00:00.
+2023-06-30 23:02:55,292 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 20:00:00.
+2023-06-30 23:02:55,292 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 21:00:00.
+2023-07-01 00:02:37,021 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 21:00:00.
+2023-07-01 00:02:37,021 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 22:00:00.
+2023-07-01 00:02:37,022 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 23:00:00.
+2023-07-01 00:02:37,031 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 20:00:00.
+2023-07-01 00:02:37,031 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 21:00:00.
+2023-07-01 00:02:37,031 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 22:00:00.
+2023-07-01 00:02:37,032 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 23:00:00.
+2023-07-01 00:02:37,046 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 21:00:00.
+2023-07-01 00:02:37,047 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 22:00:00.
+2023-07-01 00:02:37,047 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 23:00:00.
+2023-07-01 00:02:37,056 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 20:00:00.
+2023-07-01 00:02:37,056 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 21:00:00.
+2023-07-01 00:02:37,056 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 22:00:00.
+2023-07-01 00:02:37,057 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 23:00:00.
+2023-07-01 00:02:37,070 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 21:00:00.
+2023-07-01 00:02:37,070 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 22:00:00.
+2023-07-01 00:02:37,070 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 23:00:00.
+2023-07-01 00:02:37,077 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 20:00:00.
+2023-07-01 00:02:37,077 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 21:00:00.
+2023-07-01 00:02:37,078 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 22:00:00.
+2023-07-01 00:02:37,078 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 23:00:00.
+2023-07-01 01:03:56,655 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 23:00:00.
+2023-07-01 01:03:56,662 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 22:00:00.
+2023-07-01 01:03:56,662 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 23:00:00.
+2023-07-01 01:03:56,674 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 23:00:00.
+2023-07-01 01:03:56,680 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 22:00:00.
+2023-07-01 01:03:56,680 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 23:00:00.
+2023-07-01 01:03:56,691 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 23:00:00.
+2023-07-01 01:03:56,697 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 22:00:00.
+2023-07-01 01:03:56,697 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 23:00:00.
+2023-07-01 02:02:43,794 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-06-30 23:00:00.
+2023-07-01 02:02:43,794 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 00:00:00.
+2023-07-01 02:02:43,795 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 01:00:00.
+2023-07-01 02:02:43,803 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 22:00:00.
+2023-07-01 02:02:43,803 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-06-30 23:00:00.
+2023-07-01 02:02:43,804 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 00:00:00.
+2023-07-01 02:02:43,805 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 02:02:43,818 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-06-30 23:00:00.
+2023-07-01 02:02:43,818 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 00:00:00.
+2023-07-01 02:02:43,819 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 01:00:00.
+2023-07-01 02:02:43,827 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 22:00:00.
+2023-07-01 02:02:43,827 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-06-30 23:00:00.
+2023-07-01 02:02:43,827 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 00:00:00.
+2023-07-01 02:02:43,828 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 02:02:43,840 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-06-30 23:00:00.
+2023-07-01 02:02:43,841 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 00:00:00.
+2023-07-01 02:02:43,841 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 01:00:00.
+2023-07-01 02:02:43,848 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 22:00:00.
+2023-07-01 02:02:43,848 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-06-30 23:00:00.
+2023-07-01 02:02:43,848 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 00:00:00.
+2023-07-01 02:02:43,849 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 03:02:08,731 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 01:00:00.
+2023-07-01 03:02:08,738 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 00:00:00.
+2023-07-01 03:02:08,738 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 03:02:08,750 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 01:00:00.
+2023-07-01 03:02:08,756 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 00:00:00.
+2023-07-01 03:02:08,757 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 03:02:08,768 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 01:00:00.
+2023-07-01 03:02:08,773 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 00:00:00.
+2023-07-01 03:02:08,773 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 04:02:26,117 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 01:00:00.
+2023-07-01 04:02:26,117 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 02:00:00.
+2023-07-01 04:02:26,126 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 00:00:00.
+2023-07-01 04:02:26,126 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 04:02:26,126 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 02:00:00.
+2023-07-01 04:02:26,139 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 01:00:00.
+2023-07-01 04:02:26,139 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 02:00:00.
+2023-07-01 04:02:26,147 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 00:00:00.
+2023-07-01 04:02:26,147 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 04:02:26,147 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 02:00:00.
+2023-07-01 04:02:26,161 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 01:00:00.
+2023-07-01 04:02:26,161 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 02:00:00.
+2023-07-01 04:02:26,167 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 00:00:00.
+2023-07-01 04:02:26,167 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 04:02:26,168 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 02:00:00.
+2023-07-01 05:02:16,223 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 02:00:00.
+2023-07-01 05:02:16,223 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 03:00:00.
+2023-07-01 05:02:16,231 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 05:02:16,231 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 02:00:00.
+2023-07-01 05:02:16,231 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 03:00:00.
+2023-07-01 05:02:16,245 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 02:00:00.
+2023-07-01 05:02:16,245 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 03:00:00.
+2023-07-01 05:02:16,252 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 05:02:16,252 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 02:00:00.
+2023-07-01 05:02:16,252 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 03:00:00.
+2023-07-01 05:02:16,265 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 02:00:00.
+2023-07-01 05:02:16,265 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 03:00:00.
+2023-07-01 05:02:16,271 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 01:00:00.
+2023-07-01 05:02:16,271 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 02:00:00.
+2023-07-01 05:02:16,271 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 03:00:00.
+2023-07-01 06:02:53,341 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 03:00:00.
+2023-07-01 06:02:53,341 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 04:00:00.
+2023-07-01 06:02:53,350 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 02:00:00.
+2023-07-01 06:02:53,350 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 03:00:00.
+2023-07-01 06:02:53,350 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 04:00:00.
+2023-07-01 06:02:53,364 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 03:00:00.
+2023-07-01 06:02:53,364 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 04:00:00.
+2023-07-01 06:02:53,371 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 02:00:00.
+2023-07-01 06:02:53,371 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 03:00:00.
+2023-07-01 06:02:53,371 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 04:00:00.
+2023-07-01 06:02:53,384 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 03:00:00.
+2023-07-01 06:02:53,384 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 04:00:00.
+2023-07-01 06:02:53,391 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 02:00:00.
+2023-07-01 06:02:53,391 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 03:00:00.
+2023-07-01 06:02:53,391 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 04:00:00.
+2023-07-01 07:03:03,915 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 04:00:00.
+2023-07-01 07:03:03,915 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 05:00:00.
+2023-07-01 07:03:03,924 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 03:00:00.
+2023-07-01 07:03:03,924 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 04:00:00.
+2023-07-01 07:03:03,924 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 05:00:00.
+2023-07-01 07:03:03,938 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 04:00:00.
+2023-07-01 07:03:03,938 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 05:00:00.
+2023-07-01 07:03:03,946 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 03:00:00.
+2023-07-01 07:03:03,946 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 04:00:00.
+2023-07-01 07:03:03,946 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 05:00:00.
+2023-07-01 07:03:03,960 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 04:00:00.
+2023-07-01 07:03:03,960 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 05:00:00.
+2023-07-01 07:03:03,966 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 03:00:00.
+2023-07-01 07:03:03,966 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 04:00:00.
+2023-07-01 07:03:03,967 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 05:00:00.
+2023-07-01 08:03:34,186 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 05:00:00.
+2023-07-01 08:03:34,186 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 06:00:00.
+2023-07-01 08:03:34,194 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 04:00:00.
+2023-07-01 08:03:34,194 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 05:00:00.
+2023-07-01 08:03:34,195 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 06:00:00.
+2023-07-01 08:03:34,207 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 05:00:00.
+2023-07-01 08:03:34,208 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 06:00:00.
+2023-07-01 08:03:34,215 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 04:00:00.
+2023-07-01 08:03:34,215 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 05:00:00.
+2023-07-01 08:03:34,215 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 06:00:00.
+2023-07-01 08:03:34,228 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 05:00:00.
+2023-07-01 08:03:34,228 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 06:00:00.
+2023-07-01 08:03:34,235 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 04:00:00.
+2023-07-01 08:03:34,235 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 05:00:00.
+2023-07-01 08:03:34,235 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 06:00:00.
+2023-07-01 09:06:07,094 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 06:00:00.
+2023-07-01 09:06:07,094 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 07:00:00.
+2023-07-01 09:06:07,103 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 05:00:00.
+2023-07-01 09:06:07,104 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 06:00:00.
+2023-07-01 09:06:07,104 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 07:00:00.
+2023-07-01 09:06:07,118 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 06:00:00.
+2023-07-01 09:06:07,118 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 07:00:00.
+2023-07-01 09:06:07,126 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 05:00:00.
+2023-07-01 09:06:07,126 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 06:00:00.
+2023-07-01 09:06:07,126 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 07:00:00.
+2023-07-01 09:06:07,140 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 06:00:00.
+2023-07-01 09:06:07,140 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 07:00:00.
+2023-07-01 09:06:07,147 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 05:00:00.
+2023-07-01 09:06:07,147 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 06:00:00.
+2023-07-01 09:06:07,147 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 07:00:00.
+2023-07-01 10:02:17,755 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 07:00:00.
+2023-07-01 10:02:17,755 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 08:00:00.
+2023-07-01 10:02:17,763 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 06:00:00.
+2023-07-01 10:02:17,763 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 07:00:00.
+2023-07-01 10:02:17,764 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 08:00:00.
+2023-07-01 10:02:17,777 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 07:00:00.
+2023-07-01 10:02:17,778 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 08:00:00.
+2023-07-01 10:02:17,785 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 06:00:00.
+2023-07-01 10:02:17,785 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 07:00:00.
+2023-07-01 10:02:17,785 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 08:00:00.
+2023-07-01 10:02:17,798 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 07:00:00.
+2023-07-01 10:02:17,798 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 08:00:00.
+2023-07-01 10:02:17,805 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 06:00:00.
+2023-07-01 10:02:17,805 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 07:00:00.
+2023-07-01 10:02:17,805 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 08:00:00.
+2023-07-01 11:02:12,995 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 08:00:00.
+2023-07-01 11:02:12,996 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 09:00:00.
+2023-07-01 11:02:13,004 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 07:00:00.
+2023-07-01 11:02:13,004 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 08:00:00.
+2023-07-01 11:02:13,004 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 09:00:00.
+2023-07-01 11:02:13,017 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 08:00:00.
+2023-07-01 11:02:13,017 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 09:00:00.
+2023-07-01 11:02:13,024 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 07:00:00.
+2023-07-01 11:02:13,025 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 08:00:00.
+2023-07-01 11:02:13,025 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 09:00:00.
+2023-07-01 11:02:13,037 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 08:00:00.
+2023-07-01 11:02:13,037 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 09:00:00.
+2023-07-01 11:02:13,044 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 07:00:00.
+2023-07-01 11:02:13,044 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 08:00:00.
+2023-07-01 11:02:13,044 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 09:00:00.
+2023-07-01 12:02:41,998 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 09:00:00.
+2023-07-01 12:02:41,998 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 10:00:00.
+2023-07-01 12:02:42,007 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 08:00:00.
+2023-07-01 12:02:42,007 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 09:00:00.
+2023-07-01 12:02:42,007 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 10:00:00.
+2023-07-01 12:02:42,021 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 09:00:00.
+2023-07-01 12:02:42,021 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 10:00:00.
+2023-07-01 12:02:42,029 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 08:00:00.
+2023-07-01 12:02:42,029 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 09:00:00.
+2023-07-01 12:02:42,029 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 10:00:00.
+2023-07-01 12:02:42,042 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 09:00:00.
+2023-07-01 12:02:42,043 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 10:00:00.
+2023-07-01 12:02:42,049 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 08:00:00.
+2023-07-01 12:02:42,049 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 09:00:00.
+2023-07-01 12:02:42,049 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 10:00:00.
+2023-07-01 13:02:10,379 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 10:00:00.
+2023-07-01 13:02:10,379 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 11:00:00.
+2023-07-01 13:02:10,387 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 09:00:00.
+2023-07-01 13:02:10,387 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 10:00:00.
+2023-07-01 13:02:10,387 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 11:00:00.
+2023-07-01 13:02:10,401 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 10:00:00.
+2023-07-01 13:02:10,401 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 11:00:00.
+2023-07-01 13:02:10,408 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 09:00:00.
+2023-07-01 13:02:10,409 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 10:00:00.
+2023-07-01 13:02:10,409 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 11:00:00.
+2023-07-01 13:02:10,421 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 10:00:00.
+2023-07-01 13:02:10,421 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 11:00:00.
+2023-07-01 13:02:10,428 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 09:00:00.
+2023-07-01 13:02:10,428 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 10:00:00.
+2023-07-01 13:02:10,428 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 11:00:00.
+2023-07-01 14:02:36,625 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 11:00:00.
+2023-07-01 14:02:36,625 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 12:00:00.
+2023-07-01 14:02:36,633 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 10:00:00.
+2023-07-01 14:02:36,634 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 11:00:00.
+2023-07-01 14:02:36,634 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 12:00:00.
+2023-07-01 14:02:36,647 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 11:00:00.
+2023-07-01 14:02:36,647 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 12:00:00.
+2023-07-01 14:02:36,655 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 10:00:00.
+2023-07-01 14:02:36,655 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 11:00:00.
+2023-07-01 14:02:36,655 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 12:00:00.
+2023-07-01 14:02:36,668 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 11:00:00.
+2023-07-01 14:02:36,668 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 12:00:00.
+2023-07-01 14:02:36,675 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 10:00:00.
+2023-07-01 14:02:36,675 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 11:00:00.
+2023-07-01 14:02:36,675 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 12:00:00.
+2023-07-01 15:02:58,458 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 12:00:00.
+2023-07-01 15:02:58,459 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 13:00:00.
+2023-07-01 15:02:58,467 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 11:00:00.
+2023-07-01 15:02:58,468 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 12:00:00.
+2023-07-01 15:02:58,468 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 13:00:00.
+2023-07-01 15:02:58,481 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 12:00:00.
+2023-07-01 15:02:58,481 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 13:00:00.
+2023-07-01 15:02:58,488 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 11:00:00.
+2023-07-01 15:02:58,488 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 12:00:00.
+2023-07-01 15:02:58,489 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 13:00:00.
+2023-07-01 15:02:58,501 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 12:00:00.
+2023-07-01 15:02:58,501 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 13:00:00.
+2023-07-01 15:02:58,508 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 11:00:00.
+2023-07-01 15:02:58,508 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 12:00:00.
+2023-07-01 15:02:58,508 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 13:00:00.
+2023-07-01 16:03:29,866 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 13:00:00.
+2023-07-01 16:03:29,866 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 14:00:00.
+2023-07-01 16:03:29,874 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 12:00:00.
+2023-07-01 16:03:29,874 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 13:00:00.
+2023-07-01 16:03:29,875 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 14:00:00.
+2023-07-01 16:03:29,889 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 13:00:00.
+2023-07-01 16:03:29,889 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 14:00:00.
+2023-07-01 16:03:29,896 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 12:00:00.
+2023-07-01 16:03:29,896 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 13:00:00.
+2023-07-01 16:03:29,896 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 14:00:00.
+2023-07-01 16:03:29,911 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 13:00:00.
+2023-07-01 16:03:29,911 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 14:00:00.
+2023-07-01 16:03:29,917 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 12:00:00.
+2023-07-01 16:03:29,918 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 13:00:00.
+2023-07-01 16:03:29,918 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 14:00:00.
+2023-07-01 17:06:48,564 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 14:00:00.
+2023-07-01 17:06:48,564 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 15:00:00.
+2023-07-01 17:06:48,573 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 13:00:00.
+2023-07-01 17:06:48,573 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 14:00:00.
+2023-07-01 17:06:48,574 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 15:00:00.
+2023-07-01 17:06:48,588 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 14:00:00.
+2023-07-01 17:06:48,588 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 15:00:00.
+2023-07-01 17:06:48,595 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 13:00:00.
+2023-07-01 17:06:48,595 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 14:00:00.
+2023-07-01 17:06:48,596 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 15:00:00.
+2023-07-01 17:06:48,608 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 14:00:00.
+2023-07-01 17:06:48,608 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 15:00:00.
+2023-07-01 17:06:48,615 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 13:00:00.
+2023-07-01 17:06:48,615 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 14:00:00.
+2023-07-01 17:06:48,615 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 15:00:00.
+2023-07-01 18:05:51,914 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 15:00:00.
+2023-07-01 18:05:51,914 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 16:00:00.
+2023-07-01 18:05:51,923 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 14:00:00.
+2023-07-01 18:05:51,923 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 15:00:00.
+2023-07-01 18:05:51,923 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 16:00:00.
+2023-07-01 18:05:51,938 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 15:00:00.
+2023-07-01 18:05:51,938 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 16:00:00.
+2023-07-01 18:05:51,945 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 14:00:00.
+2023-07-01 18:05:51,945 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 15:00:00.
+2023-07-01 18:05:51,945 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 16:00:00.
+2023-07-01 18:05:51,957 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 15:00:00.
+2023-07-01 18:05:51,957 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 16:00:00.
+2023-07-01 18:05:51,964 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 14:00:00.
+2023-07-01 18:05:51,964 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 15:00:00.
+2023-07-01 18:05:51,964 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 16:00:00.
+2023-07-01 19:02:34,977 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 16:00:00.
+2023-07-01 19:02:34,977 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 17:00:00.
+2023-07-01 19:02:34,985 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 15:00:00.
+2023-07-01 19:02:34,986 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 16:00:00.
+2023-07-01 19:02:34,986 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 17:00:00.
+2023-07-01 19:02:35,000 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 16:00:00.
+2023-07-01 19:02:35,000 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 17:00:00.
+2023-07-01 19:02:35,007 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 15:00:00.
+2023-07-01 19:02:35,007 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 16:00:00.
+2023-07-01 19:02:35,007 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 17:00:00.
+2023-07-01 19:02:35,021 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 16:00:00.
+2023-07-01 19:02:35,021 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 17:00:00.
+2023-07-01 19:02:35,027 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 15:00:00.
+2023-07-01 19:02:35,027 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 16:00:00.
+2023-07-01 19:02:35,027 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 17:00:00.
+2023-07-01 20:03:27,321 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 17:00:00.
+2023-07-01 20:03:27,322 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 18:00:00.
+2023-07-01 20:03:27,330 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 16:00:00.
+2023-07-01 20:03:27,330 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 17:00:00.
+2023-07-01 20:03:27,330 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 18:00:00.
+2023-07-01 20:03:27,343 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 17:00:00.
+2023-07-01 20:03:27,343 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 18:00:00.
+2023-07-01 20:03:27,351 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 16:00:00.
+2023-07-01 20:03:27,351 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 17:00:00.
+2023-07-01 20:03:27,351 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 18:00:00.
+2023-07-01 20:03:27,364 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 17:00:00.
+2023-07-01 20:03:27,364 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 18:00:00.
+2023-07-01 20:03:27,371 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 16:00:00.
+2023-07-01 20:03:27,371 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 17:00:00.
+2023-07-01 20:03:27,371 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 18:00:00.
+2023-07-01 21:02:12,145 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 18:00:00.
+2023-07-01 21:02:12,145 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 19:00:00.
+2023-07-01 21:02:12,154 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 17:00:00.
+2023-07-01 21:02:12,155 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 18:00:00.
+2023-07-01 21:02:12,155 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 19:00:00.
+2023-07-01 21:02:12,170 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 18:00:00.
+2023-07-01 21:02:12,170 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 19:00:00.
+2023-07-01 21:02:12,178 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 17:00:00.
+2023-07-01 21:02:12,179 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 18:00:00.
+2023-07-01 21:02:12,179 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 19:00:00.
+2023-07-01 21:02:12,193 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 18:00:00.
+2023-07-01 21:02:12,193 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 19:00:00.
+2023-07-01 21:02:12,199 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 17:00:00.
+2023-07-01 21:02:12,200 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 18:00:00.
+2023-07-01 21:02:12,200 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 19:00:00.
+2023-07-01 22:02:12,801 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 19:00:00.
+2023-07-01 22:02:12,801 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 20:00:00.
+2023-07-01 22:02:12,809 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 18:00:00.
+2023-07-01 22:02:12,810 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 19:00:00.
+2023-07-01 22:02:12,810 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 20:00:00.
+2023-07-01 22:02:12,823 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 19:00:00.
+2023-07-01 22:02:12,823 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 20:00:00.
+2023-07-01 22:02:12,830 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 18:00:00.
+2023-07-01 22:02:12,830 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 19:00:00.
+2023-07-01 22:02:12,830 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 20:00:00.
+2023-07-01 22:02:12,843 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 19:00:00.
+2023-07-01 22:02:12,843 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 20:00:00.
+2023-07-01 22:02:12,849 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 18:00:00.
+2023-07-01 22:02:12,849 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 19:00:00.
+2023-07-01 22:02:12,849 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 20:00:00.
+2023-07-01 23:02:51,571 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 20:00:00.
+2023-07-01 23:02:51,571 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 21:00:00.
+2023-07-01 23:02:51,580 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 19:00:00.
+2023-07-01 23:02:51,580 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 20:00:00.
+2023-07-01 23:02:51,580 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 21:00:00.
+2023-07-01 23:02:51,595 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 20:00:00.
+2023-07-01 23:02:51,595 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 21:00:00.
+2023-07-01 23:02:51,603 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 19:00:00.
+2023-07-01 23:02:51,604 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 20:00:00.
+2023-07-01 23:02:51,604 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 21:00:00.
+2023-07-01 23:02:51,616 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 20:00:00.
+2023-07-01 23:02:51,616 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 21:00:00.
+2023-07-01 23:02:51,624 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 19:00:00.
+2023-07-01 23:02:51,624 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 20:00:00.
+2023-07-01 23:02:51,624 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 21:00:00.
+2023-07-02 00:02:13,723 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 21:00:00.
+2023-07-02 00:02:13,723 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 22:00:00.
+2023-07-02 00:02:13,732 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 20:00:00.
+2023-07-02 00:02:13,732 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 21:00:00.
+2023-07-02 00:02:13,732 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 22:00:00.
+2023-07-02 00:02:13,745 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 21:00:00.
+2023-07-02 00:02:13,746 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 22:00:00.
+2023-07-02 00:02:13,753 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 20:00:00.
+2023-07-02 00:02:13,753 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 21:00:00.
+2023-07-02 00:02:13,753 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 22:00:00.
+2023-07-02 00:02:13,766 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 21:00:00.
+2023-07-02 00:02:13,766 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 22:00:00.
+2023-07-02 00:02:13,773 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 20:00:00.
+2023-07-02 00:02:13,773 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 21:00:00.
+2023-07-02 00:02:13,773 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 22:00:00.
+2023-07-02 01:03:21,179 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 22:00:00.
+2023-07-02 01:03:21,179 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 23:00:00.
+2023-07-02 01:03:21,188 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 21:00:00.
+2023-07-02 01:03:21,188 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 22:00:00.
+2023-07-02 01:03:21,188 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 23:00:00.
+2023-07-02 01:03:21,201 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 22:00:00.
+2023-07-02 01:03:21,202 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 23:00:00.
+2023-07-02 01:03:21,209 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 21:00:00.
+2023-07-02 01:03:21,209 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 22:00:00.
+2023-07-02 01:03:21,209 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 23:00:00.
+2023-07-02 01:03:21,223 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 22:00:00.
+2023-07-02 01:03:21,223 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 23:00:00.
+2023-07-02 01:03:21,229 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 21:00:00.
+2023-07-02 01:03:21,230 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 22:00:00.
+2023-07-02 01:03:21,230 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 23:00:00.
+2023-07-02 02:02:36,459 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-01 23:00:00.
+2023-07-02 02:02:36,459 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 00:00:00.
+2023-07-02 02:02:36,469 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 22:00:00.
+2023-07-02 02:02:36,469 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 23:00:00.
+2023-07-02 02:02:36,470 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 00:00:00.
+2023-07-02 02:02:36,484 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-01 23:00:00.
+2023-07-02 02:02:36,484 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 00:00:00.
+2023-07-02 02:02:36,493 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 22:00:00.
+2023-07-02 02:02:36,493 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 23:00:00.
+2023-07-02 02:02:36,493 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 00:00:00.
+2023-07-02 02:02:36,508 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-01 23:00:00.
+2023-07-02 02:02:36,508 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 00:00:00.
+2023-07-02 02:02:36,516 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 22:00:00.
+2023-07-02 02:02:36,516 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 23:00:00.
+2023-07-02 02:02:36,516 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 00:00:00.
+2023-07-02 03:03:19,064 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 00:00:00.
+2023-07-02 03:03:19,064 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 01:00:00.
+2023-07-02 03:03:19,073 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-01 23:00:00.
+2023-07-02 03:03:19,073 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 00:00:00.
+2023-07-02 03:03:19,073 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 01:00:00.
+2023-07-02 03:03:19,087 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 00:00:00.
+2023-07-02 03:03:19,087 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 01:00:00.
+2023-07-02 03:03:19,094 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-01 23:00:00.
+2023-07-02 03:03:19,095 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 00:00:00.
+2023-07-02 03:03:19,095 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 01:00:00.
+2023-07-02 03:03:19,107 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 00:00:00.
+2023-07-02 03:03:19,107 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 01:00:00.
+2023-07-02 03:03:19,114 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-01 23:00:00.
+2023-07-02 03:03:19,114 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 00:00:00.
+2023-07-02 03:03:19,114 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 01:00:00.
+2023-07-02 04:03:29,793 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 01:00:00.
+2023-07-02 04:03:29,793 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 02:00:00.
+2023-07-02 04:03:29,801 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 00:00:00.
+2023-07-02 04:03:29,802 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 01:00:00.
+2023-07-02 04:03:29,802 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 02:00:00.
+2023-07-02 04:03:29,817 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 01:00:00.
+2023-07-02 04:03:29,817 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 02:00:00.
+2023-07-02 04:03:29,825 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 00:00:00.
+2023-07-02 04:03:29,825 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 01:00:00.
+2023-07-02 04:03:29,825 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 02:00:00.
+2023-07-02 04:03:29,837 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 01:00:00.
+2023-07-02 04:03:29,837 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 02:00:00.
+2023-07-02 04:03:29,844 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 00:00:00.
+2023-07-02 04:03:29,844 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 01:00:00.
+2023-07-02 04:03:29,844 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 02:00:00.
+2023-07-02 05:02:16,105 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 02:00:00.
+2023-07-02 05:02:16,105 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 03:00:00.
+2023-07-02 05:02:16,113 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 01:00:00.
+2023-07-02 05:02:16,113 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 02:00:00.
+2023-07-02 05:02:16,113 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 03:00:00.
+2023-07-02 05:02:16,127 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 02:00:00.
+2023-07-02 05:02:16,127 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 03:00:00.
+2023-07-02 05:02:16,134 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 01:00:00.
+2023-07-02 05:02:16,134 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 02:00:00.
+2023-07-02 05:02:16,134 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 03:00:00.
+2023-07-02 05:02:16,147 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 02:00:00.
+2023-07-02 05:02:16,147 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 03:00:00.
+2023-07-02 05:02:16,153 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 01:00:00.
+2023-07-02 05:02:16,153 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 02:00:00.
+2023-07-02 05:02:16,153 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 03:00:00.
+2023-07-02 06:02:11,384 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 03:00:00.
+2023-07-02 06:02:11,384 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 04:00:00.
+2023-07-02 06:02:11,393 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 02:00:00.
+2023-07-02 06:02:11,393 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 03:00:00.
+2023-07-02 06:02:11,393 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 04:00:00.
+2023-07-02 06:02:11,407 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 03:00:00.
+2023-07-02 06:02:11,407 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 04:00:00.
+2023-07-02 06:02:11,415 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 02:00:00.
+2023-07-02 06:02:11,415 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 03:00:00.
+2023-07-02 06:02:11,415 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 04:00:00.
+2023-07-02 06:02:11,428 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 03:00:00.
+2023-07-02 06:02:11,428 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 04:00:00.
+2023-07-02 06:02:11,434 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 02:00:00.
+2023-07-02 06:02:11,434 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 03:00:00.
+2023-07-02 06:02:11,434 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 04:00:00.
+2023-07-02 07:02:10,602 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 04:00:00.
+2023-07-02 07:02:10,602 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 05:00:00.
+2023-07-02 07:02:10,611 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 03:00:00.
+2023-07-02 07:02:10,611 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 04:00:00.
+2023-07-02 07:02:10,611 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 05:00:00.
+2023-07-02 07:02:10,626 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 04:00:00.
+2023-07-02 07:02:10,626 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 05:00:00.
+2023-07-02 07:02:10,634 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 03:00:00.
+2023-07-02 07:02:10,634 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 04:00:00.
+2023-07-02 07:02:10,634 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 05:00:00.
+2023-07-02 07:02:10,647 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 04:00:00.
+2023-07-02 07:02:10,647 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 05:00:00.
+2023-07-02 07:02:10,655 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 03:00:00.
+2023-07-02 07:02:10,655 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 04:00:00.
+2023-07-02 07:02:10,655 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 05:00:00.
+2023-07-02 08:02:21,241 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 05:00:00.
+2023-07-02 08:02:21,241 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 06:00:00.
+2023-07-02 08:02:21,250 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 04:00:00.
+2023-07-02 08:02:21,250 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 05:00:00.
+2023-07-02 08:02:21,250 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 06:00:00.
+2023-07-02 08:02:21,264 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 05:00:00.
+2023-07-02 08:02:21,264 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 06:00:00.
+2023-07-02 08:02:21,271 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 04:00:00.
+2023-07-02 08:02:21,272 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 05:00:00.
+2023-07-02 08:02:21,272 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 06:00:00.
+2023-07-02 08:02:21,284 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 05:00:00.
+2023-07-02 08:02:21,284 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 06:00:00.
+2023-07-02 08:02:21,291 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 04:00:00.
+2023-07-02 08:02:21,291 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 05:00:00.
+2023-07-02 08:02:21,291 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 06:00:00.
+2023-07-02 09:02:11,528 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 06:00:00.
+2023-07-02 09:02:11,528 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 07:00:00.
+2023-07-02 09:02:11,536 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 05:00:00.
+2023-07-02 09:02:11,537 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 06:00:00.
+2023-07-02 09:02:11,537 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 07:00:00.
+2023-07-02 09:02:11,550 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 06:00:00.
+2023-07-02 09:02:11,550 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 07:00:00.
+2023-07-02 09:02:11,558 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 05:00:00.
+2023-07-02 09:02:11,558 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 06:00:00.
+2023-07-02 09:02:11,558 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 07:00:00.
+2023-07-02 09:02:11,571 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 06:00:00.
+2023-07-02 09:02:11,571 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 07:00:00.
+2023-07-02 09:02:11,577 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 05:00:00.
+2023-07-02 09:02:11,578 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 06:00:00.
+2023-07-02 09:02:11,578 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 07:00:00.
+2023-07-02 10:02:20,765 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 07:00:00.
+2023-07-02 10:02:20,766 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 08:00:00.
+2023-07-02 10:02:20,774 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 06:00:00.
+2023-07-02 10:02:20,774 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 07:00:00.
+2023-07-02 10:02:20,774 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 08:00:00.
+2023-07-02 10:02:20,787 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 07:00:00.
+2023-07-02 10:02:20,787 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 08:00:00.
+2023-07-02 10:02:20,795 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 06:00:00.
+2023-07-02 10:02:20,795 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 07:00:00.
+2023-07-02 10:02:20,795 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 08:00:00.
+2023-07-02 10:02:20,807 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 07:00:00.
+2023-07-02 10:02:20,807 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 08:00:00.
+2023-07-02 10:02:20,814 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 06:00:00.
+2023-07-02 10:02:20,814 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 07:00:00.
+2023-07-02 10:02:20,814 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 08:00:00.
+2023-07-02 11:02:14,148 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 08:00:00.
+2023-07-02 11:02:14,148 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 09:00:00.
+2023-07-02 11:02:14,157 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 07:00:00.
+2023-07-02 11:02:14,157 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 08:00:00.
+2023-07-02 11:02:14,157 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 09:00:00.
+2023-07-02 11:02:14,171 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 08:00:00.
+2023-07-02 11:02:14,171 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 09:00:00.
+2023-07-02 11:02:14,178 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 07:00:00.
+2023-07-02 11:02:14,179 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 08:00:00.
+2023-07-02 11:02:14,179 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 09:00:00.
+2023-07-02 11:02:14,191 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 08:00:00.
+2023-07-02 11:02:14,191 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 09:00:00.
+2023-07-02 11:02:14,198 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 07:00:00.
+2023-07-02 11:02:14,198 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 08:00:00.
+2023-07-02 11:02:14,198 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 09:00:00.
+2023-07-02 12:02:57,494 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 09:00:00.
+2023-07-02 12:02:57,495 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 10:00:00.
+2023-07-02 12:02:57,504 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 08:00:00.
+2023-07-02 12:02:57,504 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 09:00:00.
+2023-07-02 12:02:57,504 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 10:00:00.
+2023-07-02 12:02:57,519 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 09:00:00.
+2023-07-02 12:02:57,519 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 10:00:00.
+2023-07-02 12:02:57,526 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 08:00:00.
+2023-07-02 12:02:57,526 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 09:00:00.
+2023-07-02 12:02:57,526 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 10:00:00.
+2023-07-02 12:02:57,539 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 09:00:00.
+2023-07-02 12:02:57,539 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 10:00:00.
+2023-07-02 12:02:57,545 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 08:00:00.
+2023-07-02 12:02:57,546 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 09:00:00.
+2023-07-02 12:02:57,546 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 10:00:00.
+2023-07-02 13:02:07,318 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 10:00:00.
+2023-07-02 13:02:07,318 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 11:00:00.
+2023-07-02 13:02:07,416 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 09:00:00.
+2023-07-02 13:02:07,416 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 10:00:00.
+2023-07-02 13:02:07,416 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 11:00:00.
+2023-07-02 13:02:07,432 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 10:00:00.
+2023-07-02 13:02:07,432 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 11:00:00.
+2023-07-02 13:02:07,439 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 09:00:00.
+2023-07-02 13:02:07,439 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 10:00:00.
+2023-07-02 13:02:07,439 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 11:00:00.
+2023-07-02 13:02:07,452 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 10:00:00.
+2023-07-02 13:02:07,452 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 11:00:00.
+2023-07-02 13:02:07,459 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 09:00:00.
+2023-07-02 13:02:07,459 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 10:00:00.
+2023-07-02 13:02:07,459 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 11:00:00.
+2023-07-02 14:02:16,454 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 11:00:00.
+2023-07-02 14:02:16,454 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 12:00:00.
+2023-07-02 14:02:16,463 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 10:00:00.
+2023-07-02 14:02:16,463 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 11:00:00.
+2023-07-02 14:02:16,463 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 12:00:00.
+2023-07-02 14:02:16,476 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 11:00:00.
+2023-07-02 14:02:16,476 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 12:00:00.
+2023-07-02 14:02:16,484 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 10:00:00.
+2023-07-02 14:02:16,484 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 11:00:00.
+2023-07-02 14:02:16,484 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 12:00:00.
+2023-07-02 14:02:16,496 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 11:00:00.
+2023-07-02 14:02:16,496 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 12:00:00.
+2023-07-02 14:02:16,502 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 10:00:00.
+2023-07-02 14:02:16,503 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 11:00:00.
+2023-07-02 14:02:16,503 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 12:00:00.
+2023-07-02 15:02:08,949 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 12:00:00.
+2023-07-02 15:02:08,949 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 13:00:00.
+2023-07-02 15:02:08,958 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 11:00:00.
+2023-07-02 15:02:08,958 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 12:00:00.
+2023-07-02 15:02:08,958 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 13:00:00.
+2023-07-02 15:02:08,971 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 12:00:00.
+2023-07-02 15:02:08,971 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 13:00:00.
+2023-07-02 15:02:08,978 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 11:00:00.
+2023-07-02 15:02:08,978 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 12:00:00.
+2023-07-02 15:02:08,979 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 13:00:00.
+2023-07-02 15:02:08,991 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 12:00:00.
+2023-07-02 15:02:08,991 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 13:00:00.
+2023-07-02 15:02:08,998 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 11:00:00.
+2023-07-02 15:02:08,998 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 12:00:00.
+2023-07-02 15:02:08,998 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 13:00:00.
+2023-07-02 16:02:19,318 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 13:00:00.
+2023-07-02 16:02:19,318 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 14:00:00.
+2023-07-02 16:02:19,327 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 12:00:00.
+2023-07-02 16:02:19,327 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 13:00:00.
+2023-07-02 16:02:19,327 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 14:00:00.
+2023-07-02 16:02:19,340 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 13:00:00.
+2023-07-02 16:02:19,340 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 14:00:00.
+2023-07-02 16:02:19,348 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 12:00:00.
+2023-07-02 16:02:19,348 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 13:00:00.
+2023-07-02 16:02:19,348 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 14:00:00.
+2023-07-02 16:02:19,361 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 13:00:00.
+2023-07-02 16:02:19,361 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 14:00:00.
+2023-07-02 16:02:19,368 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 12:00:00.
+2023-07-02 16:02:19,368 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 13:00:00.
+2023-07-02 16:02:19,368 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 14:00:00.
+2023-07-02 17:02:48,871 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 14:00:00.
+2023-07-02 17:02:48,871 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 15:00:00.
+2023-07-02 17:02:48,880 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 13:00:00.
+2023-07-02 17:02:48,880 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 14:00:00.
+2023-07-02 17:02:48,880 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 15:00:00.
+2023-07-02 17:02:48,894 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 14:00:00.
+2023-07-02 17:02:48,894 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 15:00:00.
+2023-07-02 17:02:48,902 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 13:00:00.
+2023-07-02 17:02:48,902 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 14:00:00.
+2023-07-02 17:02:48,902 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 15:00:00.
+2023-07-02 17:02:48,915 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 14:00:00.
+2023-07-02 17:02:48,915 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 15:00:00.
+2023-07-02 17:02:48,922 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 13:00:00.
+2023-07-02 17:02:48,922 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 14:00:00.
+2023-07-02 17:02:48,922 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 15:00:00.
+2023-07-02 18:03:27,666 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 15:00:00.
+2023-07-02 18:03:27,666 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 16:00:00.
+2023-07-02 18:03:27,675 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 14:00:00.
+2023-07-02 18:03:27,675 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 15:00:00.
+2023-07-02 18:03:27,675 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 16:00:00.
+2023-07-02 18:03:27,688 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 15:00:00.
+2023-07-02 18:03:27,689 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 16:00:00.
+2023-07-02 18:03:27,696 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 14:00:00.
+2023-07-02 18:03:27,696 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 15:00:00.
+2023-07-02 18:03:27,696 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 16:00:00.
+2023-07-02 18:03:27,709 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 15:00:00.
+2023-07-02 18:03:27,709 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 16:00:00.
+2023-07-02 18:03:27,715 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 14:00:00.
+2023-07-02 18:03:27,716 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 15:00:00.
+2023-07-02 18:03:27,716 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 16:00:00.
+2023-07-02 19:02:09,408 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 16:00:00.
+2023-07-02 19:02:09,408 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 17:00:00.
+2023-07-02 19:02:09,416 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 15:00:00.
+2023-07-02 19:02:09,417 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 16:00:00.
+2023-07-02 19:02:09,417 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 17:00:00.
+2023-07-02 19:02:09,430 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 16:00:00.
+2023-07-02 19:02:09,430 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 17:00:00.
+2023-07-02 19:02:09,438 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 15:00:00.
+2023-07-02 19:02:09,438 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 16:00:00.
+2023-07-02 19:02:09,438 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 17:00:00.
+2023-07-02 19:02:09,451 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 16:00:00.
+2023-07-02 19:02:09,451 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 17:00:00.
+2023-07-02 19:02:09,457 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 15:00:00.
+2023-07-02 19:02:09,457 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 16:00:00.
+2023-07-02 19:02:09,457 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 17:00:00.
+2023-07-02 20:02:10,114 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 17:00:00.
+2023-07-02 20:02:10,114 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 18:00:00.
+2023-07-02 20:02:10,123 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 16:00:00.
+2023-07-02 20:02:10,123 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 17:00:00.
+2023-07-02 20:02:10,123 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 18:00:00.
+2023-07-02 20:02:10,136 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 17:00:00.
+2023-07-02 20:02:10,136 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 18:00:00.
+2023-07-02 20:02:10,144 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 16:00:00.
+2023-07-02 20:02:10,144 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 17:00:00.
+2023-07-02 20:02:10,144 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 18:00:00.
+2023-07-02 20:02:10,157 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 17:00:00.
+2023-07-02 20:02:10,157 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 18:00:00.
+2023-07-02 20:02:10,163 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 16:00:00.
+2023-07-02 20:02:10,163 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 17:00:00.
+2023-07-02 20:02:10,163 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 18:00:00.
+2023-07-02 21:02:09,987 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 18:00:00.
+2023-07-02 21:02:09,987 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 19:00:00.
+2023-07-02 21:02:09,996 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 17:00:00.
+2023-07-02 21:02:09,996 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 18:00:00.
+2023-07-02 21:02:09,996 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 19:00:00.
+2023-07-02 21:02:10,009 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 18:00:00.
+2023-07-02 21:02:10,009 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 19:00:00.
+2023-07-02 21:02:10,017 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 17:00:00.
+2023-07-02 21:02:10,017 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 18:00:00.
+2023-07-02 21:02:10,017 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 19:00:00.
+2023-07-02 21:02:10,029 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 18:00:00.
+2023-07-02 21:02:10,030 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 19:00:00.
+2023-07-02 21:02:10,036 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 17:00:00.
+2023-07-02 21:02:10,036 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 18:00:00.
+2023-07-02 21:02:10,036 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 19:00:00.
+2023-07-02 22:02:23,870 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 19:00:00.
+2023-07-02 22:02:23,870 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 20:00:00.
+2023-07-02 22:02:23,879 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 18:00:00.
+2023-07-02 22:02:23,879 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 19:00:00.
+2023-07-02 22:02:23,879 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 20:00:00.
+2023-07-02 22:02:23,892 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 19:00:00.
+2023-07-02 22:02:23,892 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 20:00:00.
+2023-07-02 22:02:23,901 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 18:00:00.
+2023-07-02 22:02:23,902 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 19:00:00.
+2023-07-02 22:02:23,902 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 20:00:00.
+2023-07-02 22:02:23,914 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 19:00:00.
+2023-07-02 22:02:23,915 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 20:00:00.
+2023-07-02 22:02:23,921 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 18:00:00.
+2023-07-02 22:02:23,921 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 19:00:00.
+2023-07-02 22:02:23,921 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 20:00:00.
+2023-07-02 23:02:23,677 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 20:00:00.
+2023-07-02 23:02:23,677 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 21:00:00.
+2023-07-02 23:02:23,686 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 19:00:00.
+2023-07-02 23:02:23,686 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 20:00:00.
+2023-07-02 23:02:23,686 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 21:00:00.
+2023-07-02 23:02:23,699 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 20:00:00.
+2023-07-02 23:02:23,699 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 21:00:00.
+2023-07-02 23:02:23,706 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 19:00:00.
+2023-07-02 23:02:23,706 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 20:00:00.
+2023-07-02 23:02:23,706 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 21:00:00.
+2023-07-02 23:02:23,719 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 20:00:00.
+2023-07-02 23:02:23,719 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 21:00:00.
+2023-07-02 23:02:23,725 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 19:00:00.
+2023-07-02 23:02:23,725 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 20:00:00.
+2023-07-02 23:02:23,725 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 21:00:00.
+2023-07-03 00:02:12,998 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 21:00:00.
+2023-07-03 00:02:12,998 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 22:00:00.
+2023-07-03 00:02:13,007 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 20:00:00.
+2023-07-03 00:02:13,007 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 21:00:00.
+2023-07-03 00:02:13,007 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 22:00:00.
+2023-07-03 00:02:13,020 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 21:00:00.
+2023-07-03 00:02:13,021 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 22:00:00.
+2023-07-03 00:02:13,028 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 20:00:00.
+2023-07-03 00:02:13,028 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 21:00:00.
+2023-07-03 00:02:13,028 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 22:00:00.
+2023-07-03 00:02:13,041 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 21:00:00.
+2023-07-03 00:02:13,041 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 22:00:00.
+2023-07-03 00:02:13,048 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 20:00:00.
+2023-07-03 00:02:13,048 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 21:00:00.
+2023-07-03 00:02:13,048 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 22:00:00.
+2023-07-03 01:03:46,560 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 22:00:00.
+2023-07-03 01:03:46,560 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 23:00:00.
+2023-07-03 01:03:46,569 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 21:00:00.
+2023-07-03 01:03:46,569 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 22:00:00.
+2023-07-03 01:03:46,569 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 23:00:00.
+2023-07-03 01:03:46,582 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 22:00:00.
+2023-07-03 01:03:46,582 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 23:00:00.
+2023-07-03 01:03:46,590 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 21:00:00.
+2023-07-03 01:03:46,590 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 22:00:00.
+2023-07-03 01:03:46,590 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 23:00:00.
+2023-07-03 01:03:46,603 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 22:00:00.
+2023-07-03 01:03:46,603 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 23:00:00.
+2023-07-03 01:03:46,609 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 21:00:00.
+2023-07-03 01:03:46,609 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 22:00:00.
+2023-07-03 01:03:46,610 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 23:00:00.
+2023-07-03 02:02:08,337 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-02 23:00:00.
+2023-07-03 02:02:08,338 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 00:00:00.
+2023-07-03 02:02:08,346 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 22:00:00.
+2023-07-03 02:02:08,346 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 23:00:00.
+2023-07-03 02:02:08,346 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 00:00:00.
+2023-07-03 02:02:08,359 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-02 23:00:00.
+2023-07-03 02:02:08,359 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 00:00:00.
+2023-07-03 02:02:08,367 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 22:00:00.
+2023-07-03 02:02:08,367 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 23:00:00.
+2023-07-03 02:02:08,367 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 00:00:00.
+2023-07-03 02:02:08,380 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-02 23:00:00.
+2023-07-03 02:02:08,380 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 00:00:00.
+2023-07-03 02:02:08,387 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 22:00:00.
+2023-07-03 02:02:08,387 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 23:00:00.
+2023-07-03 02:02:08,387 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 00:00:00.
+2023-07-03 03:02:10,400 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 00:00:00.
+2023-07-03 03:02:10,400 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 01:00:00.
+2023-07-03 03:02:10,409 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-02 23:00:00.
+2023-07-03 03:02:10,409 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 00:00:00.
+2023-07-03 03:02:10,409 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 01:00:00.
+2023-07-03 03:02:10,422 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 00:00:00.
+2023-07-03 03:02:10,423 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 01:00:00.
+2023-07-03 03:02:10,430 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-02 23:00:00.
+2023-07-03 03:02:10,430 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 00:00:00.
+2023-07-03 03:02:10,430 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 01:00:00.
+2023-07-03 03:02:10,443 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 00:00:00.
+2023-07-03 03:02:10,443 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 01:00:00.
+2023-07-03 03:02:10,449 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-02 23:00:00.
+2023-07-03 03:02:10,449 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 00:00:00.
+2023-07-03 03:02:10,450 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 01:00:00.
+2023-07-03 04:02:09,756 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 01:00:00.
+2023-07-03 04:02:09,756 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 02:00:00.
+2023-07-03 04:02:09,765 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 00:00:00.
+2023-07-03 04:02:09,765 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 01:00:00.
+2023-07-03 04:02:09,765 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 02:00:00.
+2023-07-03 04:02:09,779 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 01:00:00.
+2023-07-03 04:02:09,779 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 02:00:00.
+2023-07-03 04:02:09,786 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 00:00:00.
+2023-07-03 04:02:09,786 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 01:00:00.
+2023-07-03 04:02:09,786 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 02:00:00.
+2023-07-03 04:02:09,799 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 01:00:00.
+2023-07-03 04:02:09,799 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 02:00:00.
+2023-07-03 04:02:09,805 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 00:00:00.
+2023-07-03 04:02:09,806 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 01:00:00.
+2023-07-03 04:02:09,806 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 02:00:00.
+2023-07-03 05:02:11,505 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 02:00:00.
+2023-07-03 05:02:11,505 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 03:00:00.
+2023-07-03 05:02:11,514 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 01:00:00.
+2023-07-03 05:02:11,514 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 02:00:00.
+2023-07-03 05:02:11,514 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 03:00:00.
+2023-07-03 05:02:11,528 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 02:00:00.
+2023-07-03 05:02:11,528 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 03:00:00.
+2023-07-03 05:02:11,535 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 01:00:00.
+2023-07-03 05:02:11,535 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 02:00:00.
+2023-07-03 05:02:11,536 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 03:00:00.
+2023-07-03 05:02:11,548 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 02:00:00.
+2023-07-03 05:02:11,548 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 03:00:00.
+2023-07-03 05:02:11,555 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 01:00:00.
+2023-07-03 05:02:11,555 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 02:00:00.
+2023-07-03 05:02:11,555 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 03:00:00.
+2023-07-03 06:02:54,979 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 03:00:00.
+2023-07-03 06:02:54,979 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 04:00:00.
+2023-07-03 06:02:54,980 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 05:00:00.
+2023-07-03 06:02:54,989 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 02:00:00.
+2023-07-03 06:02:54,989 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 03:00:00.
+2023-07-03 06:02:54,990 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 04:00:00.
+2023-07-03 06:02:54,991 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 06:02:55,004 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 03:00:00.
+2023-07-03 06:02:55,004 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 04:00:00.
+2023-07-03 06:02:55,005 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 05:00:00.
+2023-07-03 06:02:55,013 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 02:00:00.
+2023-07-03 06:02:55,013 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 03:00:00.
+2023-07-03 06:02:55,013 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 04:00:00.
+2023-07-03 06:02:55,014 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 06:02:55,027 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 03:00:00.
+2023-07-03 06:02:55,027 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 04:00:00.
+2023-07-03 06:02:55,028 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 05:00:00.
+2023-07-03 06:02:55,035 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 02:00:00.
+2023-07-03 06:02:55,035 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 03:00:00.
+2023-07-03 06:02:55,035 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 04:00:00.
+2023-07-03 06:02:55,035 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 07:08:14,779 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 05:00:00.
+2023-07-03 07:08:14,785 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 04:00:00.
+2023-07-03 07:08:14,785 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 07:08:14,796 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 05:00:00.
+2023-07-03 07:08:14,803 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 04:00:00.
+2023-07-03 07:08:14,803 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 07:08:14,814 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 05:00:00.
+2023-07-03 07:08:14,819 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 04:00:00.
+2023-07-03 07:08:14,819 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 08:02:08,637 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 05:00:00.
+2023-07-03 08:02:08,638 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 06:00:00.
+2023-07-03 08:02:08,646 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 04:00:00.
+2023-07-03 08:02:08,646 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 08:02:08,646 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 06:00:00.
+2023-07-03 08:02:08,660 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 05:00:00.
+2023-07-03 08:02:08,660 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 06:00:00.
+2023-07-03 08:02:08,667 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 04:00:00.
+2023-07-03 08:02:08,667 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 08:02:08,667 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 06:00:00.
+2023-07-03 08:02:08,681 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 05:00:00.
+2023-07-03 08:02:08,681 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 06:00:00.
+2023-07-03 08:02:08,687 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 04:00:00.
+2023-07-03 08:02:08,687 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 08:02:08,687 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 06:00:00.
+2023-07-03 14:04:38,880 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 06:00:00.
+2023-07-03 14:04:38,881 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 07:00:00.
+2023-07-03 14:04:38,882 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 08:00:00.
+2023-07-03 14:04:38,883 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 09:00:00.
+2023-07-03 14:04:38,884 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 10:00:00.
+2023-07-03 14:04:38,885 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 11:00:00.
+2023-07-03 14:04:38,886 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 12:00:00.
+2023-07-03 14:04:38,898 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-03 14:04:38,898 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 06:00:00.
+2023-07-03 14:04:38,898 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 07:00:00.
+2023-07-03 14:04:38,899 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 08:00:00.
+2023-07-03 14:04:38,900 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 09:00:00.
+2023-07-03 14:04:38,901 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 10:00:00.
+2023-07-03 14:04:38,902 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 11:00:00.
+2023-07-03 14:04:38,903 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 12:00:00.
+2023-07-03 14:04:38,917 - Changepoint detected for Curve.fi DAI/USDC/USDT with baseline model at 2023-07-03 05:00:00.
+2023-07-03 14:04:40,210 - Failed to run inference: 404 Not Found
+34 - Sorry, that page does not exist
+2023-07-04 16:15:47,611 - Inference already performed for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 06:00:00.
+2023-07-04 16:15:47,611 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 07:00:00.
+2023-07-04 16:15:47,613 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 08:00:00.
+2023-07-04 16:15:47,614 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 09:00:00.
+2023-07-04 16:15:47,615 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 10:00:00.
+2023-07-04 16:15:47,616 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 11:00:00.
+2023-07-04 16:15:47,617 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 12:00:00.
+2023-07-04 16:15:47,618 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 13:00:00.
+2023-07-04 16:15:47,619 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 14:00:00.
+2023-07-04 16:15:47,620 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 15:00:00.
+2023-07-04 16:15:47,621 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 16:00:00.
+2023-07-04 16:15:47,622 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 17:00:00.
+2023-07-04 16:15:47,623 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 18:00:00.
+2023-07-04 16:15:47,624 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 19:00:00.
+2023-07-04 16:15:47,625 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 20:00:00.
+2023-07-04 16:15:47,626 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 21:00:00.
+2023-07-04 16:15:47,627 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 22:00:00.
+2023-07-04 16:15:47,628 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-03 23:00:00.
+2023-07-04 16:15:47,629 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 00:00:00.
+2023-07-04 16:15:47,630 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 01:00:00.
+2023-07-04 16:15:47,631 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 02:00:00.
+2023-07-04 16:15:47,631 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 03:00:00.
+2023-07-04 16:15:47,632 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 04:00:00.
+2023-07-04 16:15:47,633 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 05:00:00.
+2023-07-04 16:15:47,634 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 06:00:00.
+2023-07-04 16:15:47,635 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 07:00:00.
+2023-07-04 16:15:47,636 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 08:00:00.
+2023-07-04 16:15:47,637 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 09:00:00.
+2023-07-04 16:15:47,638 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 10:00:00.
+2023-07-04 16:15:47,639 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 11:00:00.
+2023-07-04 16:15:47,640 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 12:00:00.
+2023-07-04 16:15:47,641 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 13:00:00.
+2023-07-04 16:15:47,642 - Running inference for Curve.fi ETH/stETH with shannonsEntropy at 2023-07-04 14:00:00.
+2023-07-04 16:15:47,682 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-04 16:15:47,682 - Inference already performed for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 06:00:00.
+2023-07-04 16:15:47,683 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 07:00:00.
+2023-07-04 16:15:47,684 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 08:00:00.
+2023-07-04 16:15:47,685 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 09:00:00.
+2023-07-04 16:15:47,686 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 10:00:00.
+2023-07-04 16:15:47,687 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 11:00:00.
+2023-07-04 16:15:47,688 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 12:00:00.
+2023-07-04 16:15:47,689 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 13:00:00.
+2023-07-04 16:15:47,690 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 14:00:00.
+2023-07-04 16:15:47,691 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 15:00:00.
+2023-07-04 16:15:47,692 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 16:00:00.
+2023-07-04 16:15:47,693 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 17:00:00.
+2023-07-04 16:15:47,694 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 18:00:00.
+2023-07-04 16:15:47,695 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 19:00:00.
+2023-07-04 16:15:47,696 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 20:00:00.
+2023-07-04 16:15:47,697 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 21:00:00.
+2023-07-04 16:15:47,698 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 22:00:00.
+2023-07-04 16:15:47,699 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-03 23:00:00.
+2023-07-04 16:15:47,700 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 00:00:00.
+2023-07-04 16:15:47,701 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 01:00:00.
+2023-07-04 16:15:47,701 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 02:00:00.
+2023-07-04 16:15:47,702 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 03:00:00.
+2023-07-04 16:15:47,703 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 04:00:00.
+2023-07-04 16:15:47,704 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 05:00:00.
+2023-07-04 16:15:47,705 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 06:00:00.
+2023-07-04 16:15:47,706 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 07:00:00.
+2023-07-04 16:15:47,707 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 08:00:00.
+2023-07-04 16:15:47,708 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 09:00:00.
+2023-07-04 16:15:47,709 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 10:00:00.
+2023-07-04 16:15:47,710 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 11:00:00.
+2023-07-04 16:15:47,711 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 12:00:00.
+2023-07-04 16:15:47,712 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 13:00:00.
+2023-07-04 16:15:47,713 - Running inference for Curve.fi ETH/stETH with netSwapFlow at 2023-07-04 14:00:00.
+2023-07-04 16:15:47,747 - Inference already performed for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 06:00:00.
+2023-07-04 16:15:47,747 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 07:00:00.
+2023-07-04 16:15:47,748 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 08:00:00.
+2023-07-04 16:15:47,748 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 09:00:00.
+2023-07-04 16:15:47,749 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 10:00:00.
+2023-07-04 16:15:47,749 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 11:00:00.
+2023-07-04 16:15:47,750 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 12:00:00.
+2023-07-04 16:15:47,750 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 13:00:00.
+2023-07-04 16:15:47,751 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 14:00:00.
+2023-07-04 16:15:47,751 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 15:00:00.
+2023-07-04 16:15:47,752 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 16:00:00.
+2023-07-04 16:15:47,752 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 17:00:00.
+2023-07-04 16:15:47,753 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 18:00:00.
+2023-07-04 16:15:47,753 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 19:00:00.
+2023-07-04 16:15:47,753 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 20:00:00.
+2023-07-04 16:15:47,754 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 21:00:00.
+2023-07-04 16:15:47,754 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 22:00:00.
+2023-07-04 16:15:47,755 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-03 23:00:00.
+2023-07-04 16:15:47,755 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 00:00:00.
+2023-07-04 16:15:47,756 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 01:00:00.
+2023-07-04 16:15:47,756 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 02:00:00.
+2023-07-04 16:15:47,757 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 03:00:00.
+2023-07-04 16:15:47,757 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 04:00:00.
+2023-07-04 16:15:47,757 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 05:00:00.
+2023-07-04 16:15:47,758 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 06:00:00.
+2023-07-04 16:15:47,758 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 07:00:00.
+2023-07-04 16:15:47,759 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 08:00:00.
+2023-07-04 16:15:47,759 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 09:00:00.
+2023-07-04 16:15:47,760 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 10:00:00.
+2023-07-04 16:15:47,760 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 11:00:00.
+2023-07-04 16:15:47,761 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 12:00:00.
+2023-07-04 16:15:47,761 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 13:00:00.
+2023-07-04 16:15:47,762 - Running inference for Curve.fi DAI/USDC/USDT with shannonsEntropy at 2023-07-04 14:00:00.
+2023-07-04 16:15:47,910 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-04 16:15:47,910 - Inference already performed for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 06:00:00.
+2023-07-04 16:15:47,911 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 07:00:00.
+2023-07-04 16:15:47,911 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 08:00:00.
+2023-07-04 16:15:47,912 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 09:00:00.
+2023-07-04 16:15:47,913 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 10:00:00.
+2023-07-04 16:15:47,914 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 11:00:00.
+2023-07-04 16:15:47,914 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 12:00:00.
+2023-07-04 16:15:47,915 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 13:00:00.
+2023-07-04 16:15:47,916 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 14:00:00.
+2023-07-04 16:15:47,917 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 15:00:00.
+2023-07-04 16:15:47,917 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 16:00:00.
+2023-07-04 16:15:47,918 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 17:00:00.
+2023-07-04 16:15:47,919 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 18:00:00.
+2023-07-04 16:15:47,919 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 19:00:00.
+2023-07-04 16:15:47,920 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 20:00:00.
+2023-07-04 16:15:47,921 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 21:00:00.
+2023-07-04 16:15:47,922 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 22:00:00.
+2023-07-04 16:15:47,922 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-03 23:00:00.
+2023-07-04 16:15:47,923 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 00:00:00.
+2023-07-04 16:15:47,924 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 01:00:00.
+2023-07-04 16:15:47,924 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 02:00:00.
+2023-07-04 16:15:47,925 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 03:00:00.
+2023-07-04 16:15:47,926 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 04:00:00.
+2023-07-04 16:15:47,927 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 05:00:00.
+2023-07-04 16:15:47,927 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 06:00:00.
+2023-07-04 16:15:47,928 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 07:00:00.
+2023-07-04 16:15:47,929 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 08:00:00.
+2023-07-04 16:15:47,929 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 09:00:00.
+2023-07-04 16:15:47,930 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 10:00:00.
+2023-07-04 16:15:47,931 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 11:00:00.
+2023-07-04 16:15:47,931 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 12:00:00.
+2023-07-04 16:15:47,932 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 13:00:00.
+2023-07-04 16:15:47,933 - Running inference for Curve.fi DAI/USDC/USDT with netSwapFlow at 2023-07-04 14:00:00.
+2023-07-04 16:15:47,966 - Inference already performed for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 06:00:00.
+2023-07-04 16:15:47,966 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 07:00:00.
+2023-07-04 16:15:47,967 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 08:00:00.
+2023-07-04 16:15:47,968 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 09:00:00.
+2023-07-04 16:15:47,968 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 10:00:00.
+2023-07-04 16:15:47,969 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 11:00:00.
+2023-07-04 16:15:47,969 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 12:00:00.
+2023-07-04 16:15:47,970 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 13:00:00.
+2023-07-04 16:15:47,971 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 14:00:00.
+2023-07-04 16:15:47,971 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 15:00:00.
+2023-07-04 16:15:47,972 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 16:00:00.
+2023-07-04 16:15:47,972 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 17:00:00.
+2023-07-04 16:15:47,973 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 18:00:00.
+2023-07-04 16:15:47,973 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 19:00:00.
+2023-07-04 16:15:47,974 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 20:00:00.
+2023-07-04 16:15:47,974 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 21:00:00.
+2023-07-04 16:15:47,975 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 22:00:00.
+2023-07-04 16:15:47,975 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-03 23:00:00.
+2023-07-04 16:15:47,976 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 00:00:00.
+2023-07-04 16:15:47,976 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 01:00:00.
+2023-07-04 16:15:47,977 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 02:00:00.
+2023-07-04 16:15:47,977 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 03:00:00.
+2023-07-04 16:15:47,978 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 04:00:00.
+2023-07-04 16:15:47,978 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 05:00:00.
+2023-07-04 16:15:47,979 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 06:00:00.
+2023-07-04 16:15:47,979 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 07:00:00.
+2023-07-04 16:15:47,980 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 08:00:00.
+2023-07-04 16:15:47,980 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 09:00:00.
+2023-07-04 16:15:47,981 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 10:00:00.
+2023-07-04 16:15:47,981 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 11:00:00.
+2023-07-04 16:15:47,981 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 12:00:00.
+2023-07-04 16:15:47,982 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 13:00:00.
+2023-07-04 16:15:47,982 - Running inference for Curve.fi FRAX/USDC with shannonsEntropy at 2023-07-04 14:00:00.
+2023-07-04 16:15:48,020 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 05:00:00.
+2023-07-04 16:15:48,020 - Inference already performed for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 06:00:00.
+2023-07-04 16:15:48,021 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 07:00:00.
+2023-07-04 16:15:48,021 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 08:00:00.
+2023-07-04 16:15:48,022 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 09:00:00.
+2023-07-04 16:15:48,022 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 10:00:00.
+2023-07-04 16:15:48,022 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 11:00:00.
+2023-07-04 16:15:48,023 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 12:00:00.
+2023-07-04 16:15:48,023 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 13:00:00.
+2023-07-04 16:15:48,024 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 14:00:00.
+2023-07-04 16:15:48,024 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 15:00:00.
+2023-07-04 16:15:48,025 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 16:00:00.
+2023-07-04 16:15:48,025 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 17:00:00.
+2023-07-04 16:15:48,026 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 18:00:00.
+2023-07-04 16:15:48,026 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 19:00:00.
+2023-07-04 16:15:48,027 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 20:00:00.
+2023-07-04 16:15:48,027 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 21:00:00.
+2023-07-04 16:15:48,027 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 22:00:00.
+2023-07-04 16:15:48,028 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-03 23:00:00.
+2023-07-04 16:15:48,028 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 00:00:00.
+2023-07-04 16:15:48,029 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 01:00:00.
+2023-07-04 16:15:48,029 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 02:00:00.
+2023-07-04 16:15:48,030 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 03:00:00.
+2023-07-04 16:15:48,030 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 04:00:00.
+2023-07-04 16:15:48,031 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 05:00:00.
+2023-07-04 16:15:48,031 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 06:00:00.
+2023-07-04 16:15:48,032 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 07:00:00.
+2023-07-04 16:15:48,032 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 08:00:00.
+2023-07-04 16:15:48,032 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 09:00:00.
+2023-07-04 16:15:48,033 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 10:00:00.
+2023-07-04 16:15:48,033 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 11:00:00.
+2023-07-04 16:15:48,034 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 12:00:00.
+2023-07-04 16:15:48,034 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 13:00:00.
+2023-07-04 16:15:48,035 - Running inference for Curve.fi FRAX/USDC with netSwapFlow at 2023-07-04 14:00:00.
