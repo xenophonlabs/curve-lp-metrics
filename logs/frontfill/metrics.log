@@ -14190,3 +14190,641 @@ Traceback (most recent call last):
     raise IndexError(
 IndexError: index -1 is out of bounds for axis 0 with size 0
 2023-07-04 17:03:37,370 - Failed to frontfill metrics: index -1 is out of bounds for axis 0 with size 0
+2023-07-05 19:02:37,263 - Processing metrics...
+2023-07-05 19:02:37,263 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:37,263 - End time: 2023-07-05 18:59:59
+
+2023-07-05 19:02:37,277 - Processing pool metrics.
+
+2023-07-05 19:02:37,278 - Processing pool Curve.fi ETH/stETH.
+2023-07-05 19:02:37,278 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:37,278 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:37,750 - Inserting metrics.
+2023-07-05 19:02:38,018 - Finished processing pool Curve.fi ETH/stETH.
+
+2023-07-05 19:02:38,018 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-07-05 19:02:38,018 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:38,018 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:39,337 - Inserting metrics.
+2023-07-05 19:02:39,642 - Finished processing pool Curve.fi DAI/USDC/USDT.
+
+2023-07-05 19:02:39,642 - Processing pool Curve.fi FRAX/USDC.
+2023-07-05 19:02:39,643 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:39,643 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:39,857 - Inserting metrics.
+2023-07-05 19:02:40,121 - Finished processing pool Curve.fi FRAX/USDC.
+
+2023-07-05 19:02:40,121 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-07-05 19:02:40,122 - Pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool, UST no longer indexed after 1653667380. Skipping...
+
+2023-07-05 19:02:40,122 - Processing pool Curve.fi USDN/3Crv.
+2023-07-05 19:02:40,122 - Pool Curve.fi USDN/3Crv, USDN no longer indexed after 1675776755. Skipping...
+
+2023-07-05 19:02:40,122 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-07-05 19:02:40,122 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:40,122 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:40,509 - Inserting metrics.
+2023-07-05 19:02:40,851 - Finished processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+2023-07-05 19:02:40,851 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-07-05 19:02:40,851 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:40,851 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:41,189 - Inserting metrics.
+2023-07-05 19:02:41,556 - Finished processing pool Curve.fi DAI/USDC/USDT/sUSD.
+
+2023-07-05 19:02:41,556 - Processing pool Curve.fi ETH/frxETH.
+2023-07-05 19:02:41,556 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:41,556 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:41,836 - Inserting metrics.
+2023-07-05 19:02:42,092 - Finished processing pool Curve.fi ETH/frxETH.
+
+2023-07-05 19:02:42,092 - Processing pool Curve.fi Factory USD Metapool: Liquity.
+2023-07-05 19:02:42,092 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:42,092 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:42,441 - Inserting metrics.
+2023-07-05 19:02:42,784 - Finished processing pool Curve.fi Factory USD Metapool: Liquity.
+
+2023-07-05 19:02:42,785 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
+2023-07-05 19:02:42,785 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:42,785 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:43,140 - Inserting metrics.
+2023-07-05 19:02:43,481 - Finished processing pool Curve.fi Factory USD Metapool: Binance USD.
+
+2023-07-05 19:02:43,481 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+2023-07-05 19:02:43,481 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:43,481 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:43,657 - Inserting metrics.
+2023-07-05 19:02:43,924 - Finished processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+
+2023-07-05 19:02:43,924 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+2023-07-05 19:02:43,924 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:43,924 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:44,242 - Inserting metrics.
+2023-07-05 19:02:44,492 - Finished processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+
+2023-07-05 19:02:44,492 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+2023-07-05 19:02:44,492 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:02:44,492 - End time: 2023-07-05 18:59:59
+2023-07-05 19:02:44,947 - Inserting metrics.
+2023-07-05 19:02:45,193 - Finished processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+
+2023-07-05 19:02:45,193 - Finished processing pool metrics.
+
+2023-07-05 19:02:45,207 - Processing token metrics.
+
+2023-07-05 19:02:45,207 - Processing token LUSD.
+2023-07-05 19:02:45,218 - Inserting metrics.
+2023-07-05 19:02:46,084 - Finished processing token LUSD.
+
+2023-07-05 19:02:46,084 - Processing token FRAX.
+2023-07-05 19:02:46,094 - Inserting metrics.
+2023-07-05 19:02:46,979 - Finished processing token FRAX.
+
+2023-07-05 19:02:46,979 - Processing token MIM.
+2023-07-05 19:02:47,019 - Inserting metrics.
+2023-07-05 19:02:47,967 - Finished processing token MIM.
+
+2023-07-05 19:02:47,968 - Processing token USDC.
+2023-07-05 19:02:48,082 - Inserting metrics.
+2023-07-05 19:02:49,028 - Finished processing token USDC.
+
+2023-07-05 19:02:49,028 - Processing token stETH.
+2023-07-05 19:02:49,038 - Inserting metrics.
+2023-07-05 19:02:49,974 - Finished processing token stETH.
+
+2023-07-05 19:02:49,975 - Processing token cbETH.
+2023-07-05 19:02:50,022 - Inserting metrics.
+2023-07-05 19:02:50,972 - Finished processing token cbETH.
+
+2023-07-05 19:02:50,972 - Processing token ETH.
+2023-07-05 19:02:51,143 - Inserting metrics.
+2023-07-05 19:02:52,068 - Finished processing token ETH.
+
+2023-07-05 19:02:52,069 - Processing token DAI.
+2023-07-05 19:02:52,147 - Inserting metrics.
+2023-07-05 19:02:53,078 - Finished processing token DAI.
+
+2023-07-05 19:02:53,079 - Processing token BUSD.
+2023-07-05 19:02:53,087 - Inserting metrics.
+2023-07-05 19:02:54,034 - Finished processing token BUSD.
+
+2023-07-05 19:02:54,034 - Processing token sUSD.
+2023-07-05 19:02:54,041 - Inserting metrics.
+2023-07-05 19:02:54,957 - Finished processing token sUSD.
+
+2023-07-05 19:02:54,957 - Processing token WETH.
+2023-07-05 19:02:54,957 - WETH assumed to be = ETH. Skipping...
+
+2023-07-05 19:02:54,957 - Processing token cvxCRV.
+2023-07-05 19:02:54,966 - Inserting metrics.
+2023-07-05 19:02:55,864 - Finished processing token cvxCRV.
+
+2023-07-05 19:02:55,864 - Processing token USDT.
+2023-07-05 19:02:55,956 - Inserting metrics.
+2023-07-05 19:02:56,847 - Finished processing token USDT.
+
+2023-07-05 19:02:56,847 - Processing token USDN.
+2023-07-05 19:02:56,847 - USDN no longer indexed after 1675776755. Skipping...
+
+2023-07-05 19:02:56,847 - Processing token frxETH.
+2023-07-05 19:02:56,858 - Inserting metrics.
+2023-07-05 19:02:57,747 - Finished processing token frxETH.
+
+2023-07-05 19:02:57,747 - Processing token UST.
+2023-07-05 19:02:57,747 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Skipping...
+2023-07-05 19:02:57,747 - Processing token 3Crv.
+2023-07-05 19:02:57,747 - We use virtual prices for 3Crv. Skipping...
+
+2023-07-05 19:02:57,747 - Processing token CRV.
+2023-07-05 19:02:57,825 - Inserting metrics.
+2023-07-05 19:02:58,708 - Finished processing token CRV.
+
+2023-07-05 19:02:58,709 - Finished processing token metrics.
+
+2023-07-05 19:02:58,709 - Done :)
+
+2023-07-05 19:02:58,709 - Successfully frontfilled metrics.
+2023-07-05 19:21:25,629 - Processing metrics...
+2023-07-05 19:21:25,629 - Start time: 2023-07-05 19:00:00
+2023-07-05 19:21:25,629 - End time: 2023-07-05 19:20:23
+
+2023-07-05 19:21:25,644 - Processing pool metrics.
+
+2023-07-05 19:21:25,644 - Processing pool Curve.fi ETH/stETH.
+2023-07-05 19:21:25,644 - Start time: 2023-07-05 19:00:00
+2023-07-05 19:21:25,644 - End time: 2023-07-05 19:20:23
+2023-07-05 19:21:25,837 - Failed to compute metrics for pool Curve.fi ETH/stETH
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 19:21:25,838 - Failed to compute metrics for pools 
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 19:21:25,838 - Failed to frontfill metrics: 'inputTokenBalances'
+2023-07-05 19:22:25,898 - Processing metrics...
+2023-07-05 19:22:25,899 - Start time: 2023-07-05 19:00:00
+2023-07-05 19:22:25,899 - End time: 2023-07-05 19:20:23
+
+2023-07-05 19:22:25,915 - Processing pool metrics.
+
+2023-07-05 19:22:25,915 - Processing pool Curve.fi ETH/stETH.
+2023-07-05 19:22:25,915 - Start time: 2023-07-05 19:00:00
+2023-07-05 19:22:25,915 - End time: 2023-07-05 19:20:23
+2023-07-05 19:22:26,058 - Failed to compute metrics for pool Curve.fi ETH/stETH
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 19:22:26,058 - Failed to compute metrics for pools 
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 19:22:26,058 - Failed to frontfill metrics: 'inputTokenBalances'
+2023-07-05 20:01:27,492 - Processing metrics...
+2023-07-05 20:01:27,492 - Start time: 2023-07-05 19:00:00
+2023-07-05 20:01:27,492 - End time: 2023-07-05 19:59:59
+
+2023-07-05 20:01:27,507 - Processing pool metrics.
+
+2023-07-05 20:01:27,507 - Processing pool Curve.fi ETH/stETH.
+2023-07-05 20:01:27,507 - Start time: 2023-07-05 19:00:00
+2023-07-05 20:01:27,507 - End time: 2023-07-05 19:59:59
+2023-07-05 20:01:27,653 - Failed to compute metrics for pool Curve.fi ETH/stETH
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 20:01:27,653 - Failed to compute metrics for pools 
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 20:01:27,654 - Failed to frontfill metrics: 'inputTokenBalances'
+2023-07-05 20:02:27,714 - Processing metrics...
+2023-07-05 20:02:27,714 - Start time: 2023-07-05 19:00:00
+2023-07-05 20:02:27,715 - End time: 2023-07-05 19:59:59
+
+2023-07-05 20:02:27,732 - Processing pool metrics.
+
+2023-07-05 20:02:27,733 - Processing pool Curve.fi ETH/stETH.
+2023-07-05 20:02:27,733 - Start time: 2023-07-05 19:00:00
+2023-07-05 20:02:27,733 - End time: 2023-07-05 19:59:59
+2023-07-05 20:02:27,869 - Failed to compute metrics for pool Curve.fi ETH/stETH
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 20:02:27,869 - Failed to compute metrics for pools 
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 20:02:27,870 - Failed to frontfill metrics: 'inputTokenBalances'
+2023-07-05 20:03:27,930 - Processing metrics...
+2023-07-05 20:03:27,930 - Start time: 2023-07-05 19:00:00
+2023-07-05 20:03:27,930 - End time: 2023-07-05 19:59:59
+
+2023-07-05 20:03:27,944 - Processing pool metrics.
+
+2023-07-05 20:03:27,945 - Processing pool Curve.fi ETH/stETH.
+2023-07-05 20:03:27,945 - Start time: 2023-07-05 19:00:00
+2023-07-05 20:03:27,945 - End time: 2023-07-05 19:59:59
+2023-07-05 20:03:28,081 - Failed to compute metrics for pool Curve.fi ETH/stETH
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 20:03:28,081 - Failed to compute metrics for pools 
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+
+Traceback (most recent call last):
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 93, in pools
+    raise e
+  File "/root/curve-lp-metrics/curvemetrics/scripts/metrics.py", line 85, in pools
+    pool_metrics = metricsprocessor.process_metrics_for_pool(pool, pool_data, swaps_data, lp_data, ohlcvs)
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 52, in process_metrics_for_pool
+    self.gini(pool_data),
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/metricsprocessor.py", line 106, in gini
+    metric = df['inputTokenBalances'].resample(self.freq).last().fillna(method='ffill').apply(self._gini)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/root/curve-lp-metrics/venv/lib/python3.10/site-packages/pandas/core/indexes/range.py", line 349, in get_loc
+    raise KeyError(key)
+KeyError: 'inputTokenBalances'
+2023-07-05 20:03:28,082 - Failed to frontfill metrics: 'inputTokenBalances'
+2023-07-05 22:02:28,707 - Processing metrics...
+2023-07-05 22:02:28,707 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:28,707 - End time: 2023-07-05 21:59:59
+
+2023-07-05 22:02:28,722 - Processing pool metrics.
+
+2023-07-05 22:02:28,722 - Processing pool Curve.fi ETH/stETH.
+2023-07-05 22:02:28,722 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:28,722 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:28,972 - Inserting metrics.
+2023-07-05 22:02:29,809 - Finished processing pool Curve.fi ETH/stETH.
+
+2023-07-05 22:02:29,809 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-07-05 22:02:29,809 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:29,809 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:30,274 - Inserting metrics.
+2023-07-05 22:02:31,319 - Finished processing pool Curve.fi DAI/USDC/USDT.
+
+2023-07-05 22:02:31,319 - Processing pool Curve.fi FRAX/USDC.
+2023-07-05 22:02:31,319 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:31,320 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:31,534 - Inserting metrics.
+2023-07-05 22:02:32,361 - Finished processing pool Curve.fi FRAX/USDC.
+
+2023-07-05 22:02:32,361 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-07-05 22:02:32,361 - Pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool, UST no longer indexed after 1653667380. Skipping...
+
+2023-07-05 22:02:32,361 - Processing pool Curve.fi USDN/3Crv.
+2023-07-05 22:02:32,361 - Pool Curve.fi USDN/3Crv, USDN no longer indexed after 1675776755. Skipping...
+
+2023-07-05 22:02:32,361 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-07-05 22:02:32,361 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:32,361 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:32,771 - Inserting metrics.
+2023-07-05 22:02:33,900 - Finished processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+2023-07-05 22:02:33,900 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-07-05 22:02:33,900 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:33,900 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:34,249 - Inserting metrics.
+2023-07-05 22:02:35,471 - Finished processing pool Curve.fi DAI/USDC/USDT/sUSD.
+
+2023-07-05 22:02:35,471 - Processing pool Curve.fi ETH/frxETH.
+2023-07-05 22:02:35,472 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:35,472 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:35,665 - Inserting metrics.
+2023-07-05 22:02:36,499 - Finished processing pool Curve.fi ETH/frxETH.
+
+2023-07-05 22:02:36,499 - Processing pool Curve.fi Factory USD Metapool: Liquity.
+2023-07-05 22:02:36,499 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:36,500 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:36,892 - Inserting metrics.
+2023-07-05 22:02:38,012 - Finished processing pool Curve.fi Factory USD Metapool: Liquity.
+
+2023-07-05 22:02:38,013 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
+2023-07-05 22:02:38,013 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:38,013 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:38,456 - Inserting metrics.
+2023-07-05 22:02:39,571 - Finished processing pool Curve.fi Factory USD Metapool: Binance USD.
+
+2023-07-05 22:02:39,571 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+2023-07-05 22:02:39,572 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:39,572 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:39,758 - Inserting metrics.
+2023-07-05 22:02:40,591 - Finished processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+
+2023-07-05 22:02:40,591 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+2023-07-05 22:02:40,591 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:40,591 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:40,787 - Inserting metrics.
+2023-07-05 22:02:41,605 - Finished processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+
+2023-07-05 22:02:41,605 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+2023-07-05 22:02:41,605 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:02:41,605 - End time: 2023-07-05 21:59:59
+2023-07-05 22:02:41,805 - Inserting metrics.
+2023-07-05 22:02:42,625 - Finished processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+
+2023-07-05 22:02:42,625 - Finished processing pool metrics.
+
+2023-07-05 22:02:42,639 - Processing token metrics.
+
+2023-07-05 22:02:42,639 - Processing token LUSD.
+2023-07-05 22:02:42,650 - Inserting metrics.
+2023-07-05 22:02:42,765 - Finished processing token LUSD.
+
+2023-07-05 22:02:42,765 - Processing token FRAX.
+2023-07-05 22:02:42,774 - Inserting metrics.
+2023-07-05 22:02:42,877 - Finished processing token FRAX.
+
+2023-07-05 22:02:42,877 - Processing token MIM.
+2023-07-05 22:02:42,917 - Inserting metrics.
+2023-07-05 22:02:43,028 - Finished processing token MIM.
+
+2023-07-05 22:02:43,028 - Processing token USDC.
+2023-07-05 22:02:43,140 - Inserting metrics.
+2023-07-05 22:02:43,248 - Finished processing token USDC.
+
+2023-07-05 22:02:43,249 - Processing token stETH.
+2023-07-05 22:02:43,258 - Inserting metrics.
+2023-07-05 22:02:43,364 - Finished processing token stETH.
+
+2023-07-05 22:02:43,364 - Processing token cbETH.
+2023-07-05 22:02:43,413 - Inserting metrics.
+2023-07-05 22:02:43,534 - Finished processing token cbETH.
+
+2023-07-05 22:02:43,535 - Processing token ETH.
+2023-07-05 22:02:43,616 - Inserting metrics.
+2023-07-05 22:02:43,725 - Finished processing token ETH.
+
+2023-07-05 22:02:43,725 - Processing token DAI.
+2023-07-05 22:02:43,805 - Inserting metrics.
+2023-07-05 22:02:43,925 - Finished processing token DAI.
+
+2023-07-05 22:02:43,925 - Processing token BUSD.
+2023-07-05 22:02:43,932 - Inserting metrics.
+2023-07-05 22:02:44,047 - Finished processing token BUSD.
+
+2023-07-05 22:02:44,048 - Processing token sUSD.
+2023-07-05 22:02:44,055 - Inserting metrics.
+2023-07-05 22:02:44,175 - Finished processing token sUSD.
+
+2023-07-05 22:02:44,175 - Processing token WETH.
+2023-07-05 22:02:44,175 - WETH assumed to be = ETH. Skipping...
+
+2023-07-05 22:02:44,175 - Processing token cvxCRV.
+2023-07-05 22:02:44,183 - Inserting metrics.
+2023-07-05 22:02:44,299 - Finished processing token cvxCRV.
+
+2023-07-05 22:02:44,299 - Processing token USDT.
+2023-07-05 22:02:44,391 - Inserting metrics.
+2023-07-05 22:02:44,520 - Finished processing token USDT.
+
+2023-07-05 22:02:44,520 - Processing token USDN.
+2023-07-05 22:02:44,520 - USDN no longer indexed after 1675776755. Skipping...
+
+2023-07-05 22:02:44,520 - Processing token frxETH.
+2023-07-05 22:02:44,530 - Inserting metrics.
+2023-07-05 22:02:44,643 - Finished processing token frxETH.
+
+2023-07-05 22:02:44,643 - Processing token UST.
+2023-07-05 22:02:44,643 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Skipping...
+2023-07-05 22:02:44,643 - Processing token 3Crv.
+2023-07-05 22:02:44,643 - We use virtual prices for 3Crv. Skipping...
+
+2023-07-05 22:02:44,643 - Processing token CRV.
+2023-07-05 22:02:44,724 - Inserting metrics.
+2023-07-05 22:02:44,842 - Finished processing token CRV.
+
+2023-07-05 22:02:44,843 - Finished processing token metrics.
+
+2023-07-05 22:02:44,843 - Done :)
+
+2023-07-05 22:02:44,843 - Successfully frontfilled metrics.

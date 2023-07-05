@@ -161,7 +161,7 @@ def main(start: int, end: int, l):
     start, start_block = DataFetcher.get_block(start)
     end, end_block = DataFetcher.get_block(end)
 
-    # asyncio.run(pools(start, end, start_block, end_block))
+    asyncio.run(pools(start, end, start_block, end_block))
     asyncio.run(tokens(start, end))
 
     logger.info(f"Done :)\n")

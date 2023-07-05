@@ -11496,3 +11496,546 @@ NoneType: None
 2023-07-04 17:01:34,205 - Done :)
 
 2023-07-04 17:01:34,205 - Successfully frontfilled raw data.
+2023-07-05 19:00:04,313 - Processing Raw Data...
+2023-07-05 19:00:04,313 - Start time: 2023-07-04 16:00:00
+2023-07-05 19:00:04,313 - End time: 2023-07-05 18:59:59
+
+2023-07-05 19:00:05,193 - Processing token LUSD OHLCV using chainlink.
+2023-07-05 19:00:19,863 - Found the closest round: 18446744073709564067, at 2023-07-04 15:03:11.
+2023-07-05 19:00:19,863 - Number of iterations: 13
+2023-07-05 19:00:22,332 - Inserting OHLCV.
+
+2023-07-05 19:00:22,372 - Processing token FRAX OHLCV using chainlink.
+2023-07-05 19:00:36,698 - Found the closest round: 18446744073709563968, at 2023-07-04 15:14:11.
+2023-07-05 19:00:36,698 - Number of iterations: 13
+2023-07-05 19:00:38,756 - Inserting OHLCV.
+
+2023-07-05 19:00:38,791 - Processing token MIM OHLCV using ccxt.
+2023-07-05 19:00:43,302 - Using Bitfinex for MIM/USD.
+2023-07-05 19:00:43,303 - Inserting OHLCV.
+
+2023-07-05 19:00:43,401 - Processing token USDC OHLCV using chainlink.
+2023-07-05 19:00:55,458 - Found the closest round: 36893488147419104554, at 2023-07-04 08:00:35.
+2023-07-05 19:00:55,458 - Number of iterations: 11
+2023-07-05 19:00:55,646 - Inserting OHLCV.
+
+2023-07-05 19:00:55,655 - Processing token stETH OHLCV using chainlink.
+2023-07-05 19:01:10,887 - Found the closest round: 18446744073709570100, at 2023-07-04 15:47:23.
+2023-07-05 19:01:10,887 - Number of iterations: 14
+2023-07-05 19:01:12,730 - Inserting OHLCV.
+
+2023-07-05 19:01:12,764 - Processing token cbETH OHLCV using ccxt.
+2023-07-05 19:01:14,664 - Using Coinbase Pro for CBETH/USD.
+2023-07-05 19:01:14,666 - Inserting OHLCV.
+
+2023-07-05 19:01:14,973 - Processing token ETH OHLCV using chainlink.
+2023-07-05 19:01:28,076 - Found the closest round: 110680464442257312906, at 2023-07-04 15:55:47.
+2023-07-05 19:01:28,077 - Number of iterations: 12
+2023-07-05 19:01:30,683 - Inserting OHLCV.
+
+2023-07-05 19:01:30,728 - Processing token DAI OHLCV using chainlink.
+2023-07-05 19:01:42,709 - Found the closest round: 110680464442257311838, at 2023-07-04 15:50:23.
+2023-07-05 19:01:42,709 - Number of iterations: 11
+2023-07-05 19:01:44,534 - Inserting OHLCV.
+
+2023-07-05 19:01:44,568 - Processing token BUSD OHLCV using chainlink.
+2023-07-05 19:01:55,498 - Found the closest round: 18446744073709552466, at 2023-07-04 15:07:35.
+2023-07-05 19:01:55,498 - Number of iterations: 10
+2023-07-05 19:01:55,708 - Inserting OHLCV.
+
+2023-07-05 19:01:55,716 - Processing token sUSD OHLCV using chainlink.
+2023-07-05 19:02:08,845 - Found the closest round: 18446744073709553667, at 2023-07-04 11:40:23.
+2023-07-05 19:02:08,845 - Number of iterations: 12
+2023-07-05 19:02:09,029 - Inserting OHLCV.
+
+2023-07-05 19:02:09,036 - WETH assumed to be = ETH. Skipping...
+
+2023-07-05 19:02:09,036 - Processing token cvxCRV OHLCV using curveswaps.
+2023-07-05 19:02:09,082 - Inserting OHLCV.
+
+2023-07-05 19:02:09,082 - No price data for token cvxCRV at this time.
+
+2023-07-05 19:02:09,082 - Processing token USDT OHLCV using chainlink.
+2023-07-05 19:02:20,081 - Found the closest round: 36893488147419104203, at 2023-07-04 07:29:11.
+2023-07-05 19:02:20,082 - Number of iterations: 10
+2023-07-05 19:02:20,288 - Inserting OHLCV.
+
+2023-07-05 19:02:20,296 - Processing token USDN OHLCV using chainlink.
+2023-07-05 19:02:20,432 - Latest Chainlink timestamp 1675776755 is before start timestamp 1688486411.
+NoneType: None
+2023-07-05 19:02:20,432 - Inserting OHLCV.
+
+2023-07-05 19:02:20,432 - No price data for token USDN at this time.
+
+2023-07-05 19:02:20,432 - Processing token frxETH OHLCV using curveswaps.
+2023-07-05 19:02:20,479 - Inserting OHLCV.
+
+2023-07-05 19:02:20,486 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to 2023-07-05 18:59:47.
+2023-07-05 19:02:20,487 - Processing token UST OHLCV using ccxt.
+2023-07-05 19:02:20,489 - Using Coinbase Pro for UST/USD.
+2023-07-05 19:02:20,489 - Inserting OHLCV.
+
+2023-07-05 19:02:20,489 - No price data for token UST at this time.
+
+2023-07-05 19:02:20,489 - 3Crv uses pool virtual price. Skipping...
+
+2023-07-05 19:02:20,489 - Processing token CRV OHLCV using chainlink.
+2023-07-05 19:02:35,794 - Found the closest round: 18446744073709573211, at 2023-07-04 15:25:23.
+2023-07-05 19:02:35,794 - Number of iterations: 14
+2023-07-05 19:02:37,235 - Inserting OHLCV.
+
+2023-07-05 19:02:37,262 - Done :)
+
+2023-07-05 19:02:37,262 - Successfully frontfilled raw data.
+2023-07-05 19:20:31,170 - Processing Raw Data...
+2023-07-05 19:20:31,170 - Start time: 2023-07-05 19:00:00
+2023-07-05 19:20:31,170 - End time: 2023-07-05 19:20:23
+
+2023-07-05 19:20:32,523 - Processing token LUSD OHLCV using chainlink.
+2023-07-05 19:20:48,517 - Found the closest round: 18446744073709564094, at 2023-07-05 18:17:11.
+2023-07-05 19:20:48,517 - Number of iterations: 14
+2023-07-05 19:20:48,761 - Inserting OHLCV.
+
+2023-07-05 19:20:48,774 - Processing token FRAX OHLCV using chainlink.
+2023-07-05 19:20:48,987 - Latest Chainlink timestamp 1688581715 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 19:20:48,987 - Inserting OHLCV.
+
+2023-07-05 19:20:48,987 - No price data for token FRAX at this time.
+
+2023-07-05 19:20:48,987 - Processing token MIM OHLCV using ccxt.
+2023-07-05 19:20:53,288 - Using Bitfinex for MIM/USD.
+2023-07-05 19:20:53,290 - Inserting OHLCV.
+
+2023-07-05 19:20:53,299 - Processing token USDC OHLCV using chainlink.
+2023-07-05 19:20:53,457 - Latest Chainlink timestamp 1688544035 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 19:20:53,457 - Inserting OHLCV.
+
+2023-07-05 19:20:53,457 - No price data for token USDC at this time.
+
+2023-07-05 19:20:53,457 - Processing token stETH OHLCV using chainlink.
+2023-07-05 19:21:10,081 - Found the closest round: 18446744073709570126, at 2023-07-05 18:00:35.
+2023-07-05 19:21:10,081 - Number of iterations: 15
+2023-07-05 19:21:10,312 - Inserting OHLCV.
+
+2023-07-05 19:21:10,348 - Processing token cbETH OHLCV using ccxt.
+2023-07-05 19:21:11,029 - Using Coinbase Pro for CBETH/USD.
+2023-07-05 19:21:11,031 - Inserting OHLCV.
+
+2023-07-05 19:21:11,048 - Processing token ETH OHLCV using chainlink.
+2023-07-05 19:21:11,220 - Latest Chainlink timestamp 1688583347 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 19:21:11,221 - Inserting OHLCV.
+
+2023-07-05 19:21:11,221 - No price data for token ETH at this time.
+
+2023-07-05 19:21:11,221 - Processing token DAI OHLCV using chainlink.
+2023-07-05 19:21:24,469 - Found the closest round: 110680464442257311864, at 2023-07-05 18:02:47.
+2023-07-05 19:21:24,469 - Number of iterations: 12
+2023-07-05 19:21:24,708 - Inserting OHLCV.
+
+2023-07-05 19:21:24,717 - Processing token BUSD OHLCV using chainlink.
+2023-07-05 19:21:24,882 - Latest Chainlink timestamp 1688569667 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 19:21:24,882 - Inserting OHLCV.
+
+2023-07-05 19:21:24,882 - No price data for token BUSD at this time.
+
+2023-07-05 19:21:24,882 - Processing token sUSD OHLCV using chainlink.
+2023-07-05 19:21:25,046 - Latest Chainlink timestamp 1688557247 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 19:21:25,046 - Inserting OHLCV.
+
+2023-07-05 19:21:25,047 - No price data for token sUSD at this time.
+
+2023-07-05 19:21:25,047 - WETH assumed to be = ETH. Skipping...
+
+2023-07-05 19:21:25,047 - Processing token cvxCRV OHLCV using curveswaps.
+2023-07-05 19:21:25,088 - Inserting OHLCV.
+
+2023-07-05 19:21:25,088 - No price data for token cvxCRV at this time.
+
+2023-07-05 19:21:25,088 - Processing token USDT OHLCV using chainlink.
+2023-07-05 19:21:25,247 - Latest Chainlink timestamp 1688542175 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 19:21:25,247 - Inserting OHLCV.
+
+2023-07-05 19:21:25,247 - No price data for token USDT at this time.
+
+2023-07-05 19:21:25,247 - Processing token USDN OHLCV using chainlink.
+2023-07-05 19:21:25,427 - Latest Chainlink timestamp 1675776755 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 19:21:25,427 - Inserting OHLCV.
+
+2023-07-05 19:21:25,428 - No price data for token USDN at this time.
+
+2023-07-05 19:21:25,428 - Processing token frxETH OHLCV using curveswaps.
+2023-07-05 19:21:25,459 - Inserting OHLCV.
+
+2023-07-05 19:21:25,459 - No price data for token frxETH at this time.
+
+2023-07-05 19:21:25,459 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to 2023-07-05 19:19:59.
+2023-07-05 19:21:25,459 - Processing token UST OHLCV using ccxt.
+2023-07-05 19:21:25,462 - Using Coinbase Pro for UST/USD.
+2023-07-05 19:21:25,462 - Inserting OHLCV.
+
+2023-07-05 19:21:25,462 - No price data for token UST at this time.
+
+2023-07-05 19:21:25,462 - 3Crv uses pool virtual price. Skipping...
+
+2023-07-05 19:21:25,462 - Processing token CRV OHLCV using chainlink.
+2023-07-05 19:21:25,627 - Latest Chainlink timestamp 1688575487 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 19:21:25,627 - Inserting OHLCV.
+
+2023-07-05 19:21:25,627 - No price data for token CRV at this time.
+
+2023-07-05 19:21:25,628 - Done :)
+
+2023-07-05 19:21:25,629 - Successfully frontfilled raw data.
+2023-07-05 20:00:03,702 - Processing Raw Data...
+2023-07-05 20:00:03,702 - Start time: 2023-07-05 19:00:00
+2023-07-05 20:00:03,702 - End time: 2023-07-05 19:59:59
+
+2023-07-05 20:00:05,188 - Processing token LUSD OHLCV using chainlink.
+2023-07-05 20:00:20,988 - Found the closest round: 18446744073709564094, at 2023-07-05 18:17:11.
+2023-07-05 20:00:20,988 - Number of iterations: 14
+2023-07-05 20:00:21,226 - Inserting OHLCV.
+
+2023-07-05 20:00:21,235 - Processing token FRAX OHLCV using chainlink.
+2023-07-05 20:00:36,780 - Found the closest round: 18446744073709563995, at 2023-07-05 18:28:35.
+2023-07-05 20:00:36,781 - Number of iterations: 14
+2023-07-05 20:00:37,044 - Inserting OHLCV.
+
+2023-07-05 20:00:37,053 - Processing token MIM OHLCV using ccxt.
+2023-07-05 20:00:41,854 - Using Bitfinex for MIM/USD.
+2023-07-05 20:00:41,856 - Inserting OHLCV.
+
+2023-07-05 20:00:41,865 - Processing token USDC OHLCV using chainlink.
+2023-07-05 20:00:42,033 - Latest Chainlink timestamp 1688544035 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 20:00:42,033 - Inserting OHLCV.
+
+2023-07-05 20:00:42,033 - No price data for token USDC at this time.
+
+2023-07-05 20:00:42,033 - Processing token stETH OHLCV using chainlink.
+2023-07-05 20:00:58,560 - Found the closest round: 18446744073709570126, at 2023-07-05 18:00:35.
+2023-07-05 20:00:58,560 - Number of iterations: 15
+2023-07-05 20:00:58,754 - Inserting OHLCV.
+
+2023-07-05 20:00:58,761 - Processing token cbETH OHLCV using ccxt.
+2023-07-05 20:00:59,507 - Using Coinbase Pro for CBETH/USD.
+2023-07-05 20:00:59,510 - Inserting OHLCV.
+
+2023-07-05 20:00:59,527 - Processing token ETH OHLCV using chainlink.
+2023-07-05 20:01:12,838 - Found the closest round: 110680464442257312943, at 2023-07-05 18:55:47.
+2023-07-05 20:01:12,838 - Number of iterations: 12
+2023-07-05 20:01:13,068 - Inserting OHLCV.
+
+2023-07-05 20:01:13,079 - Processing token DAI OHLCV using chainlink.
+2023-07-05 20:01:26,422 - Found the closest round: 110680464442257311864, at 2023-07-05 18:02:47.
+2023-07-05 20:01:26,422 - Number of iterations: 12
+2023-07-05 20:01:26,662 - Inserting OHLCV.
+
+2023-07-05 20:01:26,670 - Processing token BUSD OHLCV using chainlink.
+2023-07-05 20:01:26,815 - Latest Chainlink timestamp 1688569667 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 20:01:26,815 - Inserting OHLCV.
+
+2023-07-05 20:01:26,815 - No price data for token BUSD at this time.
+
+2023-07-05 20:01:26,815 - Processing token sUSD OHLCV using chainlink.
+2023-07-05 20:01:26,952 - Latest Chainlink timestamp 1688557247 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 20:01:26,953 - Inserting OHLCV.
+
+2023-07-05 20:01:26,953 - No price data for token sUSD at this time.
+
+2023-07-05 20:01:26,953 - WETH assumed to be = ETH. Skipping...
+
+2023-07-05 20:01:26,953 - Processing token cvxCRV OHLCV using curveswaps.
+2023-07-05 20:01:26,993 - Inserting OHLCV.
+
+2023-07-05 20:01:26,993 - No price data for token cvxCRV at this time.
+
+2023-07-05 20:01:26,993 - Processing token USDT OHLCV using chainlink.
+2023-07-05 20:01:27,155 - Latest Chainlink timestamp 1688542175 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 20:01:27,155 - Inserting OHLCV.
+
+2023-07-05 20:01:27,155 - No price data for token USDT at this time.
+
+2023-07-05 20:01:27,155 - Processing token USDN OHLCV using chainlink.
+2023-07-05 20:01:27,315 - Latest Chainlink timestamp 1675776755 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 20:01:27,315 - Inserting OHLCV.
+
+2023-07-05 20:01:27,315 - No price data for token USDN at this time.
+
+2023-07-05 20:01:27,315 - Processing token frxETH OHLCV using curveswaps.
+2023-07-05 20:01:27,352 - Inserting OHLCV.
+
+2023-07-05 20:01:27,352 - No price data for token frxETH at this time.
+
+2023-07-05 20:01:27,352 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to 2023-07-05 19:59:35.
+2023-07-05 20:01:27,352 - Processing token UST OHLCV using ccxt.
+2023-07-05 20:01:27,355 - Using Coinbase Pro for UST/USD.
+2023-07-05 20:01:27,355 - Inserting OHLCV.
+
+2023-07-05 20:01:27,355 - No price data for token UST at this time.
+
+2023-07-05 20:01:27,355 - 3Crv uses pool virtual price. Skipping...
+
+2023-07-05 20:01:27,355 - Processing token CRV OHLCV using chainlink.
+2023-07-05 20:01:27,490 - Latest Chainlink timestamp 1688575487 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 20:01:27,490 - Inserting OHLCV.
+
+2023-07-05 20:01:27,490 - No price data for token CRV at this time.
+
+2023-07-05 20:01:27,492 - Done :)
+
+2023-07-05 20:01:27,492 - Successfully frontfilled raw data.
+2023-07-05 22:00:04,121 - Processing Raw Data...
+2023-07-05 22:00:04,121 - Start time: 2023-07-05 19:00:00
+2023-07-05 22:00:04,122 - End time: 2023-07-05 21:59:59
+
+2023-07-05 22:00:05,130 - Processing pool Curve.fi ETH/stETH.
+2023-07-05 22:00:06,639 - Inserting pool data...
+2023-07-05 22:00:33,105 - Finished pool data...
+2023-07-05 22:00:33,500 - Inserting swap data...
+2023-07-05 22:00:33,552 - Finished swap data...
+2023-07-05 22:00:33,768 - Inserting lp event data...
+2023-07-05 22:00:33,803 - Finished lp event data...
+2023-07-05 22:00:33,901 - Inserting snapshots data...
+2023-07-05 22:00:33,902 - Finished snapshots data...
+2023-07-05 22:00:33,902 - Finished pool Curve.fi ETH/stETH.
+
+2023-07-05 22:00:33,902 - Processing pool Curve.fi DAI/USDC/USDT.
+2023-07-05 22:00:35,089 - Inserting pool data...
+2023-07-05 22:00:36,213 - Finished pool data...
+2023-07-05 22:00:36,510 - Inserting swap data...
+2023-07-05 22:00:36,533 - Finished swap data...
+2023-07-05 22:00:36,732 - Inserting lp event data...
+2023-07-05 22:00:36,740 - Finished lp event data...
+2023-07-05 22:00:36,834 - Inserting snapshots data...
+2023-07-05 22:00:36,834 - Finished snapshots data...
+2023-07-05 22:00:36,835 - Finished pool Curve.fi DAI/USDC/USDT.
+
+2023-07-05 22:00:36,835 - Processing pool Curve.fi FRAX/USDC.
+2023-07-05 22:00:38,115 - Inserting pool data...
+2023-07-05 22:00:39,325 - Finished pool data...
+2023-07-05 22:00:39,541 - Inserting swap data...
+2023-07-05 22:00:39,547 - Finished swap data...
+2023-07-05 22:00:39,767 - Inserting lp event data...
+2023-07-05 22:00:39,768 - Finished lp event data...
+2023-07-05 22:00:39,863 - Inserting snapshots data...
+2023-07-05 22:00:39,863 - Finished snapshots data...
+2023-07-05 22:00:39,864 - Finished pool Curve.fi FRAX/USDC.
+
+2023-07-05 22:00:39,864 - Processing pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+2023-07-05 22:00:41,154 - Inserting pool data...
+2023-07-05 22:00:42,240 - Finished pool data...
+2023-07-05 22:00:42,383 - Inserting swap data...
+2023-07-05 22:00:42,384 - Finished swap data...
+2023-07-05 22:00:42,588 - Inserting lp event data...
+2023-07-05 22:00:42,589 - Finished lp event data...
+2023-07-05 22:00:42,690 - Inserting snapshots data...
+2023-07-05 22:00:42,691 - Finished snapshots data...
+2023-07-05 22:00:42,691 - Finished pool Curve.fi Factory USD Metapool: wormhole v2 UST-3Pool.
+
+2023-07-05 22:00:42,691 - Processing pool Curve.fi USDN/3Crv.
+2023-07-05 22:00:43,979 - Inserting pool data...
+2023-07-05 22:00:45,073 - Finished pool data...
+2023-07-05 22:00:45,290 - Inserting swap data...
+2023-07-05 22:00:45,290 - Finished swap data...
+2023-07-05 22:00:45,444 - Inserting lp event data...
+2023-07-05 22:00:45,445 - Finished lp event data...
+2023-07-05 22:00:45,534 - Inserting snapshots data...
+2023-07-05 22:00:45,535 - Finished snapshots data...
+2023-07-05 22:00:45,535 - Finished pool Curve.fi USDN/3Crv.
+
+2023-07-05 22:00:45,535 - Processing pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+2023-07-05 22:00:46,868 - Inserting pool data...
+2023-07-05 22:00:47,958 - Finished pool data...
+2023-07-05 22:00:48,159 - Inserting swap data...
+2023-07-05 22:00:48,163 - Finished swap data...
+2023-07-05 22:00:48,322 - Inserting lp event data...
+2023-07-05 22:00:48,323 - Finished lp event data...
+2023-07-05 22:00:48,417 - Inserting snapshots data...
+2023-07-05 22:00:48,417 - Finished snapshots data...
+2023-07-05 22:00:48,418 - Finished pool Curve.fi Factory USD Metapool: Magic Internet Money 3Pool.
+
+2023-07-05 22:00:48,418 - Processing pool Curve.fi DAI/USDC/USDT/sUSD.
+2023-07-05 22:00:49,709 - Inserting pool data...
+2023-07-05 22:00:50,864 - Finished pool data...
+2023-07-05 22:00:51,013 - Inserting swap data...
+2023-07-05 22:00:51,017 - Finished swap data...
+2023-07-05 22:00:51,153 - Inserting lp event data...
+2023-07-05 22:00:51,153 - Finished lp event data...
+2023-07-05 22:00:51,244 - Inserting snapshots data...
+2023-07-05 22:00:51,245 - Finished snapshots data...
+2023-07-05 22:00:51,245 - Finished pool Curve.fi DAI/USDC/USDT/sUSD.
+
+2023-07-05 22:00:51,245 - Processing pool Curve.fi ETH/frxETH.
+2023-07-05 22:00:52,437 - Inserting pool data...
+2023-07-05 22:00:53,575 - Finished pool data...
+2023-07-05 22:00:53,797 - Inserting swap data...
+2023-07-05 22:00:53,805 - Finished swap data...
+2023-07-05 22:00:53,977 - Inserting lp event data...
+2023-07-05 22:00:53,978 - Finished lp event data...
+2023-07-05 22:00:54,081 - Inserting snapshots data...
+2023-07-05 22:00:54,082 - Finished snapshots data...
+2023-07-05 22:00:54,082 - Finished pool Curve.fi ETH/frxETH.
+
+2023-07-05 22:00:54,082 - Processing pool Curve.fi Factory USD Metapool: Liquity.
+2023-07-05 22:00:55,388 - Inserting pool data...
+2023-07-05 22:00:56,530 - Finished pool data...
+2023-07-05 22:00:56,750 - Inserting swap data...
+2023-07-05 22:00:56,758 - Finished swap data...
+2023-07-05 22:00:56,929 - Inserting lp event data...
+2023-07-05 22:00:56,932 - Finished lp event data...
+2023-07-05 22:00:57,037 - Inserting snapshots data...
+2023-07-05 22:00:57,038 - Finished snapshots data...
+2023-07-05 22:00:57,038 - Finished pool Curve.fi Factory USD Metapool: Liquity.
+
+2023-07-05 22:00:57,039 - Processing pool Curve.fi Factory USD Metapool: Binance USD.
+2023-07-05 22:00:58,151 - Inserting pool data...
+2023-07-05 22:00:59,268 - Finished pool data...
+2023-07-05 22:00:59,468 - Inserting swap data...
+2023-07-05 22:00:59,469 - Finished swap data...
+2023-07-05 22:00:59,664 - Inserting lp event data...
+2023-07-05 22:00:59,665 - Finished lp event data...
+2023-07-05 22:00:59,757 - Inserting snapshots data...
+2023-07-05 22:00:59,757 - Finished snapshots data...
+2023-07-05 22:00:59,757 - Finished pool Curve.fi Factory USD Metapool: Binance USD.
+
+2023-07-05 22:00:59,758 - Processing pool Curve.fi Factory Plain Pool: stETH concentrated.
+2023-07-05 22:01:00,915 - Inserting pool data...
+2023-07-05 22:01:02,034 - Finished pool data...
+2023-07-05 22:01:02,235 - Inserting swap data...
+2023-07-05 22:01:02,242 - Finished swap data...
+2023-07-05 22:01:02,689 - Inserting lp event data...
+2023-07-05 22:01:02,690 - Finished lp event data...
+2023-07-05 22:01:02,782 - Inserting snapshots data...
+2023-07-05 22:01:02,783 - Finished snapshots data...
+2023-07-05 22:01:02,783 - Finished pool Curve.fi Factory Plain Pool: stETH concentrated.
+
+2023-07-05 22:01:02,783 - Processing pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+2023-07-05 22:01:04,266 - Inserting pool data...
+2023-07-05 22:01:05,365 - Finished pool data...
+2023-07-05 22:01:05,809 - Inserting swap data...
+2023-07-05 22:01:05,810 - Finished swap data...
+2023-07-05 22:01:05,945 - Inserting lp event data...
+2023-07-05 22:01:05,946 - Finished lp event data...
+2023-07-05 22:01:06,047 - Inserting snapshots data...
+2023-07-05 22:01:06,048 - Finished snapshots data...
+2023-07-05 22:01:06,048 - Finished pool Curve.fi Factory Crypto Pool: cbETH/ETH.
+
+2023-07-05 22:01:06,048 - Processing pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+2023-07-05 22:01:07,125 - Inserting pool data...
+2023-07-05 22:01:08,206 - Finished pool data...
+2023-07-05 22:01:08,653 - Inserting swap data...
+2023-07-05 22:01:08,657 - Finished swap data...
+2023-07-05 22:01:08,827 - Inserting lp event data...
+2023-07-05 22:01:08,828 - Finished lp event data...
+2023-07-05 22:01:08,926 - Inserting snapshots data...
+2023-07-05 22:01:08,927 - Finished snapshots data...
+2023-07-05 22:01:08,927 - Finished pool Curve.fi Factory Plain Pool: cvxCrv/Crv.
+
+2023-07-05 22:01:08,968 - Processing token LUSD OHLCV using chainlink.
+2023-07-05 22:01:24,392 - Found the closest round: 18446744073709564094, at 2023-07-05 18:17:11.
+2023-07-05 22:01:24,392 - Number of iterations: 14
+2023-07-05 22:01:24,779 - Inserting OHLCV.
+
+2023-07-05 22:01:24,790 - Processing token FRAX OHLCV using chainlink.
+2023-07-05 22:01:40,155 - Found the closest round: 18446744073709563995, at 2023-07-05 18:28:35.
+2023-07-05 22:01:40,155 - Number of iterations: 14
+2023-07-05 22:01:40,482 - Inserting OHLCV.
+
+2023-07-05 22:01:40,496 - Processing token MIM OHLCV using ccxt.
+2023-07-05 22:01:44,988 - Using Bitfinex for MIM/USD.
+2023-07-05 22:01:44,990 - Inserting OHLCV.
+
+2023-07-05 22:01:45,015 - Processing token USDC OHLCV using chainlink.
+2023-07-05 22:01:45,170 - Latest Chainlink timestamp 1688544035 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 22:01:45,170 - Inserting OHLCV.
+
+2023-07-05 22:01:45,170 - No price data for token USDC at this time.
+
+2023-07-05 22:01:45,170 - Processing token stETH OHLCV using chainlink.
+2023-07-05 22:02:00,465 - Found the closest round: 18446744073709570126, at 2023-07-05 18:00:35.
+2023-07-05 22:02:00,466 - Number of iterations: 14
+2023-07-05 22:02:00,822 - Inserting OHLCV.
+
+2023-07-05 22:02:00,832 - Processing token cbETH OHLCV using ccxt.
+2023-07-05 22:02:01,563 - Using Coinbase Pro for CBETH/USD.
+2023-07-05 22:02:01,565 - Inserting OHLCV.
+
+2023-07-05 22:02:01,626 - Processing token ETH OHLCV using chainlink.
+2023-07-05 22:02:14,984 - Found the closest round: 110680464442257312943, at 2023-07-05 18:55:47.
+2023-07-05 22:02:14,984 - Number of iterations: 12
+2023-07-05 22:02:15,330 - Inserting OHLCV.
+
+2023-07-05 22:02:15,341 - Processing token DAI OHLCV using chainlink.
+2023-07-05 22:02:27,466 - Found the closest round: 110680464442257311864, at 2023-07-05 18:02:47.
+2023-07-05 22:02:27,466 - Number of iterations: 11
+2023-07-05 22:02:27,812 - Inserting OHLCV.
+
+2023-07-05 22:02:27,825 - Processing token BUSD OHLCV using chainlink.
+2023-07-05 22:02:27,977 - Latest Chainlink timestamp 1688569667 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 22:02:27,977 - Inserting OHLCV.
+
+2023-07-05 22:02:27,978 - No price data for token BUSD at this time.
+
+2023-07-05 22:02:27,978 - Processing token sUSD OHLCV using chainlink.
+2023-07-05 22:02:28,131 - Latest Chainlink timestamp 1688557247 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 22:02:28,131 - Inserting OHLCV.
+
+2023-07-05 22:02:28,131 - No price data for token sUSD at this time.
+
+2023-07-05 22:02:28,131 - WETH assumed to be = ETH. Skipping...
+
+2023-07-05 22:02:28,131 - Processing token cvxCRV OHLCV using curveswaps.
+2023-07-05 22:02:28,179 - Inserting OHLCV.
+
+2023-07-05 22:02:28,186 - Processing token USDT OHLCV using chainlink.
+2023-07-05 22:02:28,339 - Latest Chainlink timestamp 1688542175 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 22:02:28,340 - Inserting OHLCV.
+
+2023-07-05 22:02:28,340 - No price data for token USDT at this time.
+
+2023-07-05 22:02:28,340 - Processing token USDN OHLCV using chainlink.
+2023-07-05 22:02:28,484 - Latest Chainlink timestamp 1675776755 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 22:02:28,484 - Inserting OHLCV.
+
+2023-07-05 22:02:28,484 - No price data for token USDN at this time.
+
+2023-07-05 22:02:28,484 - Processing token frxETH OHLCV using curveswaps.
+2023-07-05 22:02:28,525 - Inserting OHLCV.
+
+2023-07-05 22:02:28,534 - UST only indexed up to 1653667380 (2022-05-27 12:03:00 PM GMT-04:00 DST). Setting end time to 2023-07-05 21:59:35.
+2023-07-05 22:02:28,534 - Processing token UST OHLCV using ccxt.
+2023-07-05 22:02:28,536 - Using Coinbase Pro for UST/USD.
+2023-07-05 22:02:28,537 - Inserting OHLCV.
+
+2023-07-05 22:02:28,537 - No price data for token UST at this time.
+
+2023-07-05 22:02:28,537 - 3Crv uses pool virtual price. Skipping...
+
+2023-07-05 22:02:28,537 - Processing token CRV OHLCV using chainlink.
+2023-07-05 22:02:28,705 - Latest Chainlink timestamp 1688575487 is before start timestamp 1688583611.
+NoneType: None
+2023-07-05 22:02:28,705 - Inserting OHLCV.
+
+2023-07-05 22:02:28,706 - No price data for token CRV at this time.
+
+2023-07-05 22:02:28,707 - Done :)
+
+2023-07-05 22:02:28,707 - Successfully frontfilled raw data.
