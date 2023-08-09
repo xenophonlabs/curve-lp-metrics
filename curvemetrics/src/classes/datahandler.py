@@ -111,6 +111,28 @@ class DataHandler():
 
         self.session.commit()
 
+    def trim(self, entity, timestamp):
+        """
+        Deletes rows from the specified entity where the timestamp column is less than the input timestamp.
+        
+        Args:
+            entity (object): The entity to delete rows from.
+            timestamp (int): The timestamp to compare against.
+        """
+        query = self.session.query(entity)
+        query = query.filter(entity.timestamp < timestamp)
+        return query.all()
+        # query.delete()
+        # self.session.commit()
+        # self.vacuum_full()
+
+    def vacuum_full(self):
+        """
+        Performs a VACUUM FULL on the database to reclaim disk space.
+        """
+        self.session.execute("VACUUM FULL")
+        self.session.commit()
+
     def insert_pool_data(self, data):
         df = DataHandler.format_pool_data(data)
         self.insert(df, PoolData)

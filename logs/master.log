@@ -2,3 +2,31 @@ nohup: ignoring input
 nohup: ignoring input
 nohup: ignoring input
 nohup: ignoring input
+nohup: ignoring input
+nohup: ignoring input
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/root/curve-lp-metrics/curvemetrics/scripts/backfill/raw_data.py", line 3, in <module>
+    from curvemetrics.scripts.raw_data import main
+  File "/root/curve-lp-metrics/curvemetrics/scripts/raw_data.py", line 10, in <module>
+    from curvemetrics.src.classes.datafetcher import DataFetcher
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/datafetcher.py", line 1, in <module>
+    import nest_asyncio
+ModuleNotFoundError: No module named 'nest_asyncio'
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/root/curve-lp-metrics/curvemetrics/scripts/backfill/raw_data.py", line 3, in <module>
+    from curvemetrics.scripts.raw_data import main
+  File "/root/curve-lp-metrics/curvemetrics/scripts/raw_data.py", line 10, in <module>
+    from curvemetrics.src.classes.datafetcher import DataFetcher
+  File "/root/curve-lp-metrics/curvemetrics/src/classes/datafetcher.py", line 1, in <module>
+    import nest_asyncio
+ModuleNotFoundError: No module named 'nest_asyncio'
+nohup: ignoring input
+nohup: ignoring input

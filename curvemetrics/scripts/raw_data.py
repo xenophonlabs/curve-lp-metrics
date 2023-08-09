@@ -57,7 +57,7 @@ async def pools(start:int, end:int, start_block:int, end_block:int):
                 datahandler.insert_lp_data(lp_data)
                 logger.info(f"Finished lp event data...")
 
-                snapshots = datafetcher.get_snapshots(pool_start, end, pool, step_size=60*60*24)
+                snapshots = datafetcher.get_snapshots(pool_start-60*60*24, end, pool, step_size=60*60*24) # Hack to ensure I get all snapshots
                 logger.info(f"Inserting snapshots data...")
                 datahandler.insert_pool_snapshots(snapshots)
                 logger.info(f"Finished snapshots data...")
