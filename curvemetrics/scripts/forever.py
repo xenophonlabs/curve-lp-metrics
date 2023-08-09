@@ -11,6 +11,7 @@ import pickle
 import traceback
 import re
 import asyncio
+import shutil
 
 from curvemetrics.scripts.raw_data import main as raw
 from curvemetrics.scripts.metrics import main as metrics
@@ -77,6 +78,12 @@ def send_email(msg):
     # server.sendmail(STMP_LOGIN, ["thomas@xenophonlabs.com", "max@xenophonlabs.com"], msg)
     server.sendmail(STMP_LOGIN, ["thomas@xenophonlabs.com"], msg)
     server.quit()
+
+def send_email_on_high_disk_usage(usage):
+    subject = f'Curvemetrics Disk Usage Warning'
+    body = f"Disk usage is: {usage:.2f}%."
+    msg = f'Subject: {subject}\n\n{body}'
+    send_email(msg)
 
 def send_email_on_error(exc, start, end):
     subject = f'Curvemetrics Frontfilling Failure {datetime.fromtimestamp(start)} : {datetime.fromtimestamp(end)}'
@@ -154,6 +161,13 @@ def get_latest_inference_ts(models):
             model = models[pool][metric]
             last_ts = min(last_ts, model.last_ts)
     return last_ts
+
+def check_disk_usage(path="/"):
+    """Check disk usage of the given path."""
+    total, used, _ = shutil.disk_usage(path)
+    percent_used = (used / total) * 100
+    if percent_used > 90:
+        send_email_on_high_disk_usage(percent_used)
 
 def main(models):
     """
@@ -332,6 +346,8 @@ if __name__ == "__main__":
             model = models[pool][metric]
             with open(f'./model_configs/{metric}/{pool}.pkl', 'wb') as f:
                 pickle.dump(model, f)
+
+    check_disk_usage()
 
     # NOTE: re-add cron job
     insert_cronjob()
