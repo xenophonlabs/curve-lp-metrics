@@ -182,7 +182,7 @@ First create the database with its corresponding user:
 <user> and <pwd> should be defined as 'PSQL_USER' and 'PSQL_PASSWORD' in your `.env`, since SQLAlchemy and Flask will need those to serve the data. Then run the below command from the root of the repository:
 
 ```
-python3 -m curvemetrics.create_database
+python3 -m curvemetrics.scripts.setup.create_database
 ```
 
 This calls the `Base.MetaData.create_all(.)` method from SQLAlchemy's `declarative_base` class, which loads all of the Entities into our db and creates/typesets the tables, as well as their indexes.
