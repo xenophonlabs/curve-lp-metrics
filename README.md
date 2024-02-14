@@ -120,6 +120,7 @@ At a high level, our model performs particularly well using our entropy and mark
 - **Swaps model** using the hourly cumulative swap flows for each pool.
 
 ![Shannon's Entropy Results on the 3pool](./figs/testing/pool/shannonsEntropy/0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7.png)
+
 *BOCD results using hourly log differences in Shannon's Entropy for the 3pool. Our entropy model detects changepoints during the UST depeg, the FTX collapse, and the SVB bank run. The changepoint corresponding to the SVB collapse and the momentary depeg of USDC is detected at 9pm UTC on March 10th, hours before USDC dips below $99$ cents. Notice how increased variance in entropy closely correlates with all three high-information events, illustrated with the gray bars. Since 3pool LP share prices did not meaningfully deteriorate during the UST and FTX events, the corresponding changepoints are flagged as false positives by our scoring rule, although they are not necessarily false alarms in the pragmatic sense. We observe two additional false positives throughout late 2022 and early 2023.*
 
 However, for smaller pools such as USDN, sUSD, and stETH concentrated we obtain a lower precision score due to noisy metrics. Furthermore, we find that the Gini Coefficient, net LP flow, and Log Returns metrics are too noisy, and lead to the lowest precision and $lF$-scores. 
